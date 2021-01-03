@@ -1,12 +1,11 @@
 <template>
    <v-app class="grey lighten-4">
-    <Navbar />
-
+    <Navbar  v-if="!['Cpage','Opage'].includes($route.name)" />
     <v-content>
       <router-view></router-view>
     </v-content>
    
-      <Footer/>
+      <Footer v-if="!['Cpage','Opage'].includes($route.name)"/>
   </v-app>
 </template>
 

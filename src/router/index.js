@@ -2,6 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Booking from '../views/booktruck.vue'
+import Login from '../views/login.vue';
+import Csignup from '../views/custsignup.vue';
+import Osignup from '../views/optrsignup.vue';
+import Cpage from '../views/custpage.vue';
+import Opage from '../views/optrpage.vue';
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,6 +27,36 @@ const routes = [
     path:'/booktruck',
     name:'Booking',
     component:Booking
+
+  },
+  {
+    path:'/login',
+    name:'Login',
+    component:Login
+
+  },
+  {
+    path:'/custsignup',
+    name:'Csignup',
+    component:Csignup
+
+  },
+  {
+    path:'/optrsignup',
+    name:'Osignup',
+    component:Osignup
+
+  },
+  {
+    path:'/custpage',
+    name:'Cpage',
+    component:Cpage
+
+  },
+  {
+    path:'/optrpage',
+    name:'Opage',
+    component:Opage
 
   }
 ]
