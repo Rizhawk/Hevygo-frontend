@@ -14,6 +14,7 @@
               <v-card-title class="mx-15"
                 ><h2 class="mx-15">Login</h2></v-card-title
               >
+              <!--Login form begining-->
               <validation-observer ref="observer" v-slot="{ invalid }">
                 <form class="mx-8" @submit.prevent="submit">
                   <validation-provider
@@ -57,6 +58,7 @@
                 </v-card-text>
                 </form>
               </validation-observer>
+              <!--Login form ends-->
             </v-card>
           </div>
         </template>
@@ -75,6 +77,8 @@ import {
 
 setInteractionMode("eager");
 
+//Custom validation begining
+
 extend("digits", {
   ...digits,
   message: "{_field_} needs to be {length} digits. ({_value_})",
@@ -92,6 +96,8 @@ extend("min", {
   ...min,
   message: "{_field_}  should be greater than {length} characters",
 });
+
+//Custom validation ends
 
 export default {
   name: "Login",

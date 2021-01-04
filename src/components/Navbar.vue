@@ -1,11 +1,12 @@
 <template>
   <nav>
+    <!--Navbar-->
     <v-toolbar dark class="blue lighten-1" flat app>
       <v-toolbar-title class="text-uppercase">
         <span class="font-weight-bold">HEVY</span>
         <span>GO</span>
       </v-toolbar-title>
-      
+
       <v-toolbar-items class="hidden-xs-only">
         <span class="my-5 mx-16"
           ><a href="/"><p class="white--text">Home</p></a></span
@@ -13,7 +14,7 @@
         <span class="my-5 mx-15"
           ><a href="/about"><p class="white--text">About Us</p></a></span
         >
-          <span class="my-5 mx-15"
+        <span class="my-5 mx-15"
           ><a href="/about"><p class="white--text">Contact</p></a></span
         >
       </v-toolbar-items>
@@ -31,18 +32,23 @@
             </v-list-item>
             <v-list-item>
               <v-list-item-title
-                ><router-link to="/about">About Us</router-link></v-list-item-title
+                ><router-link to="/about"
+                  >About Us</router-link
+                ></v-list-item-title
               >
             </v-list-item>
-             <v-list-item>
+            <v-list-item>
               <v-list-item-title
-                ><router-link to="/about">Contact</router-link></v-list-item-title
+                ><router-link to="/about"
+                  >Contact</router-link
+                ></v-list-item-title
               >
             </v-list-item>
           </v-list>
         </v-menu>
       </div>
     </v-toolbar>
+    <!--Navbar ends-->
   </nav>
 </template>
 

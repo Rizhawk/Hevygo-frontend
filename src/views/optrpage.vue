@@ -1,19 +1,15 @@
 <template>
   <nav>
-    <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
+    <!--Navbar-->
     <v-app-bar color="blue lighten-1" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title>HEVYGO</v-toolbar-title>
       <v-spacer></v-spacer>
-
-      <!-- <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn> -->
     </v-app-bar>
+      <!--Navbar ends-->
+
+    <!--Sidebar-->
 
     <v-navigation-drawer
       v-model="drawer"
@@ -39,26 +35,33 @@
         >
           <v-list-item>
             <v-list-item-title class="white--text"
-              >Manage Drivers </v-list-item-title
-            >
-          </v-list-item>
-           <v-list-item>
-            <v-list-item-title class="white--text"
-              >Manage Trucks </v-list-item-title
-            >
+              >Add Trucks
+            </v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-list-item-title class="white--text"
-              >Track your Truck</v-list-item-title
+              >Add Drivers
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title class="white--text"
+              >Manage Truck Status</v-list-item-title
             >
           </v-list-item>
-        
         </v-list-item-group>
         <v-list-item>
-          <v-btn  color="white" class="mx-5 my-10 black--text" width="80%"  rounded shaped>Logout</v-btn>
+          <v-btn
+            color="white"
+            class="mx-5 my-10 black--text"
+            width="80%"
+            rounded
+            shaped
+            >Logout</v-btn
+          >
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <!--Sidebar ends-->
   </nav>
 </template>
 <script>

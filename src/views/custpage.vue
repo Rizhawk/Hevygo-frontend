@@ -1,20 +1,14 @@
 <template>
   <nav>
-    <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
+    <!--Navbar-->
     <v-app-bar color="blue lighten-1" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
       <v-toolbar-title>HEVYGO</v-toolbar-title>
       <v-spacer></v-spacer>
-
-      <!-- <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn> -->
     </v-app-bar>
+    <!--Navbar ends-->
 
+    <!--Sidebar-->
     <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -58,6 +52,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <!--Sidebar ends-->
   </nav>
 </template>
 <script>

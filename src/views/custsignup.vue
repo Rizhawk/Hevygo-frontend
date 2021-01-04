@@ -13,6 +13,9 @@
             <v-card-title
               ><h3 class="mx-15">Sign Up to Continue</h3></v-card-title
             >
+
+            <!--Customer Sign Up form begining -->
+
             <validation-observer ref="observer" v-slot="{ invalid }">
               <form class="mx-8" @submit.prevent="submit">
                 <validation-provider
@@ -37,13 +40,13 @@
                   @click:append="show1 = !show1"
                 ></v-text-field>
                 <v-text-field
-                  v-model="confirmPassword"
+                  v-model="password2"
                   label="Confirm Password"
                   name="confirmPassword"
                   :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[
-                    !!confirmPassword || 'type confirm password',
-                    password === confirmPassword ||
+                    !!password2 || 'type confirm password',
+                    password === password2 ||
                       'The password confirmation does not match.',
                   ]"
                   :type="show2 ? 'text' : 'password'"
@@ -59,7 +62,7 @@
                   }"
                 >
                   <v-text-field
-                    v-model="phoneNumber"
+                    v-model="phone"
                     :error-messages="errors"
                     label="Phone Number"
                     required
@@ -96,6 +99,7 @@
                     class="mr-4"
                     type="submit"
                     :disabled="invalid"
+                    @click.prevent="csignup"
                   >
                     Sign Up
                   </v-btn>
@@ -110,6 +114,9 @@
                 </v-card-text>
               </form>
             </validation-observer>
+
+            <!--Customer Sign Up form end -->
+
           </v-card>
         </template>
       </v-hover>
@@ -117,6 +124,7 @@
   </v-container>
 </template>
 <script>
+import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -126,6 +134,8 @@ import {
 } from "vee-validate";
 
 setInteractionMode("eager");
+
+// Custom Validation for the form input
 
 extend("digits", {
   ...digits,
@@ -145,16 +155,12 @@ extend("min", {
   ...min,
   message: "{_field_}  should be greater than {length} characters",
 });
-
-//   extend('regex', {
-//     ...regex,
-//     message: '{_field_} {_value_} does not match {regex}',
-//   })
-
 extend("email", {
   ...email,
   message: "Email must be valid",
 });
+
+//Custom validation ends
 
 export default {
   components: {
@@ -164,14 +170,14 @@ export default {
   data: () => {
     return {
       name: "",
-      phoneNumber: "",
+      phone: "",
       email: "",
       show1: false,
       show2: false,
       checkbox: null,
-      usertype:1,
+      user_type: 2,
       password: "",
-      confirmPassword: "",
+      password2: "",
       passwordRules: [
         (value) => !!value || "Please type password.",
         (value) => (value && value.length >= 6) || "minimum 6 characters",
@@ -183,12 +189,36 @@ export default {
     submit() {
       this.$refs.observer.validate();
     },
+     //Function to call Api after click on the signup button
+
+    csignup() {
+      getAPI
+        .post("/api/accounts/register", {
+          phone: this.phone,
+          name: this.name,
+          password: this.password,
+          password2: this.password2,
+          user_type: this.user_type,
+          email: this.email,
+        })
+        .then((response) => {
+          alert("Registration Succesfull");
+          this.APIData = response.data;
+          this.$router.push({ name: "Login" });
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+
+    //function to set input field empty
+
     clear() {
       this.name = "";
-      this.phoneNumber = "";
+      this.phone = "";
       this.email = "";
       this.password = "";
-      this.confirmPassword = "";
+      this.password2 = "";
       this.checkbox = null;
       this.$refs.observer.reset();
     },

@@ -11,6 +11,9 @@
             shaped
           >
             <v-card-title><h2 class="mx-15">Fill the details</h2></v-card-title>
+
+            <!--Truck booking form begining-->
+
             <validation-observer ref="observer" v-slot="{ invalid }">
               <form class="mx-8" @submit.prevent="submit">
                 <validation-provider
@@ -53,6 +56,19 @@
                     required
                   ></v-text-field>
                 </validation-provider>
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Date"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model="date"
+                    :error-messages="errors"
+                    label="Date of Transport"
+                    type="date"
+                    required
+                  ></v-text-field>
+                </validation-provider>
 
                 <validation-provider
                   v-slot="{ errors }"
@@ -82,33 +98,6 @@
                     required
                   ></v-text-field>
                 </validation-provider>
-
-                <!-- <validation-provider
-              v-slot="{ errors }"
-              name="email"
-              rules="required|email"
-            >
-              <v-text-field
-                v-model="email"
-                :error-messages="errors"
-                label="E-mail"
-                required
-              ></v-text-field>
-            </validation-provider> -->
-                <!-- <validation-provider
-              v-slot="{ errors }"
-              name="select"
-              rules="required"
-            >
-              <v-select
-                v-model="select"
-                :items="items"
-                :error-messages="errors"
-                label="Select"
-                data-vv-name="select"
-                required
-              ></v-select>
-            </validation-provider> -->
                 <validation-provider
                   v-slot="{ errors }"
                   rules="required"
@@ -134,12 +123,13 @@
                   Book
                 </v-btn>
                 <v-btn @click="clear"> clear </v-btn>
-                 <v-card-text>
-                  <div class="my-2 mx-5">
-                  </div>
+                <v-card-text>
+                  <div class="my-2 mx-5"></div>
                 </v-card-text>
               </form>
             </validation-observer>
+
+            <!--Truck booking form begining-->
           </v-card>
         </template>
       </v-hover>
@@ -157,6 +147,8 @@ import {
 
 setInteractionMode("eager");
 
+//Custom validation form input fields
+
 extend("digits", {
   ...digits,
   message: "{_field_} needs to be digits. ({_value_})",
@@ -171,17 +163,7 @@ extend("max", {
   ...max,
   message: "{_field_} may not be greater than {length} characters",
 });
-
-// extend("regex", {
-//   ...regex,
-//   message: "{_field_} {_value_} does not match {regex}",
-// });
-
-// extend("email", {
-//   ...email,
-//   message: "Email must be valid",
-// });
-
+//Custom validation ends
 export default {
   name: "Booking",
   components: {
@@ -195,11 +177,7 @@ export default {
       endlocation: "",
       weight: "",
       goodstype: "",
-      // phoneNumber: "",
-      // email: "",
-      // select: null,
-      // items: ["Item 1", "Item 2", "Item 3", "Item 4"],
-      // checkbox: null,
+      date: "",
     };
   },
 
@@ -207,6 +185,7 @@ export default {
     submit() {
       this.$refs.observer.validate();
     },
+    //Function to set input field empty
     clear() {
       this.name = "";
       this.startlocation = "";
