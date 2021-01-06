@@ -14,7 +14,7 @@
               <v-card-title class="mx-15"
                 ><h2 class="mx-15">Login</h2></v-card-title
               >
-              <!--Login form begining-->
+              <!--Login section-->
               <validation-observer ref="observer" v-slot="{ invalid }">
                 <form class="mx-8" @submit.prevent="submit">
                   <validation-provider
