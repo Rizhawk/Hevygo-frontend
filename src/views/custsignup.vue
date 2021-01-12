@@ -108,7 +108,7 @@
                 <v-card-text>
                   <div class="my-2">
                     <span class="mx-12"
-                      >Already have an account?<a href="">Login</a></span
+                      >Already have an account?<router-link to="/login">Login</router-link></span
                     >
                   </div>
                 </v-card-text>
@@ -201,8 +201,8 @@ export default {
           user_type: this.user_type,
           email: this.email,
         })
-        .then((response) => {
-          alert("Registration Succesfull");
+        .then(response => {
+          alert(response);
           this.APIData = response.data;
           this.$router.push({ name: "Login" });
         })
@@ -211,7 +211,7 @@ export default {
         });
     },
 
-    //function to set input field empty
+    //function to reset input field empty
 
     clear() {
       this.name = "";

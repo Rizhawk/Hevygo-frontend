@@ -172,6 +172,7 @@ export default {
   },
   data: () => {
     return {
+      checkbox:"",
       name: "",
       startlocation: "",
       endlocation: "",

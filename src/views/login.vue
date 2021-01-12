@@ -26,7 +26,7 @@
                     }"
                   >
                     <v-text-field
-                      v-model="phoneNumber"
+                      v-model="phone"
                       :error-messages="errors"
                       label="Phone Number"
                       required
@@ -48,14 +48,14 @@
                       type="submit"
                       width="50%"
                       :disabled="invalid"
+                      @click.prevent="login"
                     >
                       Login
                     </v-btn>
                   </div>
-                 <v-card-text>
-                  <div class="my-2 mx-5">
-                  </div>
-                </v-card-text>
+                  <v-card-text>
+                    <div class="my-2 mx-5"></div>
+                  </v-card-text>
                 </form>
               </validation-observer>
               <!--Login form ends-->
@@ -67,6 +67,7 @@
   </v-container>
 </template>
 <script>
+import { getAPI } from "../axios-api";
 import { required, digits, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -107,19 +108,45 @@ export default {
   },
   data: () => {
     return {
-      phoneNumber: "",
+      phone: "",
       show1: false,
       password: "",
+      token: null,
       passwordRules: [
         (value) => !!value || "Please type password.",
         (value) => (value && value.length >= 6) || "Invalid password",
       ],
+      items: ["Operator", "Customer", "Driver"],
     };
   },
 
   methods: {
     submit() {
       this.$refs.observer.validate();
+    },
+    login() {
+      //Login API Call
+      getAPI
+        .post("/api/accounts/login", {
+          username: this.phone,
+          password: this.password,
+        })
+        .then((response) => {
+          localStorage.setItem("user_token", response.data.token);
+          this.APIData = response.data;
+          localStorage.setItem("user_id",response.data.user_id);
+          if (response.data.user_type == 1) {
+            this.$router.push({ name: "Opage" });
+          } else if (response.data.user_type == 2) {
+            this.$router.push({ name: "Cpage" });
+          } else if (response.data.user_type == 3) {
+            this.$router.push({ name: "Dpage" });
+          }
+        })
+        .catch((err) => {
+          localStorage.removeItem("user_token");
+          alert(err.message);
+        });
     },
   },
 };
