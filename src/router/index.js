@@ -7,6 +7,10 @@ import Csignup from '../views/custsignup.vue';
 import Osignup from '../views/optrsignup.vue';
 import Cpage from '../views/custpage.vue';
 import Opage from '../views/optrpage.vue';
+import Tdrivers from '../views/managedrivers.vue';
+import Tmanage from '../views/managetrucks.vue';
+import Tstatus from '../views/truckstatus.vue';
+import Dpage from '../views/driverpage.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -57,6 +61,30 @@ const routes = [
     path:'/optrpage',
     name:'Opage',
     component:Opage
+
+  },
+  {
+    path:'/managedrivers',
+    name:'Tdrivers',
+    component:Tdrivers
+
+  },
+  {
+    path:'/managetrucks',
+    name:'Tmanage',
+    component:Tmanage
+
+  },
+  {
+    path:'/truckstatus',
+    name:'Tstatus',
+    component:Tstatus
+
+  },
+  {
+    path:'/driverpage',
+    name:'Dpage',
+    component:Dpage
 
   }
 ]

@@ -1,21 +1,21 @@
 <template>
   <nav>
     <!--Navbar-->
-    <v-toolbar dark class="blue lighten-1" flat app>
-      <v-toolbar-title class="text-uppercase">
+    <v-app-bar dark class="blue lighten-1" app>
+      <v-app-bar-title class="text-uppercase">
         <span class="font-weight-bold">HEVY</span>
         <span>GO</span>
-      </v-toolbar-title>
+      </v-app-bar-title>
 
       <v-toolbar-items class="hidden-xs-only">
         <span class="my-5 mx-16"
-          ><a href="/"><p class="white--text">Home</p></a></span
+          ><router-link to="/"><p class="white--text">Home</p></router-link></span
         >
         <span class="my-5 mx-15"
-          ><a href="/about"><p class="white--text">About Us</p></a></span
+          ><router-link to="#"><p class="white--text">About Us</p></router-link></span
         >
         <span class="my-5 mx-15"
-          ><a href="/about"><p class="white--text">Contact</p></a></span
+          ><router-link to="#"><p class="white--text">Contact</p></router-link></span
         >
       </v-toolbar-items>
       <v-spacer></v-spacer>
@@ -47,7 +47,7 @@
           </v-list>
         </v-menu>
       </div>
-    </v-toolbar>
+    </v-app-bar>
     <!--Navbar ends-->
   </nav>
 </template>

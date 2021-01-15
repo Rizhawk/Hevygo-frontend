@@ -108,7 +108,7 @@
                 <v-card-text>
                   <div class="my-2">
                     <span class="mx-12"
-                      >Already have an account?<a href="">Login</a></span
+                      >Already have an account?<router-link to="/login">Login</router-link></span
                     >
                   </div>
                 </v-card-text>
@@ -170,7 +170,7 @@ export default {
     return {
       name: "",
       phone: "",
-      email: "",
+      email: null,
       show1: false,
       show2: false,
       checkbox: null,
@@ -200,7 +200,7 @@ export default {
           email: this.email,
         })
         .then((response) => {
-          alert("Registration Succesfull");
+          alert(response.message);
           this.APIData = response.data;
           this.$router.push({ name: "Login" });
         })

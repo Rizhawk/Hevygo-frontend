@@ -8,7 +8,7 @@
       <div class="col-8">
         <v-container fluid class="my-10">
           <v-layout row wrap class="pa-3">
-            <v-flex class="my-10">
+            <v-flex class="my-10" xs12>
               <div class="mx-7 caption">
                 <h1 class="mx-15 display-1 light">Welcome to</h1>
               </div>
@@ -46,15 +46,24 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <span class="mx-15">
-                    <a v-bind="attrs" v-on="on" href="/optrsignup"
+                    <router-link v-bind="attrs" v-on="on" to="/optrsignup"
                       ><p class="mx-5 bold white--text">
                         Do you have Trucks?
-                      </p></a
+                      </p></router-link
                     >
                   </span>
                 </template>
                 <span>Create your Operator Account Now</span>
               </v-tooltip>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex row wrap class="pa-3 mx-15">
+              <span class="mx-10">
+                <v-btn flat class="mx-4" router to="/login" elevation="10" rounded block
+                  >Login
+                </v-btn>
+              </span>
             </v-flex>
           </v-layout>
         </v-container>
@@ -64,8 +73,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   name: "Home",
   components: {},

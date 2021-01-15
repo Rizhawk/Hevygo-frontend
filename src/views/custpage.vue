@@ -48,7 +48,7 @@
           </v-list-item>
         </v-list-item-group>
         <v-list-item>
-          <v-btn class="mx-5 my-10" width="80%" rounded shaped>Logout</v-btn>
+          <v-btn class="mx-5 my-10" width="80%" @click.prevent="logout" rounded shaped>Logout</v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -62,6 +62,13 @@ export default {
     drawer: false,
     group: null,
   }),
+  methods:{
+    logout(){
+      localStorage.removeItem("user_token");
+        this.$router.push({ name: "Login" });
+    }
+
+  },
 
   watch: {
     group() {
