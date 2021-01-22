@@ -10,7 +10,14 @@ import Opage from '../views/optrpage.vue';
 import Tdrivers from '../views/managedrivers.vue';
 import Tmanage from '../views/managetrucks.vue';
 import Tstatus from '../views/truckstatus.vue';
-import Dpage from '../views/driverpage.vue'
+import Dpage from '../views/driverpage.vue';
+import Treg from '../views/registertruck';
+import Tadd from '../views/truckadd';
+import Dreg from '../views/driveradd';
+import Padd from '../views/panadd';
+import Tdetails from '../views/truckdetails';
+import Editdetails from '../views/editdetails';
+import Regedit from '../views/editreg';
 Vue.use(VueRouter)
 
 const routes = [
@@ -86,7 +93,44 @@ const routes = [
     name:'Dpage',
     component:Dpage
 
-  }
+  },
+  {
+    path:'/registertruck',
+    name:'Treg',
+    component:Treg
+
+  },
+  {
+    path:'/truckadd',
+    name:'Tadd',
+    component:Tadd
+
+  },
+  {
+    path:'/driveradd',
+    name:'Dreg',
+    component:Dreg
+  },
+  {
+    path:'/panadd',
+    name:'Padd',
+    component:Padd
+  },
+  {
+    path:'/truckdetails',
+    name:'Tdetails',
+    component:Tdetails
+  },
+  {
+    path:'/editdetails',
+    name:'Editdetails',
+    component:Editdetails
+  },
+  {
+    path:'/editreg',
+    name:'Regedit',
+    component:Regedit
+  },
 ]
 
 const router = new VueRouter({

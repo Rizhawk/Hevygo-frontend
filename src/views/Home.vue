@@ -60,7 +60,7 @@
           <v-layout>
             <v-flex row wrap class="pa-3 mx-15">
               <span class="mx-10">
-                <v-btn flat class="mx-4" router to="/login" elevation="10" rounded block
+                <v-btn text class="mx-4" router to="/login" elevation="10" rounded block
                   >Login
                 </v-btn>
               </span>
