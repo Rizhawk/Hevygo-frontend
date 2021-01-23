@@ -202,6 +202,7 @@ export default {
         .then((response) => {
           alert(response.message);
           this.APIData = response.data;
+          console.log(this.APIData);
           this.$router.push({ name: "Login" });
         })
         .catch((err) => {
