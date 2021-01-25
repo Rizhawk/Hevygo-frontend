@@ -1,31 +1,52 @@
 <template>
-  <nav>
+  <v-app>
     <Opage />
-    <v-container class="mx-10">
-      <v-row justify="space-around">
-        <v-card width="500px" class="my-10" outlined raised>
-          <v-card-title>Fill the Details</v-card-title>
+      <v-layout class="my-5" row wrap>
+        <v-flex lg5></v-flex>
+        <v-flex xs12 sm8 md6 lg4>
+          <v-snackbar
+            rounded="xl"
+            text
+            top
+            dark
+            v-model="snackbar"
+            timeout="3000"
+            ><span class="white--text mx-15">{{
+              this.message
+            }}</span></v-snackbar
+          >
+
           <validation-observer ref="observer1" v-slot="{ invalid }">
-            <form class="mx-8" @submit.prevent="submit">
+            <form id="form2" @submit.prevent="submit">
+              <v-layout
+                ><v-flex><h2>Fill the details</h2></v-flex></v-layout
+              >
+              <v-layout class="my-3"> <v-flex></v-flex></v-layout>
               <validation-provider v-slot="{ errors }" name="Name">
                 <v-text-field
                   v-model="name"
                   :error-messages="errors"
-                  label="Name of your truck"
+                  placeholder="Name of your truck"
+                  clearable
+                  solo
+                  rounded
                 ></v-text-field>
               </validation-provider>
               <v-text-field
                 v-model="password"
-                label="Password *"
+                placeholder="Password *"
                 name="password"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="passwordRules"
                 :type="show1 ? 'text' : 'password'"
                 @click:append="show1 = !show1"
+                clearable
+                solo
+                rounded
               ></v-text-field>
               <v-text-field
                 v-model="password2"
-                label="Confirm Password *"
+                placeholder="Confirm Password *"
                 name="confirmPassword"
                 :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[
@@ -35,6 +56,9 @@
                 ]"
                 :type="show2 ? 'text' : 'password'"
                 @click:append="show2 = !show2"
+                clearable
+                solo
+                rounded
               ></v-text-field>
               <validation-provider
                 v-slot="{ errors }"
@@ -47,8 +71,11 @@
                 <v-text-field
                   v-model="phone"
                   :error-messages="errors"
-                  label="Phone number to contact your truck *"
+                  placeholder=" Phone number to contact your truck *"
                   required
+                  clearable
+                  solo
+                  rounded
                 ></v-text-field>
               </validation-provider>
               <v-card-text>
@@ -72,15 +99,13 @@
                   >Next</v-btn
                 >
               </div>
+              <v-layout class="my-3"> <v-flex></v-flex></v-layout>
             </form>
-            <div>
-              <v-card-text></v-card-text>
-            </div>
           </validation-observer>
-        </v-card>
-      </v-row>
-    </v-container>
-  </nav>
+        </v-flex>
+        <!-- </v-card> -->
+      </v-layout>
+  </v-app>
 </template>
 <script>
 import { getAPI } from "../axios-api";
@@ -121,13 +146,15 @@ export default {
   name: "Treg",
   data: () => {
     return {
+      message: "",
+      snackbar: false,
       drawer: false,
       tick: false,
       group: null,
       show1: false,
       show2: false,
       next: false,
-      name:null,
+      name: null,
       phone: "",
       password: "",
       password2: "",
@@ -153,6 +180,7 @@ export default {
           password: this.password,
           password2: this.password2,
           user_type: this.user_type,
+          email: null,
         })
         .then((response) => {
           this.APIData = response.data;
@@ -161,9 +189,10 @@ export default {
           if (phonenum == this.phnerr) {
             alert(this.phnerr);
           } else {
-            alert(this.APIData['response']);
-            localStorage.setItem("truck_phn",phonenum);
+            this.message = this.APIData["response"];
+            localStorage.setItem("truck_phn", phonenum);
             this.next = true;
+            this.snackbar = !this.snackbar;
           }
         })
         .catch((err) => {
@@ -171,7 +200,7 @@ export default {
         });
     },
     clear() {
-        (this.phone = ""),
+      (this.phone = ""),
         (this.password = ""),
         (this.password2 = ""),
         (this.name = ""),
@@ -180,3 +209,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+#form2 {
+  border: solid white 1px;
+  padding: 35px;
+  border-radius: 30px;
+  background-color: grey;
+}
+</style>

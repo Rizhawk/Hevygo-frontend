@@ -1,7 +1,7 @@
 <template>
   <nav>
     <!--Navbar-->
-    <v-app-bar color="blue lighten-1" dark app>
+    <v-app-bar color="black" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title>HEVYGO</v-app-bar-title>
       <v-spacer></v-spacer>
@@ -16,7 +16,7 @@
       clipped
       hide-overlay
       dark
-      color="blue-grey darken-4"
+      color="black"
     >
       <v-layout column align-center>
         <v-flex class="mt-5">
@@ -54,34 +54,6 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <!-- <v-row justify="center"> -->
-      <!-- <v-dialog v-model="dialog" persistent max-width="290"> -->
-        <!-- <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on">
-            Open Dialog
-          </v-btn>
-        </template> -->
-        <!-- <v-card>
-          <v-card-title class="headline">
-            Add your Pan card and Gst number
-          </v-card-title>
-          <v-card-text
-            >Inorderd to add the truck's drivers ,the pan and gst number is
-            neccessery.
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="dialog = false">
-              Do later
-            </v-btn>
-            <v-btn color="green darken-1" text @click="showpan">
-              Do Now
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row> -->
-    <!--Sidebar ends-->
   </nav>
 </template>
 <script>
@@ -102,10 +74,6 @@ export default {
       localStorage.removeItem("user_id");
       this.$router.push({ name: "Login" });
     },
-    // showpan(){
-    //   this.$router.push({ name: "Padd" });
-    //   this.dialog = false;
-    // }
   },
   beforeMount: function () {
     this.drawer = !this.drawer;

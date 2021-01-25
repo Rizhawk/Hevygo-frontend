@@ -16,8 +16,7 @@ import Tadd from '../views/truckadd';
 import Dreg from '../views/driveradd';
 import Padd from '../views/panadd';
 import Tdetails from '../views/truckdetails';
-import Editdetails from '../views/editdetails';
-import Regedit from '../views/editreg';
+import Editdrivers from '../views/editdrivers';
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,10 +28,6 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path:'/booktruck',
@@ -122,14 +117,9 @@ const routes = [
     component:Tdetails
   },
   {
-    path:'/editdetails',
-    name:'Editdetails',
-    component:Editdetails
-  },
-  {
-    path:'/editreg',
-    name:'Regedit',
-    component:Regedit
+    path:'/editdrivers',
+    name:'Editdrivers',
+    component:Editdrivers
   },
 ]
 
