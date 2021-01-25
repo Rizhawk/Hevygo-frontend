@@ -1,110 +1,100 @@
 <template>
-  <nav>
+  <v-app>
     <Opage />
-    <v-container class="mx-10">
-      <v-row justify="space-around">
-        <v-hover>
-          <template v-slot:default="{ hover }">
-            <v-card
-              :elevation="hover ? 24 : 6"
-              class="my-8 black--text"
-              width="400"
-              outlined
-              shaped
+    <v-layout class="my-3" row wrap>
+      <v-flex lg4></v-flex>
+      <v-flex xs12 sm10 md8 lg4>
+        <!--Form to add truck details-->
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <form id="form4" class="my-5" @submit.prevent="submit">
+            <v-layout
+              ><v-flex class="mx-8"
+                ><h3>Add your truck details</h3></v-flex
+              ></v-layout
             >
-              <v-card-title class="mx-10"
-                ><h3 class="mx-12">Enter the details</h3></v-card-title
+            <v-layout class="my-3"> <v-flex></v-flex></v-layout>
+            <validation-provider
+              v-slot="{ errors }"
+              name="manufacturer"
+              rules="required"
+            >
+              <v-text-field
+                v-model="manufacturer"
+                label="Manufacturer *"
+                :error-messages="errors"
+                name="manufacturer"
+                clearable
+                solo
+                rounded
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="type"
+              rules="required"
+            >
+              <v-select
+                v-model="type"
+                label="Type *"
+                :items="types"
+                name="type"
+                :error-messages="errors"
+                clearable
+                solo
+                rounded
               >
-              <validation-observer ref="observer" v-slot="{ invalid }">
-                <form class="mx-8" @submit.prevent="submit">
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="Truck"
-                    rules="required"
-                  >
-                    <v-select
-                      v-model="truck"
-                      :error-messages="errors"
-                      :items="trucks"
-                      label="Truck *"
-                      required
-                    ></v-select>
-                  </validation-provider>
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="manufacturer"
-                    rules="required"
-                  >
-                    <v-text-field
-                      v-model="manufacturer"
-                      label="Manufacturer *"
-                      :error-messages="errors"
-                      name="manufacturer"
-                    ></v-text-field>
-                  </validation-provider>
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="type"
-                    rules="required"
-                  >
-                    <v-select
-                      v-model="type"
-                      label="Type *"
-                      :items="types"
-                      name="type"
-                      :error-messages="errors"
-                    >
-                    </v-select>
-                  </validation-provider>
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="model"
-                    rules="required"
-                  >
-                    <v-text-field
-                      v-model="model"
-                      :error-messages="errors"
-                      label="Model *"
-                    ></v-text-field>
-                  </validation-provider>
-                  <validation-provider
-                    v-slot="{ errors }"
-                    name="capacity"
-                    rules="required"
-                  >
-                    <v-text-field
-                      v-model="capacity"
-                      :error-messages="errors"
-                      label="Capacity *"
-                    ></v-text-field>
-                  </validation-provider>
-                   <div>
-                    <v-card-text> *indicate fields are necessary </v-card-text>
-                  </div>
-                  
-                  <div class="mx-12 my-5">
-                    <v-btn
-                      color="primary"
-                      class="mr-4"
-                      type="submit"
-                      :disabled="invalid"
-                      @click.prevent="trucketails"
-                    >
-                      Add
-                    </v-btn>
-                    <v-btn @click="clear"> clear </v-btn>
-                  </div>
-                  <div>
-                    <v-card-text> </v-card-text>
-                  </div>
-                </form>
-              </validation-observer>
-            </v-card>
-          </template>
-        </v-hover>
-      </v-row>
-    </v-container>
-  </nav>
+              </v-select>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="model"
+              rules="required"
+            >
+              <v-text-field
+                v-model="model"
+                :error-messages="errors"
+                label="Model *"
+                clearable
+                solo
+                rounded
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="capacity"
+              rules="required"
+            >
+              <v-text-field
+                v-model="capacity"
+                :error-messages="errors"
+                label="Capacity *"
+                clearable
+                solo
+                rounded
+              ></v-text-field>
+            </validation-provider>
+            <div>
+              <v-card-text> *indicate fields are necessary </v-card-text>
+            </div>
+
+            <div class="mx-12 my-5">
+              <v-btn
+                color="primary"
+                class="mr-4"
+                type="submit"
+                :disabled="invalid"
+                @click.prevent="trucketails"
+              >
+                Add
+              </v-btn>
+              <v-btn @click="clear"> clear </v-btn>
+            </div>
+          </form>
+        </validation-observer>
+        <!--form ends here-->
+      </v-flex>
+    </v-layout>
+  </v-app>
 </template>
 <script>
 import Opage from "../views/optrpage";
@@ -154,10 +144,8 @@ export default {
   },
   data: () => {
     return {
-      trucks: [],
-      truck: "",
       manufacturer: "",
-      type:"",
+      type: "",
       types: [
         "Tipper",
         "Lorry",
@@ -177,49 +165,45 @@ export default {
     submit() {
       this.$refs.observer.validate();
     },
-    clear() {
+    clear() {},
+    trucketails() {
+      //api call for add truck details
+      getAPI
 
+        .post(
+          "/api/truck/truck-info-create/",
+          {
+            truck: localStorage.getItem("tid"),
+            manufacturer: this.manufacturer,
+            type: this.type,
+            model: this.model,
+            capacity: this.capacity,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.token}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+          localStorage.removeItem("tid");
+          this.$router.push({ name: "Tmanage" });
+        })
+        .catch((err) => {
+          alert(err);
+        });
+        //
     },
-    trucketails(){
-       getAPI
-      .post("/api/truck/truck-detail-create/",{        
-         truck:this.truck,
-         manufacturer:this.manufacturer,
-         type :this.type,
-         model:this.model,
-         capacity:this.capacity
-      },
-       {
-        headers: {
-          Authorization: `Token ${this.token}`,
-        },
-      })
-      .then(response=> {
-        this.APIData = response.data;
-        console.log(this.APIData);      
-      })
-      .catch((err) => {
-        alert(err);
-      });
-
-    }
-  },
-  beforeMount: function () {
-    getAPI
-      .get("/api/truck/truck-list/", {
-        headers: {
-          Authorization: `Token ${this.token}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.trucks.push(this.APIData[key]["registration"]);
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
   },
 };
 </script>
+<style scoped>
+#form4 {
+  border: solid white 1px;
+  padding: 15px;
+  border-radius: 30px;
+  background-color: grey;
+}
+</style>

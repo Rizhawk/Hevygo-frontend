@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <v-app>
       <Opage/>
     <v-container class="mx-10">
       <v-row justify="space-around">
@@ -7,22 +7,6 @@
           <v-card-title>Enter the details</v-card-title>
           <validation-observer ref="observer3" v-slot="{ invalid }">
             <form class="mx-8" @submit.prevent="addpan">
-              <!-- <validation-provider
-                    v-slot="{ errors }"
-                    name="Owener Phone number"
-                    :rules="{
-                      required: true,
-                      digits: 10,
-                    }"
-                  >
-                    <v-select
-                      v-model="opphone"
-                      :item="operators"
-                      :error-messages="errors"
-                      label="Operator phone number *"
-                      required
-                    ></v-select>
-                  </validation-provider> -->
               <validation-provider
                 v-slot="{ errors }"
                 name="Pan number"
@@ -69,7 +53,7 @@
         </v-card>
       </v-row>
     </v-container>
-  </nav>
+  </v-app>
 </template>
 <script>
 import { getAPI } from "../axios-api";

@@ -1,98 +1,74 @@
 <template>
-  <nav>
+  <v-app>
     <Opage />
-    <v-container class="mx-10">
-      <v-row justify="space-around">
-        <v-card width="500px" class="my-10" outlined raised>
-          <v-card-title>Fill the Details</v-card-title>
-          <validation-observer ref="observer2" v-slot="{ invalid }">
-            <form class="mx-8" @submit.prevent="submit">
-              <!-- <validation-provider
-                v-slot="{ errors }"
-                name="Owener Phone number"
-                :rules="{
-                  required: true,
-                  digits: 10,
-                }"
-              >
-                <v-text-field
-                  v-model="optrphone"
-                  :error-messages="errors"
-                  label="Operator phone number *"
-                  required
-                ></v-text-field>
-              </validation-provider>
-              <validation-provider
-                v-slot="{ errors }"
-                name="Truck phone number"
-                :rules="{
-                  required: true,
-                  digits: 10,
-                }"
-              >
-                <v-text-field
-                  v-model="truckphone"
-                  :error-messages="errors"
-                  label="Truck Phone Number *"
-                  required
-                ></v-text-field>
-              </validation-provider> -->
+      <v-layout class="my-8" row wrap>
+        <v-flex lg4></v-flex>
+        <v-flex xs12 sm8 md6 lg4>
+        <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
+          ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
+        >
+        <validation-observer ref="observer2" v-slot="{ invalid }">
+          <form class="my-5" id="form3" @submit.prevent="submit">
+            <v-layout class="my-3"> <v-flex></v-flex></v-layout>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Registration Number"
+              rules="required"
+            >
+              <v-text-field
+                v-model="regnumber"
+                :error-messages="errors"
+                placeholder="Registration Number *"
+                required
+                clearable
+                solo
+                rounded
+              ></v-text-field>
+            </validation-provider>
 
-              <validation-provider
-                v-slot="{ errors }"
-                name="Registration Number"
-                rules="required"
-              >
-                <v-text-field
-                  v-model="regnumber"
-                  :error-messages="errors"
-                  label="Registration Number *"
-                  required
-                ></v-text-field>
-              </validation-provider>
-
-              <validation-provider
-                v-slot="{ errors }"
-                name="Home Location"
-                rules="required"
-              >
-                <v-text-field
-                  v-model="homeloc"
-                  :error-messages="errors"
-                  label="Home Location *"
-                  required
-                ></v-text-field>
-              </validation-provider>
-              <v-card-text>
-                <span>*indicate fields are necessary</span>
-              </v-card-text>
-              <div clas="mx-12 my-2">
-                <v-btn
-                  color="green"
-                  @click.prevent="truckadd"
-                  :disabled="invalid"
-                >
-                  Save
-                </v-btn>
-                <v-btn @click="clear" class="mx-3">clear</v-btn>
-                <v-btn
-                  @click="clear"
-                  class="mx-3"
-                  color="red"
-                  router
-                  to="/registertruck"
-                  >Previous</v-btn
-                >
-              </div>
-            </form>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Home Location"
+              rules="required"
+            >
+              <v-text-field
+                v-model="homeloc"
+                :error-messages="errors"
+                placeholder="Home Location *"
+                required
+                clearable
+                solo
+                rounded
+              ></v-text-field>
+            </validation-provider>
             <v-card-text>
-              <div class="my-2 mx-5"></div>
+              <span>*indicate fields are necessary</span>
             </v-card-text>
-          </validation-observer>
-        </v-card>
-      </v-row>
-    </v-container>
-  </nav>
+            <div clas="mx-12 my-2">
+              <v-btn
+                color="green"
+                @click.prevent="truckadd"
+                :disabled="invalid"
+              >
+                Save
+              </v-btn>
+              <v-btn @click="clear" class="mx-3">clear</v-btn>
+              <v-btn
+                @click="clear"
+                class="mx-3"
+                color="red"
+                router
+                to="/registertruck"
+                >Previous</v-btn
+              >
+            </div>
+          </form>
+          <v-layout class="my-3"> <v-flex></v-flex></v-layout>
+        </validation-observer>
+        </v-flex>
+      </v-layout>
+
+  </v-app>
 </template>
 <script>
 import { getAPI } from "../axios-api";
@@ -133,6 +109,8 @@ export default {
   },
   data: () => {
     return {
+      snackbar: false,
+      message: "",
       truckphone: localStorage.getItem("truck_phn") || null,
       regnumber: "",
       homeloc: "",
@@ -166,9 +144,11 @@ export default {
           }
         )
         .then((response) => {
-          localStorage.removeItem("truck_phn");
           this.APIData = response.data;
-          alert(this.APIData['response']);
+          this.message = this.APIData["response"];
+          this.snackbar = !this.snackbar;
+          localStorage.removeItem("truck_phn");
+          this.$router.push({ name: "Tmanage" });
         })
         .catch((err) => {
           alert(err);
@@ -177,3 +157,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+#form3 {
+  border: solid white 1px;
+  padding: 35px;
+  border-radius: 30px;
+  background-color: grey;
+}
+</style>
