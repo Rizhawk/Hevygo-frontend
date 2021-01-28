@@ -23,6 +23,7 @@
                 clearable
                 solo
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
 
@@ -39,12 +40,15 @@
                 clearable
                 solo
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <v-card-text>
               <span>*indicate fields are necessary</span>
             </v-card-text>
-            <div clas="mx-12 my-2">
+            <v-layout row wrap>
+              <v-flex lg3></v-flex>
+            <v-flex class="my-1 mx-15">
               <v-btn
                 color="green"
                 @click.prevent="truckadd"
@@ -52,18 +56,9 @@
               >
                 Save
               </v-btn>
-              <v-btn @click="clear" class="mx-3">clear</v-btn>
-              <v-btn
-                @click="clear"
-                class="mx-3"
-                color="red"
-                router
-                to="/registertruck"
-                >Previous</v-btn
-              >
-            </div>
+            </v-flex>
+            </v-layout>
           </form>
-          <v-layout class="my-3"> <v-flex></v-flex></v-layout>
         </validation-observer>
         </v-flex>
       </v-layout>
@@ -148,6 +143,7 @@ export default {
           this.message = this.APIData["response"];
           this.snackbar = !this.snackbar;
           localStorage.removeItem("truck_phn");
+          this.clear();
           this.$router.push({ name: "Tmanage" });
         })
         .catch((err) => {
@@ -160,8 +156,8 @@ export default {
 <style scoped>
 #form3 {
   border: solid white 1px;
-  padding: 35px;
+  padding: 20px;
   border-radius: 30px;
-  background-color: grey;
+  background-color: slategrey;
 }
 </style>

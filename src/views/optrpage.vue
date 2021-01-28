@@ -23,7 +23,7 @@
           <v-avatar size="100">
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
-          <p class="white--text subheading mt-1">Operator Name</p>
+          <p class="white--text subheading mt-1">Operator Name <v-btn x-small fab rounded> <v-icon>mdi-pencil</v-icon></v-btn></p>
         </v-flex>
       </v-layout>
       <v-list nav dark>
@@ -32,10 +32,10 @@
           active-class="deep-grey--text text--accent-1"
         >
           <v-list-item router to="/registertruck">
-            Register Your Trucks
+            Register New Truck
           </v-list-item>
           <v-list-item router to="/managetrucks">Manage Trucks </v-list-item>
-          <v-list-item router to="/driveradd"> Manage Drivers </v-list-item>
+          <v-list-item router to="/editdrivers"> Manage Drivers </v-list-item>
           <v-list-item router to="/truckstatus">
             Update Trucks Status
           </v-list-item>

@@ -1,10 +1,10 @@
 <template>
    <v-app class="grey lighten-4">
-    <Navbar  v-if="!['Cpage','Opage','Tmanage','Tdrivers','Tstatus','Treg','Tadd','Padd','Dreg','Tdetails','Regedit','Editdetails','Deltruck'].includes($route.name)" />
+    <Navbar  v-if="!['Cpage','Opage','Tmanage','Tdrivers','Tstatus','Treg','Tadd','Padd','Dreg','Tdetails','Editdrivers'].includes($route.name)" />
     <v-main>
       <router-view></router-view>
     </v-main>   
-      <Footer v-if="!['Cpage','Opage','Tmanage','Tdrivers','Tstatus','Treg','Tadd','Padd','Dreg','Tdetails','Regedit','Editdetails','Deltruck'].includes($route.name)"/>
+      <Footer v-if="!['Cpage','Opage','Tmanage','Tdrivers','Tstatus','Treg','Tadd','Padd','Dreg','Tdetails','Editdrivers'].includes($route.name)"/>
   </v-app>
 </template>
 

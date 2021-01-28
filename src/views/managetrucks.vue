@@ -1,206 +1,197 @@
 <template>
   <v-app>
     <Opage />
-      <v-layout row wrap class="my-8">
-        <v-flex lg3></v-flex>
-        <v-flex xs12 sm12 md8 lg8>
-          <v-card rounded="xl" color="grey" width="800" raised>
-            <v-card-title class="grey black--text">
-              <span class="headline">Your Trucks</span>
-              <v-spacer></v-spacer>
-              <v-menu bottom left>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn dark icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item @click.prevent="tdelete = !tdelete">
-                    Delete a Truck
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-card-title>
-            <!--Table-->
-            <v-simple-table id="table" xs12 sm8 md6 lg12 fixed-header>
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">Truck phonenumber</th>
-                    <th class="text-left">Registration Number</th>
-                    <th class="text-left">Verification</th>
-                    <th class="text-left">Truck Specification</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="truck in trucks" :key="truck.truck_num">
-                    <v-dialog
-                      :retain-focus="false"
-                      v-model="dialog"
-                      persistent
-                      max-width="400px"
-                      light
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <td
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="
-                            editreg(
-                              truck.id,
-                              truck.owner,
-                              truck.truck_num,
-                              truck.registration,
-                              truck.homelocation
-                            )
-                          "
-                        >
-                          {{ truck.truck_num }}
-                        </td>
-                      </template>
+    <v-layout row wrap class="my-8">
+      <v-flex lg3></v-flex>
+      <v-flex xs12 sm12 md8 lg8>
+        <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
+          ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
+        >
 
-                     <form id="form">
-                        <v-layout class="my-8"> <v-flex></v-flex></v-layout>
-                        <v-text-field
-                          class="mx-8"
-                          v-for="etruck in regtrucks"
-                          :key="etruck.truck_num"
-                          placeholder="Registation Number"
-                          clearable
-                          filled
-                          solo
-                          rounded
-                          v-model="regnum"
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          class="mx-8"
-                          v-for="etruck in regtrucks"
-                          :key="etruck.truck_id"
-                          placeholder="Homelocation"
-                          clearable
-                          filled
-                          rounded
-                          solo
-                          v-model="homeloc"
-                        >
-                        </v-text-field>
-                        <v-flex class="mx-15">
-                          <v-btn
-                            class="mx-5"
-                            rounded
-                            color="success"
-                            @click.prevent="uptruck(trid)"
-                            >Update</v-btn
-                          >
-                          <v-btn rounded @click="dialog = !dialog"
-                            >close</v-btn
-                          ></v-flex
-                        >
-                        <v-layout class="my-3"><v-flex></v-flex></v-layout>
-                     </form>
-                    </v-dialog>
-                    <td>{{ truck.registration }}</td>
-                    <td>{{ truck.is_verified }}</td>
-                    <v-dialog
-                      :retain-focus="false"
-                      v-model="dialog2"
-                      persistent
-                      max-width="400px"
-                      light
+        <!--Table-->
+        <v-simple-table id="table" xs12 sm8 md6 lg12 fixed-header dark>
+          <template v-slot:default>
+            <thead id="title">
+              <tr>
+                <th class="text-left">Truck phonenumber</th>
+                <th class="text-left">Registration Number</th>
+                <th class="text-left">Verification</th>
+                <th class="text-left">Truck Specification</th>
+                <v-menu bottom left>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn dark icon v-bind="attrs" v-on="on">
+                      <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-item @click.prevent="tdelete = !tdelete">
+                      Delete a Truck
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="truck in trucks" :key="truck.truck_num">
+                <v-dialog
+                  :retain-focus="false"
+                  v-model="dialog"
+                  persistent
+                  max-width="400px"
+                  light
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <td
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="
+                        editreg(
+                          truck.id,
+                          truck.owner,
+                          truck.truck_num,
+                          truck.registration,
+                          truck.homelocation
+                        )
+                      "
                     >
-                      <template v-slot:activator="{ on, attrs }">
-                        <td
-                          v-bind="attrs"
-                          v-on="on"
-                          @click="showinfo(truck.id)"
-                        >
-                          View/Edit
-                        </td>
-                      </template>
-                       <form id="form">
-                        <v-layout class="my-8"> <v-flex></v-flex></v-layout>           
-                        <v-text-field
-                          class="mx-8"
-                          v-for="itruck in truckinfo"
-                          :key="itruck.truck"
-                          placeholder="Capacity"
-                          clearable
-                          filled
-                          solo
-                          rounded
-                          v-model="cap"
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          class="mx-8"
-                          v-for="itruck in truckinfo"
-                          :key="itruck.truck"
-                          placeholder="Manufacturer"
-                          clearable
-                          filled
-                          solo
-                          rounded
-                          v-model="manf"
-                        >
-                        </v-text-field>
-
-                        <v-text-field
-                          class="mx-8"
-                          v-for="itruck in truckinfo"
-                          :key="itruck.truck"
-                          placeholder="Model"
-                          clearable
-                          filled
-                          solo
-                          rounded
-                          v-model="mod"
-                        >
-                        </v-text-field>
-                        <v-select
-                          class="mx-8"
-                          v-for="itruck in truckinfo"
-                          :key="itruck.truck"
-                          :items="types"
-                          placeholder="Type"
-                          clearable
-                          filled
-                          solo
-                          rounded
-                          v-model="typ"
-                        >
-                        </v-select>
-                        <v-flex class="mx-15">
-                          <v-btn
-                            class="mx-5"
-                            rounded
-                            color="success"
-                            @click.prevent="infoedit(idt)"
-                            >Update</v-btn
-                          >
-                          <v-btn rounded @click="dialog2 = !dialog2"
-                            >close</v-btn
-                          ></v-flex
-                        >
-                        <v-layout class="my-3"><v-flex></v-flex></v-layout>
-                        </form>
-                    </v-dialog>
-                    <td v-if="tdelete" @click="deleteTruck(truck.id)">
-                      <v-btn icon color="red">
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
+                      {{ truck.truck_num }}
                     </td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-            <!--Table ends-->
-          </v-card>
-        </v-flex>
-      </v-layout>
+                  </template>
+
+                  <form id="form">
+                    <v-layout class="my-8"> <v-flex></v-flex></v-layout>
+                    <v-text-field
+                      class="mx-8"
+                      placeholder="Registation Number"
+                      clearable
+                      filled
+                      solo
+                      rounded
+                      dense
+                      v-model="regnum"
+                    >
+                    </v-text-field>
+                    <v-text-field
+                      class="mx-8"
+                      placeholder="Homelocation"
+                      clearable
+                      filled
+                      rounded
+                      solo
+                      dense
+                      v-model="homeloc"
+                    >
+                    </v-text-field>
+                    <v-flex class="mx-15">
+                      <v-btn
+                        class="mx-5"
+                        rounded
+                        color="success"
+                        small
+                        @click.prevent="uptruck(trid)"
+                        >Update</v-btn
+                      >
+                      <v-btn rounded @click="dialog = !dialog" small
+                        >close</v-btn
+                      ></v-flex
+                    >
+                    <v-layout class="my-3"><v-flex></v-flex></v-layout>
+                  </form>
+                </v-dialog>
+                <td>{{ truck.registration }}</td>
+                <td>{{ truck.is_verified }}</td>
+                <v-dialog
+                  :retain-focus="false"
+                  v-model="dialog2"
+                  persistent
+                  max-width="400px"
+                  light
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <td v-bind="attrs" v-on="on" @click="showinfo(truck.id)">
+                      View/Edit
+                    </td>
+                  </template>
+                  <form id="form">
+                    <v-layout class="my-8"> <v-flex></v-flex></v-layout>
+                    <v-text-field
+                      class="mx-8"
+                      placeholder="Capacity in ton"
+                      clearable
+                      filled
+                      solo
+                      rounded
+                      dense
+                      v-model="cap"
+                    >
+                    </v-text-field>
+                    <v-text-field
+                      class="mx-8"
+                      placeholder="Manufacturer"
+                      clearable
+                      filled
+                      solo
+                      rounded
+                      dense
+                      v-model="manf"
+                    >
+                    </v-text-field>
+
+                    <v-text-field
+                      class="mx-8"
+                      placeholder="Model"
+                      clearable
+                      filled
+                      solo
+                      rounded
+                      dense
+                      v-model="mod"
+                    >
+                    </v-text-field>
+                    <v-select
+                      class="mx-8"
+                      :items="types"
+                      placeholder="Type"
+                      clearable
+                      filled
+                      solo
+                      rounded
+                      dense
+                      v-model="typ"
+                    >
+                    </v-select>
+                    <v-flex class="mx-15">
+                      <v-btn
+                        class="mx-5"
+                        rounded
+                        color="success"
+                        @click.prevent="infoedit(idt)"
+                        small
+                        >Update</v-btn
+                      >
+                      <v-btn rounded @click="dialog2 = !dialog2" small
+                        >close</v-btn
+                      ></v-flex
+                    >
+                    <v-layout class="my-3"><v-flex></v-flex></v-layout>
+                  </form>
+                </v-dialog>
+                <td v-if="tdelete" @click="deleteTruck(truck.id)">
+                  <v-btn icon color="red">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <!--Table ends-->
+      </v-flex>
+    </v-layout>
   </v-app>
 </template>
 <script>
+// import VueSweetalert2 from 'vue-sweetalert2';
 import { getAPI } from "../axios-api";
 import Opage from "../views/optrpage";
 export default {
@@ -215,22 +206,22 @@ export default {
       tspec: false,
       //
       //editreg
-      regtrucks: [],
       dialog: false,
       trid: "",
       regnum: "",
       homeloc: "",
       owner: "",
       truck_num: "",
+      message: "",
+      snackbar: false,
       //
       //edit specs
       dialog2: false,
-      truckinfo: [],
       idt: "",
       cap: "",
       manf: "",
       mod: "",
-        types: [
+      types: [
         "Tipper",
         "Lorry",
         "Pickup",
@@ -272,12 +263,13 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          alert(this.APIData);
+          this.message = this.APIData;
           window.location.reload();
         })
         .catch((err) => {
           alert(err);
         });
+      this.snackbar = !this.snackbar;
     },
     //
     //Registation edit
@@ -291,8 +283,6 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          this.regtrucks.pop();
-          this.regtrucks.push(this.APIData);
           this.trid = tid;
           this.owner = owner;
           this.truck_num = truckphn;
@@ -302,7 +292,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
     uptruck(trid) {
       //Update api call
@@ -328,7 +318,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
     showinfo(trkid) {
       //Api call to fetch truck info
@@ -340,8 +330,6 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          this.truckinfo.pop();
-          this.truckinfo.push(this.APIData);
           this.cap = this.APIData["capacity"];
           this.manf = this.APIData["manufacturer"];
           this.mod = this.APIData["model"];
@@ -349,11 +337,12 @@ export default {
           this.idt = this.APIData["truck"];
         })
         .catch((err) => {
-          console.log(err)
-          this.$router.push({name:'Tdetails'});
-          localStorage.setItem("tid",trkid);
+          alert("No specification added");
+          localStorage.setItem("tid", trkid);
+          this.$router.push({ name: "Tdetails" });
+          console.log(err);
         });
-        //
+      //
     },
     infoedit(idt) {
       //api call to update truck info
@@ -363,7 +352,7 @@ export default {
           {
             truck: this.idt,
             manufacturer: this.manf,
-            type:this.typ ,
+            type: this.typ,
             model: this.mod,
             capacity: this.cap,
           },
@@ -375,13 +364,13 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData)
+          console.log(this.APIData);
           window.location.reload();
         })
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
   },
 };
@@ -389,16 +378,14 @@ export default {
 <style scoped>
 #form {
   border: solid white 1px;
-  padding: 15px;
+  padding: 5px;
   border-radius: 30px;
-  background-color:grey;
+  background-color: grey;
 }
-#table{
+#table {
   border: solid white;
   padding: 5px;
   margin: 1px;
   border-radius: 22px;
-  background-color: steelblue;
 }
-
 </style>
