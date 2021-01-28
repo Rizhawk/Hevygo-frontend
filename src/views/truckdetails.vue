@@ -20,12 +20,13 @@
             >
               <v-text-field
                 v-model="manufacturer"
-                label="Manufacturer *"
+                placeholder="Manufacturer *"
                 :error-messages="errors"
                 name="manufacturer"
                 clearable
                 solo
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <validation-provider
@@ -35,13 +36,14 @@
             >
               <v-select
                 v-model="type"
-                label="Type *"
+                placeholder="Type *"
                 :items="types"
                 name="type"
                 :error-messages="errors"
                 clearable
                 solo
                 rounded
+                dense
               >
               </v-select>
             </validation-provider>
@@ -53,10 +55,11 @@
               <v-text-field
                 v-model="model"
                 :error-messages="errors"
-                label="Model *"
+                placeholder="Model *"
                 clearable
                 solo
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <validation-provider
@@ -67,28 +70,32 @@
               <v-text-field
                 v-model="capacity"
                 :error-messages="errors"
-                label="Capacity *"
+                placeholder="Capacity in ton *"
                 clearable
                 solo
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <div>
               <v-card-text> *indicate fields are necessary </v-card-text>
             </div>
-
-            <div class="mx-12 my-5">
-              <v-btn
-                color="primary"
-                class="mr-4"
-                type="submit"
-                :disabled="invalid"
-                @click.prevent="trucketails"
-              >
-                Add
-              </v-btn>
-              <v-btn @click="clear"> clear </v-btn>
-            </div>
+            <v-layout row wrap>
+              <v-flex lg3></v-flex>
+              <v-flex class="mx-15">
+                <v-btn
+                  color="primary"
+                  class="mr-4"
+                  type="submit"
+                  :disabled="invalid"
+                  rounded
+                  small
+                  @click.prevent="trucketails"
+                >
+                  Add
+                </v-btn>
+              </v-flex>
+            </v-layout>
           </form>
         </validation-observer>
         <!--form ends here-->
@@ -194,7 +201,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
   },
 };
@@ -202,8 +209,8 @@ export default {
 <style scoped>
 #form4 {
   border: solid white 1px;
-  padding: 15px;
+  padding: 20px;
   border-radius: 30px;
-  background-color: grey;
+  background-color: slategrey;
 }
 </style>
