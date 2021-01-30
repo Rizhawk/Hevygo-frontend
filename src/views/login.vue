@@ -126,7 +126,7 @@ export default {
     login() {
       //Login API Call
       getAPI
-        .post("/api/accounts/login", {
+        .post("/api/accounts/login/", {
           username: this.phone,
           password: this.password,
         })

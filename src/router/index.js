@@ -17,6 +17,7 @@ import Dreg from '../views/driveradd';
 import Padd from '../views/panadd';
 import Tdetails from '../views/truckdetails';
 import Editdrivers from '../views/editdrivers';
+import Tstats from '../views/viewstats';
 Vue.use(VueRouter)
 
 const routes = [
@@ -120,6 +121,11 @@ const routes = [
     path:'/editdrivers',
     name:'Editdrivers',
     component:Editdrivers
+  },
+  {
+    path:'/viewstats',
+    name:'Tstats',
+    component:Tstats
   },
 ]
 

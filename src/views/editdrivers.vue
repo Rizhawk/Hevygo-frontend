@@ -53,12 +53,10 @@
                     </td>
                   </template>
                   <form id="form6">
-                    <v-layout class="my-8"> <v-flex></v-flex></v-layout>
                     <v-text-field
                       class="mx-8"
                       placeholder="Driver Name"
                       clearable
-                      filled
                       solo
                       dense
                       rounded
@@ -69,13 +67,13 @@
                       class="mx-8"
                       placeholder="Phone number"
                       clearable
-                      filled
                       rounded
                       dense
                       solo
                       v-model="drphn"
                     >
                     </v-text-field>
+                     <v-layout class="my-1" row wrap>
                     <v-flex class="mx-15">
                       <v-btn
                         rounded
@@ -85,16 +83,16 @@
                         >Update</v-btn
                       >
                       <v-btn
-                        class="mx-2"
+                        class="mx-1"
                         rounded
                         color="red"
                         small
                         @click="dialog2 = true"
                         >Delete</v-btn
                       >
-                      <v-dialog v-model="dialog2" max-width="400">
+                      <v-dialog v-model="dialog2" max-width="300">
                         <v-card>
-                          <v-card-title class="headline">
+                          <v-card-title>
                             Are you sure want to delete this driver?
                           </v-card-title>
                           <v-card-actions>
@@ -116,7 +114,7 @@
                         >close</v-btn
                       ></v-flex
                     >
-                    <v-layout class="my-3"><v-flex></v-flex></v-layout>
+                     </v-layout>
                   </form>
                 </v-dialog>
               </tr>
@@ -243,7 +241,7 @@ export default {
 <style scoped>
 #form6 {
   border: solid white 1px;
-  padding: 5px;
+  padding: 25px;
   border-radius: 30px;
   background-color: grey;
 }

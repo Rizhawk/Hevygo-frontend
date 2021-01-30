@@ -170,7 +170,7 @@ export default {
     },
     tsignup() {
       getAPI
-        .post("/api/accounts/register", {
+        .post("/api/accounts/register/", {
           name: this.name,
           phone: this.phone,
           password: this.password,

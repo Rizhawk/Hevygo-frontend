@@ -191,7 +191,7 @@ export default {
 
     osignup() {
       getAPI
-        .post("/api/accounts/register", {
+        .post("/api/accounts/register/", {
           phone: this.phone,
           name: this.name,
           password: this.password,

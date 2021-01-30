@@ -59,12 +59,10 @@
                   </template>
 
                   <form id="form">
-                    <v-layout class="my-8"> <v-flex></v-flex></v-layout>
                     <v-text-field
                       class="mx-8"
                       placeholder="Registation Number"
                       clearable
-                      filled
                       solo
                       rounded
                       dense
@@ -75,27 +73,31 @@
                       class="mx-8"
                       placeholder="Homelocation"
                       clearable
-                      filled
                       rounded
                       solo
                       dense
                       v-model="homeloc"
                     >
                     </v-text-field>
-                    <v-flex class="mx-15">
-                      <v-btn
-                        class="mx-5"
-                        rounded
-                        color="success"
-                        small
-                        @click.prevent="uptruck(trid)"
-                        >Update</v-btn
+                    <v-layout class="my-1" row wrap>
+                      <v-flex lg2></v-flex>
+                      <v-flex class="mx-10">
+                        <v-btn
+                          rounded
+                          color="success"
+                          small
+                          @click.prevent="uptruck(trid)"
+                          >Update</v-btn
+                        >
+                        <v-btn
+                          class="mx-1"
+                          rounded
+                          @click="dialog = !dialog"
+                          small
+                          >close</v-btn
+                        ></v-flex
                       >
-                      <v-btn rounded @click="dialog = !dialog" small
-                        >close</v-btn
-                      ></v-flex
-                    >
-                    <v-layout class="my-3"><v-flex></v-flex></v-layout>
+                    </v-layout>
                   </form>
                 </v-dialog>
                 <td>{{ truck.registration }}</td>
@@ -112,8 +114,7 @@
                       View/Edit
                     </td>
                   </template>
-                  <form id="form">
-                    <v-layout class="my-8"> <v-flex></v-flex></v-layout>
+                  <form id="form2">
                     <v-text-field
                       class="mx-8"
                       placeholder="Capacity in ton"
@@ -160,20 +161,25 @@
                       v-model="typ"
                     >
                     </v-select>
-                    <v-flex class="mx-15">
-                      <v-btn
-                        class="mx-5"
-                        rounded
-                        color="success"
-                        @click.prevent="infoedit(idt)"
-                        small
-                        >Update</v-btn
+                    <v-layout class="my-1" row wrap>
+                      <v-flex lg2></v-flex>
+                      <v-flex class="mx-10">
+                        <v-btn
+                          rounded
+                          color="success"
+                          @click.prevent="infoedit(idt)"
+                          small
+                          >Update</v-btn
+                        >
+                        <v-btn
+                          class="mx-1"
+                          rounded
+                          @click="dialog2 = !dialog2"
+                          small
+                          >close</v-btn
+                        ></v-flex
                       >
-                      <v-btn rounded @click="dialog2 = !dialog2" small
-                        >close</v-btn
-                      ></v-flex
-                    >
-                    <v-layout class="my-3"><v-flex></v-flex></v-layout>
+                    </v-layout>
                   </form>
                 </v-dialog>
                 <td v-if="tdelete" @click="deleteTruck(truck.id)">
@@ -188,10 +194,24 @@
         <!--Table ends-->
       </v-flex>
     </v-layout>
+    <!--Dialog box for confirmation for truck details addition-->
+    <v-dialog v-model="dialog3" max-width="300">
+      <v-card>
+        <v-card-title>
+          {{ this.specmsg }}
+        </v-card-title>
+        <v-card-actions>
+          <v-btn color="green darken-1" text @click="speclater()">
+            Later
+          </v-btn>
+          <v-btn color="red darken-1" text @click="specnow()"> Add Now </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!---->
   </v-app>
 </template>
 <script>
-// import VueSweetalert2 from 'vue-sweetalert2';
 import { getAPI } from "../axios-api";
 import Opage from "../views/optrpage";
 export default {
@@ -233,6 +253,8 @@ export default {
       ],
       typ: "",
       //
+      dialog3: false,
+      specmsg: "",
     };
   },
   beforeMount: function () {
@@ -337,13 +359,20 @@ export default {
           this.idt = this.APIData["truck"];
         })
         .catch((err) => {
-          alert("No specification added");
           localStorage.setItem("tid", trkid);
-          this.$router.push({ name: "Tdetails" });
+          this.specmsg = "No specifications added";
+          this.dialog3 = true;
           console.log(err);
         });
       //
     },
+    specnow() {
+      this.$router.push({ name: "Tdetails" });
+    },//Calls when operator wants to add details now
+    speclater(){
+     localStorage.removeItem("tid");
+     this.dialog3=false;
+    },//Calls when operator does'nt wants to add details now 
     infoedit(idt) {
       //api call to update truck info
       getAPI
@@ -378,7 +407,7 @@ export default {
 <style scoped>
 #form {
   border: solid white 1px;
-  padding: 5px;
+  padding: 15px;
   border-radius: 30px;
   background-color: grey;
 }
@@ -387,5 +416,11 @@ export default {
   padding: 5px;
   margin: 1px;
   border-radius: 22px;
+}
+#form2 {
+  border: solid white 1px;
+  padding: 15px;
+  border-radius: 30px;
+  background-color: grey;
 }
 </style>
