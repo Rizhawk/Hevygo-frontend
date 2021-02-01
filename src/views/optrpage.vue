@@ -72,7 +72,7 @@ export default {
     logout() {
       localStorage.removeItem("user_token");
       localStorage.removeItem("user_id");
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: "Home" });
     },
   },
   beforeMount: function () {

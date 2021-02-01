@@ -1,129 +1,137 @@
 <template>
-  <v-container class="mx-10">
-    <v-row justify="space-around">
-      <v-hover>
-        <template v-slot:default="{ hover }">
-          <v-card
-            :elevation="hover ? 24 : 6"
-            class="my-8 black--text"
-            width="400"
-            outlined
-            shaped
-          >
-            <v-card-title
-              ><h3 class="mx-15">Sign Up to Continue</h3></v-card-title
+  <v-app>
+    <Navbar/>
+    <v-layout class="my-5" row wrap>
+      <v-flex lg4></v-flex>
+      <v-flex xs12 sm8 md6 lg4>
+        <!--Customer Sign Up form begining -->
+
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <form id="csignup" @submit.prevent="submit">
+            <v-layout class="my-2" row wrap>
+              <v-flex lg2></v-flex>
+              <v-flex class="mx-10">
+                <h3 class="font-weight-bold">Sign Up to continue</h3>
+              </v-flex>
+            </v-layout>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:10"
             >
+              <v-text-field
+                v-model="name"
+                :error-messages="errors"
+                label="Customer Name"
+                solo
+                dense
+                rounded
+              ></v-text-field>
+            </validation-provider>
+            <v-text-field
+              v-model="password"
+              label="Password"
+              name="password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="passwordRules"
+              :type="show1 ? 'text' : 'password'"
+              @click:append="show1 = !show1"
+              solo
+              dense
+              rounded
+            ></v-text-field>
+            <v-text-field
+              v-model="password2"
+              label="Confirm Password"
+              name="confirmPassword"
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[
+                !!password2 || 'type confirm password',
+                password === password2 ||
+                  'The password confirmation does not match.',
+              ]"
+              :type="show2 ? 'text' : 'password'"
+              @click:append="show2 = !show2"
+              solo
+              dense
+              rounded
+            ></v-text-field>
 
-            <!--Customer Sign Up form begining -->
-
-            <validation-observer ref="observer" v-slot="{ invalid }">
-              <form class="mx-8" @submit.prevent="submit">
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Name"
-                  rules="required|max:10"
+            <validation-provider
+              v-slot="{ errors }"
+              name="Phone Number"
+              :rules="{
+                required: true,
+                digits: 10,
+              }"
+            >
+              <v-text-field
+                v-model="phone"
+                :error-messages="errors"
+                label="Phone Number"
+                solo
+                dense
+                rounded
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider v-slot="{ errors }" name="email" rules="email">
+              <v-text-field
+                v-model="email"
+                :error-messages="errors"
+                label="E-mail"
+                solo
+                dense
+                rounded
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              name="This field"
+            >
+              <v-checkbox
+                v-model="checkbox"
+                :error-messages="errors"
+                value="1"
+                label="Above details are correct"
+                type="checkbox"
+                required
+              ></v-checkbox>
+            </validation-provider>
+            <v-layout row wrap>
+              <v-flex lg3></v-flex>
+              <v-flex class="mx-10">
+                <v-btn
+                  color="primary"
+                  class="mr-4"
+                  type="submit"
+                  :disabled="invalid"
+                  @click.prevent="csignup"
                 >
-                  <v-text-field
-                    v-model="name"
-                    :error-messages="errors"
-                    label="Customer Name"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <v-text-field
-                  v-model="password"
-                  label="Password"
-                  name="password"
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="passwordRules"
-                  :type="show1 ? 'text' : 'password'"
-                  @click:append="show1 = !show1"
-                ></v-text-field>
-                <v-text-field
-                  v-model="password2"
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[
-                    !!password2 || 'type confirm password',
-                    password === password2 ||
-                      'The password confirmation does not match.',
-                  ]"
-                  :type="show2 ? 'text' : 'password'"
-                  @click:append="show2 = !show2"
-                ></v-text-field>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Phone Number"
-                  :rules="{
-                    required: true,
-                    digits: 10,
-                  }"
+                  Sign Up
+                </v-btn>
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex lg2></v-flex>
+              <v-flex class="my-2 mx-8">
+                <span
+                  >Already have an account?<router-link to="/"
+                    >Login</router-link
+                  ></span
                 >
-                  <v-text-field
-                    v-model="phone"
-                    :error-messages="errors"
-                    label="Phone Number"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="email"
-                  rules="email"
-                >
-                  <v-text-field
-                    v-model="email"
-                    :error-messages="errors"
-                    label="E-mail"
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  rules="required"
-                  name="checkbox"
-                >
-                  <v-checkbox
-                    v-model="checkbox"
-                    :error-messages="errors"
-                    value="1"
-                    label="Above details are correct"
-                    type="checkbox"
-                    required
-                  ></v-checkbox>
-                </validation-provider>
-                <div class="mx-12">
-                  <v-btn
-                    color="primary"
-                    class="mr-4"
-                    type="submit"
-                    :disabled="invalid"
-                    @click.prevent="csignup"
-                  >
-                    Sign Up
-                  </v-btn>
-                  <v-btn @click="clear"> clear </v-btn>
-                </div>
-                <v-card-text>
-                  <div class="my-2">
-                    <span class="mx-12"
-                      >Already have an account?<router-link to="/login">Login</router-link></span
-                    >
-                  </div>
-                </v-card-text>
-              </form>
-            </validation-observer>
+              </v-flex>
+            </v-layout>
+          </form>
+        </validation-observer>
 
-            <!--Customer Sign Up form end -->
-
-          </v-card>
-        </template>
-      </v-hover>
-    </v-row>
-  </v-container>
+        <!--Customer Sign Up form end -->
+      </v-flex>
+    </v-layout>
+  </v-app>
 </template>
 <script>
+import Navbar from '../components/Navbar'
 import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
@@ -166,6 +174,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Navbar
   },
   data: () => {
     return {
@@ -189,7 +198,16 @@ export default {
     submit() {
       this.$refs.observer.validate();
     },
-     //Function to call Api after click on the signup button
+    clear() {
+      this.name = "";
+      this.phone = "";
+      this.email = "";
+      this.password = "";
+      this.password2 = "";
+      this.checkbox = null;
+      this.$refs.observer.reset();
+    },
+    //Function to call Api after click on the signup button
 
     csignup() {
       getAPI
@@ -201,10 +219,11 @@ export default {
           user_type: this.user_type,
           email: this.email,
         })
-        .then(response => {
-          alert(response);
+        .then((response) => {
           this.APIData = response.data;
-          this.$router.push({ name: "Login" });
+          alert(this.APIData["response"]);
+          this.clear();
+          this.$router.push({ name: "Home" });
         })
         .catch((err) => {
           alert(err);
@@ -212,16 +231,14 @@ export default {
     },
 
     //function to reset input field empty
-
-    clear() {
-      this.name = "";
-      this.phone = "";
-      this.email = "";
-      this.password = "";
-      this.password2 = "";
-      this.checkbox = null;
-      this.$refs.observer.reset();
-    },
   },
 };
 </script>
+<style scoped>
+#csignup {
+  border: solid black 2px;
+  padding: 25px;
+  border-radius: 30px;
+  background-color: slategrey;
+}
+</style>
