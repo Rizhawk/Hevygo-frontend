@@ -1,11 +1,11 @@
 <template>
-  <v-app id="home">
+  <v-app id="login">
     <Navbar/>
     <v-layout row wrap class="my-15">
       <v-flex lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <!--Login form begining-->
-        <form id="login" @submit.prevent="submit">
+        <form id="loginform" @submit.prevent="submit">
           <v-layout class="my-2" row wrap><v-flex></v-flex></v-layout>
           <v-text-field
             v-model="phone"
@@ -97,14 +97,14 @@ export default {
 };
 </script>
 <style scoped>
-#login {
+#loginform {
   border: solid white 1px;
   padding: 20px;
   border-radius: 30px;
   background-color: black;
   opacity: 0.65;
 }
-#home {
+#login {
   background: url("../assets/truck-12.jpg");
   background-repeat: no-repeat;
   width: 100%;
