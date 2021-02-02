@@ -36,7 +36,7 @@
           </v-list-item>
           <v-list-item router to="/managetrucks">Manage Trucks </v-list-item>
           <v-list-item router to="/editdrivers"> Manage Drivers </v-list-item>
-          <v-list-item router to="/truckstatus">
+          <v-list-item router to="/viewstats">
             Update Trucks Status
           </v-list-item>
           <v-list-item router to="/panadd"> Add Your Pancard </v-list-item>
@@ -72,7 +72,7 @@ export default {
     logout() {
       localStorage.removeItem("user_token");
       localStorage.removeItem("user_id");
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: "Home" });
     },
   },
   beforeMount: function () {

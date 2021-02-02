@@ -1,128 +1,138 @@
 <template>
-  <v-container class="mx-10">
-    <v-row justify="space-around">
-      <v-hover>
-        <template v-slot:default="{ hover }">
-          <v-card
-            :elevation="hover ? 24 : 6"
-            class="my-8 black--text"
-            width="400"
-            outlined
-            shaped
-          >
-            <v-card-title class="mx-10"
-              ><h2 class="mx-15">Sign Up</h2></v-card-title
+  <v-app>
+    <Navbar/>
+    <v-layout row wrap class="my-2">
+      <v-flex lg4></v-flex>
+      <v-flex xs12 sm8 md6 lg4>
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <!--Operator signup form begining -->
+
+          <form id="osignup" @submit.prevent="submit">
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:10"
             >
-            <validation-observer ref="observer" v-slot="{ invalid }">
-              <!--Operator signup form begining -->
+              <v-text-field
+                v-model="name"
+                :error-messages="errors"
+                placeholder="Operator Name"
+                rounded
+                solo
+                dense
+                clearable
+              ></v-text-field>
+            </validation-provider>
+            <v-text-field
+              v-model="password"
+              placeholder="Password"
+              name="password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="passwordRules"
+              :type="show1 ? 'text' : 'password'"
+              @click:append="show1 = !show1"
+              rounded
+              solo
+              dense
+              clearable
+            ></v-text-field>
+            <v-text-field
+              v-model="password2"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[
+                !!password2 || 'type confirm password',
+                password === password2 ||
+                  'The password confirmation does not match.',
+              ]"
+              :type="show2 ? 'text' : 'password'"
+              @click:append="show2 = !show2"
+              rounded
+              solo
+              dense
+              clearable
+            ></v-text-field>
 
-              <form class="mx-8" @submit.prevent="submit">
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Name"
-                  rules="required|max:10"
-                >
-                  <v-text-field
-                    v-model="name"
-                    :error-messages="errors"
-                    label="Operator Name"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <v-text-field
-                  v-model="password"
-                  label="Password"
-                  name="password"
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="passwordRules"
-                  :type="show1 ? 'text' : 'password'"
-                  @click:append="show1 = !show1"
-                ></v-text-field>
-                <v-text-field
-                  v-model="password2"
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[
-                    !!password2 || 'type confirm password',
-                    password === password2 ||
-                      'The password confirmation does not match.',
-                  ]"
-                  :type="show2 ? 'text' : 'password'"
-                  @click:append="show2 = !show2"
-                ></v-text-field>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Phone Number"
+              :rules="{
+                required: true,
+                digits: 10,
+              }"
+            >
+              <v-text-field
+                v-model="phone"
+                :error-messages="errors"
+                placeholder="Phone Number"
+                rounded
+                solo
+                dense
+                clearable
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider v-slot="{ errors }" name="email" rules="email">
+              <v-text-field
+                v-model="email"
+                :error-messages="errors"
+                placeholder="E-mail"
+                rounded
+                solo
+                dense
+                clearable
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              name="This field"
+            >
+              <v-checkbox
+                v-model="checkbox"
+                :error-messages="errors"
+                value="1"
+                label="Above details are correct"
+                type="checkbox"
+                solo
+                dense
+              ></v-checkbox>
+            </validation-provider>
 
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Phone Number"
-                  :rules="{
-                    required: true,
-                    digits: 10,
-                  }"
+            <v-layout row wrap>
+              <v-flex lg3></v-flex>
+              <v-flex class="mx-10">
+                <v-btn
+                  color="primary"
+                  class="mr-4"
+                  type="submit"
+                  :disabled="invalid"
+                  @click.prevent="osignup"
                 >
-                  <v-text-field
-                    v-model="phone"
-                    :error-messages="errors"
-                    label="Phone Number"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="email"
-                  rules="email"
-                >
-                  <v-text-field
-                    v-model="email"
-                    :error-messages="errors"
-                    label="E-mail"
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  rules="required"
-                  name="checkbox"
-                >
-                  <v-checkbox
-                    v-model="checkbox"
-                    :error-messages="errors"
-                    value="1"
-                    label="Above details are correct"
-                    type="checkbox"
-                    required
-                  ></v-checkbox>
-                </validation-provider>
-
-                <div class="mx-12">
-                  <v-btn
-                    color="primary"
-                    class="mr-4"
-                    type="submit"
-                    :disabled="invalid"
-                    @click.prevent="osignup"
+                  Sign Up
+                </v-btn>
+              </v-flex>
+              <v-layout class="my-1" row wrap>
+                <v-flex lg2></v-flex>
+                <v-flex>
+                  <span class="mx-10 white--text"
+                    >Already have an account?<router-link to="/"
+                      >Login</router-link
+                    ></span
                   >
-                    Sign Up
-                  </v-btn>
-                  <v-btn @click="clear"> clear </v-btn>
-                </div>
-                <v-card-text>
-                  <div class="my-2">
-                    <span class="mx-12"
-                      >Already have an account?<router-link to="/login">Login</router-link></span
-                    >
-                  </div>
-                </v-card-text>
-              </form>
+                </v-flex>
+              </v-layout>
+            </v-layout>
+          </form>
 
-              <!--Operator signup form ends -->
-            </validation-observer>
-          </v-card>
-        </template>
-      </v-hover>
-    </v-row>
-  </v-container>
+          <!--Operator signup form ends -->
+        </validation-observer>
+      </v-flex>
+    </v-layout>
+  </v-app>
 </template>
 <script>
+import Navbar from '../components/Navbar'
 import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
@@ -165,6 +175,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Navbar
   },
   data: () => {
     return {
@@ -188,29 +199,6 @@ export default {
       this.$refs.observer.validate();
     },
     //Function to call Api after click on the signup button
-
-    osignup() {
-      getAPI
-        .post("/api/accounts/register", {
-          phone: this.phone,
-          name: this.name,
-          password: this.password,
-          password2: this.password2,
-          user_type: this.user_type,
-          email: this.email,
-        })
-        .then((response) => {
-          alert(response.message);
-          this.APIData = response.data;
-          console.log(this.APIData);
-          this.$router.push({ name: "Login" });
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    },
-    //Function to set input field empty
-
     clear() {
       this.name = "";
       this.phoneNumber = "";
@@ -220,6 +208,35 @@ export default {
       this.checkbox = null;
       this.$refs.observer.reset();
     },
+    osignup() {
+      getAPI
+        .post("/api/accounts/register/", {
+          phone: this.phone,
+          name: this.name,
+          password: this.password,
+          password2: this.password2,
+          user_type: this.user_type,
+          email: this.email,
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          alert(this.APIData["response"]);
+          this.clear();
+          this.$router.push({ name: "Home" });
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    //Function to set input field empty
   },
 };
 </script>
+<style scoped>
+#osignup {
+  border: solid black 2px;
+  padding: 25px;
+  border-radius: 30px;
+  background-color: slategrey;
+}
+</style>

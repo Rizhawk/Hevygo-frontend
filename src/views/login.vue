@@ -75,16 +75,12 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-
 setInteractionMode("eager");
-
 //Custom validation begining
-
 extend("digits", {
   ...digits,
   message: "{_field_} needs to be {length} digits. ({_value_})",
 });
-
 extend("required", {
   ...required,
   message: "{_field_} can not be empty",
@@ -97,9 +93,7 @@ extend("min", {
   ...min,
   message: "{_field_}  should be greater than {length} characters",
 });
-
 //Custom validation ends
-
 export default {
   name: "Login",
   components: {
@@ -118,7 +112,6 @@ export default {
       ],
     };
   },
-
   methods: {
     submit() {
       this.$refs.observer.validate();

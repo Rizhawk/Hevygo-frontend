@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout class="my-10" row wrap>
-      <v-flex lg5></v-flex>
+      <v-flex lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
@@ -22,7 +22,6 @@
                 :error-messages="errors"
                 placeholder="Pan Number *"
                 required
-                filled
                 solo
                 rounded
                 clearable
@@ -41,7 +40,6 @@
                 :error-messages="errors"
                 placeholder="Gst Number *"
                 required
-                filled
                 solo
                 rounded
                 clearable

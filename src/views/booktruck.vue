@@ -1,117 +1,119 @@
 <template>
-  <v-container class="mx-10">
-    <v-row justify="space-around">
-      <v-hover>
-        <template v-slot:default="{ hover }">
-          <v-card
-            :elevation="hover ? 24 : 6"
-            class="my-8 black--text"
-            width="400"
-            outlined
-            shaped
-          >
-            <v-card-title><h2 class="mx-15">Fill the details</h2></v-card-title>
+  <v-app>
+    <Navbar/>
+    <v-layout class="my-1" row wrap>
+      <v-flex lg4></v-flex>
+      <v-flex xs12 sm8 md6 lg4>
+        <!--Truck booking form begining-->
 
-            <!--Truck booking form begining-->
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <form id="book" @submit.prevent="submit">
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:10"
+            >
+              <v-text-field
+                v-model="name"
+                :error-messages="errors"
+                placeholder="Customer Name"
+                solo
+                rounded
+                dense
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Startlocation"
+              rules="required|max:20"
+            >
+              <v-text-field
+                v-model="startlocation"
+                :error-messages="errors"
+                placeholder="Start Location"
+                solo
+                rounded
+                dense
+              ></v-text-field>
+            </validation-provider>
 
-            <validation-observer ref="observer" v-slot="{ invalid }">
-              <form class="mx-8" @submit.prevent="submit">
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Name"
-                  rules="required|max:10"
-                >
-                  <v-text-field
-                    v-model="name"
-                    :counter="10"
-                    :error-messages="errors"
-                    label="Customer Name"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Startlocation"
-                  rules="required|max:10"
-                >
-                  <v-text-field
-                    v-model="startlocation"
-                    :counter="10"
-                    :error-messages="errors"
-                    label="Start Location"
-                    required
-                  ></v-text-field>
-                </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Endlocation"
+              rules="required|max:20"
+            >
+              <v-text-field
+                v-model="endlocation"
+                :error-messages="errors"
+                placeholder="End Location"
+                solo
+                rounded
+                dense
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Date"
+              rules="required"
+            >
+              <v-text-field
+                v-model="date"
+                :error-messages="errors"
+                placeholder="Date of Transport"
+                type="date"
+                solo
+                rounded
+                dense
+              ></v-text-field>
+            </validation-provider>
 
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Endlocation"
-                  rules="required|max:10"
-                >
-                  <v-text-field
-                    v-model="endlocation"
-                    :counter="10"
-                    :error-messages="errors"
-                    label="End Location"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Date"
-                  rules="required"
-                >
-                  <v-text-field
-                    v-model="date"
-                    :error-messages="errors"
-                    label="Date of Transport"
-                    type="date"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Weight"
-                  :rules="{
-                    required: true,
-                  }"
-                >
-                  <v-text-field
-                    v-model="weight"
-                    :counter="7"
-                    :error-messages="errors"
-                    label="Weight"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  name="Goods Type"
-                  rules="required|max:10"
-                >
-                  <v-text-field
-                    v-model="goodstype"
-                    :counter="10"
-                    :error-messages="errors"
-                    label="Goods Type"
-                    required
-                  ></v-text-field>
-                </validation-provider>
-                <validation-provider
-                  v-slot="{ errors }"
-                  rules="required"
-                  name="checkbox"
-                >
-                  <v-checkbox
-                    v-model="checkbox"
-                    :error-messages="errors"
-                    value="1"
-                    label="Above details are correct"
-                    type="checkbox"
-                    required
-                  ></v-checkbox>
-                </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Weight"
+              :rules="{
+                required: true,
+              }"
+            >
+              <v-text-field
+                v-model="weight"
+                :error-messages="errors"
+                placeholder="Weight in ton"
+                solo
+                rounded
+                dense
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Goods Type"
+              rules="required|max:10"
+            >
+              <v-text-field
+                v-model="goodstype"
+                :error-messages="errors"
+                placeholder="Goods Type"
+                solo
+                rounded
+                dense
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              name="checkbox"
+            >
+              <v-checkbox
+                v-model="checkbox"
+                :error-messages="errors"
+                value="1"
+                label="Above details are correct"
+                type="checkbox"
+                dense
+              ></v-checkbox>
+            </validation-provider>
+            <v-layout class="my-1" row wrap>
+              <v-flex lg3></v-flex>
+              <v-flex class="mx-10">
                 <v-btn
                   color="success"
                   class="mr-4"
@@ -120,23 +122,19 @@
                   router
                   to="/custsignup"
                 >
-                  Book
+                  Continue
                 </v-btn>
-                <v-btn @click="clear"> clear </v-btn>
-                <v-card-text>
-                  <div class="my-2 mx-5"></div>
-                </v-card-text>
-              </form>
-            </validation-observer>
-
-            <!--Truck booking form begining-->
-          </v-card>
-        </template>
-      </v-hover>
-    </v-row>
-  </v-container>
+              </v-flex>
+            </v-layout>
+          </form>
+        </validation-observer>
+        <!--Truck booking form begining-->
+      </v-flex>
+    </v-layout>
+  </v-app>
 </template>
 <script>
+import Navbar from '../components/Navbar'
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
   extend,
@@ -169,10 +167,11 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Navbar
   },
   data: () => {
     return {
-      checkbox:"",
+      checkbox: "",
       name: "",
       startlocation: "",
       endlocation: "",
@@ -199,4 +198,10 @@ export default {
 };
 </script>
 <style scoped>
+#book {
+  border: solid black 2px;
+  padding: 25px;
+  border-radius: 30px;
+  background-color: slategrey;
+}
 </style>

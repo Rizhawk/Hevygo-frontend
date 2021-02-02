@@ -7,7 +7,6 @@
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-
         <validation-observer ref="observer1" v-slot="{ invalid }">
           <form id="form2" @submit.prevent="submit">
             <v-layout
@@ -88,8 +87,7 @@
                 >Save</v-btn
               >
             </v-flex>
-            </v-layout>
-            <v-layout> <v-flex></v-flex></v-layout>
+            </v-layout>   
           </form>
         </validation-observer>
       </v-flex>
@@ -100,7 +98,7 @@
 <script>
 import { getAPI } from "../axios-api";
 import Opage from "../views/optrpage";
-import { required, digits, max, min } from "vee-validate/dist/rules";
+import { required, digits, max, min } from "vee-validate/dist/rules"
 import {
   extend,
   ValidationObserver,
@@ -170,7 +168,7 @@ export default {
     },
     tsignup() {
       getAPI
-        .post("/api/accounts/register", {
+        .post("/api/accounts/register/", {
           name: this.name,
           phone: this.phone,
           password: this.password,
