@@ -1,55 +1,105 @@
 <template>
-  <v-app id="login">
-    <v-layout row wrap class="my-15">
-      <v-flex lg4></v-flex>
-      <v-flex xs12 sm8 md6 lg4>
-        <!--Login form begining-->
-        <form id="loginform" @submit.prevent="submit">
-          <v-layout class="my-2" row wrap><v-flex></v-flex></v-layout>
-          <v-text-field
-            v-model="phone"
-            placeholder="Phone Number"
-            rounded
-            solo
-            dense
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            placeholder="Password"
-            name="password"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="show1 ? 'text' : 'password'"
-            @click:append="show1 = !show1"
-            rounded
-            solo
-            dense
-          ></v-text-field>
-          <v-layout row wrap>
-            <v-flex lg2></v-flex>
-            <v-flex class="mx-10 my-3">
-              <v-btn
-                rounded
-                color="primary"
-                class="my-2"
-                type="submit"
-                width="70%"
-                @click.prevent="login"
+  <v-container class="mx-10">
+    <v-row justify="space-around">
+      <v-hover>
+        <template v-slot:default="{ hover }">
+          <div class="my-10">
+            <v-card
+              :elevation="hover ? 24 : 6"
+              class="my-15 black--text"
+              width="400"
+              outlined
+              shaped
+            >
+              <v-card-title class="mx-15"
+                ><h2 class="mx-15">Login</h2></v-card-title
               >
-                Login
-              </v-btn>
-            </v-flex>
-          </v-layout>
-        </form>
-      </v-flex>
-    </v-layout>
-    <!--Login form ends-->
-  </v-app>
+              <!--Login section-->
+              <validation-observer ref="observer" v-slot="{ invalid }">
+                <form class="mx-8" @submit.prevent="submit">
+                  <validation-provider
+                    v-slot="{ errors }"
+                    name="Phone Number"
+                    :rules="{
+                      required: true,
+                      digits: 10,
+                    }"
+                  >
+                    <v-text-field
+                      v-model="phone"
+                      :error-messages="errors"
+                      label="Phone Number"
+                      required
+                    ></v-text-field>
+                  </validation-provider>
+                  <v-text-field
+                    v-model="password"
+                    label="Password"
+                    name="password"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="passwordRules"
+                    :type="show1 ? 'text' : 'password'"
+                    @click:append="show1 = !show1"
+                  ></v-text-field>
+                  <div class="mx-12">
+                    <v-btn
+                      color="primary"
+                      class="mx-12"
+                      type="submit"
+                      width="50%"
+                      :disabled="invalid"
+                      @click.prevent="login"
+                    >
+                      Login
+                    </v-btn>
+                  </div>
+                  <v-card-text>
+                    <div class="my-2 mx-5"></div>
+                  </v-card-text>
+                </form>
+              </validation-observer>
+              <!--Login form ends-->
+            </v-card>
+          </div>
+        </template>
+      </v-hover>
+    </v-row>
+  </v-container>
 </template>
 <script>
 import { getAPI } from "../axios-api";
+import { required, digits, max, min } from "vee-validate/dist/rules";
+import {
+  extend,
+  ValidationObserver,
+  ValidationProvider,
+  setInteractionMode,
+} from "vee-validate";
+setInteractionMode("eager");
+//Custom validation begining
+extend("digits", {
+  ...digits,
+  message: "{_field_} needs to be {length} digits. ({_value_})",
+});
+extend("required", {
+  ...required,
+  message: "{_field_} can not be empty",
+});
+extend("max", {
+  ...max,
+  message: "{_field_} may not be greater than {length} characters",
+});
+extend("min", {
+  ...min,
+  message: "{_field_}  should be greater than {length} characters",
+});
+//Custom validation ends
 export default {
   name: "Login",
-  components: {},
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   data: () => {
     return {
       phone: "",
@@ -62,7 +112,6 @@ export default {
       ],
     };
   },
-
   methods: {
     submit() {
       this.$refs.observer.validate();
@@ -70,7 +119,7 @@ export default {
     login() {
       //Login API Call
       getAPI
-        .post("/api/accounts/login/", {
+        .post("/api/accounts/login", {
           username: this.phone,
           password: this.password,
         })
@@ -87,8 +136,7 @@ export default {
         })
         .catch((err) => {
           localStorage.removeItem("user_token");
-          alert("Invalid Credentials");
-          console.log(err.message);
+          alert(err.message);
         });
     },
   },
