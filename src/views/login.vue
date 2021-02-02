@@ -1,6 +1,5 @@
 <template>
   <v-app id="login">
-    <Navbar/>
     <v-layout row wrap class="my-15">
       <v-flex lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
@@ -48,10 +47,9 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-import Navbar from '../components/Navbar'
 export default {
   name: "Login",
-  components: {Navbar},
+  components: {},
   data: () => {
     return {
       phone: "",
@@ -96,23 +94,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-#loginform {
-  border: solid white 1px;
-  padding: 20px;
-  border-radius: 30px;
-  background-color: black;
-  opacity: 0.65;
-}
-#login {
-  background: url("../assets/truck-12.jpg");
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-  margin: auto;
-  padding: 0;
-  background-color: black;
-}
-</style>
