@@ -117,7 +117,7 @@ export default {
       this.$refs.observer2.validate(); //Truck details add
     },
     clear() {
-      (this.optrphone = ""),
+        (this.optrphone = ""),
         (this.truckphone = ""),
         (this.regnumber = ""),
         (this.homeloc = ""),

@@ -142,7 +142,7 @@ export default {
       show1: false,
       show2: false,
       next: false,
-      name: null,
+      name: "",
       phone: "",
       password: "",
       password2: "",
@@ -192,7 +192,8 @@ export default {
           }      
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
+          
         });
     },
   },

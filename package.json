@@ -12,8 +12,11 @@
     "core-js": "^3.6.5",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.11",
+    "vue-here-maps": "^1.0.1",
     "vue-router": "^3.2.0",
+    "vue-search-select": "^2.9.3",
     "vue-sweetalert2": "^4.1.1",
+    "vuejs-google-maps": "0.0.10",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
