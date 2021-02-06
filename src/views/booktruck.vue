@@ -1,14 +1,18 @@
 <template>
-  <v-app>
-    <Navbar/>
-    <v-layout class="my-1" row wrap>
-      <v-flex lg4></v-flex>
-      <v-flex xs12 sm8 md6 lg4>
+  <v-app id="btruck">
+    <Navbar />
+    <v-layout class="my-5" row wrap>
+      <v-flex xs1 md3 sm2 lg4></v-flex>
+      <v-flex xs8 sm8 md6 lg4>
         <!--Truck booking form begining-->
 
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="book" @submit.prevent="submit">
-            <validation-provider
+            <v-layout class="my-2" row wrap
+              ><v-flex class="mx-3"><h2>Book a Truck</h2></v-flex
+              ><v-flex></v-flex
+            ></v-layout>
+            <!-- <validation-provider
               v-slot="{ errors }"
               name="Name"
               rules="required|max:10"
@@ -16,25 +20,27 @@
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                placeholder="Customer Name"
-                solo
+                label="Customer Name"
+                outlined
                 rounded
                 dense
               ></v-text-field>
-            </validation-provider>
+            </validation-provider> -->
             <validation-provider
               v-slot="{ errors }"
               name="Startlocation"
               rules="required|max:20"
             >
-              <v-text-field
+              <v-combobox
                 v-model="startlocation"
                 :error-messages="errors"
-                placeholder="Start Location"
-                solo
+                label="Start Location"
+                :items="address"
+                prepend-inner-icon="mdi-map-marker"
+                outlined
                 rounded
                 dense
-              ></v-text-field>
+              ></v-combobox>
             </validation-provider>
 
             <validation-provider
@@ -42,14 +48,16 @@
               name="Endlocation"
               rules="required|max:20"
             >
-              <v-text-field
+              <v-combobox
                 v-model="endlocation"
                 :error-messages="errors"
-                placeholder="End Location"
-                solo
+                label="End Location"
+                :items="address"
+                prepend-inner-icon="mdi-map-marker"
+                outlined
                 rounded
                 dense
-              ></v-text-field>
+              ></v-combobox>
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
@@ -59,9 +67,9 @@
               <v-text-field
                 v-model="date"
                 :error-messages="errors"
-                placeholder="Date of Transport"
+                label="Date of Transport"
                 type="date"
-                solo
+                outlined
                 rounded
                 dense
               ></v-text-field>
@@ -77,8 +85,8 @@
               <v-text-field
                 v-model="weight"
                 :error-messages="errors"
-                placeholder="Weight in ton"
-                solo
+                label="Weight in ton"
+                outlined
                 rounded
                 dense
               ></v-text-field>
@@ -91,32 +99,18 @@
               <v-text-field
                 v-model="goodstype"
                 :error-messages="errors"
-                placeholder="Goods Type"
-                solo
+                label="Goods Type"
+                outlined
                 rounded
                 dense
               ></v-text-field>
             </validation-provider>
-            <validation-provider
-              v-slot="{ errors }"
-              rules="required"
-              name="checkbox"
-            >
-              <v-checkbox
-                v-model="checkbox"
-                :error-messages="errors"
-                value="1"
-                label="Above details are correct"
-                type="checkbox"
-                dense
-              ></v-checkbox>
-            </validation-provider>
             <v-layout class="my-1" row wrap>
-              <v-flex lg3></v-flex>
-              <v-flex class="mx-10">
+              <v-flex lg2></v-flex>
+              <v-flex>
                 <v-btn
-                  color="success"
-                  class="mr-4"
+                  dark
+                  block   
                   type="submit"
                   :disabled="invalid"
                   router
@@ -125,6 +119,7 @@
                   Continue
                 </v-btn>
               </v-flex>
+                <v-flex lg2></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -134,7 +129,7 @@
   </v-app>
 </template>
 <script>
-import Navbar from '../components/Navbar'
+import Navbar from "../components/Navbar";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
   extend,
@@ -154,7 +149,7 @@ extend("digits", {
 
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty",
+  message: "required",
 });
 
 extend("max", {
@@ -167,7 +162,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
-    Navbar
+    Navbar,
   },
   data: () => {
     return {
@@ -178,9 +173,25 @@ export default {
       weight: "",
       goodstype: "",
       date: "",
+      citi:[],
+      address:[],
     };
   },
-
+  mounted: function () {
+    fetch("cities.json")
+      .then((r) => r.json())
+      .then(
+        (json) => {
+          this.citi = json;
+           for (let key in this.citi) {
+          this.address.push(this.citi[key]["name"]);
+        }
+        },
+        (response) => {
+          console.log("Error loading json:", response);
+        }
+      );
+  },
   methods: {
     submit() {
       this.$refs.observer.validate();
@@ -200,8 +211,18 @@ export default {
 <style scoped>
 #book {
   border: solid black 2px;
-  padding: 25px;
+  padding: 30px;
   border-radius: 30px;
-  background-color: slategrey;
+  background-color: white;
+}
+#btruck {
+  background: url("../assets/truck-12.jpg");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  margin: auto;
+  padding: 0;
 }
 </style>

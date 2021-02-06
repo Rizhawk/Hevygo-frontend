@@ -1,7 +1,7 @@
 <template>
-  <v-app>
-    <Navbar/>
-    <v-layout class="my-5" row wrap>
+  <v-app id="csign">
+    <Navbar />
+    <v-layout class="my-3" row wrap>
       <v-flex lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
@@ -9,10 +9,8 @@
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="csignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
-              <v-flex lg2></v-flex>
-              <v-flex class="mx-10">
-                <h3 class="font-weight-bold">Sign Up to continue</h3>
-              </v-flex>
+              <v-flex class="mx-3"><h2>Sign Up to Continue</h2></v-flex
+              ><v-flex></v-flex>
             </v-layout>
             <validation-provider
               v-slot="{ errors }"
@@ -23,9 +21,9 @@
                 v-model="name"
                 :error-messages="errors"
                 label="Customer Name"
-                solo
-                dense
+                outlined
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <v-text-field
@@ -36,9 +34,9 @@
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
-              solo
-              dense
+              outlined
               rounded
+              dense
             ></v-text-field>
             <v-text-field
               v-model="password2"
@@ -52,9 +50,9 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
-              solo
-              dense
+              outlined
               rounded
+              dense
             ></v-text-field>
 
             <validation-provider
@@ -69,9 +67,9 @@
                 v-model="phone"
                 :error-messages="errors"
                 label="Phone Number"
-                solo
-                dense
+                outlined
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <validation-provider v-slot="{ errors }" name="email" rules="email">
@@ -79,9 +77,9 @@
                 v-model="email"
                 :error-messages="errors"
                 label="E-mail"
-                solo
-                dense
+                outlined
                 rounded
+                dense
               ></v-text-field>
             </validation-provider>
             <validation-provider
@@ -116,7 +114,7 @@
               <v-flex lg2></v-flex>
               <v-flex class="my-2 mx-8">
                 <span
-                  >Already have an account?<router-link to="/"
+                  >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span
                 >
@@ -131,7 +129,7 @@
   </v-app>
 </template>
 <script>
-import Navbar from '../components/Navbar'
+import Navbar from "../components/Navbar";
 import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
@@ -174,7 +172,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
-    Navbar
+    Navbar,
   },
   data: () => {
     return {
@@ -237,8 +235,18 @@ export default {
 <style scoped>
 #csignup {
   border: solid black 2px;
-  padding: 25px;
+  padding: 30px;
   border-radius: 30px;
-  background-color: slategrey;
+  background-color: white;
+}
+#csign {
+  background: url("../assets/truck-12.jpg");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  margin: auto;
+  padding: 0;
 }
 </style>

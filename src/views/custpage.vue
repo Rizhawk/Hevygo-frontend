@@ -32,7 +32,7 @@
           active-class="deep-grey--text text--accent-1"
         >
           <v-list-item> Booking Status </v-list-item>
-          <v-list-item> Track your Truck </v-list-item>
+          <v-list-item router to="/HereMap"> Track your Truck </v-list-item>
           <v-list-item> Edit Booking </v-list-item>
         </v-list-item-group>
         <v-list-item>
@@ -54,7 +54,7 @@
 export default {
   name: "Cpage",
   data: () => ({
-    drawer: false,
+    drawer: true,
     group: null,
   }),
   methods: {

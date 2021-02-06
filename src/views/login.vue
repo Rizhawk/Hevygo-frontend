@@ -76,7 +76,7 @@ export default {
           if (response.data.user_type == 1) {
             this.$router.push({ name: "Opage" });
           } else if (response.data.user_type == 2) {
-            this.$router.push({ name: "Cpage" });
+            this.$router.push({ name: "HereMap" });
           } else if (response.data.user_type == 3) {
             this.$router.push({ name: "Dpage" });
           }
@@ -100,7 +100,6 @@ export default {
   background-size: cover;
   margin: auto;
   padding: 0;
-  background-color: black;
 }
 #loginform {
   border: solid white 1px;

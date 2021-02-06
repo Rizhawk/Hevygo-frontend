@@ -18,6 +18,8 @@ import Padd from '../views/panadd';
 import Tdetails from '../views/truckdetails';
 import Editdrivers from '../views/editdrivers';
 import Tstats from '../views/viewstats';
+import HereMap from '../components/HereMap'
+import Smap from '../views/showMap'
 Vue.use(VueRouter)
 
 const routes = [
@@ -127,6 +129,16 @@ const routes = [
     name:'Tstats',
     component:Tstats
   },
+  {
+    path:'/HereMap',
+    name:'HereMap',
+    component:HereMap
+  },
+  {
+    path:'/showMap',
+    name:'Smap',
+    component:Smap
+  }
 ]
 
 const router = new VueRouter({

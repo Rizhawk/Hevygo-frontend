@@ -34,7 +34,7 @@
               name="type"
               rules="required"
             >
-              <v-select
+              <v-combobox
                 v-model="type"
                 placeholder="Type *"
                 :items="types"
@@ -45,7 +45,7 @@
                 rounded
                 dense
               >
-              </v-select>
+              </v-combobox>
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
@@ -104,6 +104,7 @@
   </v-app>
 </template>
 <script>
+  // import { ModelSelect } from 'vue-search-select'
 import Opage from "../views/optrpage";
 import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
@@ -148,6 +149,7 @@ export default {
     ValidationProvider,
     ValidationObserver,
     Opage,
+  
   },
   data: () => {
     return {
