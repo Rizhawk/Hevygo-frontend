@@ -18,8 +18,8 @@ import Padd from '../views/panadd';
 import Tdetails from '../views/truckdetails';
 import Editdrivers from '../views/editdrivers';
 import Tstats from '../views/viewstats';
-import HereMap from '../components/HereMap'
-import Smap from '../views/showMap'
+import HereMap from '../views/HereMap';
+import Bnewtruck from '../views/booknewtruck';
 Vue.use(VueRouter)
 
 const routes = [
@@ -135,9 +135,9 @@ const routes = [
     component:HereMap
   },
   {
-    path:'/showMap',
-    name:'Smap',
-    component:Smap
+    path:'/booknewtruck',
+    name:'Bnewtruck',
+    component:Bnewtruck
   }
 ]
 

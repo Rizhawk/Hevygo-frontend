@@ -1,13 +1,17 @@
 <template>
-  <v-app>
-    <Navbar/>
-    <v-layout row wrap class="my-2">
-      <v-flex lg4></v-flex>
+  <v-app id="osign">
+    <Navbar />
+    <v-layout row wrap class="my-3">
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <validation-observer ref="observer" v-slot="{ invalid }">
           <!--Operator signup form begining -->
 
           <form id="osignup" @submit.prevent="submit">
+            <v-layout class="my-2" row wrap>
+              <v-flex class="mx-3"><p class="font-weight-bold">Create your operator account</p></v-flex
+              ><v-flex></v-flex>
+            </v-layout>
             <validation-provider
               v-slot="{ errors }"
               name="Name"
@@ -16,29 +20,29 @@
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                placeholder="Operator Name"
+                label="Operator Name"
+                outlined
                 rounded
-                solo
                 dense
                 clearable
               ></v-text-field>
             </validation-provider>
             <v-text-field
               v-model="password"
-              placeholder="Password"
+              label="Password"
               name="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
+              outlined
               rounded
-              solo
               dense
               clearable
             ></v-text-field>
             <v-text-field
               v-model="password2"
-              placeholder="Confirm Password"
+              label="Confirm Password"
               name="confirmPassword"
               :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[
@@ -48,8 +52,8 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
+              outlined
               rounded
-              solo
               dense
               clearable
             ></v-text-field>
@@ -65,9 +69,9 @@
               <v-text-field
                 v-model="phone"
                 :error-messages="errors"
-                placeholder="Phone Number"
+                label="Phone Number"
+                outlined
                 rounded
-                solo
                 dense
                 clearable
               ></v-text-field>
@@ -76,29 +80,13 @@
               <v-text-field
                 v-model="email"
                 :error-messages="errors"
-                placeholder="E-mail"
+                label="E-mail"
+                outlined
                 rounded
-                solo
                 dense
                 clearable
               ></v-text-field>
             </validation-provider>
-            <validation-provider
-              v-slot="{ errors }"
-              rules="required"
-              name="This field"
-            >
-              <v-checkbox
-                v-model="checkbox"
-                :error-messages="errors"
-                value="1"
-                label="Above details are correct"
-                type="checkbox"
-                solo
-                dense
-              ></v-checkbox>
-            </validation-provider>
-
             <v-layout row wrap>
               <v-flex lg3></v-flex>
               <v-flex class="mx-10">
@@ -106,6 +94,8 @@
                   color="primary"
                   class="mr-4"
                   type="submit"
+                  rounded
+                  small
                   :disabled="invalid"
                   @click.prevent="osignup"
                 >
@@ -115,8 +105,8 @@
               <v-layout class="my-1" row wrap>
                 <v-flex lg2></v-flex>
                 <v-flex>
-                  <span class="mx-10 white--text"
-                    >Already have an account?<router-link to="/"
+                  <span class="mx-8 black--text"
+                    >Already have an account?<router-link to="/login"
                       >Login</router-link
                     ></span
                   >
@@ -132,7 +122,7 @@
   </v-app>
 </template>
 <script>
-import Navbar from '../components/Navbar'
+import Navbar from "../components/Navbar";
 import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
@@ -175,7 +165,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
-    Navbar
+    Navbar,
   },
   data: () => {
     return {
@@ -235,8 +225,18 @@ export default {
 <style scoped>
 #osignup {
   border: solid black 2px;
-  padding: 25px;
+  padding: 30px;
   border-radius: 30px;
-  background-color: slategrey;
+  background-color: white;
+}
+#osign {
+  background: url("../assets/truck-12.jpg");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  margin: auto;
+  padding: 0;
 }
 </style>

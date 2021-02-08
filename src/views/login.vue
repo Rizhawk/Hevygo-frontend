@@ -2,13 +2,12 @@
   <v-app id="login">
     <Navbar />
     <v-layout class="my-15" row wrap>
-      <v-flex lg4></v-flex>
+      <v-flex xs2 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <!--Login section-->
         <form id="loginform" @submit.prevent="submit">
           <v-text-field
             v-model="phone"
-            :error-messages="errors"
             placeholder="Phone Number"
             rounded
             solo
@@ -33,7 +32,6 @@
                 class="my-2"
                 type="submit"
                 width="50%"
-                :disabled="invalid"
                 @click.prevent="login"
               >
                 Login
@@ -71,19 +69,20 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          localStorage.setItem("user_token", response.data.token);
+          this.$session.start();
+          this.$session.set('user_token', response.data.token);
           this.APIData = response.data;
           if (response.data.user_type == 1) {
             this.$router.push({ name: "Opage" });
           } else if (response.data.user_type == 2) {
-            this.$router.push({ name: "HereMap" });
+            this.$router.push({ name: "Bnewtruck" });
           } else if (response.data.user_type == 3) {
             this.$router.push({ name: "Dpage" });
           }
         })
         .catch((err) => {
-          localStorage.removeItem("user_token");
-          console.log(err)
+          localStorage.clear();
+          console.log(err);
           alert("Invalid Credentials");
         });
     },

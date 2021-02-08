@@ -1,24 +1,37 @@
 
 <template>
-<v-app>
-  <v-layout class="mx-3" row wrap><v-flex><p class="my-5 font-weight-bold">Total Cost:  {{this.totalcost}} INR</p>
-  <router-link id="link" to="/custpage" class="black--text">Back</router-link></v-flex>
-  </v-layout>
-  <div id="map">
-    <!--In the following div the HERE Map will render-->
-    <div
-      id="mapContainer"
-      style="height: 600px; width: 100%"
-      ref="hereMap"
-    ></div>
-  </div>
-</v-app>
+  <v-app id="bg">
+    <v-system-bar color="white"
+      ><v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" class="mx-2" icon dark color="teal">
+            <v-icon dark> mdi-format-list-bulleted-square </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>Route Details</v-list-item-title>
+          </v-list-item>
+            <v-list-item router to="/custpage">
+            <v-list-item-title>Back</v-list-item-title>
+          </v-list-item>
+        </v-list> </v-menu
+    ></v-system-bar>
+    <div id="map">
+      <!--In the following div the HERE Map will render-->
+      <div
+        id="mapContainer"
+        style="height: 600px; width: 100%"
+        ref="hereMap"
+      ></div>
+    </div>
+  </v-app>
 </template>
-
 <script>
 import { getAPI } from "../axios-api";
 export default {
   name: "HereMap",
+  computed: {},
   // props: {
   //   center: Object
   //   // center object { lat: 40.730610, lng: -73.935242 }
@@ -32,12 +45,11 @@ export default {
       geocoder: {},
       directions: [],
       routes: "",
-      token: localStorage.getItem("user_token") || null,
       start: "",
       finish: "",
       waypoints: [],
-      cost:[],
-      totalcost:"",
+      cost: [],
+      totalcost: "",
       origin: [],
       dest: [],
       st: "",
@@ -49,7 +61,7 @@ export default {
     getAPI
       .get("/api/maps/maps/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get('user_token')}`,
         },
       })
       .then((response) => {
@@ -63,7 +75,7 @@ export default {
         for (let key in this.routes) {
           this.cost = this.routes[key]["cost"];
         }
-        this.totalcost=this.cost["totalCost"];
+        this.totalcost = this.cost["totalCost"];
         this.start = this.waypoints[0]["mappedPosition"];
         this.finish = this.waypoints[1]["mappedPosition"];
         for (let key in this.start) {
@@ -72,8 +84,8 @@ export default {
         for (let key in this.finish) {
           this.dest.push(this.finish[key]);
         }
-        this.st = this.origin.toString() ;
-        this.fin = this.dest.toString() ;
+        this.st = this.origin.toString();
+        this.fin = this.dest.toString();
         this.initializeHereMap();
       })
       .catch((err) => {
@@ -175,10 +187,13 @@ export default {
 
 <style scoped>
 #map {
-  width: 100%;
-  min-width: 100%;
+  width: 90vw;
+  min-width: 360px;
   text-align: center;
   margin: 5% auto;
   background-color: #ccc;
+}
+#bg {
+  background-color: black;
 }
 </style>

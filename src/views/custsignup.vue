@@ -2,7 +2,7 @@
   <v-app id="csign">
     <Navbar />
     <v-layout class="my-3" row wrap>
-      <v-flex lg4></v-flex>
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
 
@@ -82,20 +82,6 @@
                 dense
               ></v-text-field>
             </validation-provider>
-            <validation-provider
-              v-slot="{ errors }"
-              rules="required"
-              name="This field"
-            >
-              <v-checkbox
-                v-model="checkbox"
-                :error-messages="errors"
-                value="1"
-                label="Above details are correct"
-                type="checkbox"
-                required
-              ></v-checkbox>
-            </validation-provider>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
               <v-flex class="mx-10">
@@ -103,6 +89,7 @@
                   color="primary"
                   class="mr-4"
                   type="submit"
+                  rounded
                   :disabled="invalid"
                   @click.prevent="csignup"
                 >
@@ -112,7 +99,7 @@
             </v-layout>
             <v-layout row wrap>
               <v-flex lg2></v-flex>
-              <v-flex class="my-2 mx-8">
+              <v-flex class="my-3 mx-8">
                 <span
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
@@ -178,7 +165,7 @@ export default {
     return {
       name: "",
       phone: "",
-      email: "",
+      email: null,
       show1: false,
       show2: false,
       checkbox: null,
@@ -219,9 +206,37 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          alert(this.APIData["response"]);
-          this.clear();
-          this.$router.push({ name: "Home" });
+          console.log(this.APIData["response"]);
+          this.$session.start();
+          this.$session.set("user_token", response.data.token);
+          this.bookTruck();
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    bookTruck() {
+      getAPI
+        .post(
+          "/api/customer/cust-dest-create/",
+          {
+            start_location: localStorage.getItem("sl"),
+            end_location: localStorage.getItem("el"),
+            weight: localStorage.getItem("wt"),
+            goods_type: localStorage.getItem("gt"),
+            date: localStorage.getItem("dt"),
+          },
+          {
+            headers: {
+              Authorization: ` Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+          localStorage.clear();
+          this.$router.push({ name: "HereMap" });
         })
         .catch((err) => {
           alert(err);

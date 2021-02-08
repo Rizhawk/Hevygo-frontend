@@ -20,7 +20,14 @@
             ><p class="white--text">Contact</p></router-link
           ></span
         >
-        <span class="my-3 mx-15"><v-btn router to="/login" color="blue">TRACK</v-btn></span>
+        <span class="my-3 mx-5"
+          ><v-btn small router to="/login" color="blue">Login</v-btn></span
+        >
+        <span class="my-3 ">
+          <v-btn small outlined color="white">
+            Sign Up
+          </v-btn></span
+        >
       </v-toolbar-items>
       <div class="hidden-sm-and-up">
         <v-menu offset-y>
@@ -42,10 +49,10 @@
                 ></v-list-item-title
               >
             </v-list-item>
-             <v-list-item>
+            <v-list-item>
               <v-list-item-title
                 ><router-link to="/login" id="link"
-                  >Track</router-link
+                  >Login</router-link
                 ></v-list-item-title
               >
             </v-list-item>
@@ -59,9 +66,8 @@
 
 <script>
 export default {
-  data:()=> {
-    return {
-    };
+  data: () => {
+    return {};
   },
 };
 </script>

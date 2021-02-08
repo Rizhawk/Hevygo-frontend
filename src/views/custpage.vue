@@ -23,7 +23,11 @@
           <v-avatar size="100">
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
-          <p class="white--text subheading mt-1">Customer Name<v-btn x-small fab rounded> <v-icon>mdi-pencil</v-icon></v-btn></p>
+          <p class="white--text subheading mt-1">
+            Customer Name<v-btn x-small fab rounded>
+              <v-icon>mdi-pencil</v-icon></v-btn
+            >
+          </p>
         </v-flex>
       </v-layout>
       <v-list nav dark>
@@ -31,6 +35,9 @@
           v-model="group"
           active-class="deep-grey--text text--accent-1"
         >
+          <v-list-item router to="/booknewtruck">
+            Booking a new Truck
+          </v-list-item>
           <v-list-item> Booking Status </v-list-item>
           <v-list-item router to="/HereMap"> Track your Truck </v-list-item>
           <v-list-item> Edit Booking </v-list-item>
@@ -59,7 +66,7 @@ export default {
   }),
   methods: {
     logout() {
-      localStorage.removeItem("user_token");
+      this.$session.destroy();
       this.$router.push({ name: "Home" });
     },
   },
