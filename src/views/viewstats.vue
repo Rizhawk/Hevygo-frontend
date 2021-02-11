@@ -156,7 +156,6 @@ export default {
   },
   data: () => {
     return {
-      token: localStorage.getItem("user_token") || null,
       truckstats: [],
       drivers: [],
       trucks: [],
@@ -182,7 +181,7 @@ export default {
     getAPI
       .get("api/truck/truck-status-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -201,7 +200,7 @@ export default {
     getAPI
       .get("api/truck/truck-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -221,7 +220,7 @@ export default {
     getAPI
       .get("api/operators/driver-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -248,7 +247,7 @@ export default {
         //Api call to get the truck reg number with truck id
         .get("api/truck/truck-detail/" + trid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -265,7 +264,7 @@ export default {
       getAPI
         .get("api/operators/driver-detail/" + drid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -282,7 +281,7 @@ export default {
       getAPI
         .get("api/truck/truck-status-detail/" + this.trid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -308,7 +307,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Token ${this.token}`,
+              Authorization: `Token ${this.$session.get("user_token")}`,
             },
           }
         )
@@ -330,7 +329,7 @@ export default {
       getAPI
         .delete("api/truck/truck-status-delete/" + trid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {

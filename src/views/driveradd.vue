@@ -129,7 +129,6 @@ export default {
     return {
       driver_name: "",
       driver_phone: "",
-      token: localStorage.getItem("user_token") || null,
       message: "",
       snackbar: false,
       dialog: false,
@@ -155,7 +154,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Token ${this.token}`,
+              Authorization: `Token ${this.$session.get("user_token")}`,
             },
           }
         )

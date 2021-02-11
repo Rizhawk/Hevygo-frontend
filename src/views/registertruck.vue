@@ -148,7 +148,6 @@ export default {
       password2: "",
       user_type: 3,
       phnerr: "user with this phone already exists.",
-      token: localStorage.getItem("user_token") || null,
       passwordRules: [
         (value) => !!value || "Please type password.",
         (value) => (value && value.length >= 6) || "minimum 6 characters",

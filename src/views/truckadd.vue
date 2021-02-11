@@ -109,7 +109,6 @@ export default {
       truckphone: localStorage.getItem("truck_phn") || null,
       regnumber: "",
       homeloc: "",
-      token: localStorage.getItem("user_token") || null,
     };
   },
   methods: {
@@ -134,7 +133,7 @@ export default {
           },
           {
             headers: {
-              Authorization: ` Token ${this.token}`,
+              Authorization: ` Token ${this.$session.get("user_token")}`,
             },
           }
         )

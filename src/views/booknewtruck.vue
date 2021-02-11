@@ -1,13 +1,11 @@
 <template>
-  <v-app id="btruck">
-    <Navbar />
+  <v-app>
+    <Cpage />
     <v-layout class="my-5" row wrap>
-      <v-flex xs1 md3 sm2 lg4></v-flex>
-      <v-flex xs8 sm8 md6 lg4>
-        <!--Truck booking form begining-->
-
+      <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-flex xs12 sm8 md6 lg4>
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="book" @submit.prevent="submit">
+          <form id="booknew" @submit.prevent="submit">
             <v-layout class="my-2" row wrap
               ><v-flex class="mx-3"><h2>Book a Truck</h2></v-flex
               ><v-flex></v-flex
@@ -23,6 +21,7 @@
                 label="Start Location"
                 :items="address"
                 prepend-inner-icon="mdi-map-marker"
+                clearable
                 outlined
                 rounded
                 dense
@@ -40,6 +39,7 @@
                 label="End Location"
                 :items="address"
                 prepend-inner-icon="mdi-map-marker"
+                clearable
                 outlined
                 rounded
                 dense
@@ -55,6 +55,7 @@
                 :error-messages="errors"
                 label="Date of Transport"
                 type="date"
+                clearable
                 outlined
                 rounded
                 dense
@@ -72,6 +73,7 @@
                 v-model="weight"
                 :error-messages="errors"
                 label="Weight in ton"
+                clearable
                 outlined
                 rounded
                 dense
@@ -86,24 +88,34 @@
                 v-model="goodstype"
                 :error-messages="errors"
                 label="Goods Type"
+                clearable
                 outlined
                 rounded
                 dense
               ></v-text-field>
             </validation-provider>
             <v-layout class="my-1" row wrap>
-              <v-flex lg2></v-flex>
+              <v-flex lg3></v-flex>
               <v-flex>
                 <v-btn
                   dark
-                  block
                   type="submit"
                   :disabled="invalid"
                   router
-                  @click.prevent="saveData"
+                  rounded
+                  small
+                  @click.prevent="bookTruck"
                 >
-                  Continue
+                  Confirm
                 </v-btn>
+                <v-btn
+                  small
+                  class="mx-2"
+                  color="red"
+                  @click.prevent="clear"
+                  rounded
+                  >Reset</v-btn
+                >
               </v-flex>
               <v-flex lg2></v-flex>
             </v-layout>
@@ -115,7 +127,8 @@
   </v-app>
 </template>
 <script>
-import Navbar from "../components/Navbar";
+import { getAPI } from "../axios-api";
+import Cpage from "../views/custpage";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
   extend,
@@ -144,21 +157,19 @@ extend("max", {
 });
 //Custom validation ends
 export default {
-  name: "Booking",
+  name: "Bnewtruck",
   components: {
     ValidationProvider,
     ValidationObserver,
-    Navbar,
+    Cpage,
   },
   data: () => {
     return {
-      checkbox: "",
-      name: "",
-      startlocation: "",
-      endlocation: "",
-      weight: "",
-      goodstype: "",
-      date: "",
+      startlocation: "" || localStorage.getItem("sl"),
+      endlocation: "" || localStorage.getItem("el"),
+      date: "" || localStorage.getItem("dt"),
+      weight: "" || localStorage.getItem("wt"),
+      goodstype: "" || localStorage.getItem("gt"),
       citi: [],
       address: [],
     };
@@ -183,41 +194,51 @@ export default {
       this.$refs.observer.validate();
     },
     clear() {
+      localStorage.clear();
       this.name = "";
       this.startlocation = "";
       this.endlocation = "";
       this.weight = "";
+      this.date = "";
       this.goodstype = "";
       this.$refs.observer.reset();
     },
-    saveData() {
-      localStorage.setItem("sl", this.startlocation);
-      localStorage.setItem("el", this.endlocation);
-      localStorage.setItem("dt", this.date);
-      localStorage.setItem("wt", this.weight);
-      localStorage.setItem("gt", this.goodstype);
-      this.clear();
-      this.$router.push({ name: "Csignup" });
+    bookTruck() {
+      getAPI
+        .post(
+          "/api/customer/cust-dest-create/",
+          {
+            start_location: this.startlocation,
+            end_location: this.endlocation,
+            weight: this.weight,
+            goods_type: this.goodstype,
+            date: this.date,
+          },
+          {
+            headers: {
+              Authorization: ` Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+          this.clear();
+          localStorage.clear();
+          //   this.$router.push({ name: "HereMap" });
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
-    //Function to set input field empty
   },
 };
 </script>
 <style scoped>
-#book {
+#booknew {
   border: solid black 2px;
   padding: 30px;
   border-radius: 30px;
   background-color: white;
-}
-#btruck {
-  background: url("../assets/truck-12.jpg");
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-  margin: auto;
-  padding: 0;
 }
 </style>

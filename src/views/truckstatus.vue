@@ -134,7 +134,6 @@ export default {
       trucks: [],
       id: [],
       drivers: [],
-      token: localStorage.getItem("user_token") || null,
       tid: "",
       did: "",
       message: "",
@@ -146,7 +145,7 @@ export default {
     getAPI
       .get("api/truck/truck-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -166,7 +165,7 @@ export default {
     getAPI
       .get("api/operators/driver-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -215,7 +214,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Token ${this.token}`,
+              Authorization: `Token ${this.$session.get("user_token")}`,
             },
           }
         )

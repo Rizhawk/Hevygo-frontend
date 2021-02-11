@@ -70,9 +70,8 @@ export default {
   },
   methods: {
     logout() {
-      localStorage.removeItem("user_token");
-      localStorage.removeItem("user_id");
-      this.$router.push({ name: "Home" });
+      this.$session.destroy();
+      this.$router.push({ name: "Login" });
     },
   },
   beforeMount: function () {

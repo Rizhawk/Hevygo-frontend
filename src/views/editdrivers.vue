@@ -133,7 +133,6 @@ export default {
   data: () => {
     return {
       driverdetails: [],
-      token: localStorage.getItem("user_token") || null,
       dialog: false,//dialog box form for editing the driver details
       dialog2: false,//dialog box for confirmation for deletion of a driver
       dname: "",
@@ -151,7 +150,7 @@ export default {
     getAPI
       .get("/api/operators/driver-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -171,7 +170,7 @@ export default {
       getAPI
         .get("api/operators/driver-detail/" + id + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -199,7 +198,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Token ${this.token}`,
+              Authorization: `Token ${this.$session.get("user_token")}`,
             },
           }
         )
@@ -217,7 +216,7 @@ export default {
       getAPI
         .delete("api/operators/driver-delete/" + drid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {

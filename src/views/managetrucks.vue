@@ -221,7 +221,6 @@ export default {
     return {
       //trucklist
       trucks: [],
-      token: localStorage.getItem("user_token") || null,
       tdelete: false,
       tspec: false,
       //
@@ -261,7 +260,7 @@ export default {
     getAPI
       .get("/api/truck/truck-list/", {
         headers: {
-          Authorization: `Token ${this.token}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -280,7 +279,7 @@ export default {
       getAPI
         .delete("/api/truck/truck-delete/" + id + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -300,7 +299,7 @@ export default {
       getAPI
         .get("/api/truck/truck-detail/" + tid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -329,7 +328,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Token ${this.token}`,
+              Authorization: `Token ${this.$session.get("user_token")}`,
             },
           }
         )
@@ -347,7 +346,7 @@ export default {
       getAPI
         .get("/api/truck/truck-info-detail/" + trkid + "/", {
           headers: {
-            Authorization: `Token ${this.token}`,
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
@@ -387,7 +386,7 @@ export default {
           },
           {
             headers: {
-              Authorization: `Token ${this.token}`,
+              Authorization: `Token ${this.$session.get("user_token")}`,
             },
           }
         )

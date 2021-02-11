@@ -18,7 +18,7 @@ export default {
     },
     methods:{
         logout(){
-            localStorage.removeItem("user_token")
+            this.$session.destroy();
             this.$router.push({name:"Login"});
         }
     }
