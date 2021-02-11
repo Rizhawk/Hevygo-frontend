@@ -7,7 +7,6 @@ import Csignup from '../views/custsignup.vue';
 import Osignup from '../views/optrsignup.vue';
 import Cpage from '../views/custpage.vue';
 import Opage from '../views/optrpage.vue';
-import Tdrivers from '../views/managedrivers.vue';
 import Tmanage from '../views/managetrucks.vue';
 import Tstatus from '../views/truckstatus.vue';
 import Dpage from '../views/driverpage.vue';
@@ -20,6 +19,9 @@ import Editdrivers from '../views/editdrivers';
 import Tstats from '../views/viewstats';
 import HereMap from '../views/HereMap';
 import Bnewtruck from '../views/booknewtruck';
+import Newcust from '../views/newcustsignup';
+import Eoprofile from '../views/editoptrprofile';
+import Ecprofile from '../views/editcustprofile';
 Vue.use(VueRouter)
 
 const routes = [
@@ -66,12 +68,6 @@ const routes = [
     path:'/optrpage',
     name:'Opage',
     component:Opage
-
-  },
-  {
-    path:'/managedrivers',
-    name:'Tdrivers',
-    component:Tdrivers
 
   },
   {
@@ -138,6 +134,21 @@ const routes = [
     path:'/booknewtruck',
     name:'Bnewtruck',
     component:Bnewtruck
+  },
+  {
+    path:'/newcustsignup',
+    name:'Newcust',
+    component:Newcust
+  },
+  {
+    path:'/editoptrprofile',
+    name:'Eoprofile',
+    component:Eoprofile
+  },
+  {
+    path:'/editcustprofile',
+    name:'Ecprofile',
+    component:Ecprofile
   }
 ]
 

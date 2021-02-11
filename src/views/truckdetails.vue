@@ -7,12 +7,6 @@
         <!--Form to add truck details-->
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="form4" class="my-5" @submit.prevent="submit">
-            <v-layout
-              ><v-flex class="mx-8"
-                ><h3>Add your truck details</h3></v-flex
-              ></v-layout
-            >
-            <v-layout class="my-3"> <v-flex></v-flex></v-layout>
             <validation-provider
               v-slot="{ errors }"
               name="manufacturer"
@@ -20,11 +14,12 @@
             >
               <v-text-field
                 v-model="manufacturer"
-                placeholder="Manufacturer *"
+                label="Manufacturer *"
                 :error-messages="errors"
                 name="manufacturer"
                 clearable
-                solo
+                dark
+                outlined
                 rounded
                 dense
               ></v-text-field>
@@ -36,12 +31,13 @@
             >
               <v-combobox
                 v-model="type"
-                placeholder="Type *"
+                label="Type *"
                 :items="types"
                 name="type"
                 :error-messages="errors"
                 clearable
-                solo
+                dark
+                outlined
                 rounded
                 dense
               >
@@ -55,9 +51,10 @@
               <v-text-field
                 v-model="model"
                 :error-messages="errors"
-                placeholder="Model *"
+                label="Model *"
                 clearable
-                solo
+                dark
+                outlined
                 rounded
                 dense
               ></v-text-field>
@@ -70,31 +67,31 @@
               <v-text-field
                 v-model="capacity"
                 :error-messages="errors"
-                placeholder="Capacity in ton *"
+                label="Capacity in ton *"
                 clearable
-                solo
+                dark
+                outlined
                 rounded
                 dense
               ></v-text-field>
             </validation-provider>
-            <div>
-              <v-card-text> *indicate fields are necessary </v-card-text>
-            </div>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
-              <v-flex class="mx-15">
+              <v-flex class="my-2">
                 <v-btn
                   color="primary"
-                  class="mr-4"
                   type="submit"
                   :disabled="invalid"
+                  block
+                  depressed
                   rounded
                   small
                   @click.prevent="trucketails"
                 >
-                  Add
+                  Save
                 </v-btn>
               </v-flex>
+              <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -104,7 +101,7 @@
   </v-app>
 </template>
 <script>
-  // import { ModelSelect } from 'vue-search-select'
+// import { ModelSelect } from 'vue-search-select'
 import Opage from "../views/optrpage";
 import { getAPI } from "../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
@@ -149,7 +146,6 @@ export default {
     ValidationProvider,
     ValidationObserver,
     Opage,
-  
   },
   data: () => {
     return {
@@ -209,8 +205,8 @@ export default {
 </script>
 <style scoped>
 #form4 {
-  border: solid white 1px;
-  padding: 20px;
+  border: solid black 2px;
+  padding: 30px;
   border-radius: 30px;
   background-color: slategrey;
 }

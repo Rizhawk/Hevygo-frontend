@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout class="my-10" row wrap>
-      <v-flex lg4></v-flex>
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
@@ -20,9 +20,9 @@
               <v-text-field
                 v-model="pan"
                 :error-messages="errors"
-                placeholder="Pan Number *"
-                required
-                solo
+                label="Pan Number *"
+                dark
+                outlined
                 rounded
                 clearable
                 dense
@@ -38,22 +38,23 @@
               <v-text-field
                 v-model="gst_no"
                 :error-messages="errors"
-                placeholder="Gst Number *"
+                label="Gst Number *"
+                dark
                 required
-                solo
+                outlined
                 rounded
                 clearable
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-card-text> *indicate fields are necessary </v-card-text>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
-            <v-flex class="mx-15">
-              <v-btn @click.prevent="panadd" color="success" :disabled="invalid"
-                >Add</v-btn
+            <v-flex class="my-2">
+              <v-btn rounded small depressed block @click.prevent="panadd" color="primary" :disabled="invalid"
+                >Save</v-btn
               >
             </v-flex>
+            <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -147,8 +148,8 @@ export default {
 </script>
 <style scoped>
 #form5 {
-  border: solid white 1px;
-  padding: 20px;
+  border: solid black 2px;
+  padding: 30px;
   border-radius: 30px;
   background-color: slategrey;
 }

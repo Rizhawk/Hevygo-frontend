@@ -17,16 +17,16 @@
               name="Startlocation"
               rules="required|max:20"
             >
-              <v-combobox
+              <v-autocomplete
+                ref="startloc"
                 v-model="startlocation"
                 :error-messages="errors"
                 label="Start Location"
-                :items="address"
                 prepend-inner-icon="mdi-map-marker"
                 outlined
                 rounded
                 dense
-              ></v-combobox>
+              ></v-autocomplete>
             </validation-provider>
 
             <validation-provider
@@ -34,16 +34,16 @@
               name="Endlocation"
               rules="required|max:20"
             >
-              <v-combobox
+              <v-text-field
+                id="endloc"
                 v-model="endlocation"
                 :error-messages="errors"
                 label="End Location"
-                :items="address"
                 prepend-inner-icon="mdi-map-marker"
                 outlined
                 rounded
                 dense
-              ></v-combobox>
+              ></v-text-field>
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
@@ -115,6 +115,7 @@
   </v-app>
 </template>
 <script>
+ import google from 'vue2-google-maps';
 import Navbar from "../components/Navbar";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
@@ -159,24 +160,12 @@ export default {
       weight: "",
       goodstype: "",
       date: "",
-      citi: [],
-      address: [],
     };
   },
-  mounted: function () {
-    fetch("cities.json")
-      .then((r) => r.json())
-      .then(
-        (json) => {
-          this.citi = json;
-          for (let key in this.citi) {
-            this.address.push(this.citi[key]["name"]);
-          }
-        },
-        (response) => {
-          console.log("Error loading json:", response);
-        }
-      );
+  mounted(){
+  new google.maps.places.Autocomplete(
+   document.getElementById("startloc")
+  )
   },
   methods: {
     submit() {

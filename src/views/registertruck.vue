@@ -2,44 +2,47 @@
   <v-app>
     <Opage />
     <v-layout class="my-3" row wrap>
-      <v-flex lg5></v-flex>
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-        <validation-observer ref="observer1" v-slot="{ invalid }">
-          <form id="form2" @submit.prevent="submit">
+        <validation-observer ref="observer1" v-slot="{invalid}">
+          <form id="form2" @submit.prevent="submit" >
             <v-layout
-              ><v-flex><h2>Fill the details</h2></v-flex></v-layout
+              ><v-flex
+                ><p class="headline">Fill the details</p></v-flex
+              ></v-layout
             >
-            <v-layout class="my-3"> <v-flex></v-flex></v-layout>
             <validation-provider v-slot="{ errors }" name="Name">
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                placeholder="Name of your truck"
+                label="Name of your truck"
+                dark
                 clearable
-                solo
+                outlined
                 rounded
                 dense
               ></v-text-field>
             </validation-provider>
             <v-text-field
               v-model="password"
-              placeholder="Password *"
+              label="Password *"
               name="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
+              dark
               clearable
-              solo
+              outlined
               rounded
               dense
             ></v-text-field>
             <v-text-field
               v-model="password2"
-              placeholder="Confirm Password *"
+              label="Confirm Password *"
               name="confirmPassword"
               :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
               :rules="[
@@ -49,8 +52,9 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
+              dark
               clearable
-              solo
+              outlined
               rounded
               dense
             ></v-text-field>
@@ -65,10 +69,10 @@
               <v-text-field
                 v-model="phone"
                 :error-messages="errors"
-                placeholder=" Phone number to contact your truck *"
-                required
+                label=" Phone number to contact your truck *"
+                dark
                 clearable
-                solo
+                outlined
                 rounded
                 dense
               ></v-text-field>
@@ -78,16 +82,21 @@
             </v-card-text>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
-            <v-flex class="mx-15 my-2">
-              <v-btn
-                type="submit"
-                @click.prevent="tsignup"
-                color="success"
-                :disabled="invalid"
-                >Save</v-btn
-              >
-            </v-flex>
-            </v-layout>   
+              <v-flex class="my-2">
+                <v-btn
+                  type="submit"
+                  @click.prevent="tsignup"
+                  :disabled="invalid"
+                  color="primary"
+                  rounded
+                  small
+                  depressed
+                  block
+                  >Save</v-btn
+                >
+              </v-flex>
+              <v-flex lg3></v-flex>
+            </v-layout>
           </form>
         </validation-observer>
       </v-flex>
@@ -98,7 +107,7 @@
 <script>
 import { getAPI } from "../axios-api";
 import Opage from "../views/optrpage";
-import { required, digits, max, min } from "vee-validate/dist/rules"
+import { required, digits, max, min } from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -187,12 +196,11 @@ export default {
             this.next = true;
             this.snackbar = !this.snackbar;
             this.clear();
-            this.$router.push({name:'Tadd'})
-          }      
+            this.$router.push({ name: "Tadd" });
+          }
         })
         .catch((err) => {
           console.log(err);
-          
         });
     },
   },
@@ -200,8 +208,8 @@ export default {
 </script>
 <style scoped>
 #form2 {
-  border: solid black 1px;
-  padding: 20px;
+  border: solid black 2px;
+  padding: 30px;
   border-radius: 30px;
   background-color: slategrey;
 }

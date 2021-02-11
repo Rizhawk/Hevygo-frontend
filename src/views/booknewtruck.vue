@@ -170,24 +170,7 @@ export default {
       date: "" || localStorage.getItem("dt"),
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
-      citi: [],
-      address: [],
     };
-  },
-  mounted: function () {
-    fetch("cities.json")
-      .then((r) => r.json())
-      .then(
-        (json) => {
-          this.citi = json;
-          for (let key in this.citi) {
-            this.address.push(this.citi[key]["name"]);
-          }
-        },
-        (response) => {
-          console.log("Error loading json:", response);
-        }
-      );
   },
   methods: {
     submit() {
@@ -225,7 +208,7 @@ export default {
           console.log(this.APIData);
           this.clear();
           localStorage.clear();
-          //   this.$router.push({ name: "HereMap" });
+          this.$router.push({ name: "HereMap" });
         })
         .catch((err) => {
           alert(err);

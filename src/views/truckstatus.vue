@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout row wrap class="my-15">
-      <v-flex lg3></v-flex>
+      <v-flex xs1 sm2 md2 lg3></v-flex>
       <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
         ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
       >
@@ -19,11 +19,13 @@
             >
               <v-select
                 v-model="reg"
-                placeholder="Truck"
+                label="Truck"
                 :error-messages="errors"
                 :items="trucks"
+                clearable
                 rounded
-                solo
+                dark
+                outlined
                 dense
               ></v-select>
             </validation-provider>
@@ -36,11 +38,13 @@
             >
               <v-select
                 v-model="driver"
-                placeholder="Drivers"
+                label="Drivers"
                 :error-messages="errors"
                 :items="drivers"
+                clearable
+                dark
                 rounded
-                solo
+                outlined
                 dense
               ></v-select>
             </validation-provider>
@@ -54,42 +58,51 @@
               <v-select
                 v-model="status"
                 :items="stats"
-                placeholder="Status"
+                label="Status"
                 :error-messages="errors"
+                clearable
                 rounded
-                solo
+                dark
+                outlined
                 dense
               ></v-select>
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
               name="Location"
-              :error-messages="errors"
               :rules="{
                 required: true,
               }"
             >
-              <v-text-field
+              <v-combobox
                 v-model="loc"
-                placeholder="Location"
+                label="Location"
+                :error-messages="errors"
+                clearable
+                :items="address"
                 rounded
-                solo
+                dark
+                outlined
                 dense
-              ></v-text-field>
+              ></v-combobox>
             </validation-provider>
             <v-layout row wrap>
-              <v-flex lg4></v-flex>
-              <v-flex class="mx-10">
+              <v-flex lg3></v-flex>
+              <v-flex class="my-2">
                 <v-btn
                   :disabled="invalid"
                   rounded
+                  block
+                  depressed
+                  small
                   type="submit"
                   color="primary"
                   @click="truckdetails(status, loc)"
-                  >submit</v-btn
+                  >Save</v-btn
                 ></v-flex
-              ></v-layout
-            >
+              >
+              <v-flex lg3></v-flex>
+            </v-layout>
           </form>
         </validation-observer>
         <!--Form ends-->
@@ -138,7 +151,24 @@ export default {
       did: "",
       message: "",
       snackbar: false,
+      citi:[],
+      address:[]
     };
+  },
+  created: function () {
+    fetch("cities.json")
+      .then((r) => r.json())
+      .then(
+        (json) => {
+          this.citi = json;
+          for (let key in this.citi) {
+            this.address.push(this.citi[key]["name"]);
+          }
+        },
+        (response) => {
+          console.log("Error loading json:", response);
+        }
+      );
   },
   beforeMount: function () {
     //Api call for fetch the reg number of all trucks
@@ -227,7 +257,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
   },
 };
@@ -236,8 +266,8 @@ export default {
 </style>
 <style scoped>
 #form7 {
-  border: solid black 1px;
-  padding: 25px;
+  border: solid black 2px;
+  padding: 30px;
   border-radius: 30px;
   background-color: slategrey;
 }

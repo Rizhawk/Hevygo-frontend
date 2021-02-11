@@ -23,11 +23,16 @@
         <span class="my-3 mx-5"
           ><v-btn small router to="/login" color="blue">Login</v-btn></span
         >
-        <span class="my-3 ">
-          <v-btn small outlined color="white">
-            Sign Up
-          </v-btn></span
-        >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <span class="my-3">
+              <v-btn router to="/newcustsignup" v-bind="attrs" v-on="on" small outlined color="white">
+                Sign Up
+              </v-btn></span
+            >
+          </template>
+          <span>Create a Customer Account</span>
+        </v-tooltip>
       </v-toolbar-items>
       <div class="hidden-sm-and-up">
         <v-menu offset-y>
