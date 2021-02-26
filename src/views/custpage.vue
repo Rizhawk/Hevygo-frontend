@@ -1,9 +1,9 @@
 <template>
   <nav>
     <!--Navbar-->
-    <v-app-bar color="black" dark app>
+    <v-app-bar dense color="black" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>HEVYGO</v-toolbar-title>
+      <v-toolbar-title class="font-weight-medium">SHUTTLE</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
     <!--Navbar ends-->
@@ -13,6 +13,7 @@
       v-model="drawer"
       absolute
       bottom
+      fixed
       clipped
       hide-overlay
       dark
@@ -24,7 +25,13 @@
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
           <p class="white--text subheading mt-1">
-            Customer Name<v-btn x-small fab rounded router to="/editcustprofile">
+            Customer Name<v-btn
+              x-small
+              fab
+              rounded
+              router
+              to="/editcustprofile"
+            >
               <v-icon>mdi-pencil</v-icon></v-btn
             >
           </p>
@@ -38,9 +45,8 @@
           <v-list-item router to="/booknewtruck">
             Booking a new Truck
           </v-list-item>
-          <v-list-item> Booking Status </v-list-item>
-          <v-list-item router to="/HereMap"> Track your Truck </v-list-item>
-          <v-list-item> Edit Booking </v-list-item>
+          <v-list-item router to="/bookings"> Bookings</v-list-item>
+          <v-list-item router to="/custrack"> Track your Shipment </v-list-item>
         </v-list-item-group>
         <v-list-item>
           <v-btn

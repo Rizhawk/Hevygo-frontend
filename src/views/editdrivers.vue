@@ -29,35 +29,32 @@
               <tr v-for="driver in driverdetails" :key="driver.id">
                 <td>{{ driver.driver_name }}</td>
                 <td>{{ driver.phone }}</td>
+
+                <td
+                  @click="
+                    getaDriver(
+                      driver.id,
+                      driver.driver_name,
+                      driver.phone,
+                      driver.operator_name
+                    )
+                  "
+                >
+                  Edit/Delete
+                </td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog"
-                  persistent
                   max-width="400px"
                   light
                 >
-                  <template v-slot:activator="{ on, attrs }">
-                    <td
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="
-                        getaDriver(
-                          driver.id,
-                          driver.driver_name,
-                          driver.phone,
-                          driver.operator_name
-                        )
-                      "
-                    >
-                      Edit/Delete
-                    </td>
-                  </template>
                   <form id="form6">
                     <v-text-field
                       class="mx-8"
-                      placeholder="Driver Name"
+                      label="Driver Name"
                       clearable
-                      solo
+                      dark
+                      outlined
                       dense
                       rounded
                       v-model="dname"
@@ -65,38 +62,41 @@
                     </v-text-field>
                     <v-text-field
                       class="mx-8"
-                      placeholder="Phone number"
+                      label="Phone number"
                       clearable
+                      dark
                       rounded
                       dense
-                      solo
+                      outlined
                       v-model="drphn"
                     >
                     </v-text-field>
-                     <v-layout class="my-1" row wrap>
-                    <v-flex class="mx-15">
-                      <v-btn
-                        rounded
-                        color="success"
-                        small
-                        @click.prevent="updatedr(drid)"
-                        >Update</v-btn
-                      >
-                      <v-btn
-                        class="mx-1"
-                        rounded
-                        color="red"
-                        small
-                        @click="dialog2 = true"
-                        >Delete</v-btn
-                      >
-                      <v-dialog v-model="dialog2" max-width="300">
-                        <v-card>
-                          <v-card-title>
-                            Are you sure want to delete this driver?
-                          </v-card-title>
-                          <v-card-actions>
+                    <v-layout row wrap>
+                      <v-flex lg2></v-flex>
+                      <v-flex class="mx-10">
+                        <v-btn
+                          depressed
+                          color="success"
+                          small
+                          @click.prevent="updatedr(drid)"
+                          >Update</v-btn
+                        >
+                        <v-btn
+                          class="mx-2"
+                          depressed
+                          color="red"
+                          small
+                          @click="dialog2 = true"
+                          >Delete</v-btn
+                        >
+                        <v-dialog v-model="dialog2" max-width="350">
+                          <v-card>
+                            <v-card-text class="subtitle-1 black--text">
+                              Are you sure want to delete this driver?
+                            </v-card-text>
+                            <v-spacer></v-spacer>
                             <v-btn
+                              small
                               color="green darken-1"
                               text
                               @click="dialog2 = false"
@@ -104,17 +104,19 @@
                               Close
                             </v-btn>
 
-                            <v-btn color="red darken-1" text @click="deletenow">
+                            <v-btn
+                              small
+                              color="red darken-1"
+                              text
+                              @click="deletenow"
+                            >
                               Delete
                             </v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                      <v-btn small rounded @click="dialog = !dialog"
-                        >close</v-btn
-                      ></v-flex
-                    >
-                     </v-layout>
+                          </v-card>
+                        </v-dialog>
+                      </v-flex>
+                      <v-flex lg2></v-flex>
+                    </v-layout>
                   </form>
                 </v-dialog>
               </tr>
@@ -133,8 +135,8 @@ export default {
   data: () => {
     return {
       driverdetails: [],
-      dialog: false,//dialog box form for editing the driver details
-      dialog2: false,//dialog box for confirmation for deletion of a driver
+      dialog: false, //dialog box form for editing the driver details
+      dialog2: false, //dialog box for confirmation for deletion of a driver
       dname: "",
       drphn: "",
       ownerid: "",
@@ -162,7 +164,7 @@ export default {
       .catch((err) => {
         alert(err);
       });
-      //
+    //
   },
   methods: {
     //Api call to get specific driver details
@@ -179,14 +181,14 @@ export default {
           this.dname = name;
           this.drphn = phone;
           this.ownerid = ownerid;
-          console.log(this.adriver);
+          this.dialog = true;
         })
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
-     //Api call for updating driver details
+    //Api call for updating driver details
     updatedr(drid) {
       getAPI
         .post(
@@ -209,7 +211,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
     //Api call for delete the selected driver
     deletedr(drid) {
@@ -226,7 +228,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
     //delete confirmation function call
     deletenow() {
@@ -241,7 +243,7 @@ export default {
 #form6 {
   border: solid white 1px;
   padding: 25px;
-  border-radius: 30px;
+  border-radius: 15px;
   background-color: grey;
 }
 #table {

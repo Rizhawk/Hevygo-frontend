@@ -19,7 +19,7 @@
           <v-tab-item>
             <v-layout class="my-10" row wrap>
               <v-flex xs1 sm2 md2 lg3></v-flex>
-              <v-flex xs12 sm8 md6 lg6>
+              <v-flex xs10 sm8 md6 lg6>
                 <validation-observer v-slot="{ invalid }">
                   <form id="update">
                     <v-text-field
@@ -83,7 +83,7 @@
           <v-tab-item>
             <v-layout row wrap class="my-10">
               <v-flex xs1 sm2 md2 lg3></v-flex>
-              <v-flex xs12 sm8 md6 lg6>
+              <v-flex xs10 sm8 md6 lg6>
                 <form id="update2">
                   <v-text-field
                     v-model="npass"

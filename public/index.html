@@ -12,8 +12,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-  <script src="https://maps.googleapis.com/maps/api/js?key=ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E&libraries=places"></script>
-  <!-- Here assets start-->
   <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
   <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
   <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
@@ -21,8 +19,9 @@
   <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.1/mapsjs-clustering.js"></script>
   <script type="text/javascript" charset="UTF-8" src="https://js.api.here.com/v3/3.1/mapsjs-data.js"></script>
   <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-  <!-- Here assets end-->
-
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAijgeSL9XSh07Cb5h3CQDTz30vDcYwNA&libraries=places"></script> 
+  <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AmGYYu23Abpqd4GtkPhEPqUZq65EBzDmrMgUYBx_tdW3oKH4CH2TvZRcjRqbTMOV&callback=loadMapScenario'></script> -->
+  <script src="https://www.bing.com/api/maps/mapcontrol?key=AmGYYu23Abpqd4GtkPhEPqUZq65EBzDmrMgUYBx_tdW3oKH4CH2TvZRcjRqbTMOV" async defer></script>
 </head>
 
 <body>
@@ -30,8 +29,9 @@
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
   </noscript>
-  <div id="app"></div>
 
+  <div id="app"></div>
+ 
   <!-- built files will be auto injected -->
 </body>
 

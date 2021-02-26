@@ -3,7 +3,7 @@
     <Navbar />
     <v-layout row wrap class="my-3">
       <v-flex xs1 sm2 md2 lg4></v-flex>
-      <v-flex xs12 sm8 md6 lg4>
+      <v-flex xs10 sm8 md6 lg4>
         <validation-observer ref="observer" v-slot="{ invalid }">
           <!--Operator signup form begining -->
 

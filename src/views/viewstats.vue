@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout row wrap class="my-15">
-      <v-flex lg3></v-flex>
+      <v-flex sm2 md2 lg3></v-flex>
       <v-flex xs12 sm8 md6 lg6>
         <!--Table showing status details-->
         <v-simple-table id="table2" fixed-header dark>
@@ -30,111 +30,103 @@
               <tr v-for="truck in truckstats" :key="truck.truck">
                 <td>{{ truck.location }}</td>
                 <td>{{ truck.status }}</td>
+                <td @click="showdetail(truck.truck, truck.driver)">
+                  View more/Edit
+                </td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog"
-                  persistent
                   max-width="400px"
                   light
                 >
-                  <template v-slot:activator="{ on, attrs }">
-                    <td
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="showdetail(truck.truck, truck.driver)"
-                    >
-                      View more/Edit
-                    </td>
-                  </template>
                   <form id="form7">
                     <v-select
-                      placeholder="Truck"
+                      label="Truck"
                       :items="trucks"
                       clearable
-                      filled
-                      solo
+                      outlined
+                      dark
                       dense
                       rounded
                       v-model="treg"
                     >
                     </v-select>
                     <v-select
-                      placeholder="Driver"
+                      label="Driver"
                       :items="drivers"
                       clearable
-                      filled
-                      solo
+                      outlined
+                      dark
                       dense
                       rounded
                       v-model="drname"
                     >
                     </v-select>
                     <v-select
-                      placeholder="Status"
+                      label="Status"
                       :items="stats"
-                      filled
-                      solo
+                      outlined
+                      dark
                       dense
                       rounded
                       v-model="stat"
                     >
                     </v-select>
                     <v-text-field
-                      placeholder="Location"
+                      label="Location"
                       clearable
-                      filled
-                      solo
+                      outlined
+                      dark
                       dense
                       rounded
                       v-model="loc"
                     >
                     </v-text-field>
                     <v-layout row wrap>
-                      <v-flex class="mx-15">
+                      <v-flex lg2></v-flex>
+                      <v-flex class="mx-10">
                         <v-btn
                           color="success"
-                          rounded
+                          depressed
                           small
                           @click.prevent="updateStats(trid)"
                           >Update</v-btn
                         >
                         <v-btn
                           color="red"
-                          class="mx-1"
-                          rounded
+                          class="mx-2"
+                          depressed
                           small
-                          @click="dialog2=true"
+                          @click="dialog2 = true"
                           >Delete</v-btn
                         >
-                        <v-dialog  v-model="dialog2" max-width="300">
+                        <v-dialog v-model="dialog2" max-width="350">
                           <v-card>
-                            <v-card-title>
+                            <v-card-text class="subtitle-1 balck--text">
                               Are you sure want to delete this status?
-                            </v-card-title>
-                            <v-card-actions>
-                              <v-btn
-                                color="green darken-1"
-                                text
-                                @click="dialog2 = false"
-                              >
-                                Close
-                              </v-btn>
-
-                              <v-btn
-                                color="red darken-1"
-                                text
-                                @click="deletenow"
-                              >
-                                Delete
-                              </v-btn>
-                            </v-card-actions>
+                            </v-card-text>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              color="green darken-1"
+                              text
+                              small
+                              @click="dialog2 = false"
+                            >
+                              Close
+                            </v-btn>
+                            <v-btn
+                              small
+                              color="red darken-1"
+                              text
+                              @click="deletenow"
+                            >
+                              Delete
+                            </v-btn>
                           </v-card>
                         </v-dialog>
-                        <v-btn rounded small @click="dialog = false"
-                          >Close</v-btn
-                        ></v-flex
-                      ></v-layout
-                    >
+                      </v-flex>
+                      <v-flex lg2></v-flex>
+                    </v-layout>
                   </form>
                 </v-dialog>
               </tr>
@@ -160,7 +152,7 @@ export default {
       drivers: [],
       trucks: [],
       dialog: false,
-      dialog2:false,//dialog box for delete confirmation
+      dialog2: false, //dialog box for delete confirmation
       trid: "",
       drid: "",
       treg: "",
@@ -288,6 +280,7 @@ export default {
           this.APIData = response.data;
           this.stat = this.APIData["status"];
           this.loc = this.APIData["location"];
+          this.dialog = true;
         })
         .catch((err) => {
           alert(err);
@@ -318,14 +311,14 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
-    deletenow(){//Call when user wants to delete the currently selected status
-        this.dialog2=false,
-        this.deleteStat(this.trid);
+    deletenow() {
+      //Call when user wants to delete the currently selected status
+      (this.dialog2 = false), this.deleteStat(this.trid);
     },
     deleteStat(trid) {
-        //Api call to delete a truck status
+      //Api call to delete a truck status
       getAPI
         .delete("api/truck/truck-status-delete/" + trid + "/", {
           headers: {
@@ -340,7 +333,7 @@ export default {
         .catch((err) => {
           alert(err);
         });
-        //
+      //
     },
   },
 };
@@ -355,7 +348,7 @@ export default {
 #form7 {
   border: solid white 1px;
   padding: 25px;
-  border-radius: 30px;
+  border-radius: 15px;
   background-color: grey;
 }
 </style>

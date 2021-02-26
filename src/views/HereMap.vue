@@ -60,7 +60,7 @@ export default {
   },
   async mounted() {
     getAPI
-      .get("/api/maps/maps/", {
+      .get("/api/maps/set-route/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },

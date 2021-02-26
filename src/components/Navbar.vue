@@ -2,10 +2,10 @@
   <nav>
     <!--Navbar-->
     <v-app-bar dark class="black" app>
-      <v-app-bar-title class="text-uppercase">
+     <v-app-bar-title class="text-uppercase">
         <router-link to="/" id="link">
-          <span class="font-weight-bold white--text">HEVY</span>
-          <span class="white--text">GO</span></router-link
+          <span class="subtitle-1 font-weight-bold white--text">SHUTTLE</span>
+         </router-link
         >
       </v-app-bar-title>
       <v-spacer></v-spacer>
@@ -26,7 +26,15 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <span class="my-3">
-              <v-btn router to="/newcustsignup" v-bind="attrs" v-on="on" small outlined color="white">
+              <v-btn
+                router
+                to="/newcustsignup"
+                v-bind="attrs"
+                v-on="on"
+                small
+                outlined
+                color="white"
+              >
                 Sign Up
               </v-btn></span
             >
@@ -58,6 +66,13 @@
               <v-list-item-title
                 ><router-link to="/login" id="link"
                   >Login</router-link
+                ></v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title
+                ><router-link to="/newcustsignup" id="link"
+                  >Sign Up</router-link
                 ></v-list-item-title
               >
             </v-list-item>

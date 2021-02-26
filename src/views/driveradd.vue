@@ -25,7 +25,7 @@
         </v-card>
       </v-dialog>
       <v-flex xs1 sm2 md2 lg4></v-flex>
-      <v-flex xs12 sm8 md6 lg4>
+      <v-flex xs10 sm8 md6 lg4>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
