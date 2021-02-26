@@ -24,7 +24,7 @@
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
           <p class="white--text subheading mt-1">
-            Customer Name<v-btn x-small fab rounded>
+            Customer Name<v-btn x-small fab rounded router to="/editcustprofile">
               <v-icon>mdi-pencil</v-icon></v-btn
             >
           </p>
@@ -67,7 +67,8 @@ export default {
   methods: {
     logout() {
       this.$session.destroy();
-      this.$router.push({ name: "Home" });
+      localStorage.clear();
+      this.$router.push({ name: "Login" });
     },
   },
 

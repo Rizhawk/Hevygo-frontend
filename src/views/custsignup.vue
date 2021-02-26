@@ -5,7 +5,6 @@
       <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
-
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="csignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
@@ -109,7 +108,6 @@
             </v-layout>
           </form>
         </validation-observer>
-
         <!--Customer Sign Up form end -->
       </v-flex>
     </v-layout>
@@ -168,7 +166,6 @@ export default {
       email: null,
       show1: false,
       show2: false,
-      checkbox: null,
       user_type: 2,
       password: "",
       password2: "",
@@ -189,7 +186,6 @@ export default {
       this.email = "";
       this.password = "";
       this.password2 = "";
-      this.checkbox = null;
       this.$refs.observer.reset();
     },
     //Function to call Api after click on the signup button
@@ -209,6 +205,7 @@ export default {
           console.log(this.APIData["response"]);
           this.$session.start();
           this.$session.set("user_token", response.data.token);
+          this.clear();
           this.bookTruck();
         })
         .catch((err) => {

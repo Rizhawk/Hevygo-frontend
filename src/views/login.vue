@@ -6,37 +6,41 @@
       <v-flex xs12 sm8 md6 lg4>
         <!--Login section-->
         <form id="loginform" @submit.prevent="submit">
+          <v-layout row flex><v-flex class="my-4"></v-flex></v-layout>
           <v-text-field
             v-model="phone"
-            placeholder="Phone Number"
+            label="Phone Number"
             rounded
-            solo
+            outlined
             dense
           ></v-text-field>
           <v-text-field
             v-model="password"
-            placeholder="Password"
+            label="Password"
             name="password"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="show1 ? 'text' : 'password'"
             @click:append="show1 = !show1"
             rounded
-            solo
+            outlined
             dense
           ></v-text-field>
           <v-layout row wrap>
-            <v-flex lg3></v-flex>
-            <v-flex class="mx-10">
+            <v-flex lg2></v-flex>
+            <v-flex class="mx-4">
               <v-btn
                 color="primary"
                 class="my-2"
+                block
                 type="submit"
                 width="50%"
+                rounded
                 @click.prevent="login"
               >
                 Login
               </v-btn>
             </v-flex>
+            <v-flex lg2></v-flex>
           </v-layout>
         </form>
         <!--Login form ends-->
@@ -73,7 +77,7 @@ export default {
           this.$session.set('user_token', response.data.token);
           this.APIData = response.data;
           if (response.data.user_type == 1) {
-            this.$router.push({ name: "Opage" });
+            this.$router.push({ name: "Treg" });
           } else if (response.data.user_type == 2) {
             this.$router.push({ name: "Bnewtruck" });
           } else if (response.data.user_type == 3) {
@@ -101,10 +105,9 @@ export default {
   padding: 0;
 }
 #loginform {
-  border: solid white 1px;
+  border: solid black 2px;
   padding: 35px;
   border-radius: 30px;
-  background-color: black;
-  opacity: 0.65;
+  background-color: white;
 }
 </style>

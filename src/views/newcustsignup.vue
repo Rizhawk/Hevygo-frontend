@@ -1,16 +1,15 @@
 <template>
-  <v-app id="osign">
+  <v-app id="cnewsign">
     <Navbar />
-    <v-layout row wrap class="my-3">
-      <v-flex xs1 sm2 md2 lg4></v-flex>
+    <v-layout class="my-7" row wrap>
+      <v-flex xs1 sm2 md3 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
-        <validation-observer ref="observer" v-slot="{ invalid }">
-          <!--Operator signup form begining -->
+        <!--Customer Sign Up form begining -->
 
-          <form id="osignup" @submit.prevent="submit">
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <form id="cnewsignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
-              <v-flex class="mx-3"><p class="font-weight-bold">Create your operator account</p></v-flex
-              ><v-flex></v-flex>
+              <v-flex class="mx-3"><p class="font-weight-bold">Create your customer account</p></v-flex><v-flex></v-flex>
             </v-layout>
             <validation-provider
               v-slot="{ errors }"
@@ -20,11 +19,10 @@
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                label="Operator Name"
+                label="Customer Name"
                 outlined
                 rounded
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
             <v-text-field
@@ -38,7 +36,6 @@
               outlined
               rounded
               dense
-              clearable
             ></v-text-field>
             <v-text-field
               v-model="password2"
@@ -55,7 +52,6 @@
               outlined
               rounded
               dense
-              clearable
             ></v-text-field>
 
             <validation-provider
@@ -73,7 +69,6 @@
                 outlined
                 rounded
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
             <validation-provider v-slot="{ errors }" name="email" rules="email">
@@ -84,7 +79,6 @@
                 outlined
                 rounded
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
             <v-layout row wrap>
@@ -95,28 +89,26 @@
                   class="mr-4"
                   type="submit"
                   rounded
-                  small
                   :disabled="invalid"
-                  @click.prevent="osignup"
+                  @click.prevent="csignup"
                 >
                   Sign Up
                 </v-btn>
               </v-flex>
-              <v-layout class="my-1" row wrap>
-                <v-flex lg2></v-flex>
-                <v-flex>
-                  <span class="mx-8 black--text"
-                    >Already have an account?<router-link to="/login"
-                      >Login</router-link
-                    ></span
-                  >
-                </v-flex>
-              </v-layout>
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex lg2></v-flex>
+              <v-flex class="my-3 mx-8">
+                <span
+                  >Already have an account?<router-link to="/login"
+                    >Login</router-link
+                  ></span
+                >
+              </v-flex>
             </v-layout>
           </form>
-
-          <!--Operator signup form ends -->
         </validation-observer>
+        <!--Customer Sign Up form end -->
       </v-flex>
     </v-layout>
   </v-app>
@@ -133,7 +125,8 @@ import {
 } from "vee-validate";
 
 setInteractionMode("eager");
-//Custom validation form input fields
+
+// Custom Validation for the form input
 
 extend("digits", {
   ...digits,
@@ -153,7 +146,6 @@ extend("min", {
   ...min,
   message: "{_field_}  should be greater than {length} characters",
 });
-
 extend("email", {
   ...email,
   message: "Email must be valid",
@@ -162,6 +154,7 @@ extend("email", {
 //Custom validation ends
 
 export default {
+  name: "Newcust",
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -174,7 +167,7 @@ export default {
       email: null,
       show1: false,
       show2: false,
-      user_type: 1,
+      user_type: 2,
       password: "",
       password2: "",
       passwordRules: [
@@ -187,16 +180,16 @@ export default {
     submit() {
       this.$refs.observer.validate();
     },
-    //Function to call Api after click on the signup button
     clear() {
       this.name = "";
-      this.phoneNumber = "";
+      this.phone = "";
       this.email = "";
       this.password = "";
-      this.confirmPassword = "";
+      this.password2 = "";
       this.$refs.observer.reset();
     },
-    osignup() {
+    //Function to call Api after click on the signup button
+    csignup() {
       getAPI
         .post("/api/accounts/register/", {
           phone: this.phone,
@@ -208,25 +201,25 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData["response"]);
           this.clear();
-          this.$router.push({ name: "Login" });
+          this.$router.push({name:'Login'})
         })
         .catch((err) => {
           alert(err);
         });
     },
-    //Function to set input field empty
   },
 };
 </script>
 <style scoped>
-#osignup {
+#cnewsignup {
   border: solid black 2px;
   padding: 30px;
   border-radius: 30px;
   background-color: white;
 }
-#osign {
+#cnewsign {
   background: url("../assets/truck-12.jpg");
   background-repeat: no-repeat;
   width: 100%;

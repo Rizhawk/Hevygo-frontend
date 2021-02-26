@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <Opage />
-      <v-layout class="my-8" row wrap>
-        <v-flex lg4></v-flex>
-        <v-flex xs12 sm8 md6 lg4>
+    <v-layout class="my-8" row wrap>
+      <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-flex xs12 sm8 md6 lg4>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
@@ -18,10 +18,11 @@
               <v-text-field
                 v-model="regnumber"
                 :error-messages="errors"
-                placeholder="Registration Number *"
+                label="Registration Number *"
+                dark
                 required
                 clearable
-                solo
+                outlined
                 rounded
                 dense
               ></v-text-field>
@@ -35,34 +36,36 @@
               <v-text-field
                 v-model="homeloc"
                 :error-messages="errors"
-                placeholder="Home Location *"
+                label="Home Location *"
+                dark
                 required
                 clearable
-                solo
+                outlined
                 rounded
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-card-text>
-              <span>*indicate fields are necessary</span>
-            </v-card-text>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
-            <v-flex class="my-1 mx-15">
-              <v-btn
-                color="green"
-                @click.prevent="truckadd"
-                :disabled="invalid"
-              >
-                Save
-              </v-btn>
-            </v-flex>
+              <v-flex class="my-2">
+                <v-btn
+                  color="primary"
+                  rounded
+                  depressed
+                  block
+                  @click.prevent="truckadd"
+                  :disabled="invalid"
+                  small
+                >
+                  Save
+                </v-btn>
+              </v-flex>
+               <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
-        </v-flex>
-      </v-layout>
-
+      </v-flex>
+    </v-layout>
   </v-app>
 </template>
 <script>
@@ -116,7 +119,7 @@ export default {
       this.$refs.observer2.validate(); //Truck details add
     },
     clear() {
-        (this.optrphone = ""),
+      (this.optrphone = ""),
         (this.truckphone = ""),
         (this.regnumber = ""),
         (this.homeloc = ""),
@@ -154,9 +157,9 @@ export default {
 </script>
 <style scoped>
 #form3 {
-  border: solid white 1px;
-  padding: 20px;
+  border: solid black 2px;
+  padding: 25px;
   border-radius: 30px;
-  background-color: slategrey;
+  background-color: slategray;
 }
 </style>

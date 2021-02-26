@@ -12,11 +12,12 @@
           <v-list-item>
             <v-list-item-title>Route Details</v-list-item-title>
           </v-list-item>
-            <v-list-item router to="/custpage">
+          <v-list-item router to="/custpage">
             <v-list-item-title>Back</v-list-item-title>
           </v-list-item>
-        </v-list> </v-menu
-    ></v-system-bar>
+        </v-list>
+      </v-menu></v-system-bar
+    >
     <div id="map">
       <!--In the following div the HERE Map will render-->
       <div
@@ -61,7 +62,7 @@ export default {
     getAPI
       .get("/api/maps/maps/", {
         headers: {
-          Authorization: `Token ${this.$session.get('user_token')}`,
+          Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
@@ -170,7 +171,6 @@ export default {
           });
         }
       };
-
       // Get an instance of the routing service version 8:
       var router = platform.getRoutingService(null, 8);
 

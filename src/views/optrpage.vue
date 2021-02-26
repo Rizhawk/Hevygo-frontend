@@ -23,7 +23,10 @@
           <v-avatar size="100">
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
-          <p class="white--text subheading mt-1">Operator Name <v-btn x-small fab rounded> <v-icon>mdi-pencil</v-icon></v-btn></p>
+          <p class="white--text subheading mt-1">
+            Operator Name
+            <v-btn x-small fab rounded router to="/editoptrprofile"> <v-icon>mdi-pencil</v-icon></v-btn>
+          </p>
         </v-flex>
       </v-layout>
       <v-list nav dark>
@@ -71,6 +74,7 @@ export default {
   methods: {
     logout() {
       this.$session.destroy();
+      localStorage.clear();
       this.$router.push({ name: "Login" });
     },
   },

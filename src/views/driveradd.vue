@@ -24,13 +24,18 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-flex lg4></v-flex>
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg4>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-        <validation-observer ref="observer3" v-slot="{ invalid }">
+        <validation-observer ref="observer3" v-slot="{invalid}">
           <form id="form6" @submit.prevent="adddriver">
+            <v-layout
+              ><v-flex class="my-2"
+                ></v-flex
+              ></v-layout
+            >
             <validation-provider
               v-slot="{ errors }"
               name="Driver Name"
@@ -42,7 +47,8 @@
                 v-model="driver_name"
                 :error-messages="errors"
                 label="Driver Name *"
-                solo
+                dark
+                outlined
                 rounded
                 dense
                 clearable
@@ -60,26 +66,29 @@
                 v-model="driver_phone"
                 :error-messages="errors"
                 label="Driver Phone Number *"
-                solo
+                dark
+                outlined
                 rounded
                 dense
                 clearable
               ></v-text-field>
             </validation-provider>
-            <div>
-              <v-card-text>* indicate fields are necessary</v-card-text>
-            </div>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
-              <v-flex class="mx-15">
+              <v-flex class="my-2">
                 <v-btn
                   color="success"
+                  block
+                  small
                   :disabled="invalid"
+                  rounded
+                  depressed
                   type="submit"
                   @click.prevent="driveradd"
-                  >Add</v-btn
+                  >Register</v-btn
                 >
               </v-flex>
+              <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -164,7 +173,6 @@ export default {
           this.message = this.APIData["response"];
           if (this.APIData["operator_name"]) {
             this.dialog = true;
-            // this.$router.push({name:"Padd"})
           }
           this.snackbar = !this.snackbar;
           this.clear4();
@@ -182,8 +190,8 @@ export default {
 </script>
 <style scoped>
 #form6 {
-  border: solid white 1px;
-  padding: 20px;
+  border: solid black 2px;
+  padding: 25px;
   border-radius: 30px;
   background-color: slategrey;
 }

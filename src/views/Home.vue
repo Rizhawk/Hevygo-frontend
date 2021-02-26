@@ -24,7 +24,7 @@
               </p></router-link
             >
           </template>
-          <span>Create your Operator Account Now</span>
+          <span>Create an Operator Account</span>
         </v-tooltip>
       </v-flex>
     
