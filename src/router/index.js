@@ -24,7 +24,6 @@ import Eoprofile from "../views/editoptrprofile";
 import Ecprofile from "../views/editcustprofile";
 import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
-import Mtest from "../views/maptest";
 Vue.use(VueRouter);
 
 const routes = [
