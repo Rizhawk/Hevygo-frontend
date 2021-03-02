@@ -12,6 +12,7 @@
                 <th class="text-left">Date</th>
                 <th class="text-left">Start Location</th>
                 <th class="text-left">End Location</th>
+                <th class="text-left">View Route</th>
                 <th class="text-left">Transaction Details</th>
               </tr>
             </thead>
@@ -37,9 +38,16 @@
                 <td>{{ dest.date }}</td>
                 <td>{{ dest.start_location }}</td>
                 <td>{{ dest.end_location }}</td>
+                <td
+                  @click.prevent="
+                    viewRoute(dest.start_location, dest.end_location)
+                  "
+                >
+                  View
+                </td>
                 <td @click.prevent="getTransaction(dest.id)">View</td>
                 <v-dialog v-model="dialog3" max-width="350">
-                  <v-card  max-width="500">
+                  <v-card max-width="500">
                     <v-layout>
                       <v-flex style="background-color: black"
                         ><v-card-title
@@ -113,7 +121,7 @@
         </v-simple-table>
       </v-flex>
     </v-layout>
-    <v-dialog max-width="500" v-model="dialog">
+    <v-dialog  max-width="500" v-model="dialog">
       <form id="destlist">
         <v-text-field
           v-model="startloc"
@@ -319,6 +327,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          alert("")
         });
     },
     //
@@ -341,6 +350,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    //
+    viewRoute(start, end) {
+      this.$session.set("sl", start);
+      this.$session.set("el", end);
+      this.$router.push({ name: "HereMap" });
     },
   },
 };

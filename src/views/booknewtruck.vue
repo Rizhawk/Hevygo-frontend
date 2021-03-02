@@ -16,31 +16,47 @@
               type="search"
               @input="doSearch1"
               prepend-inner-icon="mdi-map-marker"
+              clearable
               outlined
-              rounded
               dense
             ></v-text-field>
-            <v-flex>
-              <v-simple-table dense v-if="dropdown1">
-                <tbody>
-                  <tr v-for="start in results1" :key="start.id">
-                    <v-icon dense>mdi-map-marker</v-icon>
-                    <td @click.prevent="getStart(start.title)">
-                      {{ start.title }}
-                    </td>
-                  </tr>
-                </tbody>
-              </v-simple-table>
-            </v-flex>
+            <v-layout row wrap>
+              <v-flex xs10 sm10 md10 lg10></v-flex>
+              <v-flex
+                ><v-btn @click.prevent="swapLoc()" dark x-small>
+                  <span class="material-icons"> swap_vert </span>
+                </v-btn></v-flex
+              >
+              <v-flex>
+                <v-simple-table dense v-if="dropdown1">
+                  <thead>
+                    <tr @click.prevent="getLocation()">
+                      <td>
+                        <span class="material-icons"> my_location </span>
+                      </td>
+                      <td>Your Location</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="start in results1" :key="start.id">
+                      <v-icon dense>mdi-map-marker</v-icon>
+                      <td @click.prevent="getStart(start.title)">
+                        {{ start.title }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </v-simple-table>
+              </v-flex>
+            </v-layout>
             <v-text-field
               v-model="endlocation"
               label="End Location"
               type="search"
+              class="my-5"
               @input="doSearch2"
               prepend-inner-icon="mdi-map-marker"
               clearable
               outlined
-              rounded
               dense
             ></v-text-field>
             <v-flex>
@@ -67,7 +83,6 @@
                 type="date"
                 clearable
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -85,7 +100,6 @@
                 label="Weight in ton"
                 clearable
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -100,7 +114,6 @@
                 label="Goods Type"
                 clearable
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -183,17 +196,20 @@ export default {
       dropdown2: false,
       results1: [],
       results2: [],
+      //
+      crntltln: [],
+      crntloc: "",
     };
   },
   methods: {
-    async doSearch1() {
+    async doSearch1() {//Auto suggestion Function call for Startlocation Field
       this.dropdown1 = true;
       if (this.startlocation === "") return;
       let resp1 = await fetch(url + encodeURIComponent(this.startlocation));
       let data1 = await resp1.json();
       this.results1 = data1.items;
     },
-    async doSearch2() {
+    async doSearch2() {//Auto suggestion call for Endloaction Field
       this.dropdown2 = true;
       if (this.endlocation === "") return;
       console.log("doSearch2");
@@ -201,13 +217,56 @@ export default {
       let data2 = await resp2.json();
       this.results2 = data2.items;
     },
-    getStart(place) {
+    getStart(place) {//Input the Selected Value and Hide the Dropdown flex for Startlocation
       this.startlocation = place;
       this.dropdown1 = false;
     },
-    getEnd(place) {
+    getEnd(place) {//Input the Selected Value and Hide the Dropdown flex for Endlocation
       this.endlocation = place;
       this.dropdown2 = false;
+    },
+    getLocation() {//Fuction call to get the user's current geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser");
+      }
+    },
+    showPosition(position) {//Fuction to get the gocoordinates of users's current location
+      this.crntltln.push(position.coords.latitude);
+      this.crntltln.push(position.coords.longitude);
+      this.crntloc = this.crntltln.toString();
+      this.inputCrntloc();
+    },
+    inputCrntloc() {//Performing the Reverse Geocodeing to get the user's geolocation address.
+      const H = window.H;
+      // Instantiate a map and platform object:
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      // Get an instance of the search service:
+      var service = platform.getSearchService();
+      // Call the reverse geocode method with the geocoding parameters,
+      // the callback and an error callback function (called if a
+      // communication error occurs):
+      service.reverseGeocode(
+        {
+          at: this.crntloc,
+        },
+        (result) => {
+          result.items.forEach((item) => {
+            this.startlocation = item.address.label;
+            this.crntltln = [];
+          });
+          this.dropdown1 = false;
+        },
+        alert
+      );
+    },
+    swapLoc() {//Fuction to Swap the start and end location field values.
+      let temp = this.startlocation;
+      this.startlocation = this.endlocation;
+      this.endlocation = temp;
     },
     submit() {
       this.$refs.observer.validate();
@@ -223,32 +282,37 @@ export default {
       this.$refs.observer.reset();
     },
     bookTruck() {
-      getAPI
-        .post(
-          "/api/customer/cust-dest-create/",
-          {
-            start_location: this.startlocation,
-            end_location: this.endlocation,
-            weight: this.weight,
-            goods_type: this.goodstype,
-            date: this.date,
-          },
-          {
-            headers: {
-              Authorization: ` Token ${this.$session.get("user_token")}`,
+      if ((this.dropdown1 || this.dropdown2) == true) {//Checking if the user inputed the value from dropdown data.
+        alert("Select a Location");
+      } else {
+        getAPI
+          .post(
+            "/api/customer/cust-dest-create/",
+            {
+              start_location: this.startlocation,
+              end_location: this.endlocation,
+              weight: this.weight,
+              goods_type: this.goodstype,
+              date: this.date,
             },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          console.log(this.APIData);
-          this.clear();
-          localStorage.clear();
-          this.$router.push({ name: "Cbookings" });
-        })
-        .catch((err) => {
-          alert(err);
-        });
+            {
+              headers: {
+                Authorization: ` Token ${this.$session.get("user_token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.APIData = response.data;
+            this.$session.set("sl", this.startlocation);
+            this.$session.set("el", this.endlocation);
+            this.clear();
+            localStorage.clear();
+            this.$router.push({ name: "HereMap" });
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
     },
   },
 };

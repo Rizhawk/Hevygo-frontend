@@ -372,7 +372,6 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           window.location.reload();
         })
         .catch((err) => {
