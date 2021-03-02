@@ -1,9 +1,9 @@
 <template>
   <nav>
     <!--Navbar-->
-    <v-app-bar color="black" dark app>
+    <v-app-bar  dense color="black" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>HEVYGO</v-app-bar-title>
+      <v-app-bar-title class="font-weight-medium">SHUTTLE</v-app-bar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
     <!--Navbar ends-->
@@ -13,6 +13,7 @@
       v-model="drawer"
       absolute
       bottom
+      fixed
       clipped
       hide-overlay
       dark

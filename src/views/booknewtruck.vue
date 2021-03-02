@@ -2,49 +2,59 @@
   <v-app>
     <Cpage />
     <v-layout class="my-5" row wrap>
-      <v-flex xs1 sm2 md2 lg4></v-flex>
-      <v-flex xs12 sm8 md6 lg4>
+      <v-flex xs2 sm2 md2 lg4></v-flex>
+      <v-flex xs8 sm8 md6 lg4>
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="booknew" @submit.prevent="submit">
             <v-layout class="my-2" row wrap
               ><v-flex class="mx-3"><h2>Book a Truck</h2></v-flex
               ><v-flex></v-flex
             ></v-layout>
-            <validation-provider
-              v-slot="{ errors }"
-              name="Startlocation"
-              rules="required|max:20"
-            >
-              <v-combobox
-                v-model="startlocation"
-                :error-messages="errors"
-                label="Start Location"
-                :items="address"
-                prepend-inner-icon="mdi-map-marker"
-                clearable
-                outlined
-                rounded
-                dense
-              ></v-combobox>
-            </validation-provider>
-
-            <validation-provider
-              v-slot="{ errors }"
-              name="Endlocation"
-              rules="required|max:20"
-            >
-              <v-combobox
-                v-model="endlocation"
-                :error-messages="errors"
-                label="End Location"
-                :items="address"
-                prepend-inner-icon="mdi-map-marker"
-                clearable
-                outlined
-                rounded
-                dense
-              ></v-combobox>
-            </validation-provider>
+            <v-text-field
+              v-model="startlocation"
+              label="Start Location"
+              type="search"
+              @input="doSearch1"
+              prepend-inner-icon="mdi-map-marker"
+              outlined
+              rounded
+              dense
+            ></v-text-field>
+            <v-flex>
+              <v-simple-table dense v-if="dropdown1">
+                <tbody>
+                  <tr v-for="start in results1" :key="start.id">
+                    <v-icon dense>mdi-map-marker</v-icon>
+                    <td @click.prevent="getStart(start.title)">
+                      {{ start.title }}
+                    </td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-flex>
+            <v-text-field
+              v-model="endlocation"
+              label="End Location"
+              type="search"
+              @input="doSearch2"
+              prepend-inner-icon="mdi-map-marker"
+              clearable
+              outlined
+              rounded
+              dense
+            ></v-text-field>
+            <v-flex>
+              <v-simple-table dense v-if="dropdown2">
+                <tbody>
+                  <tr v-for="end in results2" :key="end.id">
+                    <v-icon dense>mdi-map-marker</v-icon>
+                    <td @click.prevent="getEnd(end.title)">
+                      {{ end.title }}
+                    </td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-flex>
             <validation-provider
               v-slot="{ errors }"
               name="Date"
@@ -100,24 +110,17 @@
                 <v-btn
                   dark
                   type="submit"
+                  block
                   :disabled="invalid"
                   router
-                  rounded
+                  depressed
                   small
                   @click.prevent="bookTruck"
                 >
                   Confirm
                 </v-btn>
-                <v-btn
-                  small
-                  class="mx-2"
-                  color="red"
-                  @click.prevent="clear"
-                  rounded
-                  >Reset</v-btn
-                >
               </v-flex>
-              <v-flex lg2></v-flex>
+              <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -127,6 +130,7 @@
   </v-app>
 </template>
 <script>
+import Vue from "vue";
 import { getAPI } from "../axios-api";
 import Cpage from "../views/custpage";
 import { required, digits, max } from "vee-validate/dist/rules";
@@ -156,6 +160,10 @@ extend("max", {
   message: "{_field_} may not be greater than {length} characters",
 });
 //Custom validation ends
+Vue.config.productionTip = false;
+Vue.config.devtools = false;
+const apiKey = "H2HPEplnWZvYwdCxIeyaFJf_RhOLUMzQXip2ADBNupY";
+const url = `https://autosuggest.search.hereapi.com/v1/autosuggest?at=30.22,-92.02&limit=10&apikey=${apiKey}&q=`;
 export default {
   name: "Bnewtruck",
   components: {
@@ -170,9 +178,37 @@ export default {
       date: "" || localStorage.getItem("dt"),
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
+      //
+      dropdown1: false,
+      dropdown2: false,
+      results1: [],
+      results2: [],
     };
   },
   methods: {
+    async doSearch1() {
+      this.dropdown1 = true;
+      if (this.startlocation === "") return;
+      let resp1 = await fetch(url + encodeURIComponent(this.startlocation));
+      let data1 = await resp1.json();
+      this.results1 = data1.items;
+    },
+    async doSearch2() {
+      this.dropdown2 = true;
+      if (this.endlocation === "") return;
+      console.log("doSearch2");
+      let resp2 = await fetch(url + encodeURIComponent(this.endlocation));
+      let data2 = await resp2.json();
+      this.results2 = data2.items;
+    },
+    getStart(place) {
+      this.startlocation = place;
+      this.dropdown1 = false;
+    },
+    getEnd(place) {
+      this.endlocation = place;
+      this.dropdown2 = false;
+    },
     submit() {
       this.$refs.observer.validate();
     },
@@ -208,7 +244,7 @@ export default {
           console.log(this.APIData);
           this.clear();
           localStorage.clear();
-          this.$router.push({ name: "HereMap" });
+          this.$router.push({ name: "Cbookings" });
         })
         .catch((err) => {
           alert(err);

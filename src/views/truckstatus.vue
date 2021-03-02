@@ -6,7 +6,7 @@
       <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
         ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
       >
-      <v-flex xs12 sm8 md6 lg5>
+      <v-flex xs10 sm8 md6 lg5>
         <!--Form to add a new truck status-->
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="form7" @submit.prevent="submit">
@@ -74,17 +74,16 @@
                 required: true,
               }"
             >
-              <v-combobox
+              <v-text-field
                 v-model="loc"
                 label="Location"
                 :error-messages="errors"
                 clearable
-                :items="address"
                 rounded
                 dark
                 outlined
                 dense
-              ></v-combobox>
+              ></v-text-field>
             </validation-provider>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
@@ -151,24 +150,7 @@ export default {
       did: "",
       message: "",
       snackbar: false,
-      citi:[],
-      address:[]
     };
-  },
-  created: function () {
-    fetch("cities.json")
-      .then((r) => r.json())
-      .then(
-        (json) => {
-          this.citi = json;
-          for (let key in this.citi) {
-            this.address.push(this.citi[key]["name"]);
-          }
-        },
-        (response) => {
-          console.log("Error loading json:", response);
-        }
-      );
   },
   beforeMount: function () {
     //Api call for fetch the reg number of all trucks

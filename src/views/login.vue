@@ -2,8 +2,8 @@
   <v-app id="login">
     <Navbar />
     <v-layout class="my-15" row wrap>
-      <v-flex xs2 sm2 md2 lg4></v-flex>
-      <v-flex xs12 sm8 md6 lg4>
+      <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-flex xs10 sm8 md6 lg4>
         <!--Login section-->
         <form id="loginform" @submit.prevent="submit">
           <v-layout row flex><v-flex class="my-4"></v-flex></v-layout>

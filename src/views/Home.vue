@@ -1,10 +1,10 @@
 <template>
   <v-app id="home">
     <Navbar />
-    <v-layout class="my-8 mx-10" row wrap>
+    <v-layout class=" mx-10" row wrap>
       <v-flex class="mx-10" xs12 sm6 md12 lg6>
-        <h3 class="white--text my-15 font-weight-bold mb-5">Welcome to</h3>
-        <h1 class="white--text display-3 font-weight-bold mb-5">HEVYGO</h1>
+        <h3 class="white--text subtitle my-15 font-weight-black mb-5">Welcome to</h3>
+        <h1 class="white--text display-3 font-weight-bold mb-5">SHUTTLE</h1>
         <v-flex lg12 md6 xs12>
           <p class="white--text text-sm-left">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Error

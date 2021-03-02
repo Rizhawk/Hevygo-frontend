@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout row wrap class="my-8">
-      <v-flex lg3></v-flex>
+      <v-flex  sm2 md2 lg3></v-flex>
       <v-flex xs12 sm12 md8 lg8>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
@@ -33,37 +33,32 @@
             </thead>
             <tbody>
               <tr v-for="truck in trucks" :key="truck.truck_num">
+                <td
+                  @click="
+                    editreg(
+                      truck.id,
+                      truck.owner,
+                      truck.truck_num,
+                      truck.registration,
+                      truck.homelocation
+                    )
+                  "
+                >
+                  {{ truck.truck_num }}
+                </td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog"
-                  persistent
                   max-width="400px"
                   light
                 >
-                  <template v-slot:activator="{ on, attrs }">
-                    <td
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="
-                        editreg(
-                          truck.id,
-                          truck.owner,
-                          truck.truck_num,
-                          truck.registration,
-                          truck.homelocation
-                        )
-                      "
-                    >
-                      {{ truck.truck_num }}
-                    </td>
-                  </template>
-
                   <form id="form">
                     <v-text-field
                       class="mx-8"
-                      placeholder="Registation Number"
+                      label="Registation Number"
+                      dark
                       clearable
-                      solo
+                      outlined
                       rounded
                       dense
                       v-model="regnum"
@@ -71,56 +66,47 @@
                     </v-text-field>
                     <v-text-field
                       class="mx-8"
-                      placeholder="Homelocation"
+                      label="Homelocation"
+                      dark
                       clearable
                       rounded
-                      solo
+                      outlined
                       dense
                       v-model="homeloc"
                     >
                     </v-text-field>
-                    <v-layout class="my-1" row wrap>
+                    <v-layout row wrap>
                       <v-flex lg2></v-flex>
                       <v-flex class="mx-10">
                         <v-btn
-                          rounded
+                          depressed
+                          block
                           color="success"
                           small
                           @click.prevent="uptruck(trid)"
                           >Update</v-btn
                         >
-                        <v-btn
-                          class="mx-1"
-                          rounded
-                          @click="dialog = !dialog"
-                          small
-                          >close</v-btn
-                        ></v-flex
-                      >
+                      </v-flex>
+                      <v-flex lg2></v-flex>
                     </v-layout>
                   </form>
                 </v-dialog>
                 <td>{{ truck.registration }}</td>
                 <td>{{ truck.is_verified }}</td>
+                <td @click="showinfo(truck.id)">View/Edit</td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog2"
-                  persistent
                   max-width="400px"
                   light
                 >
-                  <template v-slot:activator="{ on, attrs }">
-                    <td v-bind="attrs" v-on="on" @click="showinfo(truck.id)">
-                      View/Edit
-                    </td>
-                  </template>
                   <form id="form2">
                     <v-text-field
                       class="mx-8"
-                      placeholder="Capacity in ton"
+                      label="Capacity in ton"
                       clearable
-                      filled
-                      solo
+                      dark
+                      outlined
                       rounded
                       dense
                       v-model="cap"
@@ -128,10 +114,10 @@
                     </v-text-field>
                     <v-text-field
                       class="mx-8"
-                      placeholder="Manufacturer"
+                      label="Manufacturer"
                       clearable
-                      filled
-                      solo
+                      dark
+                      outlined
                       rounded
                       dense
                       v-model="manf"
@@ -140,10 +126,10 @@
 
                     <v-text-field
                       class="mx-8"
-                      placeholder="Model"
+                      label="Model"
                       clearable
-                      filled
-                      solo
+                      dark
+                      outlined
                       rounded
                       dense
                       v-model="mod"
@@ -152,33 +138,28 @@
                     <v-select
                       class="mx-8"
                       :items="types"
-                      placeholder="Type"
+                      label="Type"
                       clearable
-                      filled
-                      solo
+                      dark
+                      outlined
                       rounded
                       dense
                       v-model="typ"
                     >
                     </v-select>
-                    <v-layout class="my-1" row wrap>
+                    <v-layout row wrap>
                       <v-flex lg2></v-flex>
                       <v-flex class="mx-10">
                         <v-btn
-                          rounded
+                          block
+                          depressed
                           color="success"
                           @click.prevent="infoedit(idt)"
                           small
                           >Update</v-btn
                         >
-                        <v-btn
-                          class="mx-1"
-                          rounded
-                          @click="dialog2 = !dialog2"
-                          small
-                          >close</v-btn
-                        ></v-flex
-                      >
+                      </v-flex>
+                      <v-flex lg2></v-flex>
                     </v-layout>
                   </form>
                 </v-dialog>
@@ -195,17 +176,14 @@
       </v-flex>
     </v-layout>
     <!--Dialog box for confirmation for truck details addition-->
-    <v-dialog v-model="dialog3" max-width="300">
+    <v-dialog v-model="dialog3" max-width="250">
       <v-card>
-        <v-card-title>
+        <v-card-text class="subtitle-1 black--text">
           {{ this.specmsg }}
-        </v-card-title>
-        <v-card-actions>
-          <v-btn color="green darken-1" text @click="speclater()">
-            Later
-          </v-btn>
-          <v-btn color="red darken-1" text @click="specnow()"> Add Now </v-btn>
-        </v-card-actions>
+        </v-card-text>
+        <v-spacer></v-spacer>
+        <v-btn small color="green darken-1" text @click="speclater()"> Later </v-btn>
+        <v-btn small color="red darken-1" text @click="specnow()"> Add Now </v-btn>
       </v-card>
     </v-dialog>
     <!---->
@@ -309,6 +287,7 @@ export default {
           this.truck_num = truckphn;
           this.regnum = reg;
           this.homeloc = homeloc;
+          this.dialog = true;
         })
         .catch((err) => {
           alert(err);
@@ -356,6 +335,7 @@ export default {
           this.mod = this.APIData["model"];
           this.typ = this.APIData["type"];
           this.idt = this.APIData["truck"];
+          this.dialog2 = true;
         })
         .catch((err) => {
           localStorage.setItem("tid", trkid);
@@ -367,11 +347,11 @@ export default {
     },
     specnow() {
       this.$router.push({ name: "Tdetails" });
-    },//Calls when operator wants to add details now
-    speclater(){
-     localStorage.removeItem("tid");
-     this.dialog3=false;
-    },//Calls when operator does'nt wants to add details now 
+    }, //Calls when operator wants to add details now
+    speclater() {
+      localStorage.removeItem("tid");
+      this.dialog3 = false;
+    }, //Calls when operator does'nt wants to add details now
     infoedit(idt) {
       //api call to update truck info
       getAPI
@@ -406,8 +386,8 @@ export default {
 <style scoped>
 #form {
   border: solid white 1px;
-  padding: 15px;
-  border-radius: 30px;
+  padding: 25px;
+  border-radius: 15px;
   background-color: grey;
 }
 #table {
@@ -418,8 +398,8 @@ export default {
 }
 #form2 {
   border: solid white 1px;
-  padding: 15px;
-  border-radius: 30px;
+  padding: 25px;
+  border-radius: 15px;
   background-color: grey;
 }
 </style>
