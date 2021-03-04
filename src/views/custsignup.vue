@@ -173,6 +173,8 @@ export default {
         (value) => !!value || "Please type password.",
         (value) => (value && value.length >= 6) || "minimum 6 characters",
       ],
+      startlocation: localStorage.getItem("sl"),
+      endlocation: localStorage.getItem("el"),
     };
   },
 
@@ -231,7 +233,8 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
+          this.$session.set("sl", this.startlocation);
+          this.$session.set("el", this.endlocation);
           localStorage.clear();
           this.$router.push({ name: "HereMap" });
         })

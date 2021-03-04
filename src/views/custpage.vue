@@ -50,10 +50,11 @@
         </v-list-item-group>
         <v-list-item>
           <v-btn
-            class="mx-5 my-10"
+            class="mx-5 my-10 black--text"
             width="80%"
             @click.prevent="logout"
             rounded
+            color="white"
             shaped
             >Logout</v-btn
           >

@@ -17,24 +17,41 @@
               @input="doSearch1"
               label="Start Location"
               prepend-inner-icon="mdi-map-marker"
+              clearable
               outlined
-              rounded
               dense
             >
             </v-text-field>
-            <v-flex>
-              <v-simple-table dense v-if="dropdown1">
-                <tbody>
-                  <tr v-for="start in results1" :key="start.id">
-                    <v-icon dense>mdi-map-marker</v-icon>
-                    <td @click.prevent="getStart(start.title)">
-                      {{ start.title }}
-                    </td>
-                  </tr>
-                </tbody>
-              </v-simple-table>
-            </v-flex>
+            <v-layout row wrap>
+              <v-flex xs10 sm10 md10 lg10></v-flex>
+              <v-flex
+                ><v-btn @click.prevent="swapLoc()" dark x-small>
+                  <span class="material-icons"> swap_vert </span>
+                </v-btn></v-flex
+              >
+              <v-flex>
+                <v-simple-table fixed-header dense v-if="dropdown1">
+                  <thead>
+                    <tr @click.prevent="getLocation()">
+                      <td>
+                        <span class="material-icons"> my_location </span>
+                      </td>
+                      <td>Your Location</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="start in results1" :key="start.id">
+                      <v-icon dense>mdi-map-marker</v-icon>
+                      <td @click.prevent="getStart(start.title)">
+                        {{ start.title }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </v-simple-table>
+              </v-flex>
+            </v-layout>
             <v-text-field
+              class="my-5"
               v-model="endlocation"
               type="search"
               @input="doSearch2"
@@ -42,7 +59,6 @@
               prepend-inner-icon="mdi-map-marker"
               clearable
               outlined
-              rounded
               dense
             ></v-text-field>
             <v-flex>
@@ -68,7 +84,6 @@
                 label="Date of Transport"
                 type="date"
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -84,7 +99,6 @@
                 :error-messages="errors"
                 label="Weight in ton"
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -98,7 +112,6 @@
                 :error-messages="errors"
                 label="Goods Type"
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -125,10 +138,8 @@
     </v-layout>
   </v-app>
 </template>
-
 <script>
 import Vue from "vue";
-// import $Scriptjs from "scriptjs";
 import Navbar from "../components/Navbar";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
@@ -168,7 +179,6 @@ export default {
   },
   data: () => {
     return {
-      checkbox: "",
       name: "",
       startlocation: "",
       searchResults: [],
@@ -177,23 +187,25 @@ export default {
       weight: "",
       goodstype: "",
       date: "",
-      autocomplete: "",
       //
       dropdown1: false,
       dropdown2: false,
       results1: [],
       results2: [],
+      //
+      crntltln: [],
+      crntloc: "",
     };
   },
   methods: {
-    async doSearch1() {
+    async doSearch1() {//Auto suggestion Function call for Startlocation Field
       this.dropdown1 = true;
       if (this.startlocation === "") return;
       let resp1 = await fetch(url + encodeURIComponent(this.startlocation));
       let data1 = await resp1.json();
       this.results1 = data1.items;
     },
-    async doSearch2() {
+    async doSearch2() {//Auto suggestion call for Endloaction Field
       this.dropdown2 = true;
       if (this.endlocation === "") return;
       console.log("doSearch2");
@@ -201,13 +213,56 @@ export default {
       let data2 = await resp2.json();
       this.results2 = data2.items;
     },
-    getStart(place) {
+    getStart(place) {//Input the Selected Value and Hide the Dropdown flex for Startlocation
       this.startlocation = place;
       this.dropdown1 = false;
     },
-    getEnd(place) {
+    getEnd(place) {//Input the Selected Value and Hide the Dropdown flex for Endlocation
       this.endlocation = place;
       this.dropdown2 = false;
+    },
+    getLocation() {//Fuction call to get the user's current geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser");
+      }
+    },
+    showPosition(position) {//Fuction to get the gocoordinates of users's current location
+      this.crntltln.push(position.coords.latitude);
+      this.crntltln.push(position.coords.longitude);
+      this.crntloc = this.crntltln.toString();
+      this.inputCrntloc();
+    },
+    inputCrntloc() {//Performing the Reverse Geocodeing to get the user's geolocation address.
+      const H = window.H;
+      // Instantiate a map and platform object:
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      // Get an instance of the search service:
+      var service = platform.getSearchService();
+      // Call the reverse geocode method with the geocoding parameters,
+      // the callback and an error callback function (called if a
+      // communication error occurs):
+      service.reverseGeocode(
+        {
+          at: this.crntloc,
+        },
+        (result) => {
+          result.items.forEach((item) => {
+            this.startlocation = item.address.label;
+            this.crntltln = [];
+          });
+          this.dropdown1 = false;
+        },
+        alert
+      );
+    },
+    swapLoc() { //Fuction to Swap the start and end location field values.
+      let temp = this.startlocation;
+      this.startlocation = this.endlocation;
+      this.endlocation = temp;
     },
     submit() {
       this.$refs.observer.validate();
@@ -220,27 +275,29 @@ export default {
       this.goodstype = "";
       this.$refs.observer.reset();
     },
-    saveData() {
-      localStorage.setItem("sl", this.startlocation);
-      localStorage.setItem("el", this.endlocation);
-      localStorage.setItem("dt", this.date);
-      localStorage.setItem("wt", this.weight);
-      localStorage.setItem("gt", this.goodstype);
-      this.clear();
-      this.$router.push({ name: "Csignup" });
+    saveData() {//Saving the datas on localstorage and redirect to sign up page
+      if ((this.dropdown1 || this.dropdown2) == true) {
+        alert("Select a Location");
+      }//Checking if the user inputed the value from dropdown data.
+       else {
+        localStorage.setItem("sl", this.startlocation);
+        localStorage.setItem("el", this.endlocation);
+        localStorage.setItem("dt", this.date);
+        localStorage.setItem("wt", this.weight);
+        localStorage.setItem("gt", this.goodstype);
+        this.clear();
+        this.$router.push({ name: "Csignup" });
+      }
     },
-    //Function to set input field empty
   },
 };
 </script>
-
-
 <style scoped>
 #book {
   border: solid black 2px;
   padding: 30px;
   border-radius: 30px;
-  background-color: white;
+  background-color: whitesmoke;
 }
 #btruck {
   background: url("../assets/truck-12.jpg");
