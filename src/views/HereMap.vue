@@ -9,12 +9,6 @@
           </v-btn>
         </template>
         <v-list>
-          <!-- <v-list-item @click.prevent="getCost()">
-            <v-list-item-title>Route Details</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click.prevent="refresh()">
-            <v-list-item-title>Refresh</v-list-item-title>
-          </v-list-item> -->
           <v-list-item router to="/bookings">
             <v-list-item-title>Back</v-list-item-title>
           </v-list-item>
@@ -210,8 +204,6 @@ export default {
             this.cost = this.routes[key]["cost"];
           }
           this.tollCost = this.cost["totalCost"];
-          console.log(this.APIData);
-          console.log(this.tollCost);
         })
         .catch((err) => {
           console.log(err);

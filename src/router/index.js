@@ -24,6 +24,7 @@ import Eoprofile from "../views/editoptrprofile";
 import Ecprofile from "../views/editcustprofile";
 import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
+import Checkout from '../views/checkout';
 Vue.use(VueRouter);
 
 const routes = [
@@ -151,6 +152,11 @@ const routes = [
     name: "Ctrack",
     component: Ctrack,
   },
+  {
+    path:"/checkout",
+    name:"Checkout",
+    component:Checkout
+  }
 ];
 
 const router = new VueRouter({

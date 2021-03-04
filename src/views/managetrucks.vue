@@ -7,7 +7,6 @@
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-
         <!--Table-->
         <v-simple-table id="table" xs12 sm8 md6 lg12 fixed-header dark>
           <template v-slot:default>
@@ -92,7 +91,8 @@
                   </form>
                 </v-dialog>
                 <td>{{ truck.registration }}</td>
-                <td>{{ truck.is_verified }}</td>
+                <td v-if="truck.is_verified==true">&#9989;</td>
+                <td v-if="truck.is_verified==false">&#10060;</td>
                 <td @click="showinfo(truck.id)">View/Edit</td>
                 <v-dialog
                   :retain-focus="false"
