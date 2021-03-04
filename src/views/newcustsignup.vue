@@ -14,7 +14,7 @@
             <validation-provider
               v-slot="{ errors }"
               name="Name"
-              rules="required|max:10"
+              rules="required"
             >
               <v-text-field
                 v-model="name"
