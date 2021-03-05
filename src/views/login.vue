@@ -6,11 +6,11 @@
       <v-flex xs10 sm8 md6 lg4>
         <!--Login section-->
         <form id="loginform" @submit.prevent="submit">
-          <v-layout row flex><v-flex class="my-4"></v-flex></v-layout>
+          <v-layout row flex class="my-1"><v-flex></v-flex></v-layout>
           <v-text-field
             v-model="phone"
             label="Phone Number"
-            rounded
+            dark
             outlined
             dense
           ></v-text-field>
@@ -18,10 +18,10 @@
             v-model="password"
             label="Password"
             name="password"
+            dark
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="show1 ? 'text' : 'password'"
             @click:append="show1 = !show1"
-            rounded
             outlined
             dense
           ></v-text-field>
@@ -32,9 +32,10 @@
                 color="primary"
                 class="my-2"
                 block
+                small
+                depressed
                 type="submit"
                 width="50%"
-                rounded
                 @click.prevent="login"
               >
                 Login
@@ -74,7 +75,7 @@ export default {
         })
         .then((response) => {
           this.$session.start();
-          this.$session.set('user_token', response.data.token);
+          this.$session.set("user_token", response.data.token);
           this.APIData = response.data;
           if (response.data.user_type == 1) {
             this.$router.push({ name: "Treg" });
@@ -105,9 +106,10 @@ export default {
   padding: 0;
 }
 #loginform {
-  border: solid black 2px;
+  border: solid white 1px;
   padding: 35px;
-  border-radius: 30px;
-  background-color: white;
+  border-radius: 25px;
+  background-color: black;
+  opacity: 0.8;
 }
 </style>

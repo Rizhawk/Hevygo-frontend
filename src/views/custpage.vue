@@ -7,7 +7,6 @@
       <v-spacer></v-spacer>
     </v-app-bar>
     <!--Navbar ends-->
-
     <!--Sidebar-->
     <v-navigation-drawer
       v-model="drawer"

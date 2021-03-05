@@ -8,7 +8,8 @@
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="book" @submit.prevent="submit">
             <v-layout class="my-2" row wrap
-              ><v-flex class="mx-3"><h2>Book a Truck</h2></v-flex
+              ><v-flex class="mx-3"
+                ><h2 class="white--text">Book a Truck</h2></v-flex
               ><v-flex></v-flex
             ></v-layout>
             <v-text-field
@@ -17,6 +18,7 @@
               @input="doSearch1"
               label="Start Location"
               prepend-inner-icon="mdi-map-marker"
+              dark
               clearable
               outlined
               dense
@@ -25,12 +27,12 @@
             <v-layout row wrap>
               <v-flex xs10 sm10 md10 lg10></v-flex>
               <v-flex
-                ><v-btn @click.prevent="swapLoc()" dark x-small>
+                ><v-btn @click.prevent="swapLoc()" color="white" x-small>
                   <span class="material-icons"> swap_vert </span>
                 </v-btn></v-flex
               >
               <v-flex>
-                <v-simple-table fixed-header dense v-if="dropdown1">
+                <v-simple-table dark fixed-header dense v-if="dropdown1">
                   <thead>
                     <tr @click.prevent="getLocation()">
                       <td>
@@ -58,11 +60,12 @@
               label="End Location"
               prepend-inner-icon="mdi-map-marker"
               clearable
+              dark
               outlined
               dense
             ></v-text-field>
             <v-flex>
-              <v-simple-table dense v-if="dropdown2">
+              <v-simple-table fixed-header dark dense v-if="dropdown2">
                 <tbody>
                   <tr v-for="end in results2" :key="end.id">
                     <v-icon dense>mdi-map-marker</v-icon>
@@ -83,6 +86,8 @@
                 :error-messages="errors"
                 label="Date of Transport"
                 type="date"
+                clearable
+                dark
                 outlined
                 dense
               ></v-text-field>
@@ -98,6 +103,8 @@
                 v-model="weight"
                 :error-messages="errors"
                 label="Weight in ton"
+                dark
+                clearable
                 outlined
                 dense
               ></v-text-field>
@@ -111,6 +118,8 @@
                 v-model="goodstype"
                 :error-messages="errors"
                 label="Goods Type"
+                dark
+                clearable
                 outlined
                 dense
               ></v-text-field>
@@ -119,11 +128,13 @@
               <v-flex lg2></v-flex>
               <v-flex>
                 <v-btn
-                  dark
+                  color="primary"
                   block
                   type="submit"
                   :disabled="invalid"
                   router
+                  small
+                  depressed
                   @click.prevent="saveData"
                 >
                   Continue
@@ -198,14 +209,16 @@ export default {
     };
   },
   methods: {
-    async doSearch1() {//Auto suggestion Function call for Startlocation Field
+    async doSearch1() {
+      //Auto suggestion Function call for Startlocation Field
       this.dropdown1 = true;
       if (this.startlocation === "") return;
       let resp1 = await fetch(url + encodeURIComponent(this.startlocation));
       let data1 = await resp1.json();
       this.results1 = data1.items;
     },
-    async doSearch2() {//Auto suggestion call for Endloaction Field
+    async doSearch2() {
+      //Auto suggestion call for Endloaction Field
       this.dropdown2 = true;
       if (this.endlocation === "") return;
       console.log("doSearch2");
@@ -213,28 +226,33 @@ export default {
       let data2 = await resp2.json();
       this.results2 = data2.items;
     },
-    getStart(place) {//Input the Selected Value and Hide the Dropdown flex for Startlocation
+    getStart(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Startlocation
       this.startlocation = place;
       this.dropdown1 = false;
     },
-    getEnd(place) {//Input the Selected Value and Hide the Dropdown flex for Endlocation
+    getEnd(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Endlocation
       this.endlocation = place;
       this.dropdown2 = false;
     },
-    getLocation() {//Fuction call to get the user's current geolocation.
+    getLocation() {
+      //Fuction call to get the user's current geolocation.
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition);
       } else {
         alert("Geolocation is not supported by this browser");
       }
     },
-    showPosition(position) {//Fuction to get the gocoordinates of users's current location
+    showPosition(position) {
+      //Fuction to get the gocoordinates of users's current location
       this.crntltln.push(position.coords.latitude);
       this.crntltln.push(position.coords.longitude);
       this.crntloc = this.crntltln.toString();
       this.inputCrntloc();
     },
-    inputCrntloc() {//Performing the Reverse Geocodeing to get the user's geolocation address.
+    inputCrntloc() {
+      //Performing the Reverse Geocodeing to get the user's geolocation address.
       const H = window.H;
       // Instantiate a map and platform object:
       var platform = new H.service.Platform({
@@ -259,7 +277,8 @@ export default {
         alert
       );
     },
-    swapLoc() { //Fuction to Swap the start and end location field values.
+    swapLoc() {
+      //Fuction to Swap the start and end location field values.
       let temp = this.startlocation;
       this.startlocation = this.endlocation;
       this.endlocation = temp;
@@ -275,11 +294,12 @@ export default {
       this.goodstype = "";
       this.$refs.observer.reset();
     },
-    saveData() {//Saving the datas on localstorage and redirect to sign up page
+    saveData() {
+      //Saving the datas on localstorage and redirect to sign up page
       if ((this.dropdown1 || this.dropdown2) == true) {
         alert("Select a Location");
-      }//Checking if the user inputed the value from dropdown data.
-       else {
+      } //Checking if the user inputed the value from dropdown data.
+      else {
         localStorage.setItem("sl", this.startlocation);
         localStorage.setItem("el", this.endlocation);
         localStorage.setItem("dt", this.date);
@@ -294,10 +314,11 @@ export default {
 </script>
 <style scoped>
 #book {
-  border: solid black 2px;
+  border: solid white 1px;
   padding: 30px;
   border-radius: 30px;
-  background-color: whitesmoke;
+  background-color: black;
+  opacity: 0.8;
 }
 #btruck {
   background: url("../assets/truck-12.jpg");

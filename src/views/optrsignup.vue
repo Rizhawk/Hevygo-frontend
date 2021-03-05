@@ -4,12 +4,15 @@
     <v-layout row wrap class="my-3">
       <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs10 sm8 md6 lg4>
-        <validation-observer ref="observer" v-slot="{ invalid }">
+        <validation-observer ref="observer" v-slot="{invalid}">
           <!--Operator signup form begining -->
 
           <form id="osignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
-              <v-flex class="mx-3"><p class="font-weight-bold">Create your operator account</p></v-flex
+              <v-flex class="mx-3"
+                ><p class="font-weight-black subtitle-1 white--text">
+                  Create your operator account
+                </p></v-flex
               ><v-flex></v-flex>
             </v-layout>
             <validation-provider
@@ -22,7 +25,7 @@
                 :error-messages="errors"
                 label="Operator Name"
                 outlined
-                rounded
+                dark
                 dense
                 clearable
               ></v-text-field>
@@ -36,7 +39,7 @@
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
               outlined
-              rounded
+              dark
               dense
               clearable
             ></v-text-field>
@@ -53,7 +56,7 @@
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
               outlined
-              rounded
+              dark
               dense
               clearable
             ></v-text-field>
@@ -71,7 +74,7 @@
                 :error-messages="errors"
                 label="Phone Number"
                 outlined
-                rounded
+                dark
                 dense
                 clearable
               ></v-text-field>
@@ -82,19 +85,20 @@
                 :error-messages="errors"
                 label="E-mail"
                 outlined
-                rounded
+                dark
                 dense
                 clearable
               ></v-text-field>
             </validation-provider>
-            <v-layout row wrap>
-              <v-flex lg3></v-flex>
+            <v-layout class="my-1" row wrap>
+              <v-flex lg2></v-flex>
               <v-flex class="mx-10">
                 <v-btn
                   color="primary"
                   class="mr-4"
                   type="submit"
-                  rounded
+                  dark
+                  block
                   small
                   :disabled="invalid"
                   @click.prevent="osignup"
@@ -102,16 +106,17 @@
                   Sign Up
                 </v-btn>
               </v-flex>
-              <v-layout class="my-1" row wrap>
-                <v-flex lg2></v-flex>
-                <v-flex>
-                  <span class="mx-8 black--text"
-                    >Already have an account?<router-link to="/login"
-                      >Login</router-link
-                    ></span
-                  >
-                </v-flex>
-              </v-layout>
+              <v-flex lg2></v-flex>
+            </v-layout>
+            <v-layout class="my-2" row wrap>
+              <v-flex lg2></v-flex>
+              <v-flex>
+                <span class="mx-6 white--text"
+                  >Already have an account?<router-link to="/login"
+                    >Login</router-link
+                  ></span
+                >
+              </v-flex>
             </v-layout>
           </form>
 
@@ -221,10 +226,11 @@ export default {
 </script>
 <style scoped>
 #osignup {
-  border: solid black 2px;
+  border: solid white 1px;
   padding: 30px;
   border-radius: 30px;
-  background-color: white;
+  background-color: black;
+  opacity: 0.8;
 }
 #osign {
   background: url("../assets/truck-12.jpg");

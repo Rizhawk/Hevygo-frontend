@@ -8,7 +8,7 @@
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="csignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
-              <v-flex class="mx-3"><h2>Sign Up to Continue</h2></v-flex
+              <v-flex class="mx-3"><p class="white--text subtitle-1 font-weight-black">Sign Up to Continue</p></v-flex
               ><v-flex></v-flex>
             </v-layout>
             <validation-provider
@@ -20,8 +20,9 @@
                 v-model="name"
                 :error-messages="errors"
                 label="Customer Name"
+                clearable
+                dark
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -33,8 +34,9 @@
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
+              clearable
+              dark
               outlined
-              rounded
               dense
             ></v-text-field>
             <v-text-field
@@ -49,8 +51,9 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
+              clearable
+              dark
               outlined
-              rounded
               dense
             ></v-text-field>
 
@@ -66,8 +69,9 @@
                 v-model="phone"
                 :error-messages="errors"
                 label="Phone Number"
+                clearable
+                dark
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -76,30 +80,34 @@
                 v-model="email"
                 :error-messages="errors"
                 label="E-mail"
+                clearable
+                dark
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
             <v-layout row wrap>
-              <v-flex lg3></v-flex>
+              <v-flex lg2></v-flex>
               <v-flex class="mx-10">
                 <v-btn
                   color="primary"
                   class="mr-4"
                   type="submit"
-                  rounded
+                  block
+                  small
+                  depressed
                   :disabled="invalid"
                   @click.prevent="csignup"
                 >
                   Sign Up
                 </v-btn>
               </v-flex>
+              <v-flex lg2></v-flex>
             </v-layout>
             <v-layout row wrap>
               <v-flex lg2></v-flex>
-              <v-flex class="my-3 mx-8">
-                <span
+              <v-flex class="my-4 mx-8">
+                <span class="font-weight-regular white--text body-1"
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span
@@ -249,10 +257,11 @@ export default {
 </script>
 <style scoped>
 #csignup {
-  border: solid black 2px;
+  border: solid white 1px;
   padding: 30px;
   border-radius: 30px;
-  background-color: white;
+  background-color: black;
+  opacity: .8;
 }
 #csign {
   background: url("../assets/truck-12.jpg");

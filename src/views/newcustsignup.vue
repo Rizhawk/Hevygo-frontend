@@ -1,7 +1,7 @@
 <template>
   <v-app id="cnewsign">
     <Navbar />
-    <v-layout class="my-7" row wrap>
+    <v-layout class="my-5" row wrap>
       <v-flex xs1 sm2 md3 lg4></v-flex>
       <v-flex xs10 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
@@ -9,7 +9,11 @@
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="cnewsignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
-              <v-flex class="mx-3"><p class="font-weight-bold">Create your customer account</p></v-flex><v-flex></v-flex>
+              <v-flex class="mx-3"
+                ><p class="font-weight-black white--text">
+                  Create your customer account
+                </p></v-flex
+              ><v-flex></v-flex>
             </v-layout>
             <validation-provider
               v-slot="{ errors }"
@@ -21,7 +25,7 @@
                 :error-messages="errors"
                 label="Customer Name"
                 outlined
-                rounded
+                dark
                 dense
               ></v-text-field>
             </validation-provider>
@@ -34,7 +38,7 @@
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
               outlined
-              rounded
+              dark
               dense
             ></v-text-field>
             <v-text-field
@@ -50,7 +54,7 @@
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
               outlined
-              rounded
+              dark
               dense
             ></v-text-field>
 
@@ -67,7 +71,7 @@
                 :error-messages="errors"
                 label="Phone Number"
                 outlined
-                rounded
+                dark
                 dense
               ></v-text-field>
             </validation-provider>
@@ -77,29 +81,31 @@
                 :error-messages="errors"
                 label="E-mail"
                 outlined
-                rounded
+                dark
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-layout row wrap>
-              <v-flex lg3></v-flex>
+            <v-layout class="my-2" row wrap>
+              <v-flex lg2></v-flex>
               <v-flex class="mx-10">
                 <v-btn
                   color="primary"
-                  class="mr-4"
                   type="submit"
-                  rounded
+                  block
+                  small
+                  depressed
                   :disabled="invalid"
                   @click.prevent="csignup"
                 >
                   Sign Up
                 </v-btn>
               </v-flex>
-            </v-layout>
-            <v-layout row wrap>
               <v-flex lg2></v-flex>
-              <v-flex class="my-3 mx-8">
-                <span
+            </v-layout>
+            <v-layout class="my-2" row wrap>
+              <v-flex lg2></v-flex>
+              <v-flex class="mx-10">
+                <span class="white--text"
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span
@@ -203,7 +209,7 @@ export default {
           this.APIData = response.data;
           console.log(this.APIData["response"]);
           this.clear();
-          this.$router.push({name:'Login'})
+          this.$router.push({ name: "Login" });
         })
         .catch((err) => {
           alert(err);
@@ -214,10 +220,11 @@ export default {
 </script>
 <style scoped>
 #cnewsignup {
-  border: solid black 2px;
+  border: solid white 1px;
   padding: 30px;
   border-radius: 30px;
-  background-color: white;
+  background-color: black;
+  opacity: 0.8;
 }
 #cnewsign {
   background: url("../assets/truck-12.jpg");
