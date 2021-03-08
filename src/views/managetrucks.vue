@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout row wrap class="my-8">
-      <v-flex  sm2 md2 lg3></v-flex>
+      <v-flex sm2 md2 lg3></v-flex>
       <v-flex xs12 sm12 md8 lg8>
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
@@ -67,6 +67,7 @@
                       class="mx-8"
                       label="Homelocation"
                       dark
+                      disabled
                       clearable
                       rounded
                       outlined
@@ -91,8 +92,8 @@
                   </form>
                 </v-dialog>
                 <td>{{ truck.registration }}</td>
-                <td v-if="truck.is_verified==true">&#9989;</td>
-                <td v-if="truck.is_verified==false">&#10060;</td>
+                <td v-if="truck.is_verified == true">&#9989;</td>
+                <td v-if="truck.is_verified == false">&#10060;</td>
                 <td @click="showinfo(truck.id)">View/Edit</td>
                 <v-dialog
                   :retain-focus="false"
@@ -182,8 +183,12 @@
           {{ this.specmsg }}
         </v-card-text>
         <v-spacer></v-spacer>
-        <v-btn small color="green darken-1" text @click="speclater()"> Later </v-btn>
-        <v-btn small color="red darken-1" text @click="specnow()"> Add Now </v-btn>
+        <v-btn small color="red darken-1" text @click="speclater()">
+          Later
+        </v-btn>
+        <v-btn small color="green darken-1" text @click="specnow()">
+          Add Now
+        </v-btn>
       </v-card>
     </v-dialog>
     <!---->

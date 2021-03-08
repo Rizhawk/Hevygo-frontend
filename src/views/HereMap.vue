@@ -169,6 +169,7 @@ export default {
               .setLookAtData({ bounds: routeLine.getBoundingBox() });
           });
         }
+        console.log(result);
       };
       // Get an instance of the routing service version 8:
       var router = platform.getRoutingService(null, 8);
@@ -182,6 +183,8 @@ export default {
       this.getCost();
     },
     getCost() {
+      console.log(this.start);
+      console.log(this.end);
       getAPI
         .post(
           "/api/maps/set-route/",
@@ -204,6 +207,7 @@ export default {
             this.cost = this.routes[key]["cost"];
           }
           this.tollCost = this.cost["totalCost"];
+          console.log(this.APIData);
         })
         .catch((err) => {
           console.log(err);

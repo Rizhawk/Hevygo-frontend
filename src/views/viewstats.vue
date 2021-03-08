@@ -75,6 +75,7 @@
                     <v-text-field
                       label="Location"
                       clearable
+                      disabled
                       outlined
                       dark
                       dense
@@ -161,9 +162,6 @@ export default {
       loc: "",
       stats: [
         "Available",
-        "on the way",
-        "Loading",
-        "In transist",
         "Unavailable",
       ],
     };

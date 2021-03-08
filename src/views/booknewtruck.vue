@@ -105,6 +105,24 @@
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
+              name="type"
+              rules="required"
+            >
+              <v-autocomplete
+                v-model="vtype"
+                label="Vehicle Type"
+                :items="types"
+                name="type"
+                :error-messages="errors"
+                clearable
+                flat
+                outlined
+                dense
+              >
+              </v-autocomplete>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
               name="Goods Type"
               rules="required|max:10"
             >
@@ -191,6 +209,17 @@ export default {
       date: "" || localStorage.getItem("dt"),
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
+      vtype: "",
+      types: [
+        "Tipper",
+        "Lorry",
+        "Pickup",
+        "Tanker",
+        "Tow truck",
+        "Van",
+        "Container Truck",
+        "Car transporter",
+      ],
       //
       dropdown1: false,
       dropdown2: false,
@@ -202,14 +231,16 @@ export default {
     };
   },
   methods: {
-    async doSearch1() {//Auto suggestion Function call for Startlocation Field
+    async doSearch1() {
+      //Auto suggestion Function call for Startlocation Field
       this.dropdown1 = true;
       if (this.startlocation === "") return;
       let resp1 = await fetch(url + encodeURIComponent(this.startlocation));
       let data1 = await resp1.json();
       this.results1 = data1.items;
     },
-    async doSearch2() {//Auto suggestion call for Endloaction Field
+    async doSearch2() {
+      //Auto suggestion call for Endloaction Field
       this.dropdown2 = true;
       if (this.endlocation === "") return;
       console.log("doSearch2");
@@ -217,28 +248,33 @@ export default {
       let data2 = await resp2.json();
       this.results2 = data2.items;
     },
-    getStart(place) {//Input the Selected Value and Hide the Dropdown flex for Startlocation
+    getStart(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Startlocation
       this.startlocation = place;
       this.dropdown1 = false;
     },
-    getEnd(place) {//Input the Selected Value and Hide the Dropdown flex for Endlocation
+    getEnd(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Endlocation
       this.endlocation = place;
       this.dropdown2 = false;
     },
-    getLocation() {//Fuction call to get the user's current geolocation.
+    getLocation() {
+      //Fuction call to get the user's current geolocation.
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition);
       } else {
         alert("Geolocation is not supported by this browser");
       }
     },
-    showPosition(position) {//Fuction to get the gocoordinates of users's current location
+    showPosition(position) {
+      //Fuction to get the gocoordinates of users's current location
       this.crntltln.push(position.coords.latitude);
       this.crntltln.push(position.coords.longitude);
       this.crntloc = this.crntltln.toString();
       this.inputCrntloc();
     },
-    inputCrntloc() {//Performing the Reverse Geocodeing to get the user's geolocation address.
+    inputCrntloc() {
+      //Performing the Reverse Geocodeing to get the user's geolocation address.
       const H = window.H;
       // Instantiate a map and platform object:
       var platform = new H.service.Platform({
@@ -263,7 +299,8 @@ export default {
         alert
       );
     },
-    swapLoc() {//Fuction to Swap the start and end location field values.
+    swapLoc() {
+      //Fuction to Swap the start and end location field values.
       let temp = this.startlocation;
       this.startlocation = this.endlocation;
       this.endlocation = temp;
@@ -273,7 +310,6 @@ export default {
     },
     clear() {
       localStorage.clear();
-      this.name = "";
       this.startlocation = "";
       this.endlocation = "";
       this.weight = "";
@@ -282,7 +318,8 @@ export default {
       this.$refs.observer.reset();
     },
     bookTruck() {
-      if ((this.dropdown1 || this.dropdown2) == true) {//Checking if the user inputed the value from dropdown data.
+      if ((this.dropdown1 || this.dropdown2) == true) {
+        //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
         getAPI
@@ -294,6 +331,7 @@ export default {
               weight: this.weight,
               goods_type: this.goodstype,
               date: this.date,
+              vehicle_type: this.vtype,
             },
             {
               headers: {

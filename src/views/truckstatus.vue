@@ -22,6 +22,7 @@
                 label="Truck"
                 :error-messages="errors"
                 :items="trucks"
+                @input="getLoction()"
                 clearable
                 rounded
                 dark
@@ -132,13 +133,7 @@ export default {
     return {
       truckdata: [],
       driverdata: [],
-      stats: [
-        "Available",
-        "on the way",
-        "Loading",
-        "In transist",
-        "Unavailable",
-      ],
+      stats: ["Available", "Unavailable"],
       loc: "",
       status: "",
       reg: "",
@@ -203,6 +198,13 @@ export default {
         (this.loc = ""),
         this.$refs.observer.reset();
     },
+    getLoction() {
+      for (let key in this.truckdata) {
+        if (this.reg == this.truckdata[key]["registration"]) {
+          this.loc = this.truckdata[key]["homelocation"];
+        }
+      }
+    },
     truckdetails(status, loc) {
       //Api call to create a truck status
       for (let key in this.truckdata) {
@@ -237,7 +239,12 @@ export default {
           this.clear();
         })
         .catch((err) => {
-          alert(err);
+          if (err.response.data["truck"]) {
+            alert(this.reg + " is already assgined to a driver");
+          } else if (err.response.data["driver"]) {
+            alert(this.driver + " is already assigned to a truck.");
+          }
+          console.log(err);
         });
       //
     },

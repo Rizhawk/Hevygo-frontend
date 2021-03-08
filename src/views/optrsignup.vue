@@ -99,6 +99,7 @@
                   type="submit"
                   dark
                   block
+                  depressed
                   small
                   :disabled="invalid"
                   @click.prevent="osignup"

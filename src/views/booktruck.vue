@@ -12,18 +12,25 @@
                 ><h2 class="white--text">Book a Truck</h2></v-flex
               ><v-flex></v-flex
             ></v-layout>
-            <v-text-field
-              v-model="startlocation"
-              type="search"
-              @input="doSearch1"
-              label="Start Location"
-              prepend-inner-icon="mdi-map-marker"
-              dark
-              clearable
-              outlined
-              dense
+            <validation-provider
+              v-slot="{ errors }"
+              name="Startlocation"
+              rules="required"
             >
-            </v-text-field>
+              <v-text-field
+                v-model="startlocation"
+                type="search"
+                :error-messages="errors"
+                @input="doSearch1"
+                label="Start Location"
+                prepend-inner-icon="mdi-map-marker"
+                dark
+                clearable
+                outlined
+                dense
+              >
+              </v-text-field>
+            </validation-provider>
             <v-layout row wrap>
               <v-flex xs10 sm10 md10 lg10></v-flex>
               <v-flex
@@ -52,18 +59,25 @@
                 </v-simple-table>
               </v-flex>
             </v-layout>
-            <v-text-field
-              class="my-5"
-              v-model="endlocation"
-              type="search"
-              @input="doSearch2"
-              label="End Location"
-              prepend-inner-icon="mdi-map-marker"
-              clearable
-              dark
-              outlined
-              dense
-            ></v-text-field>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Endlocation"
+              rules="required"
+            >
+              <v-text-field
+                class="my-5"
+                v-model="endlocation"
+                type="search"
+                :error-messages="errors"
+                @input="doSearch2"
+                label="End Location"
+                prepend-inner-icon="mdi-map-marker"
+                clearable
+                dark
+                outlined
+                dense
+              ></v-text-field>
+            </validation-provider>
             <v-flex>
               <v-simple-table fixed-header dark dense v-if="dropdown2">
                 <tbody>
@@ -108,6 +122,25 @@
                 outlined
                 dense
               ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              name="type"
+              rules="required"
+            >
+              <v-autocomplete
+                v-model="vtype"
+                label="Vehicle Type"
+                :items="types"
+                name="type"
+                :error-messages="errors"
+                clearable
+                flat
+                dark
+                outlined
+                dense
+              >
+              </v-autocomplete>
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
@@ -190,12 +223,22 @@ export default {
   },
   data: () => {
     return {
-      name: "",
       startlocation: "",
       searchResults: [],
       endlocation: "",
       service: null,
       weight: "",
+      types: [
+        "Tipper",
+        "Lorry",
+        "Pickup",
+        "Tanker",
+        "Tow truck",
+        "Van",
+        "Container Truck",
+        "Car transporter",
+      ],
+      vtype: "",
       goodstype: "",
       date: "",
       //
@@ -287,10 +330,10 @@ export default {
       this.$refs.observer.validate();
     },
     clear() {
-      this.name = "";
       this.startlocation = "";
       this.endlocation = "";
       this.weight = "";
+      this.vtype = "";
       this.goodstype = "";
       this.$refs.observer.reset();
     },
@@ -304,6 +347,7 @@ export default {
         localStorage.setItem("el", this.endlocation);
         localStorage.setItem("dt", this.date);
         localStorage.setItem("wt", this.weight);
+        localStorage.setItem("vt", this.vtype);
         localStorage.setItem("gt", this.goodstype);
         this.clear();
         this.$router.push({ name: "Csignup" });

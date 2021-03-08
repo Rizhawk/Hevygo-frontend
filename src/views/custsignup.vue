@@ -8,7 +8,10 @@
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="csignup" @submit.prevent="submit">
             <v-layout class="my-2" row wrap>
-              <v-flex class="mx-3"><p class="white--text subtitle-1 font-weight-black">Sign Up to Continue</p></v-flex
+              <v-flex class="mx-3"
+                ><p class="white--text subtitle-1 font-weight-black">
+                  Sign Up to Continue
+                </p></v-flex
               ><v-flex></v-flex>
             </v-layout>
             <validation-provider
@@ -232,6 +235,7 @@ export default {
             weight: localStorage.getItem("wt"),
             goods_type: localStorage.getItem("gt"),
             date: localStorage.getItem("dt"),
+            vehicle_type: localStorage.getItem("vt"),
           },
           {
             headers: {
@@ -261,7 +265,7 @@ export default {
   padding: 30px;
   border-radius: 30px;
   background-color: black;
-  opacity: .8;
+  opacity: 0.8;
 }
 #csign {
   background: url("../assets/truck-12.jpg");

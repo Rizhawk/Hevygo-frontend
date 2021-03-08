@@ -37,6 +37,8 @@
                 v-model="homeloc"
                 :error-messages="errors"
                 label="Home Location *"
+                type="search"
+                @input="doSearch"
                 dark
                 required
                 clearable
@@ -45,6 +47,18 @@
                 dense
               ></v-text-field>
             </validation-provider>
+            <v-flex>
+              <v-simple-table fixed-header dense v-if="dropdown">
+                <tbody>
+                  <tr v-for="result in results" :key="result.id">
+                    <v-icon dense>mdi-map-marker</v-icon>
+                    <td @click.prevent="getLoc(result.title)">
+                      {{ result.title }}
+                    </td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-flex>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
               <v-flex class="my-2">
@@ -60,7 +74,7 @@
                   Save
                 </v-btn>
               </v-flex>
-               <v-flex lg3></v-flex>
+              <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -69,6 +83,7 @@
   </v-app>
 </template>
 <script>
+import Vue from "vue";
 import { getAPI } from "../axios-api";
 import Opage from "../views/optrpage";
 import { required, digits, max, min } from "vee-validate/dist/rules";
@@ -98,6 +113,10 @@ extend("min", {
   ...min,
   message: "{_field_}  should be greater than {length} characters",
 });
+Vue.config.productionTip = false;
+Vue.config.devtools = false;
+const apiKey = "H2HPEplnWZvYwdCxIeyaFJf_RhOLUMzQXip2ADBNupY";
+const url = `https://autosuggest.search.hereapi.com/v1/autosuggest?at=30.22,-92.02&limit=10&apikey=${apiKey}&q=`;
 export default {
   name: "Tadd",
   components: {
@@ -112,9 +131,24 @@ export default {
       truckphone: localStorage.getItem("truck_phn") || null,
       regnumber: "",
       homeloc: "",
+      dropdown: false,
+      results: [],
     };
   },
   methods: {
+    async doSearch() {
+      //Auto suggestion Function call for Homelocation Field
+      this.dropdown = true;
+      if (this.homeloc === "") return;
+      let resp = await fetch(url + encodeURIComponent(this.homeloc));
+      let data = await resp.json();
+      this.results = data.items;
+    },
+    getLoc(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Endlocation
+      this.homeloc = place;
+      this.dropdown = false;
+    },
     submit() {
       this.$refs.observer2.validate(); //Truck details add
     },
@@ -126,31 +160,35 @@ export default {
         this.$refs.observer2.reset();
     },
     truckadd() {
-      getAPI
-        .post(
-          "/api/truck/truck-create/",
-          {
-            truck_num: this.truckphone,
-            registration: this.regnumber,
-            homelocation: this.homeloc,
-          },
-          {
-            headers: {
-              Authorization: ` Token ${this.$session.get("user_token")}`,
+      if (this.dropdown == true) {
+        alert("Select a Location");
+      } else {
+        getAPI
+          .post(
+            "/api/truck/truck-create/",
+            {
+              truck_num: this.truckphone,
+              registration: this.regnumber,
+              homelocation: this.homeloc,
             },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          this.message = this.APIData["response"];
-          this.snackbar = !this.snackbar;
-          localStorage.removeItem("truck_phn");
-          this.clear();
-          this.$router.push({ name: "Tmanage" });
-        })
-        .catch((err) => {
-          alert(err);
-        });
+            {
+              headers: {
+                Authorization: ` Token ${this.$session.get("user_token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.APIData = response.data;
+            this.message = this.APIData["response"];
+            this.snackbar = !this.snackbar;
+            localStorage.removeItem("truck_phn");
+            this.clear();
+            this.$router.push({ name: "Tmanage" });
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
     },
   },
 };
@@ -161,5 +199,8 @@ export default {
   padding: 25px;
   border-radius: 30px;
   background-color: slategray;
+}
+tbody {
+  background-color: slategrey;
 }
 </style>

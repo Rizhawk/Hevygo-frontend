@@ -91,6 +91,7 @@
                 <v-btn
                   color="primary"
                   type="submit"
+                  dark
                   block
                   small
                   depressed

@@ -8,33 +8,16 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th></th>
                 <th class="text-left">Date</th>
                 <th class="text-left">Start Location</th>
                 <th class="text-left">End Location</th>
                 <th class="text-left">View Route</th>
                 <th class="text-left">Transaction Details</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="dest in destdetails" :key="dest.id">
-                <td>
-                  <v-tooltip left>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        @click.prevent="viewBook(dest.id)"
-                        v-bind="attrs"
-                        v-on="on"
-                        x-small
-                        fab
-                        color="black"
-                      >
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    <span> View/Edit this Booking</span>
-                  </v-tooltip>
-                </td>
                 <td>{{ dest.date }}</td>
                 <td>{{ dest.start_location }}</td>
                 <td>{{ dest.end_location }}</td>
@@ -46,7 +29,7 @@
                   View
                 </td>
                 <td @click.prevent="getTransaction(dest.id)">View</td>
-                <v-dialog v-model="dialog3" max-width="350">
+                <v-dialog v-model="dialog2" max-width="350">
                   <v-card max-width="500">
                     <v-layout>
                       <v-flex style="background-color: black"
@@ -116,102 +99,45 @@
                     </v-flex>
                   </v-card>
                 </v-dialog>
+                <td>
+                  <v-btn
+                    depressed
+                    outlined
+                    text
+                    x-small
+                    dark
+                    @click.prevent="deleteConfirm(dest.id)"
+                    >Cancel</v-btn
+                  >
+                </td>
+                <v-dialog persistent v-model="dialog1" max-width="360">
+                  <v-card>
+                    <v-card-text class="subtitle-1 black--text"
+                      >Are you sure want to cancel this booking?</v-card-text
+                    >
+                    <v-spacer></v-spacer>
+
+                    <v-flex lg2></v-flex>
+                    <v-flex>
+                      <v-btn small @click.prevent="dialog1= false" text
+                        >Close</v-btn
+                      >
+                      <v-btn
+                        small
+                        @click.prevent="deleteBook(destid)"
+                        text
+                        color="red"
+                        >Cancel</v-btn
+                      ></v-flex
+                    >
+                  </v-card>
+                </v-dialog>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
       </v-flex>
     </v-layout>
-    <v-dialog max-width="500" v-model="dialog">
-      <form id="destlist">
-        <v-text-field
-          v-model="startloc"
-          label="Start Location"
-          outlined
-          dense
-          clearable
-        >
-        </v-text-field>
-        <v-text-field
-          v-model="endloc"
-          label="End Location"
-          outlined
-          dense
-          clearable
-        >
-        </v-text-field>
-        <v-text-field
-          v-model="date"
-          type="date"
-          label="Date of Pick Up"
-          outlined
-          dense
-          clearable
-        >
-        </v-text-field>
-        <v-text-field
-          v-model="weight"
-          label="Weight of Goods"
-          outlined
-          dense
-          clearable
-        >
-        </v-text-field>
-        <v-text-field
-          v-model="gtype"
-          label="Type of Goods"
-          outlined
-          dense
-          clearable
-        >
-        </v-text-field>
-        <v-layout row wrap>
-          <v-flex lg3></v-flex>
-          <v-flex class="mx-5">
-            <v-btn
-              @click.prevent="updateBook(destid)"
-              depressed
-              small
-              dark
-              color="success"
-              >Update</v-btn
-            >
-            <v-tooltip right>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  v-bind="attrs"
-                  v-on="on"
-                  @click.prevent="dialog2 = true"
-                  depressed
-                  small
-                  dark
-                  color="danger"
-                  class="mx-3"
-                  >Cancel</v-btn
-                >
-              </template>
-              <span>Cancel this booking</span>
-            </v-tooltip>
-            <v-dialog persistent v-model="dialog2" max-width="360">
-              <v-card>
-                <v-card-text class="subtitle-1 black--text"
-                  >Are you sure want to cancel this booking?</v-card-text
-                >
-                <v-spacer></v-spacer>
-                <v-btn small @click.prevent="dialog2 = false" text>Close</v-btn>
-                <v-btn
-                  small
-                  @click.prevent="deleteBook(destid)"
-                  text
-                  color="red"
-                  >Cancel</v-btn
-                >
-              </v-card>
-            </v-dialog>
-          </v-flex>
-        </v-layout>
-      </form>
-    </v-dialog>
   </v-app>
 </template>
 <script>
@@ -234,7 +160,7 @@ export default {
       gtype: "",
       destid: "",
       custid: "",
-      dialog2: false, //Dialog box asking confirmation for cancel a booking
+      dialog1: false, //Dialog box asking confirmation for cancel a booking
       //
       //Datas for Transaction Details
       optrname: "",
@@ -242,7 +168,7 @@ export default {
       truckreg: "",
       truckphn: "",
       cost: "",
-      dialog3: false,
+      dialog2: false,
       //
     };
   },
@@ -264,56 +190,6 @@ export default {
   },
   methods: {
     //Api call to fetch details of a single booking
-    viewBook(id) {
-      getAPI
-        .get("/api/customer/cust-dest-detail/" + id + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          this.startloc = response.data.start_location;
-          this.endloc = response.data.end_location;
-          this.date = response.data.date;
-          this.weight = response.data.weight;
-          this.gtype = response.data.goods_type;
-          this.custid = response.data.customer;
-          this.destid = id;
-          this.dialog = true;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    updateBook(did) {
-      //Api call to update the details of a booking
-      getAPI
-        .put(
-          "/api/customer/cust-dest-update/" + did + "/",
-          {
-            id: did,
-            start_location: this.startloc,
-            end_location: this.endloc,
-            weight: this.weight,
-            goods_type: this.gtype,
-            date: this.date,
-            customer: this.custid,
-          },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     deleteBook(did) {
       //Api call to cancel a booking
       getAPI
@@ -346,7 +222,7 @@ export default {
           this.truckphn = response.data.data[1]["truck_num"];
           this.optrname = response.data.data[2]["owner_name"];
           this.optrphn = response.data.data[2]["owner_phone"];
-          this.dialog3 = true;
+          this.dialog2 = true;
         })
         .catch((err) => {
           console.log(err);
@@ -358,9 +234,13 @@ export default {
       this.$session.set("el", end);
       this.$router.push({ name: "HereMap" });
     },
+    deleteConfirm(did) {
+      this.destid = did;
+      this.dialog1 = true;
+    },
     //
     checkout() {
-      const stripe =window.Stripe("publishable API key");
+      const stripe = window.Stripe("publishable API key");
       fetch("/create-checkout-session", {
         method: "POST",
       })
