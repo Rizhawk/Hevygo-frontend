@@ -16,7 +16,7 @@
       </v-menu>
     </v-app-bar>
     <!--Navbar ends-->
-    <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="5000"
+    <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="4000"
       ><span class="white--text mx-15">Customer Destination Details</span>
       <v-spacer></v-spacer>
       <v-layout class="my-2" row wrap>
@@ -33,9 +33,52 @@
 export default {
   name: "Dpage",
   data: () => {
-    return { snackbar: true };
+    return { snackbar: false, message: "" };
+  },
+  delimiters: ["${", "}"],
+  mounted: function () {
+    this.connect();
   },
   methods: {
+    connect() {
+      let roomName = "hello";
+      //  user = "{{ user.username }}";
+      this.socket = new WebSocket(
+        "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
+      );
+      this.socket.onopen = () => {
+        this.status = "connected";
+        console.log("connecte");
+        this.socket.onmessage = ({ data }) => {
+          //  # Recuperation message
+          console.log(data);
+        };
+      };
+    },
+    disconnect() {
+      this.socket.close();
+
+      console.log("deconnecte");
+    },
+    teatsend: function () {
+      this.socket.send(
+        JSON.stringify({
+          message: "code send succes",
+          admin: this.admin,
+          code: this.codedep,
+        })
+      );
+      this.snackbar = true;
+    },
+    updateAdmin: function () {
+      this.socket.send(
+        JSON.stringify({
+          message: "code send succes",
+          admin: this.admin,
+          code: this.codedep,
+        })
+      );
+    },
     logout() {
       this.$session.destroy();
       this.$router.push({ name: "Login" });
