@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     connect() {
-      let roomName = "hello";
+      let roomName = this.$session.get("user_token");
       //  user = "{{ user.username }}";
       this.socket = new WebSocket(
         "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
@@ -68,7 +68,7 @@ export default {
           code: this.codedep,
         })
       );
-      this.snackbar = true;
+      this.snackbar=true;
     },
     updateAdmin: function () {
       this.socket.send(
