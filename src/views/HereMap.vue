@@ -183,8 +183,6 @@ export default {
       this.getCost();
     },
     getCost() {
-      console.log(this.start);
-      console.log(this.end);
       getAPI
         .post(
           "/api/maps/set-route/",
@@ -207,7 +205,6 @@ export default {
             this.cost = this.routes[key]["cost"];
           }
           this.tollCost = this.cost["totalCost"];
-          console.log(this.APIData);
         })
         .catch((err) => {
           console.log(err);

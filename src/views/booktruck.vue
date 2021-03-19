@@ -288,7 +288,7 @@ export default {
       }
     },
     showPosition(position) {
-      //Fuction to get the gocoordinates of users's current location
+      //Fuction to get the geocoordinates of users's current location
       this.crntltln.push(position.coords.latitude);
       this.crntltln.push(position.coords.longitude);
       this.crntloc = this.crntltln.toString();

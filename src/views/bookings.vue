@@ -119,7 +119,7 @@
 
                     <v-flex lg2></v-flex>
                     <v-flex>
-                      <v-btn small @click.prevent="dialog1= false" text
+                      <v-btn small @click="dialog1=!dialog1" text
                         >Close</v-btn
                       >
                       <v-btn
@@ -236,7 +236,7 @@ export default {
     },
     deleteConfirm(did) {
       this.destid = did;
-      this.dialog1 = true;
+      this.dialog1 =!this.dialog1;
     },
     //
     checkout() {
