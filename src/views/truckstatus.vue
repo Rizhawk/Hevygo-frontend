@@ -25,7 +25,6 @@
                 @input="getLoction()"
                 clearable
                 rounded
-                dark
                 outlined
                 dense
               ></v-select>
@@ -43,7 +42,6 @@
                 :error-messages="errors"
                 :items="drivers"
                 clearable
-                dark
                 rounded
                 outlined
                 dense
@@ -63,7 +61,6 @@
                 :error-messages="errors"
                 clearable
                 rounded
-                dark
                 outlined
                 dense
               ></v-select>
@@ -81,7 +78,6 @@
                 :error-messages="errors"
                 clearable
                 rounded
-                dark
                 outlined
                 dense
               ></v-text-field>
@@ -255,9 +251,8 @@ export default {
 </style>
 <style scoped>
 #form7 {
-  border: solid black 2px;
+  border: solid #1a237e 2px;
   padding: 30px;
-  border-radius: 30px;
-  background-color: slategrey;
+  border-radius: 15px;
 }
 </style>

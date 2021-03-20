@@ -7,12 +7,12 @@
     <v-flex xs12 sm8 md6 lg8>
       <v-card color="profile">
         <v-card-title class="text-center justify-center py-6">
-          <p class="font-weight-bold display-1 profile--text headline">
-            Edit your Profile
+          <p class="font-weight-black title profile--text headline">
+            EDIT YOUR PROFILE
           </p>
         </v-card-title>
 
-        <v-tabs fixed-tabs background-color="indigo" dark>
+        <v-tabs fixed-tabs background-color="indigo darken-4" dark>
           <v-tabs-slider></v-tabs-slider>
           <v-tab> Change Details </v-tab>
           <v-tab> Change Password </v-tab>
@@ -261,21 +261,21 @@ export default {
 </script>
 <style scoped>
 .profile {
-  background-color: #fffbe6 !important;
+  background-color: #768594 !important;
 }
 .profile--text {
-  color: #356859 !important;
+  color: black !important;
 }
 #update {
   border: solid black 2px;
   padding: 30px;
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: white;
 }
 #update2 {
   border: solid black 2px;
   padding: 30px;
-  border-radius: 30px;
+  border-radius: 10px;
   background-color: white;
 }
 </style>

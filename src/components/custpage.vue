@@ -5,6 +5,8 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-medium">SHUTTLE</v-toolbar-title>
       <v-spacer></v-spacer>
+      <p class="font-italic body-2">Welcome ,</p>
+      <span><p class="mx-3 font-weight-black body-2">Customer Name</p></span>
     </v-app-bar>
     <!--Navbar ends-->
     <!--Sidebar-->
@@ -14,8 +16,8 @@
       bottom
       fixed
       clipped
-      hide-overlay
       dark
+      hide-overlay
       color="teal darken-4"
     >
       <v-layout column align-center>
@@ -23,10 +25,9 @@
           <v-avatar size="100">
             <v-icon size="80"> mdi-account-circle </v-icon>
           </v-avatar>
-          <p class="white--text subheading mt-1">Customer Name</p>
           <v-flex
             ><router-link id="link" to="/editcustprofile"
-              ><p class="ml-4 black--text font-weight-medium body-2">
+              ><p class="ml-3 white--text font-weight-medium body-2">
                 Edit Profile &#9998;
               </p></router-link
             ></v-flex

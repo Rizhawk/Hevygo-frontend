@@ -8,31 +8,21 @@
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
         <!--Table-->
-        <v-simple-table id="table" xs12 sm8 md6 lg12 fixed-header dark>
+        <v-simple-table>
           <template v-slot:default>
-            <thead id="title">
+            <thead>
               <tr>
-                <th class="text-left">Truck phonenumber</th>
-                <th class="text-left">Registration Number</th>
-                <th class="text-left">Verification</th>
-                <th class="text-left">Truck Specification</th>
-                <v-menu bottom left>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn dark icon v-bind="attrs" v-on="on">
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item @click.prevent="tdelete = !tdelete">
-                      Delete a Truck
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
+                <th class="white--text text-left">Truck phonenumber</th>
+                <th class="white--text text-left">Registration Number</th>
+                <th class="white--text text-left">Verification</th>
+                <th class="white--text text-left">Truck Specification</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="truck in trucks" :key="truck.truck_num">
                 <td
+                  class="font-weight-bold"
                   @click="
                     editreg(
                       truck.id,
@@ -91,10 +81,16 @@
                     </v-layout>
                   </form>
                 </v-dialog>
-                <td>{{ truck.registration }}</td>
-                <td v-if="truck.is_verified == true">&#9989;</td>
-                <td v-if="truck.is_verified == false">&#10060;</td>
-                <td @click="showinfo(truck.id)">View/Edit</td>
+                <td class="font-weight-bold">{{ truck.registration }}</td>
+                <td class="font-weight-bold" v-if="truck.is_verified == true">
+                  &#9989;
+                </td>
+                <td class="font-weight-bold" v-if="truck.is_verified == false">
+                  &#10060;
+                </td>
+                <td class="font-weight-bold" @click="showinfo(truck.id)">
+                  View/Edit
+                </td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog2"
@@ -164,11 +160,46 @@
                     </v-layout>
                   </form>
                 </v-dialog>
-                <td v-if="tdelete" @click="deleteTruck(truck.id)">
-                  <v-btn icon color="red">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
+                <td>
+                  <v-btn
+                    depressed
+                    outlined
+                    text
+                    dark
+                    x-small
+                    color="red accent-4"
+                    @click.prevent="dialog1 = !dialog1"
+                    >Delete</v-btn
+                  >
                 </td>
+
+                <v-dialog persistent v-model="dialog1" max-width="380">
+                  <v-card>
+                    <v-card-text class="subtitle-1 font-weight-bold black--text"
+                      >Are you sure want to remove this truck?</v-card-text
+                    >
+                    <v-spacer></v-spacer>
+
+                    <v-flex class="ml-15">
+                      <v-btn
+                        class="ml-10"
+                        small
+                        @click="dialog1 = !dialog1"
+                        text
+                        >Close</v-btn
+                      >
+                      <v-btn
+                        small
+                        @click.prevent="
+                          deleteTruck(truck.id, truck.registration)
+                        "
+                        text
+                        color="red"
+                        >Remove</v-btn
+                      ></v-flex
+                    >
+                  </v-card>
+                </v-dialog>
               </tr>
             </tbody>
           </template>
@@ -204,7 +235,7 @@ export default {
     return {
       //trucklist
       trucks: [],
-      tdelete: false,
+      dialog1: false,
       tspec: false,
       //
       //editreg
@@ -258,7 +289,7 @@ export default {
   },
   methods: {
     //Delete Api call
-    deleteTruck(id) {
+    deleteTruck(id, reg) {
       getAPI
         .delete("/api/truck/truck-delete/" + id + "/", {
           headers: {
@@ -267,7 +298,7 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          this.message = this.APIData;
+          this.message = `Truck ${reg} is successfully removed`;
           window.location.reload();
         })
         .catch((err) => {
@@ -405,5 +436,11 @@ export default {
   padding: 25px;
   border-radius: 15px;
   background-color: grey;
+}
+thead {
+  background-color: #1a237e;
+}
+tbody {
+  background-color: #9e9e9e;
 }
 </style>

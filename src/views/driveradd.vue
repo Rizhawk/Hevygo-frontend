@@ -29,13 +29,8 @@
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-        <validation-observer ref="observer3" v-slot="{invalid}">
+        <validation-observer ref="observer3" v-slot="{ invalid }">
           <form id="form6" @submit.prevent="adddriver">
-            <v-layout
-              ><v-flex class="my-2"
-                ></v-flex
-              ></v-layout
-            >
             <validation-provider
               v-slot="{ errors }"
               name="Driver Name"
@@ -47,7 +42,6 @@
                 v-model="driver_name"
                 :error-messages="errors"
                 label="Driver Name *"
-                dark
                 outlined
                 rounded
                 dense
@@ -66,7 +60,6 @@
                 v-model="driver_phone"
                 :error-messages="errors"
                 label="Driver Phone Number *"
-                dark
                 outlined
                 rounded
                 dense
@@ -190,9 +183,8 @@ export default {
 </script>
 <style scoped>
 #form6 {
-  border: solid black 2px;
+  border: solid #1a237e 2px;
   padding: 25px;
-  border-radius: 30px;
-  background-color: slategrey;
+  border-radius: 15px;
 }
 </style>

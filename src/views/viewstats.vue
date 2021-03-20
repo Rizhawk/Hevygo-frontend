@@ -5,12 +5,12 @@
       <v-flex sm2 md2 lg3></v-flex>
       <v-flex xs12 sm8 md6 lg6>
         <!--Table showing status details-->
-        <v-simple-table id="table2" fixed-header dark>
+        <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Location</th>
-                <th>Status</th>
+                <th class="white--text text-left">Location</th>
+                <th class="white--text text-left">Status</th>
                 <th></th>
                 <v-menu bottom right>
                   <template v-slot:activator="{ on, attrs }">
@@ -28,11 +28,15 @@
             </thead>
             <tbody>
               <tr v-for="truck in truckstats" :key="truck.truck">
-                <td>{{ truck.location }}</td>
-                <td>{{ truck.status }}</td>
-                <td @click="showdetail(truck.truck, truck.driver)">
+                <td class="font-weight-bold">{{ truck.location }}</td>
+                <td class="font-weight-bold">{{ truck.status }}</td>
+                <td
+                  class="font-weight-bold"
+                  @click="showdetail(truck.truck, truck.driver)"
+                >
                   View more/Edit
                 </td>
+                <td></td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog"
@@ -160,10 +164,7 @@ export default {
       drname: "",
       stat: "",
       loc: "",
-      stats: [
-        "Available",
-        "Unavailable",
-      ],
+      stats: ["Available", "Unavailable"],
     };
   },
   created: function () {
@@ -348,5 +349,11 @@ export default {
   padding: 25px;
   border-radius: 15px;
   background-color: grey;
+}
+thead {
+  background-color: #1a237e;
+}
+tbody {
+  background-color: #9e9e9e;
 }
 </style>

@@ -4,12 +4,12 @@
     <v-layout class="my-10" justify-center>
       <v-flex xs12 sm8 md6 lg6>
         <!--Drivers table-->
-        <v-simple-table id="table" fixed-header dark>
+        <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Driver name</th>
-                <th>Phone number</th>
+                <th class="white--text text-left">Driver name</th>
+                <th class="white--text text-left">Phone number</th>
                 <th></th>
                 <v-menu bottom right>
                   <template v-slot:activator="{ on, attrs }">
@@ -27,10 +27,11 @@
             </thead>
             <tbody>
               <tr v-for="driver in driverdetails" :key="driver.id">
-                <td>{{ driver.driver_name }}</td>
-                <td>{{ driver.phone }}</td>
+                <td class="font-weight-bold">{{ driver.driver_name }}</td>
+                <td class="font-weight-bold">{{ driver.phone }}</td>
 
                 <td
+                  class="font-weight-bold"
                   @click="
                     getaDriver(
                       driver.id,
@@ -42,6 +43,7 @@
                 >
                   Edit/Delete
                 </td>
+                <td></td>
                 <v-dialog
                   :retain-focus="false"
                   v-model="dialog"
@@ -251,5 +253,11 @@ export default {
   padding: 5px;
   margin: 1px;
   border-radius: 22px;
+}
+thead {
+  background-color: #1a237e;
+}
+tbody {
+  background-color: #9e9e9e;
 }
 </style>

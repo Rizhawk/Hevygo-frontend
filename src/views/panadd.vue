@@ -21,7 +21,6 @@
                 v-model="pan"
                 :error-messages="errors"
                 label="Pan Number *"
-                dark
                 outlined
                 rounded
                 clearable
@@ -39,7 +38,6 @@
                 v-model="gst_no"
                 :error-messages="errors"
                 label="Gst Number *"
-                dark
                 required
                 outlined
                 rounded
@@ -49,12 +47,19 @@
             </validation-provider>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
-            <v-flex class="my-2">
-              <v-btn rounded small depressed block @click.prevent="panadd" color="primary" :disabled="invalid"
-                >Save</v-btn
-              >
-            </v-flex>
-            <v-flex lg3></v-flex>
+              <v-flex class="my-2">
+                <v-btn
+                  rounded
+                  small
+                  depressed
+                  block
+                  @click.prevent="panadd"
+                  color="primary"
+                  :disabled="invalid"
+                  >Save</v-btn
+                >
+              </v-flex>
+              <v-flex lg3></v-flex>
             </v-layout>
           </form>
         </validation-observer>
@@ -108,7 +113,7 @@ export default {
   },
   methods: {
     addpan() {
-      this.$refs.observer3.validate(); 
+      this.$refs.observer3.validate();
     },
     clear() {
       (this.pan = ""), (this.gst_no = ""), this.$refs.observer3.reset();
@@ -129,12 +134,10 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          if(this.APIData['operator'])
-          {
-            this.message="Pancard already added"
-          }
-          else if(this.APIData["response"]){
-          this.message = this.APIData["response"];
+          if (this.APIData["operator"]) {
+            this.message = "Pancard already added";
+          } else if (this.APIData["response"]) {
+            this.message = this.APIData["response"];
           }
           this.snackbar = !this.snackbar;
           this.clear();
@@ -148,9 +151,8 @@ export default {
 </script>
 <style scoped>
 #form5 {
-  border: solid black 2px;
+  border: solid #1a237e 2px;
   padding: 30px;
-  border-radius: 30px;
-  background-color: slategrey;
+  border-radius: 15px;
 }
 </style>

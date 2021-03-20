@@ -1,10 +1,12 @@
 <template>
   <nav>
     <!--Navbar-->
-    <v-app-bar  dense color="black" dark app>
+    <v-app-bar dense color="indigo darken-4" flat dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title class="font-weight-medium">SHUTTLE</v-app-bar-title>
       <v-spacer></v-spacer>
+      <p class="font-italic body-2">Welcome ,</p>
+      <span><p class="mx-3 font-weight-black body-2">Operator Name</p></span>
     </v-app-bar>
     <!--Navbar ends-->
 
@@ -17,17 +19,20 @@
       clipped
       hide-overlay
       dark
-      color="black"
+      color="indigo darken-4"
     >
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
-          <p class="white--text subheading mt-1">
-            Operator Name
-            <v-btn x-small fab rounded router to="/editoptrprofile"> <v-icon>mdi-pencil</v-icon></v-btn>
-          </p>
+          <v-flex
+            ><router-link id="link" to="/editoptrprofile"
+              ><p class="ml-3 white--text font-weight-medium body-2">
+                Edit Profile &#9998;
+              </p></router-link
+            ></v-flex
+          >
         </v-flex>
       </v-layout>
       <v-list nav dark>
@@ -35,15 +40,25 @@
           v-model="group"
           active-class="deep-grey--text text--accent-1"
         >
-          <v-list-item router to="/registertruck">
+          <v-list-item
+            class="font-weight-bold body-2"
+            router
+            to="/registertruck"
+          >
             Register New Truck
           </v-list-item>
-          <v-list-item router to="/managetrucks">Manage Trucks </v-list-item>
-          <v-list-item router to="/editdrivers"> Manage Drivers </v-list-item>
-          <v-list-item router to="/viewstats">
+          <v-list-item class="font-weight-bold body-2" router to="/managetrucks"
+            >Manage Trucks
+          </v-list-item>
+          <v-list-item class="font-weight-bold body-2" router to="/editdrivers">
+            Manage Drivers
+          </v-list-item>
+          <v-list-item class="font-weight-bold body-2" router to="/viewstats">
             Update Trucks Status
           </v-list-item>
-          <v-list-item router to="/panadd"> Add Your Pancard </v-list-item>
+          <v-list-item class="font-weight-bold body-2" router to="/panadd">
+            Add Your Pancard
+          </v-list-item>
         </v-list-item-group>
         <v-list-item>
           <v-btn

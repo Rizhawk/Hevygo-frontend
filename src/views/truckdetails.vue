@@ -18,7 +18,6 @@
                 :error-messages="errors"
                 name="manufacturer"
                 clearable
-                dark
                 outlined
                 rounded
                 dense
@@ -36,7 +35,6 @@
                 name="type"
                 :error-messages="errors"
                 clearable
-                dark
                 outlined
                 rounded
                 dense
@@ -53,7 +51,6 @@
                 :error-messages="errors"
                 label="Model *"
                 clearable
-                dark
                 outlined
                 rounded
                 dense
@@ -69,7 +66,6 @@
                 :error-messages="errors"
                 label="Capacity in ton *"
                 clearable
-                dark
                 outlined
                 rounded
                 dense
@@ -205,9 +201,8 @@ export default {
 </script>
 <style scoped>
 #form4 {
-  border: solid black 2px;
+  border: solid #1a237e 2px;
   padding: 30px;
-  border-radius: 30px;
-  background-color: slategrey;
+  border-radius: 15px;
 }
 </style>

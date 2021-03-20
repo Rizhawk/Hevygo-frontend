@@ -7,11 +7,11 @@
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-        <validation-observer ref="observer1" v-slot="{invalid}">
-          <form id="form2" @submit.prevent="submit" >
+        <validation-observer ref="observer1" v-slot="{ invalid }">
+          <form id="form2" @submit.prevent="submit">
             <v-layout
               ><v-flex
-                ><p class="headline">Fill the details</p></v-flex
+                ><p class="headline font-weight-bold">Fill the details</p></v-flex
               ></v-layout
             >
             <validation-provider v-slot="{ errors }" name="Name">
@@ -19,7 +19,6 @@
                 v-model="name"
                 :error-messages="errors"
                 label="Name of your truck"
-                dark
                 clearable
                 outlined
                 rounded
@@ -34,7 +33,6 @@
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
-              dark
               clearable
               outlined
               rounded
@@ -52,7 +50,6 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
-              dark
               clearable
               outlined
               rounded
@@ -70,7 +67,6 @@
                 v-model="phone"
                 :error-messages="errors"
                 label=" Phone number to contact your truck *"
-                dark
                 clearable
                 outlined
                 rounded
@@ -208,9 +204,8 @@ export default {
 </script>
 <style scoped>
 #form2 {
-  border: solid black 2px;
+  border: solid #1a237e  2px;
   padding: 30px;
-  border-radius: 30px;
-  background-color: slategrey;
+  border-radius: 15px;
 }
 </style>

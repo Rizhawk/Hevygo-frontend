@@ -9,7 +9,6 @@
         >
         <validation-observer ref="observer2" v-slot="{ invalid }">
           <form class="my-5" id="form3" @submit.prevent="submit">
-            <v-layout class="my-3"> <v-flex></v-flex></v-layout>
             <validation-provider
               v-slot="{ errors }"
               name="Registration Number"
@@ -19,7 +18,6 @@
                 v-model="regnumber"
                 :error-messages="errors"
                 label="Registration Number *"
-                dark
                 required
                 clearable
                 outlined
@@ -39,7 +37,6 @@
                 label="Home Location *"
                 type="search"
                 @input="doSearch"
-                dark
                 required
                 clearable
                 outlined
@@ -195,12 +192,8 @@ export default {
 </script>
 <style scoped>
 #form3 {
-  border: solid black 2px;
+  border: solid #1a237e 2px;
   padding: 25px;
-  border-radius: 30px;
-  background-color: slategray;
-}
-tbody {
-  background-color: slategrey;
+  border-radius: 15px;
 }
 </style>
