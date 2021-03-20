@@ -196,7 +196,7 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-import Opage from "../views/optrpage";
+import Opage from "../components/optrpage";
 export default {
   name: "Tmanage",
   components: { Opage },

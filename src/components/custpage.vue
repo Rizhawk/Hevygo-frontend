@@ -1,7 +1,7 @@
 <template>
   <nav>
     <!--Navbar-->
-    <v-app-bar dense color="black" dark app>
+    <v-app-bar dense color="teal darken-4" dark flat app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-medium">SHUTTLE</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -16,19 +16,21 @@
       clipped
       hide-overlay
       dark
-      color="black"
+      color="teal darken-4"
     >
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
-            <v-icon size="80" dark> mdi-account-circle </v-icon>
+            <v-icon size="80"> mdi-account-circle </v-icon>
           </v-avatar>
-          <p class="white--text subheading mt-1">
-            Customer Name
-            <v-btn fab dark x-small to="/editcustprofile">
-              <v-icon dark> mdi-pencil </v-icon>
-            </v-btn>
-          </p>
+          <p class="white--text subheading mt-1">Customer Name</p>
+          <v-flex
+            ><router-link id="link" to="/editcustprofile"
+              ><p class="ml-4 black--text font-weight-medium body-2">
+                Edit Profile &#9998;
+              </p></router-link
+            ></v-flex
+          >
         </v-flex>
       </v-layout>
       <v-list nav dark>
@@ -36,11 +38,19 @@
           v-model="group"
           active-class="deep-grey--text text--accent-1"
         >
-          <v-list-item router to="/booknewtruck">
+          <v-list-item
+            class="font-weight-bold body-2"
+            router
+            to="/booknewtruck"
+          >
             Booking a new Truck
           </v-list-item>
-          <v-list-item router to="/bookings"> Bookings</v-list-item>
-          <v-list-item router to="/custrack"> Track your Shipment </v-list-item>
+          <v-list-item class="font-weight-bold body-2" router to="/bookings"
+            >Current Bookings</v-list-item
+          >
+          <v-list-item class="font-weight-bold body-2" router to="/custrack">
+            Track your Shipment
+          </v-list-item>
         </v-list-item-group>
         <v-list-item>
           <v-btn

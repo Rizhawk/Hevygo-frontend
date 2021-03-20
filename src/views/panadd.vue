@@ -64,7 +64,7 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-import Opage from "../views/optrpage";
+import Opage from "../components/optrpage";
 import { required, digits, max, min } from "vee-validate/dist/rules";
 import {
   extend,

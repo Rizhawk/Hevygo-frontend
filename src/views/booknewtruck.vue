@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Cpage />
-    <v-layout class="my-5" row wrap>
+    <v-layout class="my-2" row wrap>
       <v-flex xs2 sm2 md2 lg4></v-flex>
       <v-flex xs8 sm8 md6 lg4>
         <validation-observer ref="observer" v-slot="{ invalid }">
@@ -163,7 +163,7 @@
 <script>
 import Vue from "vue";
 import { getAPI } from "../axios-api";
-import Cpage from "../views/custpage";
+import Cpage from "../components/custpage";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
   extend,
@@ -357,9 +357,8 @@ export default {
 </script>
 <style scoped>
 #booknew {
-  border: solid black 2px;
+  border: solid #004d40 3px;
   padding: 30px;
-  border-radius: 30px;
-  background-color: white;
+  border-radius: 15px;
 }
 </style>

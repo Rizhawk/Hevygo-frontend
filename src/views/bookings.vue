@@ -3,32 +3,32 @@
     <Cpage />
     <v-layout class="my-10" row wrap>
       <v-flex xs2 sm2 md2 lg2 class="mx-8"></v-flex>
-      <v-flex xs12 sm8 md6 lg8>
-        <v-simple-table dark>
+      <v-flex xs12 sm8 md6 lg9>
+        <v-simple-table>
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left">Date</th>
-                <th class="text-left">Start Location</th>
-                <th class="text-left">End Location</th>
-                <th class="text-left">View Route</th>
-                <th class="text-left">Transaction Details</th>
+                <th class="text-left white--text">Date</th>
+                <th class="text-left white--text">Start Location</th>
+                <th class="text-left white--text">End Location</th>
+                <th class="text-left white--text">View Route</th>
+                <th class="text-left white--text">Transaction Details</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="dest in destdetails" :key="dest.id">
-                <td>{{ dest.date }}</td>
-                <td>{{ dest.start_location }}</td>
-                <td>{{ dest.end_location }}</td>
-                <td
+                <td class="font-weight-bold">{{ dest.date }}</td>
+                <td  class="font-weight-bold">{{ dest.start_location }}</td>
+                <td  class="font-weight-bold">{{ dest.end_location }}</td>
+                <td  class="font-weight-bold"
                   @click.prevent="
                     viewRoute(dest.start_location, dest.end_location)
                   "
                 >
                   View
                 </td>
-                <td @click.prevent="getTransaction(dest.id)">View</td>
+                <td  class="font-weight-bold" @click.prevent="getTransaction(dest.id)">View</td>
                 <v-dialog v-model="dialog2" max-width="350">
                   <v-card max-width="500">
                     <v-layout>
@@ -104,22 +104,23 @@
                     depressed
                     outlined
                     text
-                    x-small
                     dark
+                    x-small
+                    color="red accent-4"
                     @click.prevent="deleteConfirm(dest.id)"
                     >Cancel</v-btn
                   >
                 </td>
-                <v-dialog persistent v-model="dialog1" max-width="360">
+                <v-dialog persistent v-model="dialog1" max-width="380">
                   <v-card>
-                    <v-card-text class="subtitle-1 black--text"
+                    <v-card-text class="subtitle-1 font-weight-bold black--text"
                       >Are you sure want to cancel this booking?</v-card-text
                     >
                     <v-spacer></v-spacer>
 
-                    <v-flex lg2></v-flex>
-                    <v-flex>
-                      <v-btn small @click="dialog1=!dialog1" text
+                    
+                    <v-flex class="ml-15">
+                      <v-btn class="ml-10" small @click="dialog1=!dialog1" text
                         >Close</v-btn
                       >
                       <v-btn
@@ -142,7 +143,7 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-import Cpage from "../views/custpage";
+import Cpage from "../components/custpage";
 export default {
   name: "Cbookings",
   components: {
@@ -275,5 +276,11 @@ export default {
 #title {
   background-color: black;
   font-family: monospace;
+}
+thead{
+  background-color:#004d40;
+}
+tbody{
+  background-color: #9e9e9e;
 }
 </style>

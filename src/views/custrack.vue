@@ -10,7 +10,7 @@
   </v-app>
 </template>
 <script>
-import Cpage from "../views/custpage";
+import Cpage from "../components/custpage";
 export default {
   name: "Ctrack",
   components: {

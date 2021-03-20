@@ -99,7 +99,7 @@
 <script>
 // import sweetalert from 'sweetalert2';
 import { getAPI } from "../axios-api";
-import Opage from "../views/optrpage";
+import Opage from "../components/optrpage";
 import { required, digits, max, min } from "vee-validate/dist/rules";
 import {
   extend,
