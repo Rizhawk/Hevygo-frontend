@@ -2,6 +2,14 @@
   <v-app>
     <Opage />
     <v-layout class="my-10" justify-center>
+      <v-snackbar
+        rounded="xl"
+        top
+        color="red darken-4"
+        v-model="snackbar"
+        timeout="5000"
+        ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
+      >
       <v-flex xs12 sm8 md6 lg6>
         <!--Drivers table-->
         <v-simple-table>
@@ -143,6 +151,8 @@ export default {
       drphn: "",
       ownerid: "",
       drid: "",
+      snackbar: false,
+      message: "",
     };
   },
   name: "Editdrivers",
@@ -216,7 +226,7 @@ export default {
       //
     },
     //Api call for delete the selected driver
-    deletedr(drid) {
+    deletedr(drid, dname) {
       getAPI
         .delete("api/operators/driver-delete/" + drid + "/", {
           headers: {
@@ -225,7 +235,9 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
+          this.message = `Driver ${dname} is successfully deleted`;
           window.location.reload();
+          this.snackbar = true;
         })
         .catch((err) => {
           alert(err);
@@ -234,7 +246,7 @@ export default {
     },
     //delete confirmation function call
     deletenow() {
-      this.deletedr(this.drid);
+      this.deletedr(this.drid, this.dname);
       this.dialog2 = false;
     },
     //

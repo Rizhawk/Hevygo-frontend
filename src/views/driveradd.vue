@@ -70,7 +70,7 @@
               <v-flex lg3></v-flex>
               <v-flex class="my-2">
                 <v-btn
-                  color="success"
+                  color="primary"
                   block
                   small
                   :disabled="invalid"

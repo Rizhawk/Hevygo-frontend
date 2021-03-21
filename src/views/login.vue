@@ -4,6 +4,15 @@
     <v-layout class="my-15" row wrap>
       <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs10 sm8 md6 lg4>
+        <v-snackbar
+          rounded="md"
+          top
+          light
+          color="red darken-4"
+          v-model="snackbar"
+          timeout="3000"
+          ><span class="font-weight-bold white--text mx-15">{{ this.message }}</span></v-snackbar
+        >
         <!--Login section-->
         <form id="loginform" @submit.prevent="submit">
           <v-layout row flex class="my-1"><v-flex></v-flex></v-layout>
@@ -60,6 +69,8 @@ export default {
       phone: "",
       show1: false,
       password: "",
+      snackbar: false,
+      message: "",
     };
   },
   methods: {
@@ -88,7 +99,8 @@ export default {
         .catch((err) => {
           localStorage.clear();
           console.log(err);
-          alert("Invalid Credentials");
+          this.message = "Login failed due to Invalid Credentials ";
+          this.snackbar = true;
         });
     },
   },

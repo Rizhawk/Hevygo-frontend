@@ -4,7 +4,12 @@
     <v-layout row wrap class="my-8">
       <v-flex sm2 md2 lg3></v-flex>
       <v-flex xs12 sm12 md8 lg8>
-        <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
+        <v-snackbar
+          rounded="xl"
+          top
+          color="red darken-4"
+          v-model="snackbar"
+          timeout="5000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
         <!--Table-->
@@ -300,11 +305,11 @@ export default {
           this.APIData = response.data;
           this.message = `Truck ${reg} is successfully removed`;
           window.location.reload();
+          this.snackbar = !this.snackbar;
         })
         .catch((err) => {
           alert(err);
         });
-      this.snackbar = !this.snackbar;
     },
     //
     //Registation edit
