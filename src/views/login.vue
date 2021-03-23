@@ -87,6 +87,7 @@ export default {
         .then((response) => {
           this.$session.start();
           this.$session.set("user_token", response.data.token);
+          this.$session.set("user_name", response.data.name);
           this.APIData = response.data;
           if (response.data.user_type == 1) {
             this.$router.push({ name: "Treg" });

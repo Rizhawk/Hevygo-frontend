@@ -6,7 +6,7 @@
       <v-app-bar-title class="font-weight-medium">SHUTTLE</v-app-bar-title>
       <v-spacer></v-spacer>
       <p class="font-italic body-2">Welcome ,</p>
-      <span><p class="mx-3 font-weight-black body-2">Operator Name</p></span>
+      <span><p class="mx-3 font-weight-black body-2">{{this.$session.get('user_name')}}</p></span>
     </v-app-bar>
     <!--Navbar ends-->
 
