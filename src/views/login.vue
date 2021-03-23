@@ -11,7 +11,7 @@
           color="red darken-4"
           v-model="snackbar"
           timeout="3000"
-          ><span class="font-weight-bold white--text mx-15">{{ this.message }}</span></v-snackbar
+          ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
         <!--Login section-->
         <form id="loginform" @submit.prevent="submit">

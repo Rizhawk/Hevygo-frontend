@@ -48,7 +48,7 @@ export default {
       );
       this.socket.onopen = () => {
         this.status = "connected";
-        console.log("connecte");
+        console.log("connect");
         this.socket.onmessage = ({ data }) => {
           //  # Recuperation message
           console.log(data);
@@ -58,27 +58,27 @@ export default {
     disconnect() {
       this.socket.close();
 
-      console.log("deconnecte");
+      console.log("deconnect");
     },
-    teatsend: function () {
-      this.socket.send(
-        JSON.stringify({
-          message: "code send succes",
-          admin: this.admin,
-          code: this.codedep,
-        })
-      );
-      this.snackbar=true;
-    },
-    updateAdmin: function () {
-      this.socket.send(
-        JSON.stringify({
-          message: "code send succes",
-          admin: this.admin,
-          code: this.codedep,
-        })
-      );
-    },
+    // teatsend: function () {
+    //   this.socket.send(
+    //     JSON.stringify({
+    //       message: "code send succes",
+    //       admin: this.admin,
+    //       code: this.codedep,
+    //     })
+    //   );
+    //   this.snackbar=true;
+    // },
+    // updateAdmin: function () {
+    //   this.socket.send(
+    //     JSON.stringify({
+    //       message: "code send succes",
+    //       admin: this.admin,
+    //       code: this.codedep,
+    //     })
+    //   );
+    // },
     logout() {
       this.$session.destroy();
       this.$router.push({ name: "Login" });

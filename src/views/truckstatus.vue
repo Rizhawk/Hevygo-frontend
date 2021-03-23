@@ -236,7 +236,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.data["truck"]) {
-            alert(this.reg + " is already assgined to a driver");
+            alert("Truck " + this.reg + " is already assgined to a driver");
           } else if (err.response.data["driver"]) {
             alert(this.driver + " is already assigned to a truck.");
           }
