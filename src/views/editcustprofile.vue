@@ -20,7 +20,7 @@
             <v-layout class="my-10" row wrap>
               <v-flex xs1 sm2 md2 lg3></v-flex>
               <v-flex xs10 sm8 md6 lg6>
-                <validation-observer v-slot="{ invalid }">
+                <validation-observer ref="observer1" v-slot="{ invalid }">
                   <form id="update">
                     <v-text-field
                       v-model="uname"
@@ -42,6 +42,46 @@
                         :error-messages="errors"
                         rounded
                         outlined
+                        dense
+                      ></v-text-field>
+                    </validation-provider>
+                    <validation-provider
+                      v-slot="{ errors }"
+                      :rules="{ required: true }"
+                      name="Password"
+                    >
+                      <v-text-field
+                        v-model="repass"
+                        :error-messages="errors"
+                        label="Current Password"
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="show1 ? 'text' : 'password'"
+                        @click:append="show1 = !show1"
+                        outlined
+                        rounded
+                        dense
+                      ></v-text-field>
+                    </validation-provider>
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Password confirmation"
+                      :rules="{
+                        required: true,
+                      }"
+                    >
+                      <v-text-field
+                        v-model="crepass"
+                        label="Confirm Current Password"
+                        :error-messages="errors"
+                        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[
+                          repass === crepass ||
+                            'The password confirmation does not match.',
+                        ]"
+                        :type="show2 ? 'text' : 'password'"
+                        @click:append="show2 = !show2"
+                        outlined
+                        rounded
                         dense
                       ></v-text-field>
                     </validation-provider>
@@ -90,7 +130,10 @@
                     v-model="npass"
                     label="New Password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="passwordRules"
+                    :rules="[
+                      (value) =>
+                        (value && value.length >= 6) || 'minimum 6 characters',
+                    ]"
                     :type="show1 ? 'text' : 'password'"
                     @click:append="show1 = !show1"
                     outlined
@@ -137,7 +180,7 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-import { digits, email } from "vee-validate/dist/rules";
+import { required, digits, email } from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -153,6 +196,10 @@ extend("email", {
   ...email,
   message: "Email must be valid",
 });
+extend("required", {
+  ...required,
+  message: "{_field_} is required",
+});
 export default {
   name: "Ecprofile",
   components: {
@@ -164,7 +211,8 @@ export default {
       uname: "",
       uphn: "",
       uemail: "",
-      password: "",
+      repass: "",
+      crepass: "",
       //
       snackbar: false,
       message: "",
@@ -173,9 +221,6 @@ export default {
       cnpass: "",
       show1: false,
       show2: false,
-      passwordRules: [
-        (value) => (value && value.length >= 6) || "minimum 6 characters",
-      ],
     };
   },
   beforeMount: function () {
@@ -190,7 +235,6 @@ export default {
         this.uname = this.APIData.name;
         this.uphn = this.APIData.phone;
         this.uemail = this.APIData.email;
-        this.password = this.APIData.password;
       })
       .catch((err) => {
         alert(err);
@@ -198,13 +242,14 @@ export default {
   },
   methods: {
     uptProfile() {
+      this.$refs.observer1.validate();
       getAPI
         .put(
           "/api/accounts/user-update/",
           {
             phone: this.uphn,
-            password: this.password,
-            password2: this.password,
+            password: this.repass,
+            password2: this.crepass,
             user_type: 2,
             name: this.uname,
             email: this.uemail,
@@ -219,6 +264,7 @@ export default {
           this.APIData = response.data;
           this.message = "Profile Updated Successfully";
           this.snackbar = true;
+          this.clear1();
         })
         .catch((err) => {
           alert(err);
@@ -246,13 +292,16 @@ export default {
           this.APIData = response.data;
           this.message = "Password Changed Successfully";
           this.snackbar = true;
-          this.clear();
+          this.clear2();
         })
         .catch((err) => {
           alert(err);
         });
     },
-    clear() {
+    clear1() {
+      (this.repass = ""), (this.crepass = ""), this.$refs.observer1.reset();
+    },
+    clear2() {
       (this.npass = ""), (this.cnpass = "");
     },
   },
