@@ -61,6 +61,7 @@
 <script>
 import Navbar from "../components/Navbar";
 import { getAPI } from "../axios-api";
+// import axios from 'axios';
 export default {
   name: "Login",
   components: { Navbar },

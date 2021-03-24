@@ -25,8 +25,12 @@
           <v-btn small color="green" text>Accept</v-btn>
           <v-btn small color="red" text>Reject</v-btn></v-flex
         >
+       
       </v-layout>
     </v-snackbar>
+    <v-layout class="my-10" row wrap>
+ <v-flex><v-btn @click="disconnect">Disconnect</v-btn></v-flex>
+    </v-layout>
   </v-app>
 </template>
 <script>
@@ -41,24 +45,17 @@ export default {
   },
   methods: {
     connect() {
-      let roomName = this.$session.get("user_token");
+      // let roomName = this.$session.get("user_token");
       //  user = "{{ user.username }}";
-      this.socket = new WebSocket(
-        "ws://" + window.location.host + "/ws/chat/" + roomName + "/"
-      );
-      this.socket.onopen = () => {
-        this.status = "connected";
-        console.log("connect");
-        this.socket.onmessage = ({ data }) => {
-          //  # Recuperation message
-          console.log(data);
-        };
-      };
+      this.socket = new WebSocket("wss://echo.websocket.org");
+      this.socket.onopen = function(event) {
+      console.log(event)
+      console.log("Successfully connected to the echo websocket server...")
+    }
     },
     disconnect() {
       this.socket.close();
-
-      console.log("deconnect");
+      console.log("websocket disconnected..!");
     },
     // teatsend: function () {
     //   this.socket.send(

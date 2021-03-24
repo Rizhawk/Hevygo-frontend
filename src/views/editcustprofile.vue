@@ -25,6 +25,7 @@
                     <v-text-field
                       v-model="uname"
                       label="Name"
+                      clearable
                       rounded
                       outlined
                       dense
@@ -39,11 +40,28 @@
                       <v-text-field
                         v-model="uphn"
                         label="Phonenumber"
+                        clearable
                         :error-messages="errors"
                         rounded
                         outlined
                         dense
                       ></v-text-field>
+                    </validation-provider>
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="email"
+                      rules="email"
+                    >
+                      <v-text-field
+                        v-model="uemail"
+                        label="Email"
+                        clearable
+                        :error-messages="errors"
+                        rounded
+                        outlined
+                        dense
+                      >
+                      </v-text-field>
                     </validation-provider>
                     <validation-provider
                       v-slot="{ errors }"
@@ -85,21 +103,6 @@
                         dense
                       ></v-text-field>
                     </validation-provider>
-                    <validation-provider
-                      v-slot="{ errors }"
-                      name="email"
-                      rules="email"
-                    >
-                      <v-text-field
-                        v-model="uemail"
-                        label="Email"
-                        :error-messages="errors"
-                        rounded
-                        outlined
-                        dense
-                      >
-                      </v-text-field>
-                    </validation-provider>
                     <v-layout row wrap class="my-1"
                       ><v-flex lg1></v-flex
                       ><v-flex class="mx-10"
@@ -125,51 +128,71 @@
             <v-layout row wrap class="my-10">
               <v-flex xs1 sm2 md2 lg3></v-flex>
               <v-flex xs10 sm8 md6 lg6>
-                <form id="update2">
-                  <v-text-field
-                    v-model="npass"
-                    label="New Password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[
-                      (value) =>
-                        (value && value.length >= 6) || 'minimum 6 characters',
-                    ]"
-                    :type="show1 ? 'text' : 'password'"
-                    @click:append="show1 = !show1"
-                    outlined
-                    rounded
-                    dense
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="cnpass"
-                    label="Confirm New Password"
-                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[
-                      npass === cnpass ||
-                        'The password confirmation does not match.',
-                    ]"
-                    :type="show2 ? 'text' : 'password'"
-                    @click:append="show2 = !show2"
-                    outlined
-                    rounded
-                    dense
-                  ></v-text-field>
-                  <v-layout row wrap class="my-1">
-                    <v-flex lg1></v-flex>
-                    <v-flex class="mx-10"
-                      ><v-btn
-                        small
-                        depressed
-                        block
-                        type="submit"
-                        color="primary"
-                        @click.prevent="uptPassword"
-                        >Update</v-btn
-                      >
-                    </v-flex>
-                    <v-flex lg1></v-flex>
-                  </v-layout>
-                </form>
+                <validation-observer ref="observer2" v-slot="{ invalid }">
+                  <form id="update2">
+                    <validation-provider
+                      v-slot="{ errors }"
+                      :rules="{ required: true }"
+                      name="Password"
+                    >
+                      <v-text-field
+                        v-model="npass"
+                        label="New Password"
+                        :error-messages="errors"
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[
+                          (value) =>
+                            (value && value.length >= 6) ||
+                            'minimum 6 characters',
+                        ]"
+                        :type="show1 ? 'text' : 'password'"
+                        @click:append="show1 = !show1"
+                        outlined
+                        rounded
+                        dense
+                      ></v-text-field>
+                    </validation-provider>
+                    <validation-provider
+                      v-slot="{ errors }"
+                      name="Password confirmation"
+                      :rules="{
+                        required: true,
+                      }"
+                    >
+                      <v-text-field
+                        v-model="cnpass"
+                        label="Confirm New Password"
+                        :error-messages="errors"
+                        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[
+                          npass === cnpass ||
+                            'The password confirmation does not match.',
+                        ]"
+                        :type="show2 ? 'text' : 'password'"
+                        @click:append="show2 = !show2"
+                        outlined
+                        rounded
+                        dense
+                      ></v-text-field>
+                    </validation-provider>
+                    <v-layout row wrap class="my-1">
+                      <v-flex lg1></v-flex>
+                      <v-flex class="mx-10"
+                        ><v-btn
+                          small
+                          depressed
+                          block
+                          type="submit"
+                          :disabled="invalid"
+                          color="primary"
+                          @click.prevent="uptPassword"
+                          >Update</v-btn
+                        >
+                      </v-flex>
+                      <v-flex lg1></v-flex>
+                    </v-layout>
+                  </form>
+                </validation-observer>
               </v-flex>
             </v-layout>
           </v-tab-item>
@@ -267,10 +290,12 @@ export default {
           this.clear1();
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
+          alert("Invalid Credentials Provided");
         });
     },
     uptPassword() {
+      this.$refs.observer2.validate();
       getAPI
         .put(
           "/api/accounts/user-update/",
@@ -295,14 +320,15 @@ export default {
           this.clear2();
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
+          alert("Invalid Credentials Provided");
         });
     },
     clear1() {
       (this.repass = ""), (this.crepass = ""), this.$refs.observer1.reset();
     },
     clear2() {
-      (this.npass = ""), (this.cnpass = "");
+      (this.npass = ""), (this.cnpass = ""), this.$refs.observer2.reset();
     },
   },
 };
@@ -315,13 +341,13 @@ export default {
   color: black !important;
 }
 #update {
-  border: solid black 2px;
+  border: solid #004d40 3px;
   padding: 30px;
   border-radius: 10px;
   background-color: white;
 }
 #update2 {
-  border: solid black 2px;
+  border: solid #004d40 3px;
   padding: 30px;
   border-radius: 10px;
   background-color: white;
