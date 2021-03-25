@@ -47,7 +47,7 @@ export default {
     connect() {
       // let roomName = this.$session.get("user_token");
       //  user = "{{ user.username }}";
-      this.socket = new WebSocket("wss://echo.websocket.org");
+      this.socket = new WebSocket("ws://localhost:8000/ws/0");
       this.socket.onopen = function(event) {
       console.log(event)
       console.log("Successfully connected to the echo websocket server...")
