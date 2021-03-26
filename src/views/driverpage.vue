@@ -25,11 +25,16 @@
           <v-btn small color="green" text>Accept</v-btn>
           <v-btn small color="red" text>Reject</v-btn></v-flex
         >
-       
       </v-layout>
     </v-snackbar>
-    <v-layout class="my-10" row wrap>
- <v-flex><v-btn @click="disconnect">Disconnect</v-btn></v-flex>
+    <v-layout class="my-10 mx-10" row wrap>
+      <v-flex lg4>
+        <v-text-field v-model="message"></v-text-field>
+        <v-btn small color="success" @click="sendMessage(message)">Send</v-btn>
+        <v-btn small class="mx-3" color="red" @click="disconnect"
+          >Disconnect</v-btn
+        >
+      </v-flex>
     </v-layout>
   </v-app>
 </template>
@@ -47,35 +52,23 @@ export default {
     connect() {
       // let roomName = this.$session.get("user_token");
       //  user = "{{ user.username }}";
-      this.socket = new WebSocket("ws://localhost:8000/ws/0");
-      this.socket.onopen = function(event) {
-      console.log(event)
-      console.log("Successfully connected to the echo websocket server...")
-    }
+      this.socket = new WebSocket("ws://localhost:8000/ws/0 ");
+      this.socket.onopen = function (event) {
+        console.log(event);
+        console.log("Successfully connected to the websocket server...");
+      };
+    },
+    sendMessage(message) {
+      let msg = JSON.stringify({ value: message });
+      this.socket.send(msg);
+      this.socket.onmessage = function (event) {
+        console.log(event);
+      };
     },
     disconnect() {
       this.socket.close();
       console.log("websocket disconnected..!");
     },
-    // teatsend: function () {
-    //   this.socket.send(
-    //     JSON.stringify({
-    //       message: "code send succes",
-    //       admin: this.admin,
-    //       code: this.codedep,
-    //     })
-    //   );
-    //   this.snackbar=true;
-    // },
-    // updateAdmin: function () {
-    //   this.socket.send(
-    //     JSON.stringify({
-    //       message: "code send succes",
-    //       admin: this.admin,
-    //       code: this.codedep,
-    //     })
-    //   );
-    // },
     logout() {
       this.$session.destroy();
       this.$router.push({ name: "Login" });
