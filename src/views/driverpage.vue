@@ -77,7 +77,7 @@ export default {
       let customer = this.$session.get("user_name");
       let src = this.start_location;
       let dest = this.end_location;
-      let fee = 1000;
+      let fee = this.fee;
       let msg = JSON.stringify({
         customer: customer,
         src: src,
