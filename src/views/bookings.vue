@@ -19,85 +19,72 @@
             <tbody>
               <tr v-for="dest in destdetails" :key="dest.id">
                 <td class="font-weight-bold">{{ dest.date }}</td>
-                <td  class="font-weight-bold">{{ dest.start_location }}</td>
-                <td  class="font-weight-bold">{{ dest.end_location }}</td>
-                <td  class="font-weight-bold"
+                <td class="font-weight-bold">{{ dest.start_location }}</td>
+                <td class="font-weight-bold">{{ dest.end_location }}</td>
+                <td
+                  class="font-weight-bold"
                   @click.prevent="
                     viewRoute(dest.start_location, dest.end_location)
                   "
                 >
                   View
                 </td>
-                <td  class="font-weight-bold" @click.prevent="getTransaction(dest.id)">View</td>
+                <td
+                  class="font-weight-bold"
+                  @click.prevent="getTransaction(dest.id)"
+                >
+                  View
+                </td>
                 <v-dialog v-model="dialog2" max-width="350">
-                  <v-card max-width="500">
-                    <v-layout>
-                      <v-flex style="background-color: black"
-                        ><v-card-title
-                          class="font-weight-bold white--text mx-10"
-                          >SHIPMENT INVOICE</v-card-title
-                        ></v-flex
-                      ></v-layout
-                    >
-                    <v-spacer></v-spacer>
-                    <v-flex class="mx-2">
-                      <v-simple-table>
-                        <tbody>
-                          <tr>
-                            <td class="subtitle-2 font-weight-black">
-                              Truck Owner
-                            </td>
-                            <td class="subtitle-2 font-weight-bold">
-                              {{ optrname }}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="subtitle-2 font-weight-black">
-                              Contact Owner
-                            </td>
-                            <td class="subtitle-2 font-weight-bold">
-                              {{ optrphn }}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="subtitle-2 font-weight-black">Truck</td>
-                            <td class="subtitle-2 font-weight-bold">
-                              {{ truckreg }}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="subtitle-2 font-weight-black">
-                              Contact Driver
-                            </td>
-                            <td class="subtitle-2 font-weight-bold">
-                              {{ truckphn }}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="subtitle-2 font-weight-black">
-                              Total Cost
-                            </td>
-                            <td class="subtitle-2 font-weight-bold">
-                              {{ cost }} INR
-                            </td>
-                          </tr>
-                        </tbody>
-                      </v-simple-table>
-                    </v-flex>
-                    <v-flex class="mx-15">
-                      <v-card-actions>
-                        <v-btn
-                          small
-                          depressed
-                          class="mx-8"
-                          color="deep-purple lighten-1"
-                          @click.prevent="checkout"
-                        >
-                          Make Payment
-                        </v-btn>
-                      </v-card-actions>
-                    </v-flex>
-                  </v-card>
+                  <v-layout>
+                    <v-flex style="background-color: black"
+                      ><v-card-title class="font-weight-bold white--text mx-10"
+                        >SHIPMENT INVOICE</v-card-title
+                      ></v-flex
+                    ></v-layout
+                  >
+                  <v-spacer></v-spacer>
+
+                  <v-simple-table>
+                    <tbody>
+                      <tr>
+                        <td class="subtitle-2 font-weight-black">
+                          Truck Owner
+                        </td>
+                        <td class="subtitle-2 font-weight-bold">
+                          {{ optrname }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="subtitle-2 font-weight-black">
+                          Contact Owner
+                        </td>
+                        <td class="subtitle-2 font-weight-bold">
+                          {{ optrphn }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="subtitle-2 font-weight-black">Truck</td>
+                        <td class="subtitle-2 font-weight-bold">
+                          {{ truckreg }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="subtitle-2 font-weight-black">
+                          Contact Driver
+                        </td>
+                        <td class="subtitle-2 font-weight-bold">
+                          {{ truckphn }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="subtitle-2 font-weight-black">Total Cost</td>
+                        <td class="subtitle-2 font-weight-bold">
+                          {{ cost }} INR
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-simple-table>
                 </v-dialog>
                 <td>
                   <v-btn
@@ -111,16 +98,14 @@
                     >Cancel</v-btn
                   >
                 </td>
-                <v-dialog persistent v-model="dialog1" max-width="380">
+                <v-dialog persistent v-model="dialog" max-width="380">
                   <v-card>
                     <v-card-text class="subtitle-1 font-weight-bold black--text"
                       >Are you sure want to cancel this booking?</v-card-text
                     >
                     <v-spacer></v-spacer>
-
-                    
                     <v-flex class="ml-15">
-                      <v-btn class="ml-10" small @click="dialog1=!dialog1" text
+                      <v-btn class="ml-10" small @click="dialog = !dialog" text
                         >Close</v-btn
                       >
                       <v-btn
@@ -153,15 +138,14 @@ export default {
     return {
       //Datas for Bookings
       destdetails: [],
-      dialog: false,
-      startloc: "",
-      endloc: "",
-      date: "",
-      weight: "",
-      gtype: "",
+      // startloc: "",
+      // endloc: "",
+      // date: "",
+      // weight: "",
+      // gtype: "",
       destid: "",
-      custid: "",
-      dialog1: false, //Dialog box asking confirmation for cancel a booking
+      // custid: "",
+      dialog: false, //Dialog box asking confirmation for cancel a booking
       //
       //Datas for Transaction Details
       optrname: "",
@@ -171,12 +155,22 @@ export default {
       cost: "",
       dialog2: false,
       //
+      start_location: "",
+      vehicle_type: "",
+      weight: "",
+      end_location: "",
+      //
+      trucks: [],
+      resp: "",
+      resr: "",
+      connection: null,
+      driver: null,
     };
   },
   beforeMount() {
     //Api call to fetch all destination details of current customer
     getAPI
-      .get("/api/customer/cust-dest-list/", {
+      .get("api/customer/cust-dest-list/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
@@ -194,7 +188,7 @@ export default {
     deleteBook(did) {
       //Api call to cancel a booking
       getAPI
-        .delete("/api/customer/cust-dest-delete/" + did + "/", {
+        .delete("api/customer/cust-dest-delete/" + did + "/", {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
@@ -211,7 +205,7 @@ export default {
     //
     getTransaction(tid) {
       getAPI
-        .get("/api/customer/cust-trans-detail/" + tid + "/", {
+        .get("api/customer/cust-trans-detail/" + tid + "/", {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
@@ -226,6 +220,8 @@ export default {
           this.dialog2 = true;
         })
         .catch((err) => {
+          // this.checkout();// Transaction details could be seen after successfull payment.
+          this.getDestdetails(tid);
           console.log(err);
         });
     },
@@ -237,7 +233,7 @@ export default {
     },
     deleteConfirm(did) {
       this.destid = did;
-      this.dialog1 =!this.dialog1;
+      this.dialog = !this.dialog;
     },
     //
     checkout() {
@@ -263,12 +259,129 @@ export default {
           console.error("Error:", error);
         });
     },
+    getDestdetails(destid) {
+      getAPI
+        .get("api/customer/cust-dest-detail/" + destid + "/", {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.start_location = response.data.start_location;
+          this.vehicle_type = response.data.vehicle_type;
+          this.weight = response.data.weight;
+          this.end_location = response.data.end_location;
+          this.getList();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getList() {
+      getAPI
+        .post(
+          "api/customer/truckbooking/",
+          {
+            start_location: this.start_location,
+            vehicle_type: this.vehicle_type,
+            weight: this.weight,
+            end_location: this.end_location,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          for (let key in response.data.priority1) {
+            this.trucks.push(response.data.priority1[key]["truck_num"]);
+          }
+          for (let key in response.data.priority2) {
+            this.trucks.push(response.data.priority2[key]["truck_num"]);
+          }
+          this.connectSocket();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async connectSocket() {
+      let i = 0;
+      let trucksLength = this.trucks.length;
+      while (i < trucksLength) {
+        const res = await this.sendMessage(i, trucksLength, this.trucks[i]);
+        console.log(res);
+        if (localStorage.getItem("response") == 1) {
+          break;
+        } else {
+          i++;
+        }
+      }
+      this.clearLocal();
+    },
+    sendMessage(i, trucksLength, id) {
+      return new Promise((resolve) => {
+        this.connection = new WebSocket(
+          "ws://shuttle-server.herokuapp.com/ws/" + id + "/"
+        );
+        this.connection.onopen = function () {};
+        setTimeout(() => {
+          if (localStorage.getItem("response") == 1) {
+            this.connection.close();
+          } else {
+            let customer = this.$session.get("user_name");
+            let src = this.start_location;
+            let dest = this.end_location;
+            let fee = localStorage.getItem("cost");
+            let accept_reject = null;
+            let msg = JSON.stringify({
+              customer: customer,
+              src: src,
+              dest: dest,
+              fee: fee,
+              accept_reject: accept_reject,
+            });
+            this.connection.send(msg);
+            this.connection.onmessage = function (event) {
+              let resr = JSON.parse(event.data);
+              this.resp = resr["accept_reject"];
+              if (this.resp == true) {
+                console.log(" Driver", id, " is accepted the request");
+                localStorage.setItem("response", 1);
+                localStorage.setItem("driver", id);
+              } else if (this.resp == false) {
+                console.log(id, " Rejected the Request");
+              }
+              setTimeout(() => {
+                if (
+                  (this.resp == null || this.resp == false) &
+                  (i == trucksLength - 1)
+                ) {
+                  console.log("No one accepted the request");
+                }
+              }, 10000);
+            };
+          }
+          resolve("Response recieved");
+        }, 10000);
+      });
+    },
+    clearLocal() {
+      setTimeout(() => {
+        this.driver = localStorage.getItem("driver");
+        localStorage.clear();
+        console.log(this.driver);
+      }, 10000);
+    },
   },
 };
 </script>
 <style scoped>
 #destlist {
-  border: solid darkolivegreen 3px;
+  border: solid #556b2f 3px;
   padding: 30px;
   border-radius: 20px;
   background-color: white;
@@ -277,10 +390,10 @@ export default {
   background-color: black;
   font-family: monospace;
 }
-thead{
-  background-color:#004d40;
+thead {
+  background-color: #004d40;
 }
-tbody{
+tbody {
   background-color: #9e9e9e;
 }
 </style>

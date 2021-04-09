@@ -16,57 +16,81 @@
       </v-menu>
     </v-app-bar>
     <!--Navbar ends-->
-    <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="4000"
-      ><span class="white--text mx-15">Customer Destination Details</span>
+    <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="10000">
+      <v-flex>Customer : {{ this.customer }}</v-flex>
+      <v-flex>Start Location : {{ this.start_location }}</v-flex>
+      <v-flex>End Location : {{ this.end_location }}</v-flex>
+      <v-flex>Cost : {{ this.fee }}</v-flex>
       <v-spacer></v-spacer>
       <v-layout class="my-2" row wrap>
         <v-flex lg2></v-flex>
         <v-flex class="mx-5">
-          <v-btn small color="green" text>Accept</v-btn>
-          <v-btn small color="red" text>Reject</v-btn></v-flex
+          <v-btn small color="green" @click.prevent="sendResponse(true)" text
+            >Accept</v-btn
+          >
+          <v-btn small color="red" @click.prevent="sendResponse(false)" text
+            >Reject</v-btn
+          ></v-flex
         >
       </v-layout>
     </v-snackbar>
-    <v-layout class="my-10 mx-10" row wrap>
-      <v-flex lg4>
-        <v-text-field v-model="message"></v-text-field>
-        <v-btn small color="success" @click="sendMessage(message)">Send</v-btn>
-        <v-btn small class="mx-3" color="red" @click="disconnect"
-          >Disconnect</v-btn
-        >
-      </v-flex>
-    </v-layout>
   </v-app>
 </template>
 <script>
 export default {
   name: "Dpage",
   data: () => {
-    return { snackbar: false, message: "" };
+    return {
+      snackbar: false,
+      start_location: "",
+      end_location: "",
+      fee: null,
+      customer: "",
+      ws: "",
+    };
   },
-  delimiters: ["${", "}"],
-  mounted: function () {
-    this.connect();
+  created: function () {
+    try {
+      this.ws = new WebSocket(
+        "ws://shuttle-server.herokuapp.com/ws/" +
+          this.$session.get("user_id") +
+          "/"
+      );
+      this.ws.onmessage = ({ data }) => {
+        let req = JSON.parse(data);
+        console.log(req);
+        this.customer = req["customer"];
+        this.start_location = req["src"];
+        this.end_location = req["dest"];
+        this.fee = req["fee"];
+        this.showAlert();
+      };
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
-    connect() {
-      // let roomName = this.$session.get("user_token");
-      //  user = "{{ user.username }}";
-      this.socket = new WebSocket("ws://localhost:8000/ws/0 ");
-      this.socket.onopen = function (event) {
-        console.log(event);
-        console.log("Successfully connected to the websocket server...");
-      };
+    showAlert() {
+      this.snackbar = true;
     },
-    sendMessage(message) {
-      let msg = JSON.stringify({ value: message });
-      this.socket.send(msg);
-      this.socket.onmessage = function (event) {
-        console.log(event);
-      };
+    sendResponse(accept_reject) {
+      let customer = this.$session.get("user_name");
+      let src = this.start_location;
+      let dest = this.end_location;
+      let fee = 1000;
+      let msg = JSON.stringify({
+        customer: customer,
+        src: src,
+        dest: dest,
+        fee: fee,
+        accept_reject: accept_reject,
+      });
+      this.ws.send(msg);
+      this.disconnect();
     },
     disconnect() {
-      this.socket.close();
+      this.snackbar = false;
+      this.ws.close();
       console.log("websocket disconnected..!");
     },
     logout() {

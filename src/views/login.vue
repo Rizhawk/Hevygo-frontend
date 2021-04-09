@@ -61,7 +61,6 @@
 <script>
 import Navbar from "../components/Navbar";
 import { getAPI } from "../axios-api";
-// import axios from 'axios';
 export default {
   name: "Login",
   components: { Navbar },
@@ -81,14 +80,15 @@ export default {
     login() {
       //Login API Call
       getAPI
-        .post("/api/accounts/login/", {
+        .post("api/accounts/login/", {
           username: this.phone,
           password: this.password,
         })
         .then((response) => {
           this.$session.start();
           this.$session.set("user_token", response.data.token);
-          this.$session.set("user_name", response.data.name);
+          this.$session.set("user_name", response.data.user_name);
+          this.$session.set("user_id", response.data.user_id);
           this.APIData = response.data;
           if (response.data.user_type == 1) {
             this.$router.push({ name: "Treg" });
