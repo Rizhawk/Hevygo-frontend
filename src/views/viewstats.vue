@@ -9,9 +9,11 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="white--text text-left">Location</th>
+                <th class="white--text text-left">Truck</th>
+                <th class="white--text text-left">Driver</th>
                 <th class="white--text text-left">Status</th>
-                <th></th>
+                <th class="white--text text-left">Location</th>
+                <th class="white--text text-left">Find vechicle</th>
                 <v-menu bottom right>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn dark icon v-bind="attrs" v-on="on">
@@ -27,113 +29,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="truck in truckstats" :key="truck.truck">
-                <td class="font-weight-bold">{{ truck.location }}</td>
+              <tr v-for="truck in truckdriver" :key="truck.truck">
+                <td class="font-weight-bold">{{ truck.truck }}</td>
+                <td class="font-weight-bold">{{ truck.driver }}</td>
                 <td class="font-weight-bold">{{ truck.status }}</td>
+                <td class="font-weight-bold">{{ truck.location }}</td>
                 <td
                   class="font-weight-bold"
-                  @click="showdetail(truck.truck, truck.driver)"
+                  @click="showdetail(truck.location)"
                 >
-                  View more/Edit
+                  <v-icon color="green darken-4"> mdi-map-marker </v-icon>
                 </td>
                 <td></td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form7">
-                    <v-select
-                      label="Truck"
-                      :items="trucks"
-                      clearable
-                      outlined
-                      dark
-                      dense
-                      rounded
-                      v-model="treg"
-                    >
-                    </v-select>
-                    <v-select
-                      label="Driver"
-                      :items="drivers"
-                      clearable
-                      outlined
-                      dark
-                      dense
-                      rounded
-                      v-model="drname"
-                    >
-                    </v-select>
-                    <v-select
-                      label="Status"
-                      :items="stats"
-                      outlined
-                      dark
-                      dense
-                      rounded
-                      v-model="stat"
-                    >
-                    </v-select>
-                    <v-text-field
-                      label="Location"
-                      clearable
-                      disabled
-                      outlined
-                      dark
-                      dense
-                      rounded
-                      v-model="loc"
-                    >
-                    </v-text-field>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          color="success"
-                          depressed
-                          small
-                          @click.prevent="updateStats(trid)"
-                          >Update</v-btn
-                        >
-                        <v-btn
-                          color="red"
-                          class="mx-2"
-                          depressed
-                          small
-                          @click="dialog2 = true"
-                          >Delete</v-btn
-                        >
-                        <v-dialog v-model="dialog2" max-width="350">
-                          <v-card>
-                            <v-card-text class="subtitle-1 balck--text">
-                              Are you sure want to delete this status?
-                            </v-card-text>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              color="green darken-1"
-                              text
-                              small
-                              @click="dialog2 = false"
-                            >
-                              Close
-                            </v-btn>
-                            <v-btn
-                              small
-                              color="red darken-1"
-                              text
-                              @click="deletenow"
-                            >
-                              Delete
-                            </v-btn>
-                          </v-card>
-                        </v-dialog>
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
               </tr>
             </tbody>
           </template>
@@ -153,18 +60,7 @@ export default {
   },
   data: () => {
     return {
-      truckstats: [],
-      drivers: [],
-      trucks: [],
-      dialog: false,
-      dialog2: false, //dialog box for delete confirmation
-      trid: "",
-      drid: "",
-      treg: "",
-      drname: "",
-      stat: "",
-      loc: "",
-      stats: ["Available", "Unavailable"],
+      truckdriver: [],    
     };
   },
   created: function () {
@@ -177,164 +73,27 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.truckstats.push(this.APIData[key]);
-        }
+        this.APIData.Truckdetails.forEach((arr1, arr2) => {
+          this.truckdriver.push({
+            truck: arr1["truck"],
+            driver: this.APIData.Driverdetails[arr2]["driver_name"],
+            status: arr1["status"],
+            location: arr1["location"],
+          });
+        });
       })
       .catch((err) => {
         alert(err);
       });
     //
   },
-  beforeMount: function () {
-    //Api call for fetch the reg number of all trucks
-    getAPI
-      .get("api/truck/truck-list/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.trucks.push(this.APIData[key]["registration"]);
-        }
-        this.truckdata = this.APIData;
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    //
-  },
-  mounted: function () {
-    //Api call for fetch the names of all drivers
-    getAPI
-      .get("api/operators/driver-list/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.drivers.push(this.APIData[key]["driver_name"]);
-        }
-        this.driverdata = this.APIData;
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    //
-  },
-  methods: {
-    showdetail(trid, drid) {
-      (this.trid = trid), (this.drid = drid);
-      this.getTruck(trid);
-      this.getDriver(drid);
-      this.getaStat();
-    },
-    getTruck(trid) {
-      getAPI
-        //Api call to get the truck reg number with truck id
-        .get("api/truck/truck-detail/" + trid + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          this.treg = this.APIData["registration"];
-        })
-        .catch((err) => {
-          alert(err);
-        });
-      //
-    },
-    getDriver(drid) {
-      //Api call to get the driver name with driver id
-      getAPI
-        .get("api/operators/driver-detail/" + drid + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          this.drname = this.APIData["driver_name"];
-        })
-        .catch((err) => {
-          alert(err);
-        });
-      //
-    },
-    getaStat() {
-      //Api call to fetch status of a particular truck based on their id
-      getAPI
-        .get("api/truck/truck-status-detail/" + this.trid + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          this.stat = this.APIData["status"];
-          this.loc = this.APIData["location"];
-          this.dialog = true;
-        })
-        .catch((err) => {
-          alert(err);
-        });
-      //
-    },
-    updateStats(trid) {
-      //Api call to update a truck status
-      getAPI
-        .post(
-          "api/truck/truck-status-update/" + trid + "/",
-          {
-            truck: trid,
-            driver: this.drid,
-            status: this.stat,
-            location: this.loc,
-          },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          window.location.reload();
-        })
-        .catch((err) => {
-          alert(err);
-        });
-      //
-    },
-    deletenow() {
-      //Call when user wants to delete the currently selected status
-      (this.dialog2 = false), this.deleteStat(this.trid);
-    },
-    deleteStat(trid) {
-      //Api call to delete a truck status
-      getAPI
-        .delete("api/truck/truck-status-delete/" + trid + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          console.log(this.APIData);
-          window.location.reload();
-        })
-        .catch((err) => {
-          alert(err);
-        });
-      //
-    },
-  },
+  methods:{
+    showdetail(location){
+      console.log(location);
+      this.$session.set('cp',location);
+      this.$router.push({name:'Tracktruck'})
+    }
+  }
 };
 </script>
 <style scoped>

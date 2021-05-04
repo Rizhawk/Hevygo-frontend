@@ -21,9 +21,9 @@
                 v-model="pan"
                 :error-messages="errors"
                 label="Pan Number *"
+                :disabled="text1"
                 outlined
                 rounded
-                clearable
                 dense
               ></v-text-field>
             </validation-provider>
@@ -38,10 +38,10 @@
                 v-model="gst_no"
                 :error-messages="errors"
                 label="Gst Number *"
+                :disabled="text2"
                 required
                 outlined
                 rounded
-                clearable
                 dense
               ></v-text-field>
             </validation-provider>
@@ -52,6 +52,7 @@
                   rounded
                   small
                   depressed
+                  v-if="show"
                   block
                   @click.prevent="panadd"
                   color="primary"
@@ -108,8 +109,32 @@ export default {
       pan: "",
       gst_no: "",
       message: "",
+      text1: false,
+      text2: false,
+      show: true,
       snackbar: false,
     };
+  },
+  mounted: function () {
+    getAPI
+      .get("/api/operators/operator-detail/", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.message = "Pancard already added";
+        this.snackbar=true;
+        this.APIData = response.data;
+        this.pan = this.APIData.pan;
+        this.gst_no = this.APIData.gst_no;
+        this.show = false;
+        this.text1 = true;
+        this.text2 = true;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     addpan() {
@@ -141,6 +166,7 @@ export default {
           }
           this.snackbar = !this.snackbar;
           this.clear();
+          window.location.reload();
         })
         .catch((err) => {
           alert(err);

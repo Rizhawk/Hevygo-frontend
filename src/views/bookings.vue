@@ -268,6 +268,7 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           this.start_location = response.data.start_location;
           this.vehicle_type = response.data.vehicle_type;
           this.weight = response.data.weight;

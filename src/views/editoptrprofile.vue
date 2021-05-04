@@ -5,17 +5,16 @@
     >
     <v-flex xs1 sm2 md2 lg2></v-flex>
     <v-flex xs12 sm8 md6 lg8>
-      <v-card color="profile">
+      <v-card width="1800" color="profile">
         <v-card-title class="text-center justify-center py-6">
           <p class="font-weight-black title profile--text headline">
             EDIT YOUR PROFILE
           </p>
         </v-card-title>
-
-        <v-tabs fixed-tabs background-color="indigo darken-4" dark>
+        <v-tabs slider-color="black" vertical fixed-tabs centered background-color="#3f51b5" color="white">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab> Change Details </v-tab>
-          <v-tab> Change Password </v-tab>
+          <v-tab class="font-weight-black"> Change Details </v-tab>
+          <v-tab class="font-weight-black"> Change Password </v-tab>
           <v-tab-item>
             <v-layout class="my-10" row wrap>
               <v-flex xs1 sm2 md2 lg3></v-flex>

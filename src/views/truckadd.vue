@@ -112,7 +112,7 @@ extend("min", {
 });
 Vue.config.productionTip = false;
 Vue.config.devtools = false;
-const apiKey = "H2HPEplnWZvYwdCxIeyaFJf_RhOLUMzQXip2ADBNupY";
+const apiKey = "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E";
 const url = `https://autosuggest.search.hereapi.com/v1/autosuggest?at=30.22,-92.02&limit=10&apikey=${apiKey}&q=`;
 export default {
   name: "Tadd",

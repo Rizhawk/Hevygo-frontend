@@ -24,6 +24,7 @@ import Eoprofile from "../views/editoptrprofile";
 import Ecprofile from "../views/editcustprofile";
 import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
+import Tracktruck from "../views/tracktruck";
 Vue.use(VueRouter);
 
 const routes = [
@@ -150,6 +151,11 @@ const routes = [
     path: "/custrack",
     name: "Ctrack",
     component: Ctrack,
+  },
+  {
+    path: "/tracktruck",
+    name: "Tracktruck",
+    component: Tracktruck,
   },
 ];
 

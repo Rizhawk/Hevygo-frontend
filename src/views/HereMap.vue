@@ -227,6 +227,6 @@ export default {
   background-color: #ccc;
 }
 #bg {
-  background-color: black;
+  background-color: grey;
 }
 </style>
