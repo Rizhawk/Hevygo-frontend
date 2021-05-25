@@ -298,7 +298,7 @@ export default {
             this.APIData = response.data;
             if (this.APIData.Http_response == 409) {
               if (this.APIData.data["new_email"] == false) {
-                this.message2 = `Email Id ${this.email} id already exist`;
+                this.message2 = `Email Id ${this.email} is already exist`;
                 this.icon2 = "mdi-close-circle-outline";
                 this.snackbar2 = true;
               } else {
