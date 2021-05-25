@@ -3,8 +3,30 @@
     <Navbar />
     <v-layout row wrap class="my-3">
       <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-snackbar
+        v-model="snackbar"
+        multi-line
+        color="teal darken-4"
+        timeout="10000"
+      >
+        {{ this.message }}
+        <template v-slot:action="{ attrs }">
+          <v-btn color="black" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+      <v-snackbar
+        color="red darken-4"
+        top
+        text-color="white"
+        v-model="snackbar2"
+        timeout="5000"
+      >
+        {{ this.message2 }}
+      </v-snackbar>
       <v-flex xs10 sm8 md6 lg4>
-        <validation-observer ref="observer" v-slot="{invalid}">
+        <validation-observer ref="observer" v-slot="{ invalid }">
           <!--Operator signup form begining -->
 
           <form id="osignup" @submit.prevent="submit">
@@ -27,7 +49,6 @@
                 outlined
                 dark
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
             <v-text-field
@@ -41,7 +62,6 @@
               outlined
               dark
               dense
-              clearable
             ></v-text-field>
             <v-text-field
               v-model="password2"
@@ -58,7 +78,6 @@
               outlined
               dark
               dense
-              clearable
             ></v-text-field>
 
             <validation-provider
@@ -73,21 +92,34 @@
                 v-model="phone"
                 :error-messages="errors"
                 label="Phone Number"
+                maxlength="10"
+                :append-icon="icon"
+                @input="checkPhone"
                 outlined
                 dark
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
+            <v-text-field
+              v-if="otpfield"
+              v-model="otp"
+              label="OTP"
+              @input="verified()"
+              maxlength="6"
+              outlined
+              dark
+              dense
+            ></v-text-field>
             <validation-provider v-slot="{ errors }" name="email" rules="email">
               <v-text-field
                 v-model="email"
                 :error-messages="errors"
                 label="E-mail"
+                :append-icon="icon2"
+                @input="checkEmail"
                 outlined
                 dark
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
             <v-layout class="my-1" row wrap>
@@ -177,6 +209,14 @@ export default {
     return {
       name: "",
       phone: "",
+      otp: "",
+      otpfield: false,
+      snackbar: false,
+      snackbar2: false,
+      message: "",
+      message2: "",
+      icon: "",
+      icon2: "",
       email: null,
       show1: false,
       show2: false,
@@ -206,6 +246,7 @@ export default {
       getAPI
         .post("/api/accounts/register/", {
           phone: this.phone,
+          otp: this.otp,
           name: this.name,
           password: this.password,
           password2: this.password2,
@@ -214,14 +255,87 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          this.clear();
-          this.$router.push({ name: "Login" });
+          if (this.APIData.Http_response == 200) {
+            this.clear();
+            this.$router.push({ name: "Login" });
+          } else {
+            this.message = "Registration Failed";
+            this.snackbar2 = true;
+          }
         })
         .catch((err) => {
           alert(err);
         });
     },
-    //Function to set input field empty
+    checkPhone() {
+      if (this.phone.length == 10) {
+        getAPI
+          .get("api/accounts/check/?phone=" + this.phone)
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.Http_response == 409) {
+              if (this.APIData.data["new_phone"] == false) {
+                this.message2 = `Phonenumber ${this.phone} is already exist`;
+                this.icon = "mdi-close-circle-outline";
+                this.snackbar2 = true;
+              } else {
+                this.genOtp();
+              }
+            } else {
+              this.genOtp();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    checkEmail() {
+      if (this.email.slice(this.email.length - 4) == ".com") {
+        getAPI
+          .get("api/accounts/check/?email=" + this.email)
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.Http_response == 409) {
+              if (this.APIData.data["new_email"] == false) {
+                this.message2 = `Email Id ${this.email} id already exist`;
+                this.icon2 = "mdi-close-circle-outline";
+                this.snackbar2 = true;
+              } else {
+                this.icon2 = "mdi-checkbox-marked-circle-outline";
+              }
+            } else {
+              this.icon2 = "mdi-checkbox-marked-circle-outline";
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    genOtp() {
+      if (this.phone.length == 10) {
+        getAPI
+          .get("api/accounts/otp_gen/?phone=" + this.phone)
+          .then((response) => {
+            this.APIData = response.data;
+            this.otp = "";
+            this.otpfield = true;
+            this.message = ` Your OTP is ${this.APIData.data["OTP"]}`;
+            this.snackbar = true;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    verified() {
+      if ((this.otp.length == 6) & (this.otp == this.APIData.data["OTP"])) {
+        this.icon = "mdi-checkbox-marked-circle-outline";
+      } else {
+        this.icon = "mdi-close-circle-outline";
+      }
+    },
   },
 };
 </script>

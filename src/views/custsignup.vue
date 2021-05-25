@@ -3,6 +3,28 @@
     <Navbar />
     <v-layout class="my-3" row wrap>
       <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-snackbar
+        v-model="snackbar"
+        multi-line
+        color="teal darken-4"
+        timeout="10000"
+      >
+        {{ this.message }}
+        <template v-slot:action="{ attrs }">
+          <v-btn color="black" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+      <v-snackbar
+        color="red darken-4"
+        top
+        text-color="white"
+        v-model="snackbar2"
+        timeout="5000"
+      >
+        {{ this.message2 }}
+      </v-snackbar>
       <v-flex xs10 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
         <validation-observer ref="observer" v-slot="{ invalid }">
@@ -23,7 +45,6 @@
                 v-model="name"
                 :error-messages="errors"
                 label="Customer Name"
-                clearable
                 dark
                 outlined
                 dense
@@ -37,7 +58,6 @@
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
-              clearable
               dark
               outlined
               dense
@@ -54,7 +74,6 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
-              clearable
               dark
               outlined
               dense
@@ -72,18 +91,31 @@
                 v-model="phone"
                 :error-messages="errors"
                 label="Phone Number"
-                clearable
+                maxlength="10"
+                :append-icon="icon"
+                @input="checkPhone"
                 dark
                 outlined
                 dense
               ></v-text-field>
             </validation-provider>
+            <v-text-field
+              v-if="otpfield"
+              v-model="otp"
+              label="OTP"
+              @input="verified()"
+              maxlength="6"
+              outlined
+              dark
+              dense
+            ></v-text-field>
             <validation-provider v-slot="{ errors }" name="email" rules="email">
               <v-text-field
                 v-model="email"
                 :error-messages="errors"
                 label="E-mail"
-                clearable
+                @input="checkEmail"
+                :append-icon="icon2"
                 dark
                 outlined
                 dense
@@ -174,6 +206,14 @@ export default {
     return {
       name: "",
       phone: "",
+      otp: "",
+      otpfield: false,
+      snackbar: false,
+      snackbar2: false,
+      icon: "",
+      icon2: "",
+      message: "",
+      message2: "",
       email: null,
       show1: false,
       show2: false,
@@ -207,6 +247,7 @@ export default {
       getAPI
         .post("/api/accounts/register/", {
           phone: this.phone,
+          otp: this.otp,
           name: this.name,
           password: this.password,
           password2: this.password2,
@@ -215,11 +256,16 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData["response"]);
-          this.$session.start();
-          this.$session.set("user_token", response.data.token);
-          this.clear();
-          this.bookTruck();
+          console.log(this.APIData);
+          if (this.APIData.Http_response == 200) {
+            this.$session.start();
+            this.$session.set("user_token", this.APIData.data["token"]);
+            this.clear();
+            // this.bookTruck();
+          } else {
+            this.message = "Registration Failed";
+            this.snackbar2 = true;
+          }
         })
         .catch((err) => {
           alert(err);
@@ -254,8 +300,75 @@ export default {
           alert(err);
         });
     },
-
-    //function to reset input field empty
+    checkPhone() {
+      if (this.phone.length == 10) {
+        getAPI
+          .get("api/accounts/check/?phone=" + this.phone)
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.Http_response == 409) {
+              if (this.APIData.data["new_phone"] == false) {
+                this.message2 = `Phonenumber ${this.phone} is already exist`;
+                this.icon = "mdi-close-circle-outline";
+                this.snackbar2 = true;
+              } else {
+                this.genOtp();
+              }
+            } else {
+              this.genOtp();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    checkEmail() {
+      if (this.email.slice(this.email.length - 4) == ".com") {
+        getAPI
+          .get("api/accounts/check/?email=" + this.email)
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.Http_response == 409) {
+              if (this.APIData.data["new_email"] == false) {
+                this.message2 = `Email Id ${this.email} id already exist`;
+                this.icon2 = "mdi-close-circle-outline";
+                this.snackbar2 = true;
+              } else {
+                this.icon2 = "mdi-checkbox-marked-circle-outline";
+              }
+            } else {
+              this.icon2 = "mdi-checkbox-marked-circle-outline";
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    genOtp() {
+      if (this.phone.length == 10) {
+        getAPI
+          .get("api/accounts/otp_gen/?phone=" + this.phone)
+          .then((response) => {
+            this.APIData = response.data;
+            this.otpfield = true;
+            this.otp = "";
+            this.message = ` Your OTP is ${this.APIData.data["OTP"]}`;
+            this.snackbar = true;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    verified() {
+      if ((this.otp.length == 6) & (this.otp == this.APIData.data["OTP"])) {
+        this.icon = "mdi-checkbox-marked-circle-outline";
+      } else {
+        this.icon = "mdi-close-circle-outline";
+      }
+    },
   },
 };
 </script>

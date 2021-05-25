@@ -85,21 +85,20 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          this.$session.start();
-          this.$session.set("user_token", response.data.token);
-          this.$session.set("user_name", response.data.user_name);
-          this.$session.set("user_id", response.data.user_id);
           this.APIData = response.data;
-          if (response.data.user_type == 1) {
+          this.$session.start();
+          this.$session.set("user_token", this.APIData.data["token"]);
+          this.$session.set("user_name", this.APIData.data["username"]);
+          this.$session.set("user_id", this.APIData.data["user_id"]);
+          if (this.APIData.data["user_type"] == 1) {
             this.$router.push({ name: "Treg" });
-          } else if (response.data.user_type == 2) {
+          } else if (this.APIData.data["user_type"] == 2) {
             this.$router.push({ name: "Bnewtruck" });
-          } else if (response.data.user_type == 3) {
+          } else if (this.APIData.data["user_type"] == 3) {
             this.$router.push({ name: "Dpage" });
           }
         })
         .catch((err) => {
-          localStorage.clear();
           console.log(err);
           this.message = "Login failed due to Invalid Credentials ";
           this.snackbar = true;
