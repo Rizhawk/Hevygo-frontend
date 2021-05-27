@@ -2,6 +2,28 @@
   <v-app>
     <Opage />
     <v-layout class="my-10" row wrap>
+      <v-snackbar
+        v-model="snackbar"
+        multi-line
+        color="teal darken-4"
+        timeout="10000"
+      >
+        {{ this.message }}
+        <template v-slot:action="{ attrs }">
+          <v-btn color="black" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+      <v-snackbar
+        color="red darken-4"
+        top
+        text-color="white"
+        v-model="snackbar2"
+        timeout="5000"
+      >
+        {{ this.message2 }}
+      </v-snackbar>
       <v-dialog v-model="dialog" max-width="500">
         <v-card>
           <v-card-title class="headline"> Add your Pan card </v-card-title>
@@ -26,9 +48,6 @@
       </v-dialog>
       <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-flex xs10 sm8 md6 lg4>
-        <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
-          ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
-        >
         <validation-observer ref="observer3" v-slot="{ invalid }">
           <form id="form6" @submit.prevent="adddriver">
             <validation-provider
@@ -45,7 +64,6 @@
                 outlined
                 rounded
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
             <validation-provider
@@ -57,15 +75,27 @@
               }"
             >
               <v-text-field
-                v-model="driver_phone"
+                v-model="phone"
                 :error-messages="errors"
                 label="Driver Phone Number *"
+                maxlength="10"
+                :append-icon="icon"
+                @input="checkPhone"
                 outlined
                 rounded
                 dense
-                clearable
               ></v-text-field>
             </validation-provider>
+            <v-text-field
+              v-if="otpfield"
+              v-model="otp"
+              label="OTP"
+              @input="verified()"
+              maxlength="6"
+              outlined
+              rounded
+              dense
+            ></v-text-field>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
               <v-flex class="my-2">
@@ -130,9 +160,14 @@ export default {
   data: () => {
     return {
       driver_name: "",
-      driver_phone: "",
+      phone: "",
+      icon: "",
+      otpfield: false,
+      otp: "",
       message: "",
       snackbar: false,
+      snackbar2: false,
+      message2: "",
       dialog: false,
     };
   },
@@ -153,6 +188,7 @@ export default {
           {
             driver_name: this.driver_name,
             phone: this.driver_phone,
+            otp: this.otp,
           },
           {
             headers: {
@@ -163,16 +199,57 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           console.log(this.APIData);
-          this.message = this.APIData["response"];
           if (this.APIData["operator_name"]) {
             this.dialog = true;
+          } else {
+            this.$router.push({ name: "Editdrivers" });
           }
-          this.snackbar = !this.snackbar;
-          this.clear4();
         })
         .catch((err) => {
           alert(err);
         });
+    },
+    checkPhone() {
+      if (this.phone.length == 10) {
+        getAPI
+          .get("api/accounts/check/?phone=" + this.phone)
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.data["new_phone"] == false) {
+              this.message2 = `Phonenumber ${this.phone} is already exist`;
+              this.icon = "mdi-close-circle-outline";
+              this.snackbar2 = true;
+            } else {
+              this.genOtp();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    genOtp() {
+      if (this.phone.length == 10) {
+        getAPI
+          .get("api/accounts/otp_gen/?phone=" + this.phone)
+          .then((response) => {
+            this.APIData = response.data;
+            this.otp = "";
+            this.otpfield = true;
+            this.message = ` Your OTP is ${this.APIData.data["OTP"]}`;
+            this.snackbar = true;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    verified() {
+      if ((this.otp.length == 6) & (this.otp == this.APIData.data["OTP"])) {
+        this.icon = "mdi-checkbox-marked-circle-outline";
+      } else {
+        this.icon = "mdi-close-circle-outline";
+      }
     },
     panadding() {
       this.dialog = false;

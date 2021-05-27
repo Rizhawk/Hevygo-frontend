@@ -306,14 +306,10 @@ export default {
           .get("api/accounts/check/?phone=" + this.phone)
           .then((response) => {
             this.APIData = response.data;
-            if (this.APIData.Http_response == 409) {
-              if (this.APIData.data["new_phone"] == false) {
-                this.message2 = `Phonenumber ${this.phone} is already exist`;
-                this.icon = "mdi-close-circle-outline";
-                this.snackbar2 = true;
-              } else {
-                this.genOtp();
-              }
+            if (this.APIData.data["new_phone"] == false) {
+              this.message2 = `Phonenumber ${this.phone} is already exist`;
+              this.icon = "mdi-close-circle-outline";
+              this.snackbar2 = true;
             } else {
               this.genOtp();
             }
@@ -329,14 +325,10 @@ export default {
           .get("api/accounts/check/?email=" + this.email)
           .then((response) => {
             this.APIData = response.data;
-            if (this.APIData.Http_response == 409) {
-              if (this.APIData.data["new_email"] == false) {
-                this.message2 = `Email Id ${this.email} is already exist`;
-                this.icon2 = "mdi-close-circle-outline";
-                this.snackbar2 = true;
-              } else {
-                this.icon2 = "mdi-checkbox-marked-circle-outline";
-              }
+            if (this.APIData.data["new_email"] == false) {
+              this.message2 = `Email Id ${this.email} is already exist`;
+              this.icon2 = "mdi-close-circle-outline";
+              this.snackbar2 = true;
             } else {
               this.icon2 = "mdi-checkbox-marked-circle-outline";
             }

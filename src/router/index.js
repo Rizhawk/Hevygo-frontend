@@ -25,6 +25,7 @@ import Ecprofile from "../views/editcustprofile";
 import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
 import Tracktruck from "../views/tracktruck";
+import ForgotPass from "../views/forgotpassword.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -156,6 +157,11 @@ const routes = [
     path: "/tracktruck",
     name: "Tracktruck",
     component: Tracktruck,
+  },
+  {
+    path: "/forgotpassword",
+    name: "ForgotPass",
+    component: ForgotPass,
   },
 ];
 

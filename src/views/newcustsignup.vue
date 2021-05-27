@@ -29,7 +29,7 @@
         <!--Customer Sign Up form begining -->
 
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="cnewsignup" @submit.prevent="submit">
+          <form id="cnewsignup" @submit.prevent="csignup">
             <v-layout class="my-2" row wrap>
               <v-flex class="mx-3"
                 ><p class="font-weight-black white--text">
@@ -104,7 +104,7 @@
               v-if="otpfield"
               v-model="otp"
               label="OTP"
-              @input="verified()"
+              @input="verified"
               maxlength="6"
               outlined
               dark
@@ -133,7 +133,6 @@
                   small
                   depressed
                   :disabled="invalid"
-                  @click.prevent="csignup"
                 >
                   Sign Up
                 </v-btn>
@@ -229,9 +228,6 @@ export default {
     };
   },
   methods: {
-    submit() {
-      this.$refs.observer.validate();
-    },
     clear() {
       this.name = "";
       this.phone = "";
@@ -242,6 +238,7 @@ export default {
     },
     //Function to call Api after click on the signup button
     csignup() {
+      this.$refs.observer.validate();
       getAPI
         .post("/api/accounts/register/", {
           phone: this.phone,
@@ -272,14 +269,10 @@ export default {
           .get("api/accounts/check/?phone=" + this.phone)
           .then((response) => {
             this.APIData = response.data;
-            if (this.APIData.Http_response == 409) {
-              if (this.APIData.data["new_phone"] == false) {
-                this.message2 = `Phonenumber ${this.phone} is already exist`;
-                this.icon = "mdi-close-circle-outline";
-                this.snackbar2 = true;
-              } else {
-                this.genOtp();
-              }
+            if (this.APIData.data["new_phone"] == false) {
+              this.message2 = `Phonenumber ${this.phone} is already exist`;
+              this.icon = "mdi-close-circle-outline";
+              this.snackbar2 = true;
             } else {
               this.genOtp();
             }
@@ -295,14 +288,10 @@ export default {
           .get("api/accounts/check/?email=" + this.email)
           .then((response) => {
             this.APIData = response.data;
-            if (this.APIData.Http_response == 409) {
-              if (this.APIData.data["new_email"] == false) {
-                this.message2 = `Email Id ${this.email} is already exist`;
-                this.icon2 = "mdi-close-circle-outline";
-                this.snackbar2 = true;
-              } else {
-                this.icon2 = "mdi-checkbox-marked-circle-outline";
-              }
+            if (this.APIData.data["new_email"] == false) {
+              this.message2 = `Email Id ${this.email} is already exist`;
+              this.icon2 = "mdi-close-circle-outline";
+              this.snackbar2 = true;
             } else {
               this.icon2 = "mdi-checkbox-marked-circle-outline";
             }

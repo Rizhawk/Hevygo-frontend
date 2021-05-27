@@ -3,19 +3,18 @@
     <Navbar />
     <v-layout class="my-15" row wrap>
       <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-snackbar
+        rounded="md"
+        top
+        light
+        color="red darken-4"
+        v-model="snackbar"
+        timeout="3000"
+        ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
+      >
       <v-flex xs10 sm8 md6 lg4>
-        <v-snackbar
-          rounded="md"
-          top
-          light
-          color="red darken-4"
-          v-model="snackbar"
-          timeout="3000"
-          ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
-        >
         <!--Login section-->
-        <form id="loginform" @submit.prevent="submit">
-          <v-layout row flex class="my-1"><v-flex></v-flex></v-layout>
+        <form id="loginform" @submit.prevent="login">
           <v-text-field
             v-model="phone"
             label="Phone Number"
@@ -34,6 +33,7 @@
             outlined
             dense
           ></v-text-field>
+
           <v-layout row wrap>
             <v-flex lg2></v-flex>
             <v-flex class="mx-4">
@@ -45,12 +45,22 @@
                 depressed
                 type="submit"
                 width="50%"
-                @click.prevent="login"
               >
                 Login
               </v-btn>
             </v-flex>
             <v-flex lg2></v-flex>
+          </v-layout>
+          <v-layout row wrap>
+            <v-flex lg4></v-flex>
+            <v-flex class="mx-4">
+              <router-link to="/forgotpassword" class="link">
+                <p class="white--text my-3 caption">
+                  Forgot Password?
+                </p></router-link
+              >
+            </v-flex>
+            <v-flex lg4></v-flex>
           </v-layout>
         </form>
         <!--Login form ends-->
@@ -74,9 +84,6 @@ export default {
     };
   },
   methods: {
-    submit() {
-      this.$refs.observer.validate();
-    },
     login() {
       //Login API Call
       getAPI
@@ -108,6 +115,9 @@ export default {
 };
 </script>
 <style scoped>
+.link {
+  text-decoration: none;
+}
 #login {
   background: url("../assets/truck-12.jpg");
   background-repeat: no-repeat;
