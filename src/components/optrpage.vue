@@ -6,7 +6,11 @@
       <v-app-bar-title class="font-weight-medium">SHUTTLE</v-app-bar-title>
       <v-spacer></v-spacer>
       <p class="font-italic body-2">Welcome ,</p>
-      <span><p class="mx-3 font-weight-black body-2">{{this.$session.get('user_name')}}</p></span>
+      <span
+        ><p class="mx-3 font-weight-black body-2">
+          {{ this.$session.get("user_name") }}
+        </p></span
+      >
     </v-app-bar>
     <!--Navbar ends-->
 
@@ -27,7 +31,7 @@
             <v-icon size="80" dark> mdi-account-circle </v-icon>
           </v-avatar>
           <v-flex
-            ><router-link id="link" to="/editoptrprofile"
+            ><router-link id="link" to="/profilepage"
               ><p class="ml-3 white--text font-weight-medium body-2">
                 Edit Profile &#9998;
               </p></router-link

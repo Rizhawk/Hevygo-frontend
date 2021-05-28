@@ -26,6 +26,11 @@ import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
 import Tracktruck from "../views/tracktruck";
 import ForgotPass from "../views/forgotpassword.vue";
+import Changephone from "../views/ProfileUpdate/changephone.vue";
+import Changeemail from "../views/ProfileUpdate/changeemail.vue";
+import Changename from "../views/ProfileUpdate/changename.vue";
+import Changepassword from "../views/ProfileUpdate/changepassword.vue";
+import Propage from "../components/profilepage.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -162,6 +167,31 @@ const routes = [
     path: "/forgotpassword",
     name: "ForgotPass",
     component: ForgotPass,
+  },
+  {
+    path: "/profilepage",
+    name: "Propage",
+    component: Propage,
+  },
+  {
+    path: "/changephone",
+    name: "Changephone",
+    component: Changephone,
+  },
+  {
+    path: "/changeemail",
+    name: "Changeemail",
+    component: Changeemail,
+  },
+  {
+    path: "/changename",
+    name: "Changename",
+    component: Changename,
+  },
+  {
+    path: "/changepassword",
+    name: "Changepassword",
+    component: Changepassword,
   },
 ];
 
