@@ -20,7 +20,8 @@
               <v-text-field
                 v-model="pan"
                 :error-messages="errors"
-                label="Pan Number *"
+                label="PAN Number *"
+                maxlength="10"
                 :disabled="text1"
                 outlined
                 rounded
@@ -29,7 +30,8 @@
             </validation-provider>
             <validation-provider
               v-slot="{ errors }"
-              name="Gst Number"
+              name="GST Number"
+              maxlength="15"
               :rules="{
                 required: true,
               }"
@@ -117,17 +119,17 @@ export default {
   },
   mounted: function () {
     getAPI
-      .get("/api/operators/operator-detail/", {
+      .get("api/operators/view_operator_info/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.message = "Pancard already added";
-        this.snackbar=true;
+        this.snackbar = true;
         this.APIData = response.data;
-        this.pan = this.APIData.pan;
-        this.gst_no = this.APIData.gst_no;
+        this.pan = this.APIData.data["pan"];
+        this.gst_no = this.APIData.data["gst_no"];
         this.show = false;
         this.text1 = true;
         this.text2 = true;
@@ -146,7 +148,7 @@ export default {
     panadd() {
       getAPI
         .post(
-          "/api/operators/operator-create/",
+          "api/operators/add_operator_info/",
           {
             pan: this.pan,
             gst_no: this.gst_no,
@@ -159,10 +161,10 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          if (this.APIData["operator"]) {
-            this.message = "Pancard already added";
-          } else if (this.APIData["response"]) {
-            this.message = this.APIData["response"];
+          if (this.APIData.response == 200) {
+            this.message = this.APIData.message;
+          } else {
+            this.message = this.APIData.message;
           }
           this.snackbar = !this.snackbar;
           this.clear();

@@ -61,6 +61,8 @@
           <v-btn
             class="mx-5 my-10 black--text"
             width="80%"
+            small
+            depressed
             @click.prevent="logout"
             rounded
             color="white"

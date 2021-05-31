@@ -61,7 +61,7 @@
             Update Trucks Status
           </v-list-item>
           <v-list-item class="font-weight-bold body-2" router to="/panadd">
-            Add Your Pancard
+            Add Details
           </v-list-item>
         </v-list-item-group>
         <v-list-item>
@@ -70,6 +70,8 @@
             class="mx-5 my-10 black--text"
             width="80%"
             rounded
+            depressed
+            small
             shaped
             @click.prevent="logout"
             >Logout</v-btn

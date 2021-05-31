@@ -49,9 +49,28 @@
           <v-list-item class="font-weight-black body-2" to="/changename">
             Change Name
           </v-list-item>
-          <v-list-item class="font-weight-black body-2" to="changeemail">
+          <v-list-item class="font-weight-black body-2" to="/changeemail">
             Change Email
           </v-list-item>
+          <v-list-item
+            v-if="isOptr"
+            class="font-weight-black body-2"
+            to="/changedetails"
+          >
+            Change Details
+          </v-list-item>
+          <v-chip
+            class="ma-2"
+            dark
+            outlined
+            text-color="white"
+            @click.prevent="backTopage"
+          >
+            <v-avatar left>
+              <v-icon small>mdi-arrow-left-thick</v-icon>
+            </v-avatar>
+            Back
+          </v-chip>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -66,8 +85,10 @@ export default {
       drawer: true,
       color: "",
       username: "",
+      user_type: "",
       email: "",
       phone: "",
+      isOptr: false,
     };
   },
   created: function () {
@@ -80,17 +101,30 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         if (this.APIData.data["user_type"] == 1) {
+          this.isOptr = true;
           this.color = "indigo darken-4";
+          this.back = "/optrpage";
         } else if (this.APIData.data["user_type"] == 2) {
           this.color = "teal darken-4";
+          this.back = "/custpage";
         }
         this.username = this.APIData.data["username"];
         this.email = this.APIData.data["email"];
         this.phone = this.APIData.data["phone"];
+        this.user_type = this.APIData.data["user_type"];
       })
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    backTopage() {
+      if (this.user_type == 1) {
+        this.$router.push({ name: "Opage" });
+      } else if (this.user_type == 2) {
+        this.$router.push({ name: "Cpage" });
+      }
+    },
   },
 };
 </script>

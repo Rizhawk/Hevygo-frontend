@@ -24,11 +24,13 @@ import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
 import Tracktruck from "../views/tracktruck";
 import ForgotPass from "../views/forgotpassword.vue";
+import Propage from "../components/profilepage.vue";
 import Changephone from "../views/ProfileUpdate/changephone.vue";
 import Changeemail from "../views/ProfileUpdate/changeemail.vue";
 import Changename from "../views/ProfileUpdate/changename.vue";
 import Changepassword from "../views/ProfileUpdate/changepassword.vue";
-import Propage from "../components/profilepage.vue";
+import Changedetails from "../views/ProfileUpdate/changedetails.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -180,6 +182,11 @@ const routes = [
     path: "/changepassword",
     name: "Changepassword",
     component: Changepassword,
+  },
+  {
+    path: "/changedetails",
+    name: "Changedetails",
+    component: Changedetails,
   },
 ];
 
