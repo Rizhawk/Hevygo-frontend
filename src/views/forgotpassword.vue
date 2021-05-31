@@ -166,8 +166,13 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          this.clear();
-          this.$router.push({ name: "Login" });
+          if (this.APIData.Http_response == 400) {
+            this.message2 = this.APIData.message;
+            this.snackbar2 = true;
+          } else {
+            this.clear();
+            this.$router.push({ name: "Login" });
+          }
         })
         .catch((err) => {
           console.log(err);
