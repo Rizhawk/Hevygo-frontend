@@ -37,7 +37,7 @@
             v-model="email"
             label="New Email Id"
             :append-icon="icon"
-            @input="genOtp"
+            @input="checkEmail"
             outlined
             rounded
             dense
@@ -111,6 +111,25 @@ export default {
       });
   },
   methods: {
+    checkEmail() {
+      if (this.email.slice(this.email.length - 4) == ".com") {
+        getAPI
+          .get("api/accounts/check/?email=" + this.email)
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.data["new_email"] == false) {
+              this.message2 = `Email Id ${this.email} is already exist`;
+              this.icon2 = "mdi-close-circle-outline";
+              this.snackbar2 = true;
+            } else {
+              this.genOtp();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
     genOtp() {
       if (this.email.slice(this.email.length - 4) == ".com") {
         getAPI

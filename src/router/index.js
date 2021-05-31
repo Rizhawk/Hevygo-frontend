@@ -20,8 +20,6 @@ import Tstats from "../views/viewstats";
 import HereMap from "../views/HereMap";
 import Bnewtruck from "../views/booknewtruck";
 import Newcust from "../views/newcustsignup";
-import Eoprofile from "../views/editoptrprofile";
-import Ecprofile from "../views/editcustprofile";
 import Cbookings from "../views/bookings";
 import Ctrack from "../views/custrack";
 import Tracktruck from "../views/tracktruck";
@@ -137,16 +135,6 @@ const routes = [
     path: "/newcustsignup",
     name: "Newcust",
     component: Newcust,
-  },
-  {
-    path: "/editoptrprofile",
-    name: "Eoprofile",
-    component: Eoprofile,
-  },
-  {
-    path: "/editcustprofile",
-    name: "Ecprofile",
-    component: Ecprofile,
   },
   {
     path: "/bookings",
