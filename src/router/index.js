@@ -7,6 +7,9 @@ import Csignup from "../views/custsignup.vue";
 import Osignup from "../views/optrsignup.vue";
 import Cpage from "../components/custpage.vue";
 import Opage from "../components/optrpage.vue";
+import Admin from "../views/Admin/adminhome.vue";
+import AOreg from "../views/Admin/optrreg.vue";
+import ATreg from "../views/Admin/truckreg.vue";
 import Tmanage from "../views/managetrucks.vue";
 import Tstatus from "../views/truckstatus.vue";
 import Dpage from "../views/driverpage.vue";
@@ -62,6 +65,21 @@ const routes = [
     path: "/optrsignup",
     name: "Osignup",
     component: Osignup,
+  },
+  {
+    path: "/adminhome",
+    name: "Admin",
+    component: Admin,
+  },
+  {
+    path: "/optrreg",
+    name: "AOreg",
+    component: AOreg,
+  },
+  {
+    path: "/truckreg",
+    name: "ATreg",
+    component: ATreg,
   },
   {
     path: "/custpage",
