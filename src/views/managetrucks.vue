@@ -2,7 +2,7 @@
   <v-app>
     <Opage />
     <v-layout row wrap class="my-8">
-      <v-flex sm2 md2 lg3></v-flex>
+      <v-flex sm2 md2 lg3 class="mx-5"></v-flex>
       <v-flex xs12 sm12 md8 lg8>
         <v-snackbar
           rounded="xl"
@@ -13,7 +13,7 @@
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
         <!--Table-->
-        <v-simple-table>
+        <v-simple-table dense>
           <template v-slot:default>
             <thead>
               <tr>

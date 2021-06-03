@@ -10,9 +10,10 @@
         timeout="5000"
         ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
       >
+      <v-flex xs12 sm8 md6 lg3></v-flex>
       <v-flex xs12 sm8 md6 lg6>
         <!--Drivers table-->
-        <v-simple-table>
+        <v-simple-table dense>
           <template v-slot:default>
             <thead>
               <tr>

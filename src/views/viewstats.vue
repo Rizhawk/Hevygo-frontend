@@ -2,10 +2,10 @@
   <v-app>
     <Opage />
     <v-layout row wrap class="my-15">
-      <v-flex sm2 md2 lg3></v-flex>
+      <v-flex sm2 md2 lg4></v-flex>
       <v-flex xs12 sm8 md6 lg6>
         <!--Table showing status details-->
-        <v-simple-table>
+        <v-simple-table dense>
           <template v-slot:default>
             <thead>
               <tr>
@@ -60,7 +60,7 @@ export default {
   },
   data: () => {
     return {
-      truckdriver: [],    
+      truckdriver: [],
     };
   },
   created: function () {
@@ -87,13 +87,13 @@ export default {
       });
     //
   },
-  methods:{
-    showdetail(location){
+  methods: {
+    showdetail(location) {
       console.log(location);
-      this.$session.set('cp',location);
-      this.$router.push({name:'Tracktruck'})
-    }
-  }
+      this.$session.set("cp", location);
+      this.$router.push({ name: "Tracktruck" });
+    },
+  },
 };
 </script>
 <style scoped>

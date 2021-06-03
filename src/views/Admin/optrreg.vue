@@ -9,25 +9,98 @@
             <tr>
               <th>Name</th>
               <th>Phone</th>
-              <th>PAN</th>
-              <th>GST</th>
               <th>Verified</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Joshy</td>
-              <td>9946646312</td>
-              <td>AAAR123456</td>
-              <td>2124541541214</td>
-              <td>false</td>
+            <tr
+              v-for="details in optrdetails"
+              :key="details.id"
+              @click.prevent="getDetails(details.id)"
+            >
+              <td>{{ details.name }}</td>
+              <td>{{ details.phone }}</td>
+              <v-dialog max-width="300px" v-model="show" overlay-opacity=".3">
+                <v-card color="#263238" dark max-width="300px">
+                  <v-card-title class="font-weight-black body-1"
+                    >PAN Number</v-card-title
+                  >
+                  <v-card-subtitle v-text="pan"></v-card-subtitle>
+                  <v-card-title class="font-weight-black body-1"
+                    >GST Number</v-card-title
+                  >
+                  <v-card-subtitle v-text="gst"></v-card-subtitle>
+                  <v-card-title
+                    v-if="email != null"
+                    class="font-weight-black body-1"
+                    >E-mail ID</v-card-title
+                  >
+                  <v-card-subtitle v-if="email != null">{{
+                    email
+                  }}</v-card-subtitle>
+                  <v-card-title class="font-weight-black body-1"
+                    >Name</v-card-title
+                  >
+                  <v-card-subtitle v-text="name"></v-card-subtitle>
+                  <v-card-title class="font-weight-black body-1"
+                    >Phonenumber</v-card-title
+                  >
+                  <v-card-subtitle v-text="phone"></v-card-subtitle>
+                  <v-card-actions>
+                    <v-btn
+                      v-if="details.is_verified == true"
+                      color=" green darken-1"
+                      x-small
+                      outlined
+                      disabled
+                      dark
+                      >Approved
+                      <v-icon small>mdi-checkbox-marked-circle-outline</v-icon>
+                    </v-btn>
+                    <v-btn
+                      v-if="details.is_verified == false"
+                      color=" green darken-1"
+                      @click.prevent="giveApproval(details.id)"
+                      x-small
+                      outlined
+                      dark
+                      >Approve
+                    </v-btn>
+                    <v-btn
+                      class="mx-1"
+                      color="red lighten-1"
+                      :disabled="details.is_verified == true"
+                      x-small
+                      outlined
+                      dark
+                      @click.prevent="reject(details.id)"
+                      >Reject
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
               <td>
-                <v-btn color=" green darken-1" x-small outlined dark
-                  >Approve</v-btn
+                <v-icon
+                  color="green darken-1"
+                  small
+                  v-if="details.is_verified == true"
+                  >mdi-checkbox-marked-circle-outline</v-icon
                 >
-                <v-btn class="mx-1" color="red lighten-1" x-small outlined dark
-                  >Reject
+                <v-icon color="red" small v-if="details.is_verified == false"
+                  >mdi-close-circle-outline</v-icon
+                >
+              </td>
+              <td>
+                <v-btn
+                  :disabled="details.is_verified == false"
+                  class="mx-1"
+                  color="red lighten-1"
+                  x-small
+                  outlined
+                  dark
+                  @click.prevent="reject(details.id)"
+                  >Suspend
                 </v-btn>
               </td>
             </tr>
@@ -48,28 +121,103 @@ export default {
   data: () => {
     return {
       optrdetails: [],
+      show: false,
+      pan: "",
+      gst: "",
+      email: null,
+      name: "",
+      phone: "",
     };
   },
   created: function () {
     getAPI
-      .get("api/operators/view_operator_info/", {
+      .get("/api/admin/list_operator/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        console.log(this.APIData);
+        this.optrdetails = this.APIData.data;
       })
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    getDetails(id) {
+      getAPI
+        .get("/api/admin/view_operator_info/?id=" + id, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.pan = this.APIData.data["pan"];
+          this.gst = this.APIData.data["gst_no"];
+          this.email = this.APIData.data["user"]["email"];
+          this.name = this.APIData.data["user"]["name"];
+          this.phone = this.APIData.data["user"]["phone"];
+          this.show = !this.show;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    giveApproval(id) {
+      getAPI
+        .put(
+          "/api/admin/update_operator_info/",
+          {
+            id: id,
+            remarks: "verified",
+            status: 2,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    reject(id) {
+      getAPI
+        .put(
+          "/api/admin/update_operator_info/",
+          {
+            id: id,
+            remarks: "Invalid PAN number",
+            status: 3,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
 <style scoped>
 thead {
   background-color: #e64a19;
+  text-align: right;
 }
 tbody {
   background-color: #263238;
@@ -77,6 +225,6 @@ tbody {
   color: whitesmoke;
 }
 tr:hover {
-  background-color: transparent !important;
+  background-color: #37474f !important;
 }
 </style>

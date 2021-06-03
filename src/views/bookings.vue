@@ -2,9 +2,9 @@
   <v-app>
     <Cpage />
     <v-layout class="my-10" row wrap>
-      <v-flex xs2 sm2 md2 lg2 class="mx-8"></v-flex>
+      <v-flex xs2 sm2 md2 lg2 class="mx-12"></v-flex>
       <v-flex xs12 sm8 md6 lg9>
-        <v-simple-table>
+        <v-simple-table dense>
           <template v-slot:default>
             <thead>
               <tr>

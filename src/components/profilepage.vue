@@ -10,7 +10,7 @@
       v-model="drawer"
       absolute
       bottom
-      width="400px"
+      width="350px"
       fixed
       clipped
       hide-overlay
@@ -24,13 +24,20 @@
               <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
                   <v-card-title
-                    class="text-h6"
                     v-text="username"
+                    class="font-weight-black body-1"
                   ></v-card-title>
-                  <v-card-subtitle v-text="email"></v-card-subtitle>
-                  <v-card-subtitle v-text="phone"></v-card-subtitle>
+
+                  <v-card-subtitle
+                    v-text="email"
+                    class="caption"
+                  ></v-card-subtitle>
+                  <v-card-subtitle
+                    v-text="phone"
+                    class="caption"
+                  ></v-card-subtitle>
                 </div>
-                <v-avatar class="ma-3" size="125" tile>
+                <v-avatar size="100" tile>
                   <v-icon size="80" dark> mdi-account-circle </v-icon>
                 </v-avatar>
               </div>

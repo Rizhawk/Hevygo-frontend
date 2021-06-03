@@ -16,6 +16,7 @@
     <!--Sidebar-->
     <v-navigation-drawer
       v-model="drawer"
+      width="300"
       absolute
       bottom
       fixed
@@ -24,20 +25,48 @@
       hide-overlay
       color="teal darken-4"
     >
-      <v-layout column align-center>
-        <v-flex class="mt-5">
-          <v-avatar size="100">
-            <v-icon size="80"> mdi-account-circle </v-icon>
-          </v-avatar>
-          <v-flex
-            ><router-link id="link" to="/profilepage"
-              ><p class="ml-3 white--text font-weight-medium body-2">
-                Edit Profile &#9998;
-              </p></router-link
-            ></v-flex
-          >
-        </v-flex>
-      </v-layout>
+      <v-container>
+        <v-row dense>
+          <v-col cols="12">
+            <v-card color="#263238" dark>
+              <div class="d-flex flex-no-wrap justify-space-between">
+                <div>
+                  <v-card-title
+                    v-text="username"
+                    class="font-weight-black body-2"
+                  >
+                  </v-card-title>
+
+                  <v-card-subtitle
+                    v-text="email"
+                    class="caption"
+                  ></v-card-subtitle>
+                  <v-card-subtitle
+                    v-text="phone"
+                    class="caption"
+                  ></v-card-subtitle>
+                </div>
+                <v-avatar size="100" tile>
+                  <v-icon size="80" dark> mdi-account-circle </v-icon>
+                </v-avatar>
+              </div>
+              <v-card-actions>
+                <v-btn
+                  link
+                  href="/profilepage"
+                  color="white"
+                  x-small
+                  rounded
+                  outlined
+                  dark
+                  >Edit Profile
+                  <v-icon class="mx-1" x-small>mdi-pencil</v-icon></v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
       <v-list nav dark>
         <v-list-item-group
           v-model="group"
@@ -76,12 +105,33 @@
   </nav>
 </template>
 <script>
+import { getAPI } from "../axios-api";
 export default {
   name: "Cpage",
   data: () => ({
     drawer: true,
     group: null,
+    username: "",
+    email: "",
+    phone: "",
   }),
+  created: function () {
+    getAPI
+      .get("/api/accounts/is_login/", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.username = this.APIData.data["username"];
+        this.email = this.APIData.data["email"];
+        this.phone = this.APIData.data["phone"];
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
     logout() {
       this.$session.destroy();
