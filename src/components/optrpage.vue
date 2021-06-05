@@ -5,12 +5,20 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-app-bar-title class="font-weight-medium">SHUTTLE</v-app-bar-title>
       <v-spacer></v-spacer>
-      <p class="font-italic body-2">Welcome ,</p>
-      <span
-        ><p class="mx-3 font-weight-black body-2">
-          {{ this.$session.get("user_name") }}
-        </p></span
+      <v-app-bar-title class="white--text font-weight-black caption mr-3">
+        <v-icon x-small color="white" class="mr-2">mdi-account</v-icon
+        >{{ this.$session.get("user_name") }}
+      </v-app-bar-title>
+      <v-btn
+        text
+        @click.prevent="logout"
+        class="white--text font-weight-black"
+        dark
+        x-small
       >
+        <v-icon x-small color="white" class="mr-2">mdi-logout</v-icon>
+        Logout
+      </v-btn>
     </v-app-bar>
     <!--Navbar ends-->
 
@@ -29,32 +37,44 @@
       <v-container>
         <v-row dense>
           <v-col cols="12">
-            <v-card color="#263238" dark>
+            <v-card color="grey lighten-5">
               <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
-                  <v-card-title
-                    v-text="username"
-                    class="font-weight-black body-1"
-                  ></v-card-title>
+                  <v-card-title class="font-weight-black body-1 black--text">
+                    {{ this.username }}
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          dense
+                          v-bind="attrs"
+                          v-on="on"
+                          class="mx-1"
+                          :color="vcolor"
+                          v-text="vicon"
+                        ></v-icon>
+                      </template>
+                      <span>{{ this.vmsg }}</span>
+                    </v-tooltip>
+                  </v-card-title>
 
                   <v-card-subtitle
                     v-text="email"
-                    class="caption"
+                    class="caption black--text"
                   ></v-card-subtitle>
                   <v-card-subtitle
                     v-text="phone"
-                    class="caption"
+                    class="caption black--text"
                   ></v-card-subtitle>
                 </div>
                 <v-avatar size="100" tile>
-                  <v-icon size="80" dark> mdi-account-circle </v-icon>
+                  <v-icon size="80" color="black"> mdi-account-circle </v-icon>
                 </v-avatar>
               </div>
               <v-card-actions>
                 <v-btn
                   link
                   href="/profilepage"
-                  color="white"
+                  color="black"
                   x-small
                   rounded
                   outlined
@@ -92,19 +112,6 @@
             Add Details
           </v-list-item>
         </v-list-item-group>
-        <v-list-item>
-          <v-btn
-            color="white"
-            class="mx-5 my-10 black--text"
-            width="80%"
-            rounded
-            depressed
-            small
-            shaped
-            @click.prevent="logout"
-            >Logout</v-btn
-          >
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </nav>
@@ -122,20 +129,36 @@ export default {
       username: "",
       email: "",
       phone: "",
+      vcolor: "",
+      vicon: "",
+      vmsg: "",
     };
   },
   created: function () {
     getAPI
-      .get("/api/accounts/is_login/", {
+      .get("/api/operators/view_operator_info/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        this.username = this.APIData.data["username"];
-        this.email = this.APIData.data["email"];
-        this.phone = this.APIData.data["phone"];
+        this.username = this.APIData.data["user"]["name"];
+        this.email = this.APIData.data["user"]["email"];
+        this.phone = this.APIData.data["user"]["phone"];
+        if (this.APIData.data["status"] == 1) {
+          this.vicon = "mdi-clock";
+          this.vcolor = "black";
+          this.vmsg = this.APIData.data["remarks"];
+        } else if (this.APIData.data["status"] == 2) {
+          this.vicon = "mdi-checkbox-marked-circle-outline";
+          this.vcolor = "green";
+          this.vmsg = this.APIData.data["remarks"];
+        } else if (this.APIData.data["status"] == 3) {
+          this.vicon = "mdi-close-circle-outline";
+          this.vcolor = "red";
+          this.vmsg = this.APIData.data["remarks"];
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -154,3 +177,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.link {
+  text-decoration: none;
+  color: white;
+}
+</style>

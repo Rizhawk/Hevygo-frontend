@@ -21,77 +21,30 @@
                 <th class="white--text text-left">Registration Number</th>
                 <th class="white--text text-left">Verification</th>
                 <th class="white--text text-left">Truck Specification</th>
-                <th></th>
+                <th class="white--text text-left">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="truck in trucks" :key="truck.truck_num">
-                <td
-                  class="font-weight-bold"
-                  @click="
-                    editreg(
-                      truck.id,
-                      truck.owner,
-                      truck.truck_num,
-                      truck.registration,
-                      truck.homelocation
-                    )
-                  "
-                >
-                  {{ truck.truck_num }}
+              <tr v-for="truck in trucks" :key="truck.truck.id">
+                <td class="font-weight-bold">
+                  {{ truck.truck["phone"] }}
                 </td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form">
-                    <v-text-field
-                      class="mx-8"
-                      label="Registation Number"
-                      dark
-                      clearable
-                      outlined
-                      rounded
-                      dense
-                      v-model="regnum"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mx-8"
-                      label="Homelocation"
-                      dark
-                      disabled
-                      clearable
-                      rounded
-                      outlined
-                      dense
-                      v-model="homeloc"
-                    >
-                    </v-text-field>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          depressed
-                          block
-                          color="success"
-                          small
-                          @click.prevent="uptruck(trid)"
-                          >Update</v-btn
-                        >
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
                 <td class="font-weight-bold">{{ truck.registration }}</td>
-                <td class="font-weight-bold" v-if="truck.is_verified == true">
-                  &#9989;
-                </td>
-                <td class="font-weight-bold" v-if="truck.is_verified == false">
-                  &#10060;
+                <td>
+                  <v-icon
+                    color="green darken-1"
+                    class="mx-5"
+                    small
+                    v-if="truck.truck['is_verified'] == true"
+                    >mdi-checkbox-marked-circle-outline</v-icon
+                  >
+                  <v-icon
+                    color=" red darken-4"
+                    small
+                    class="mx-5"
+                    v-if="truck.truck['is_verified'] == false"
+                    >mdi-close-circle-outline</v-icon
+                  >
                 </td>
                 <td class="font-weight-bold" @click="showinfo(truck.id)">
                   View/Edit
@@ -167,12 +120,10 @@
                 </v-dialog>
                 <td>
                   <v-btn
-                    depressed
                     outlined
-                    text
                     dark
                     x-small
-                    color="red accent-4"
+                    color="red darken-4"
                     @click.prevent="dialog1 = !dialog1"
                     >Delete</v-btn
                   >
@@ -277,16 +228,14 @@ export default {
   },
   beforeMount: function () {
     getAPI
-      .get("/api/truck/truck-list/", {
+      .get("/api/admin/list_vehicle/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.trucks.push(this.APIData[key]);
-        }
+        this.trucks = this.APIData.data;
       })
       .catch((err) => {
         alert(err);

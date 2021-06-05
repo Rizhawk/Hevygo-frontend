@@ -5,12 +5,20 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-medium">SHUTTLE</v-toolbar-title>
       <v-spacer></v-spacer>
-      <p class="font-italic body-2">Welcome ,</p>
-      <span
-        ><p class="mx-3 font-weight-black body-2">
-          {{ this.$session.get("user_name") }}
-        </p></span
+      <v-app-bar-title class="white--text font-weight-black caption mr-3">
+        <v-icon x-small color="white" class="mr-2">mdi-account</v-icon
+        >{{ this.$session.get("user_name") }}
+      </v-app-bar-title>
+      <v-btn
+        text
+        @click.prevent="logout"
+        class="white--text font-weight-black"
+        dark
+        x-small
       >
+        <v-icon x-small color="white" class="mr-2">mdi-logout</v-icon>
+        Logout
+      </v-btn>
     </v-app-bar>
     <!--Navbar ends-->
     <!--Sidebar-->
@@ -28,33 +36,31 @@
       <v-container>
         <v-row dense>
           <v-col cols="12">
-            <v-card color="#263238" dark>
+            <v-card color="grey lighten-5">
               <div class="d-flex flex-no-wrap justify-space-between">
                 <div>
-                  <v-card-title
-                    v-text="username"
-                    class="font-weight-black body-2"
-                  >
+                  <v-card-title class="font-weight-black body-1 black--text"
+                    >{{ this.username }}
                   </v-card-title>
 
                   <v-card-subtitle
                     v-text="email"
-                    class="caption"
+                    class="caption black--text"
                   ></v-card-subtitle>
                   <v-card-subtitle
                     v-text="phone"
-                    class="caption"
+                    class="caption black--text"
                   ></v-card-subtitle>
                 </div>
                 <v-avatar size="100" tile>
-                  <v-icon size="80" dark> mdi-account-circle </v-icon>
+                  <v-icon size="80" color="black"> mdi-account-circle </v-icon>
                 </v-avatar>
               </div>
               <v-card-actions>
                 <v-btn
                   link
                   href="/profilepage"
-                  color="white"
+                  color="black"
                   x-small
                   rounded
                   outlined
@@ -86,19 +92,6 @@
             Track your Shipment
           </v-list-item>
         </v-list-item-group>
-        <v-list-item>
-          <v-btn
-            class="mx-5 my-10 black--text"
-            width="80%"
-            small
-            depressed
-            @click.prevent="logout"
-            rounded
-            color="white"
-            shaped
-            >Logout</v-btn
-          >
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <!--Sidebar ends-->
@@ -115,7 +108,7 @@ export default {
     email: "",
     phone: "",
   }),
-  created: function () {
+  beforeCreate: function () {
     getAPI
       .get("/api/accounts/is_login/", {
         headers: {

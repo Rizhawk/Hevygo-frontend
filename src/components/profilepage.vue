@@ -98,7 +98,7 @@ export default {
       isOptr: false,
     };
   },
-  created: function () {
+  beforeCreate: function () {
     getAPI
       .get("/api/accounts/is_login/", {
         headers: {

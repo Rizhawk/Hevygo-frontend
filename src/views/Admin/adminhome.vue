@@ -4,21 +4,21 @@
       <v-app-bar-nav-icon
         @click.prevent="drawer = !drawer"
       ></v-app-bar-nav-icon>
-
       <v-spacer></v-spacer>
-      <v-app-bar-title class="white--text font-weight-medium subtitle-2"
-        ><v-icon class="mr-2">mdi-account</v-icon
+      <v-app-bar-title class="white--text font-weight-black caption mr-3"
+        ><v-icon x-small color="white" class="mr-2">mdi-account</v-icon
         >{{ this.$session.get("user_name") }}</v-app-bar-title
       >
-      <v-app-bar-title
+      <v-btn
+        text
         @click.prevent="logout"
-        class="mx-5 white--text font-weight-medium subtitle-2"
+        class="white--text font-weight-black"
+        dark
+        x-small
       >
-        <v-icon @click.prevent="logout">mdi-logout</v-icon>
-        <router-link class="link" to="/login">
-          Logout</router-link
-        ></v-app-bar-title
-      >
+        <v-icon x-small color="white" class="mr-2">mdi-logout</v-icon>
+        Logout
+      </v-btn>
     </v-system-bar>
     <v-navigation-drawer
       v-model="drawer"
@@ -83,6 +83,8 @@ export default {
   },
   methods: {
     logout() {
+      this.$session.destroy();
+      localStorage.clear();
       this.$router.push({ name: "Login" });
     },
   },

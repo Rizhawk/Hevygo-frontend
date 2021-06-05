@@ -21,7 +21,12 @@
             >
               <td>{{ details.name }}</td>
               <td>{{ details.phone }}</td>
-              <v-dialog max-width="300px" v-model="show" overlay-opacity=".3">
+              <v-dialog
+                max-width="300px"
+                max-height="auto"
+                v-model="show"
+                overlay-opacity=".3"
+              >
                 <v-card color="#263238" dark max-width="300px">
                   <v-card-title class="font-weight-black body-1"
                     >PAN Number</v-card-title
@@ -129,7 +134,7 @@ export default {
       phone: "",
     };
   },
-  created: function () {
+  beforeCreate: function () {
     getAPI
       .get("/api/admin/list_operator/", {
         headers: {
@@ -171,7 +176,7 @@ export default {
           "/api/admin/update_operator_info/",
           {
             id: id,
-            remarks: "verified",
+            remarks: "Verified",
             status: 2,
           },
           {
