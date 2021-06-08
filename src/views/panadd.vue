@@ -1,15 +1,19 @@
 <template>
-  <v-app>
-    <Opage />
-    <v-layout class="my-10" row wrap>
+  <v-app id="page2">
+    <v-layout class="my-15" row wrap>
       <v-flex xs1 sm2 md2 lg4></v-flex>
-      <v-flex xs10 sm8 md6 lg4>
+      <v-flex xs10 sm8 md6 lg4 class="my-12">
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
         <validation-observer ref="observer3" v-slot="{ invalid }">
-          <form id="form5" @submit.prevent="addpan">
-            <v-flex class="my-2"></v-flex>
+          <form id="form5" @submit.prevent="panadd">
+            <v-flex row wrap>
+              <p class="mx-3 my-2 white--text font-weight-black subtitle-1">
+                Add Details
+              </p>
+            </v-flex>
+            <v-flex class="my-4"></v-flex>
             <validation-provider
               v-slot="{ errors }"
               name="Pan number"
@@ -22,9 +26,8 @@
                 :error-messages="errors"
                 label="PAN Number *"
                 maxlength="10"
-                :disabled="text1"
+                dark
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -40,10 +43,8 @@
                 v-model="gst_no"
                 :error-messages="errors"
                 label="Gst Number *"
-                :disabled="text2"
-                required
+                dark
                 outlined
-                rounded
                 dense
               ></v-text-field>
             </validation-provider>
@@ -51,14 +52,12 @@
               <v-flex lg3></v-flex>
               <v-flex class="my-2">
                 <v-btn
-                  rounded
                   small
                   depressed
-                  v-if="show"
                   block
-                  @click.prevent="panadd"
-                  color="primary"
                   :disabled="invalid"
+                  type="submit"
+                  color="primary"
                   >Save</v-btn
                 >
               </v-flex>
@@ -72,7 +71,6 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-import Opage from "../components/optrpage";
 import { required, digits, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -104,7 +102,6 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
-    Opage,
   },
   data: () => {
     return {
@@ -117,35 +114,12 @@ export default {
       snackbar: false,
     };
   },
-  mounted: function () {
-    getAPI
-      .get("api/operators/view_operator_info/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.message = "Pancard already added";
-        this.snackbar = true;
-        this.APIData = response.data;
-        this.pan = this.APIData.data["pan"];
-        this.gst_no = this.APIData.data["gst_no"];
-        this.show = false;
-        this.text1 = true;
-        this.text2 = true;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
   methods: {
-    addpan() {
-      this.$refs.observer3.validate();
-    },
     clear() {
       (this.pan = ""), (this.gst_no = ""), this.$refs.observer3.reset();
     },
     panadd() {
+      this.$refs.observer3.validate();
       getAPI
         .post(
           "api/operators/add_operator_info/",
@@ -163,12 +137,12 @@ export default {
           this.APIData = response.data;
           if (this.APIData.response == 200) {
             this.message = this.APIData.message;
+            this.snackbar = !this.snackbar;
+            this.$router.push({ name: "Login" });
           } else {
             this.message = this.APIData.message;
+            this.snackbar = !this.snackbar;
           }
-          this.snackbar = !this.snackbar;
-          this.clear();
-          window.location.reload();
         })
         .catch((err) => {
           alert(err);
@@ -178,9 +152,21 @@ export default {
 };
 </script>
 <style scoped>
+#page2 {
+  background: url("../assets/truck-12.jpg");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  margin: auto;
+  padding: 0;
+}
 #form5 {
-  border: solid #1a237e 2px;
-  padding: 30px;
-  border-radius: 15px;
+  border: solid white 1px;
+  padding: 35px;
+  border-radius: 25px;
+  background-color: black;
+  opacity: 0.8;
 }
 </style>

@@ -28,7 +28,7 @@
       <v-flex xs10 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="csignup" @submit.prevent="submit">
+          <form id="csignup" @submit.prevent="csignup">
             <v-layout class="my-2" row wrap>
               <v-flex class="mx-3"
                 ><p class="white--text subtitle-1 font-weight-black">
@@ -132,7 +132,6 @@
                   small
                   depressed
                   :disabled="invalid"
-                  @click.prevent="csignup"
                 >
                   Sign Up
                 </v-btn>
@@ -217,7 +216,6 @@ export default {
       email: null,
       show1: false,
       show2: false,
-      user_type: 2,
       password: "",
       password2: "",
       passwordRules: [
@@ -230,9 +228,6 @@ export default {
   },
 
   methods: {
-    submit() {
-      this.$refs.observer.validate();
-    },
     clear() {
       this.name = "";
       this.phone = "";
@@ -244,6 +239,7 @@ export default {
     //Function to call Api after click on the signup button
 
     csignup() {
+      this.$refs.observer.validate();
       getAPI
         .post("/api/accounts/register/", {
           phone: this.phone,
@@ -251,7 +247,7 @@ export default {
           name: this.name,
           password: this.password,
           password2: this.password2,
-          user_type: this.user_type,
+          user_type: 2,
           email: this.email,
         })
         .then((response) => {

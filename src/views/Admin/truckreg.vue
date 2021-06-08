@@ -93,8 +93,19 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
+                      v-if="truck.truck['is_verified'] == true"
+                      color=" green darken-1"
+                      x-small
+                      outlined
+                      disabled
+                      dark
+                      >Approved
+                      <v-icon small>mdi-checkbox-marked-circle-outline</v-icon>
+                    </v-btn>
+                    <v-btn
                       v-if="truck.truck['is_verified'] == false"
                       color=" green darken-1"
+                      @click.prevent="giveApproval(truck.truck.id)"
                       x-small
                       outlined
                       dark
@@ -207,6 +218,29 @@ export default {
           this.model = this.APIData.data["model"];
           this.capacity = this.APIData.data["capacity"];
           this.show = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    giveApproval(id) {
+      getAPI
+        .put(
+          "/api/admin/update_truck_info/",
+          {
+            id: id,
+            remarks: "Verified",
+            status: 2,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          window.location.reload();
         })
         .catch((err) => {
           console.log(err);

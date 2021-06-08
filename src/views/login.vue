@@ -18,6 +18,7 @@
           <v-text-field
             v-model="phone"
             label="Phone Number"
+            autofocus
             dark
             outlined
             dense

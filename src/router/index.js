@@ -8,6 +8,7 @@ import Osignup from "../views/optrsignup.vue";
 import Cpage from "../components/custpage.vue";
 import Opage from "../components/optrpage.vue";
 import Admin from "../views/Admin/adminhome.vue";
+import Regadmin from "../views/Admin/newadmin.vue";
 import AOreg from "../views/Admin/optrreg.vue";
 import ATreg from "../views/Admin/truckreg.vue";
 import Tmanage from "../views/managetrucks.vue";
@@ -70,6 +71,11 @@ const routes = [
     path: "/adminhome",
     name: "Admin",
     component: Admin,
+  },
+  {
+    path: "/newadmin",
+    name: "Regadmin",
+    component: Regadmin,
   },
   {
     path: "/optrreg",

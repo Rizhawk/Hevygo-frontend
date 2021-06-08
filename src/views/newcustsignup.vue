@@ -218,7 +218,7 @@ export default {
       email: null,
       show1: false,
       show2: false,
-      user_type: 2,
+
       password: "",
       password2: "",
       passwordRules: [
@@ -246,7 +246,7 @@ export default {
           name: this.name,
           password: this.password,
           password2: this.password2,
-          user_type: this.user_type,
+          user_type: 2,
           email: this.email,
         })
         .then((response) => {

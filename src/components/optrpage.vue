@@ -108,9 +108,6 @@
           <v-list-item class="font-weight-bold body-2" router to="/viewstats">
             Update Trucks Status
           </v-list-item>
-          <v-list-item class="font-weight-bold body-2" router to="/panadd">
-            Add Details
-          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -143,21 +140,25 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-        this.username = this.APIData.data["user"]["name"];
-        this.email = this.APIData.data["user"]["email"];
-        this.phone = this.APIData.data["user"]["phone"];
-        if (this.APIData.data["status"] == 1) {
-          this.vicon = "mdi-clock";
-          this.vcolor = "black";
-          this.vmsg = this.APIData.data["remarks"];
-        } else if (this.APIData.data["status"] == 2) {
-          this.vicon = "mdi-checkbox-marked-circle-outline";
-          this.vcolor = "green";
-          this.vmsg = this.APIData.data["remarks"];
-        } else if (this.APIData.data["status"] == 3) {
-          this.vicon = "mdi-close-circle-outline";
-          this.vcolor = "red";
-          this.vmsg = this.APIData.data["remarks"];
+        if (this.APIData.response == 204) {
+          this.$router.push({ name: "Padd" });
+        } else {
+          this.username = this.APIData.data["user"]["name"];
+          this.email = this.APIData.data["user"]["email"];
+          this.phone = this.APIData.data["user"]["phone"];
+          if (this.APIData.data["status"] == 1) {
+            this.vicon = "mdi-clock";
+            this.vcolor = "black";
+            this.vmsg = this.APIData.data["remarks"];
+          } else if (this.APIData.data["status"] == 2) {
+            this.vicon = "mdi-checkbox-marked-circle-outline";
+            this.vcolor = "green";
+            this.vmsg = this.APIData.data["remarks"];
+          } else if (this.APIData.data["status"] == 3) {
+            this.vicon = "mdi-close-circle-outline";
+            this.vcolor = "red";
+            this.vmsg = this.APIData.data["remarks"];
+          }
         }
       })
       .catch((err) => {

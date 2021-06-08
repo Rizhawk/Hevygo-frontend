@@ -62,7 +62,7 @@
             <v-list-item-icon><v-icon>mdi-truck</v-icon></v-list-item-icon>
             Truck Registration
           </v-list-item>
-          <v-list-item link class="font-weight-black subtitle-2">
+          <v-list-item link href="/newadmin" class="font-weight-black subtitle-2">
             <v-list-item-icon
               ><v-icon>mdi-account-plus</v-icon></v-list-item-icon
             >
