@@ -79,16 +79,16 @@
           active-class="deep-grey--text text--accent-1"
         >
           <v-list-item
-            class="font-weight-bold body-2"
+            class="font-weight-black body-2"
             router
             to="/booknewtruck"
           >
             Booking a new Truck
           </v-list-item>
-          <v-list-item class="font-weight-bold body-2" router to="/bookings"
+          <v-list-item class="font-weight-black  body-2" router to="/bookings"
             >Current Bookings</v-list-item
           >
-          <v-list-item class="font-weight-bold body-2" router to="/custrack">
+          <v-list-item class="font-weight-black  body-2" router to="/custrack">
             Track your Shipment
           </v-list-item>
         </v-list-item-group>

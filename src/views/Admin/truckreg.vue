@@ -20,109 +20,6 @@
               :key="truck.truck.id"
               @click.prevent="getTruckdetails(truck.truck.id)"
             >
-              <v-dialog
-                max-width="350px"
-                max-height="auto"
-                v-model="show"
-                overlay-opacity=".3"
-              >
-                <v-card color="#263238" dark max-width="350px">
-                  <v-card-title class="font-weight-black body-1"
-                    >Registration Number</v-card-title
-                  >
-                  <v-card-subtitle>{{ regno }}</v-card-subtitle>
-                  <v-card-title class="font-weight-black body-1"
-                    >Homelocation</v-card-title
-                  >
-                  <v-card-subtitle>{{ homeloc }}</v-card-subtitle>
-                  <v-card-title class="font-weight-black body-1"
-                    >Phonenumber</v-card-title
-                  >
-                  <v-card-subtitle>{{ phone }}</v-card-subtitle>
-                  <v-card-title
-                    v-if="name != null"
-                    class="font-weight-black body-1"
-                    >Name</v-card-title
-                  >
-                  <v-card-subtitle v-if="name != null"
-                    >{{ name }}
-                  </v-card-subtitle>
-                  <v-card-title class="font-weight-black body-1"
-                    >Owner's Name</v-card-title
-                  >
-                  <v-card-subtitle>{{ optrname }}</v-card-subtitle>
-                  <v-card-title class="font-weight-black body-1"
-                    >Owner's Phonenumber</v-card-title
-                  >
-                  <v-card-subtitle>{{ optrphone }}</v-card-subtitle>
-                  <v-card-title
-                    v-if="optremail != null"
-                    class="font-weight-black body-1"
-                    >Owner's Email Id
-                  </v-card-title>
-                  <v-card-subtitle v-if="optremail != null">{{
-                    optremail
-                  }}</v-card-subtitle>
-                  <v-expansion-panels accordion>
-                    <v-expansion-panel>
-                      <v-expansion-panel-header
-                        color="#263238"
-                        class="font-weight-black caption"
-                        >Specifiction of Vechicle</v-expansion-panel-header
-                      >
-                      <v-expansion-panel-content>
-                        <v-card-title class="font-weight-black body-2"
-                          >Manufacturer</v-card-title
-                        >
-                        <v-card-subtitle>{{ manf }}</v-card-subtitle>
-                        <v-card-title class="font-weight-black body-2"
-                          >Vechicle Type</v-card-title
-                        >
-                        <v-card-subtitle>{{ type }}</v-card-subtitle>
-                        <v-card-title class="font-weight-black body-2"
-                          >Vechicle Model</v-card-title
-                        >
-                        <v-card-subtitle>{{ model }}</v-card-subtitle>
-                        <v-card-title class="font-weight-black body-2"
-                          >Capcity of Vechicle</v-card-title
-                        >
-                        <v-card-subtitle>{{ capacity }}</v-card-subtitle>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      v-if="truck.truck['is_verified'] == true"
-                      color=" green darken-1"
-                      x-small
-                      outlined
-                      disabled
-                      dark
-                      >Approved
-                      <v-icon small>mdi-checkbox-marked-circle-outline</v-icon>
-                    </v-btn>
-                    <v-btn
-                      v-if="truck.truck['is_verified'] == false"
-                      color=" green darken-1"
-                      @click.prevent="giveApproval(truck.truck.id)"
-                      x-small
-                      outlined
-                      dark
-                      >Approve
-                    </v-btn>
-                    <v-btn
-                      class="mx-3"
-                      color="red lighten-1"
-                      :disabled="truck.truck['is_verified'] == true"
-                      x-small
-                      outlined
-                      dark
-                      >Reject
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
               <td>{{ truck.registration }}</td>
               <td>{{ truck.homelocation }}</td>
               <td>{{ truck.truck["phone"] }}</td>
@@ -141,12 +38,133 @@
                 >
               </td>
               <td>
-                <v-btn color="red" outlined x-small>Suspend</v-btn>
+                <v-btn
+                  :disabled="truck.truck['is_verified'] == false"
+                  class="mx-1"
+                  color="red lighten-1"
+                  x-small
+                  outlined
+                  dark
+                  >Suspend</v-btn
+                >
               </td>
             </tr>
           </tbody>
         </v-simple-table>
       </v-flex>
+      <v-dialog
+        max-width="350px"
+        max-height="auto"
+        persistent
+        v-model="show"
+        overlay-opacity=".3"
+      >
+        <v-card color="#263238" dark max-width="350px">
+          <v-card-title class="font-weight-black body-1"
+            >Registration Number
+            <v-spacer></v-spacer>
+            <v-icon @click="show = false" color="red" class="ml-5" small
+              >mdi-close-circle-outline</v-icon
+            >
+          </v-card-title>
+          <v-card-subtitle>{{ regno }}</v-card-subtitle>
+          <v-card-title class="font-weight-black body-1"
+            >Homelocation</v-card-title
+          >
+          <v-card-subtitle>{{ homeloc }}</v-card-subtitle>
+          <v-card-title class="font-weight-black body-1"
+            >Phonenumber</v-card-title
+          >
+          <v-card-subtitle>{{ phone }}</v-card-subtitle>
+          <v-card-title v-if="name != null" class="font-weight-black body-1"
+            >Name</v-card-title
+          >
+          <v-card-subtitle v-if="name != null">{{ name }} </v-card-subtitle>
+          <v-card-title class="font-weight-black body-1"
+            >Owner's Name</v-card-title
+          >
+          <v-card-subtitle>{{ optrname }}</v-card-subtitle>
+          <v-card-title class="font-weight-black body-1"
+            >Owner's Phonenumber</v-card-title
+          >
+          <v-card-subtitle>{{ optrphone }}</v-card-subtitle>
+          <v-card-title
+            v-if="optremail != null"
+            class="font-weight-black body-1"
+            >Owner's Email Id
+          </v-card-title>
+          <v-card-subtitle v-if="optremail != null">{{
+            optremail
+          }}</v-card-subtitle>
+          <v-expansion-panels accordion>
+            <v-expansion-panel>
+              <v-expansion-panel-header
+                color="#263238"
+                class="font-weight-black caption"
+                >Specifiction of Vechicle</v-expansion-panel-header
+              >
+              <v-expansion-panel-content>
+                <v-card-title class="font-weight-black body-2"
+                  >Manufacturer</v-card-title
+                >
+                <v-card-subtitle>{{ manf }}</v-card-subtitle>
+                <v-card-title class="font-weight-black body-2"
+                  >Vechicle Type</v-card-title
+                >
+                <v-card-subtitle>{{ type }}</v-card-subtitle>
+                <v-card-title class="font-weight-black body-2"
+                  >Vechicle Model</v-card-title
+                >
+                <v-card-subtitle>{{ model }}</v-card-subtitle>
+                <v-card-title class="font-weight-black body-2"
+                  >Capcity of Vechicle</v-card-title
+                >
+                <v-card-subtitle>{{ capacity }}</v-card-subtitle>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              v-if="status == 2"
+              color=" green darken-1"
+              x-small
+              outlined
+              disabled
+              dark
+              >Approved
+              <v-icon small>mdi-checkbox-marked-circle-outline</v-icon>
+            </v-btn>
+            <v-btn
+              v-if="status == 1 || status == 3"
+              color=" green darken-1"
+              @click.prevent="giveApproval"
+              x-small
+              outlined
+              dark
+              >Approve
+            </v-btn>
+            <v-btn
+              v-if="status == 1"
+              class="mx-3"
+              color="red lighten-1"
+              x-small
+              outlined
+              dark
+              >Reject
+            </v-btn>
+            <v-btn
+              v-if="status == 3"
+              color="red lighten-1"
+              x-small
+              outlined
+              dark
+              >Rejected
+              <v-icon small>mdi-close-circle-outline</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
   </v-app>
 </template>
@@ -169,6 +187,7 @@ export default {
       phone: "",
       regno: "",
       homeloc: "",
+      status: null,
       //Operator details
       optrname: "",
       optrphone: "",
@@ -208,6 +227,7 @@ export default {
           this.moredetails = this.APIData.data["truck"];
           this.name = this.moredetails.truck["name"];
           this.phone = this.moredetails.truck["phone"];
+          this.status = this.APIData.data["truck"]["verification"];
           this.regno = this.APIData.data["truck"]["registration"];
           this.homeloc = this.APIData.data["truck"]["homelocation"];
           this.optrname = this.APIData.data["truck"]["user"]["name"];

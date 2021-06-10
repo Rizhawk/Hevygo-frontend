@@ -93,22 +93,22 @@
           active-class="deep-grey--text text--accent-1"
         >
           <v-list-item
-            class="font-weight-bold body-2"
+            class="font-weight-black body-2"
             router
             to="/registertruck"
           >
             Register New Truck
           </v-list-item>
-          <v-list-item class="font-weight-bold body-2" router to="/managetrucks"
+          <v-list-item class="font-weight-black body-2" router to="/managetrucks"
             >Manage Trucks
           </v-list-item>
-          <v-list-item class="font-weight-bold body-2" router to="/editdrivers">
+          <v-list-item class="font-weight-black body-2" router to="/editdrivers">
             Manage Drivers
           </v-list-item>
-          <v-list-item class="font-weight-bold body-2" router to="/driveradd">
+          <v-list-item class="font-weight-black body-2" router to="/driveradd">
             Add new driver
           </v-list-item>
-          <v-list-item class="font-weight-bold body-2" router to="/viewstats">
+          <v-list-item class="font-weight-black body-2" router to="/viewstats">
             Update Trucks Status
           </v-list-item>
         </v-list-item-group>

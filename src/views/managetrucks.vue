@@ -49,75 +49,6 @@
                 <td class="font-weight-bold" @click="showinfo(truck.id)">
                   View/Edit
                 </td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog2"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form2">
-                    <v-text-field
-                      class="mx-8"
-                      label="Capacity in ton"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="cap"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mx-8"
-                      label="Manufacturer"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="manf"
-                    >
-                    </v-text-field>
-
-                    <v-text-field
-                      class="mx-8"
-                      label="Model"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="mod"
-                    >
-                    </v-text-field>
-                    <v-select
-                      class="mx-8"
-                      :items="types"
-                      label="Type"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="typ"
-                    >
-                    </v-select>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          block
-                          depressed
-                          color="success"
-                          @click.prevent="infoedit(idt)"
-                          small
-                          >Update</v-btn
-                        >
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
                 <td>
                   <v-btn
                     outlined
@@ -129,30 +60,30 @@
                   >
                 </td>
 
-                <v-dialog persistent v-model="dialog1" max-width="380">
+                <v-dialog persistent v-model="dialog1" max-width="420">
                   <v-card>
-                    <v-card-text class="subtitle-1 font-weight-bold black--text"
-                      >Are you sure want to remove this truck?</v-card-text
+                    <v-card-title class="body-2 font-weight-black black--text"
+                      >Are you sure want to remove this truck?</v-card-title
                     >
-                    <v-spacer></v-spacer>
 
-                    <v-flex class="ml-15">
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
                       <v-btn
                         class="ml-10"
-                        small
+                        x-small
                         @click="dialog1 = !dialog1"
                         text
                         >Close</v-btn
                       >
                       <v-btn
-                        small
+                        x-small
                         @click.prevent="
                           deleteTruck(truck.id, truck.registration)
                         "
                         text
                         color="red"
                         >Remove</v-btn
-                      ></v-flex
+                      ></v-card-actions
                     >
                   </v-card>
                 </v-dialog>
@@ -161,21 +92,92 @@
           </template>
         </v-simple-table>
         <!--Table ends-->
+        <v-dialog
+          :retain-focus="false"
+          v-model="dialog2"
+          max-width="400px"
+          light
+        >
+          <form id="form2">
+            <v-text-field
+              class="mx-8"
+              label="Capacity in ton"
+              clearable
+              dark
+              outlined
+              rounded
+              dense
+              v-model="cap"
+            >
+            </v-text-field>
+            <v-text-field
+              class="mx-8"
+              label="Manufacturer"
+              clearable
+              dark
+              outlined
+              rounded
+              dense
+              v-model="manf"
+            >
+            </v-text-field>
+
+            <v-text-field
+              class="mx-8"
+              label="Model"
+              clearable
+              dark
+              outlined
+              rounded
+              dense
+              v-model="mod"
+            >
+            </v-text-field>
+            <v-select
+              class="mx-8"
+              :items="types"
+              label="Type"
+              clearable
+              dark
+              outlined
+              rounded
+              dense
+              v-model="typ"
+            >
+            </v-select>
+            <v-layout row wrap>
+              <v-flex lg2></v-flex>
+              <v-flex class="mx-10">
+                <v-btn
+                  block
+                  depressed
+                  color="success"
+                  @click.prevent="infoedit(idt)"
+                  small
+                  >Update</v-btn
+                >
+              </v-flex>
+              <v-flex lg2></v-flex>
+            </v-layout>
+          </form>
+        </v-dialog>
       </v-flex>
     </v-layout>
     <!--Dialog box for confirmation for truck details addition-->
-    <v-dialog v-model="dialog3" max-width="250">
+    <v-dialog v-model="dialog3" max-width="280">
       <v-card>
-        <v-card-text class="subtitle-1 black--text">
+        <v-card-title class="body-2 font-weight-black black--text">
           {{ this.specmsg }}
-        </v-card-text>
-        <v-spacer></v-spacer>
-        <v-btn small color="red darken-1" text @click="speclater()">
-          Later
-        </v-btn>
-        <v-btn small color="green darken-1" text @click="specnow()">
-          Add Now
-        </v-btn>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn x-small color="red darken-1" text @click="speclater()">
+            Later
+          </v-btn>
+          <v-btn x-small color="green darken-1" text @click="specnow()">
+            Add Now
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <!---->
