@@ -5,10 +5,18 @@
       <v-snackbar
         rounded="xl"
         top
-        color="red darken-4"
+        color="green darken-4"
         v-model="snackbar"
         timeout="5000"
         ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
+      >
+      <v-snackbar
+        rounded="xl"
+        top
+        color="red darken-4"
+        v-model="snackbar2"
+        timeout="5000"
+        ><span class="white--text mx-15">{{ this.message2 }}</span></v-snackbar
       >
       <v-flex xs12 sm8 md6 lg3></v-flex>
       <v-flex xs12 sm8 md6 lg6>
@@ -19,123 +27,86 @@
               <tr>
                 <th class="white--text text-left">Driver name</th>
                 <th class="white--text text-left">Phone number</th>
-                <th></th>
-                <v-menu bottom right>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn dark icon v-bind="attrs" v-on="on">
-                      <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item router to="/driveradd">
-                      Add a new Driver
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="driver in driverdetails" :key="driver.id">
+              <tr
+                v-for="driver in driverdetails"
+                :key="driver.id"
+                @click="getaDriver(driver.id)"
+              >
                 <td class="font-weight-bold">{{ driver.driver_name }}</td>
                 <td class="font-weight-bold">{{ driver.phone }}</td>
-
-                <td
-                  class="font-weight-bold"
-                  @click="
-                    getaDriver(
-                      driver.id,
-                      driver.driver_name,
-                      driver.phone,
-                      driver.operator_name
-                    )
-                  "
-                >
-                  Edit/Delete
-                </td>
-                <td></td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form6">
-                    <v-text-field
-                      class="mx-8"
-                      label="Driver Name"
-                      clearable
-                      dark
-                      outlined
-                      dense
-                      rounded
-                      v-model="dname"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mx-8"
-                      label="Phone number"
-                      clearable
-                      dark
-                      rounded
-                      dense
-                      outlined
-                      v-model="drphn"
-                    >
-                    </v-text-field>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          depressed
-                          color="success"
-                          small
-                          @click.prevent="updatedr(drid)"
-                          >Update</v-btn
-                        >
-                        <v-btn
-                          class="mx-2"
-                          depressed
-                          color="red"
-                          small
-                          @click="dialog2 = true"
-                          >Delete</v-btn
-                        >
-                        <v-dialog v-model="dialog2" max-width="350">
-                          <v-card>
-                            <v-card-text class="subtitle-1 black--text">
-                              Are you sure want to delete this driver?
-                            </v-card-text>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              small
-                              color="green darken-1"
-                              text
-                              @click="dialog2 = false"
-                            >
-                              Close
-                            </v-btn>
-
-                            <v-btn
-                              small
-                              color="red darken-1"
-                              text
-                              @click="deletenow"
-                            >
-                              Delete
-                            </v-btn>
-                          </v-card>
-                        </v-dialog>
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
         <!--Drivers table ends-->
       </v-flex>
+      <v-dialog :retain-focus="false" v-model="dialog" max-width="400px" light>
+        <form id="form6">
+          <v-text-field
+            class="mx-8"
+            label="Driver Name"
+            clearable
+            dark
+            outlined
+            dense
+            rounded
+            v-model="dname"
+          >
+          </v-text-field>
+          <v-text-field
+            class="mx-8"
+            label="Phone number"
+            clearable
+            dark
+            rounded
+            dense
+            outlined
+            v-model="drphn"
+          >
+          </v-text-field>
+          <v-layout row wrap>
+            <v-flex lg2></v-flex>
+            <v-flex class="mx-10">
+              <v-btn
+                depressed
+                color="success"
+                x-small
+                @click.prevent="updatedr(drid)"
+                >Update</v-btn
+              >
+              <v-btn
+                class="mx-2"
+                depressed
+                color="red"
+                x-small
+                @click="dialog2 = true"
+                >Delete</v-btn
+              >
+            </v-flex>
+            <v-flex lg2></v-flex>
+          </v-layout>
+        </form>
+      </v-dialog>
+      <v-dialog v-model="dialog2" max-width="370">
+        <v-card>
+          <v-card-title class="body-2 font-weight-black black--text">
+            Are you sure want to delete this driver?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn small color="green darken-1" text @click="dialog2 = false">
+              Close
+            </v-btn>
+
+            <v-btn small color="red darken-1" text @click="deletenow">
+              Delete
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
   </v-app>
 </template>
@@ -153,7 +124,9 @@ export default {
       ownerid: "",
       drid: "",
       snackbar: false,
+      snackbar2: false,
       message: "",
+      message2: "",
     };
   },
   name: "Editdrivers",
@@ -163,16 +136,14 @@ export default {
   beforeMount: function () {
     //Api call for fetching the data into table
     getAPI
-      .get("/api/operators/driver-list/", {
+      .get("/api/operators/list_driver/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.driverdetails.push(this.APIData[key]);
-        }
+        this.driverdetails = this.APIData.data;
       })
       .catch((err) => {
         alert(err);
@@ -181,9 +152,9 @@ export default {
   },
   methods: {
     //Api call to get specific driver details
-    getaDriver(id, name, phone, ownerid) {
+    getaDriver(id) {
       getAPI
-        .get("api/operators/driver-detail/" + id + "/", {
+        .get("/api/operators/view_driver/?id=" + id, {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
@@ -191,9 +162,9 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           this.drid = id;
-          this.dname = name;
-          this.drphn = phone;
-          this.ownerid = ownerid;
+          this.dname = this.APIData.data["driver_name"];
+          this.drphn = this.APIData.data["phone"];
+          this.ownerid = this.APIData.data["operator"];
           this.dialog = true;
         })
         .catch((err) => {
@@ -202,14 +173,15 @@ export default {
       //
     },
     //Api call for updating driver details
-    updatedr(drid) {
+    updatedr() {
+      console.log(this.drid);
       getAPI
-        .post(
-          "api/operators/driver-update/" + drid + "/",
+        .put(
+          "/api/operators/update_driver/",
           {
+            id: this.drid,
             driver_name: this.dname,
             phone: this.drphn,
-            operator_name: this.ownerid,
           },
           {
             headers: {
@@ -219,7 +191,14 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          window.location.reload();
+          if (this.APIData.response == 200) {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+            window.location.reload();
+          } else {
+            this.message2 = this.APIData.message;
+            this.snackbar2 = true;
+          }
         })
         .catch((err) => {
           alert(err);
@@ -227,18 +206,22 @@ export default {
       //
     },
     //Api call for delete the selected driver
-    deletedr(drid, dname) {
+    deletedr() {
       getAPI
-        .delete("api/operators/driver-delete/" + drid + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
+        .put(
+          "/api/operators/delete_driver/",
+          { id: this.drid },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
         .then((response) => {
           this.APIData = response.data;
-          this.message = `Driver ${dname} is successfully deleted`;
-          window.location.reload();
+          this.message = `Driver ${this.dname} is successfully deleted`;
           this.snackbar = true;
+          window.location.reload();
         })
         .catch((err) => {
           alert(err);
@@ -247,7 +230,7 @@ export default {
     },
     //delete confirmation function call
     deletenow() {
-      this.deletedr(this.drid, this.dname);
+      this.deletedr();
       this.dialog2 = false;
     },
     //
@@ -259,7 +242,7 @@ export default {
   border: solid white 1px;
   padding: 25px;
   border-radius: 15px;
-  background-color: grey;
+  background-color: slategray;
 }
 #table {
   border: solid white;

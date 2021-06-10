@@ -46,10 +46,10 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-flex xs1 sm2 md2 lg4></v-flex>
+      <v-flex xs1 sm2 md2 lg5></v-flex>
       <v-flex xs10 sm8 md6 lg4>
         <validation-observer ref="observer3" v-slot="{ invalid }">
-          <form id="form6" @submit.prevent="adddriver">
+          <form id="form6" @submit.prevent="driveradd">
             <validation-provider
               v-slot="{ errors }"
               name="Driver Name"
@@ -89,6 +89,7 @@
             <v-text-field
               v-if="otpfield"
               v-model="otp"
+              autofocus
               label="OTP"
               @input="verified()"
               maxlength="6"
@@ -107,7 +108,6 @@
                   rounded
                   depressed
                   type="submit"
-                  @click.prevent="driveradd"
                   >Register</v-btn
                 >
               </v-flex>
@@ -172,22 +172,21 @@ export default {
     };
   },
   methods: {
-    adddriver() {
-      this.$refs.observer3.validate(); //Driver adding
-    },
     clear4() {
-      (this.optr_num = ""),
-        (this.driver_name = ""),
-        (this.driver_phone = ""),
+      (this.driver_name = ""),
+        (this.phone = ""),
+        (this.otp = ""),
+        (this.icon = ""),
         this.$refs.observer3.reset();
     },
     driveradd() {
+      this.$refs.observer3.validate(); //Driver adding
       getAPI
         .post(
-          "/api/operators/driver-create/",
+          "/api/operators/add_driver/",
           {
             driver_name: this.driver_name,
-            phone: this.driver_phone,
+            phone: this.phone,
             otp: this.otp,
           },
           {
@@ -198,15 +197,19 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
-          if (this.APIData["operator_name"]) {
-            this.dialog = true;
-          } else {
+
+          if (this.APIData.response == 200) {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+            this.clear4();
             this.$router.push({ name: "Editdrivers" });
+          } else {
+            this.message2 = this.APIData.message;
+            this.snackbar2 = true;
           }
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
         });
     },
     checkPhone() {

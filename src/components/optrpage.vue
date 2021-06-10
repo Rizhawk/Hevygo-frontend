@@ -105,6 +105,9 @@
           <v-list-item class="font-weight-bold body-2" router to="/editdrivers">
             Manage Drivers
           </v-list-item>
+          <v-list-item class="font-weight-bold body-2" router to="/driveradd">
+            Add new driver
+          </v-list-item>
           <v-list-item class="font-weight-bold body-2" router to="/viewstats">
             Update Trucks Status
           </v-list-item>
