@@ -17,8 +17,8 @@
           <tbody>
             <tr
               v-for="truck in truckdetails"
-              :key="truck.truck.id"
-              @click.prevent="getTruckdetails(truck.truck.id)"
+              :key="truck.id"
+              @click.prevent="getTruckdetails(truck.id)"
             >
               <td>{{ truck.registration }}</td>
               <td>{{ truck.homelocation }}</td>
@@ -80,26 +80,38 @@
             >Name</v-card-title
           >
           <v-card-subtitle v-if="name != null">{{ name }} </v-card-subtitle>
-          <v-card-title class="font-weight-black body-1"
-            >Owner's Name</v-card-title
-          >
-          <v-card-subtitle>{{ optrname }}</v-card-subtitle>
-          <v-card-title class="font-weight-black body-1"
-            >Owner's Phonenumber</v-card-title
-          >
-          <v-card-subtitle>{{ optrphone }}</v-card-subtitle>
-          <v-card-title
-            v-if="optremail != null"
-            class="font-weight-black body-1"
-            >Owner's Email Id
-          </v-card-title>
-          <v-card-subtitle v-if="optremail != null">{{
-            optremail
-          }}</v-card-subtitle>
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header
+                color="#d84315"
+                small
+                class="font-weight-black caption"
+                >Details of Owner</v-expansion-panel-header
+              >
+              <v-expansion-panel-content>
+                <v-card-title class="font-weight-black body-2"
+                  >Owner's Name</v-card-title
+                >
+                <v-card-subtitle>{{ optrname }}</v-card-subtitle>
+                <v-card-title class="font-weight-black body-2"
+                  >Owner's Phonenumber</v-card-title
+                >
+                <v-card-subtitle>{{ optrphone }}</v-card-subtitle>
+                <v-card-title
+                  v-if="optremail != null"
+                  class="font-weight-black body-2"
+                  >Owner's Email Id
+                </v-card-title>
+                <v-card-subtitle v-if="optremail != null">{{
+                  optremail
+                }}</v-card-subtitle>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
           <v-expansion-panels accordion>
             <v-expansion-panel>
               <v-expansion-panel-header
-                color="#263238"
+                color="#d84315"
                 class="font-weight-black caption"
                 >Specifiction of Vechicle</v-expansion-panel-header
               >
@@ -130,7 +142,6 @@
               color=" green darken-1"
               x-small
               outlined
-              disabled
               dark
               >Approved
               <v-icon small>mdi-checkbox-marked-circle-outline</v-icon>
@@ -138,7 +149,7 @@
             <v-btn
               v-if="status == 1 || status == 3"
               color=" green darken-1"
-              @click.prevent="giveApproval"
+              @click.prevent="show3 = !show3"
               x-small
               outlined
               dark
@@ -151,6 +162,7 @@
               x-small
               outlined
               dark
+              @click.prevent="show1 = !show1"
               >Reject
             </v-btn>
             <v-btn
@@ -163,6 +175,56 @@
               <v-icon small>mdi-close-circle-outline</v-icon>
             </v-btn>
           </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog
+        v-model="show1"
+        hide-overlay
+        persistent
+        max-width="300px"
+        max-height="auto"
+      >
+        <v-card max-width="300px" max-height="auto">
+          <v-card-title class="font-weight-black body-2"
+            >Remarks :<span class="font-weight-medium caption ml-3"
+              >(What is the reason?)</span
+            ></v-card-title
+          >
+          <v-textarea v-model="remarks" autofocus maxlength="120"></v-textarea>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn x-small color="red" dark outlined>Confirm Rejection </v-btn>
+            <v-btn
+              x-small
+              color="black"
+              dark
+              outlined
+              @click.prevent="show1 = !show1"
+              >Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog persistent v-model="show3" max-width="320">
+        <v-card>
+          <v-card-title class="caption font-weight-bold black--text"
+            >Verified all the details and confirm approval.</v-card-title
+          >
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              class="ml-5"
+              x-small
+              @click.prevent="giveApproval"
+              outlined
+              color="green"
+              >Approve</v-btn
+            >
+            <v-btn x-small @click="show3 = !show3" color="red" outlined
+              >No</v-btn
+            ></v-card-actions
+          >
         </v-card>
       </v-dialog>
     </v-layout>
@@ -179,9 +241,9 @@ export default {
   data: () => {
     return {
       truckdetails: [],
-      moredetails: [],
       show: false,
       show2: false,
+      show3: false,
       //Truck details
       name: null,
       phone: "",
@@ -197,6 +259,8 @@ export default {
       type: "",
       model: "",
       capacity: "",
+      //
+      show1: false,
     };
   },
   beforeCreate: function () {
@@ -217,22 +281,21 @@ export default {
   methods: {
     getTruckdetails(id) {
       getAPI
-        .get("/api/operators/view_truck/?id=" + id, {
+        .get("/api/operators/view_truck_details/?id=" + id, {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
           this.APIData = response.data;
-          this.moredetails = this.APIData.data["truck"];
-          this.name = this.moredetails.truck["name"];
-          this.phone = this.moredetails.truck["phone"];
+          this.name = this.APIData.data["truck"]["truck"]["name"];
+          this.phone = this.APIData.data["truck"]["truck"]["name"];
           this.status = this.APIData.data["truck"]["verification"];
           this.regno = this.APIData.data["truck"]["registration"];
           this.homeloc = this.APIData.data["truck"]["homelocation"];
-          this.optrname = this.APIData.data["truck"]["user"]["name"];
-          this.optrphone = this.APIData.data["truck"]["user"]["phone"];
-          this.optremail = this.APIData.data["truck"]["user"]["email"];
+          this.optrname = this.APIData.data["truck"]["owner"]["name"];
+          this.optrphone = this.APIData.data["truck"]["owner"]["phone"];
+          this.optremail = this.APIData.data["truck"]["owner"]["email"];
           this.manf = this.APIData.data["manufacturer"];
           this.type = this.APIData.data["type"];
           this.model = this.APIData.data["model"];

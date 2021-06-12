@@ -93,7 +93,7 @@
               <v-btn
                 v-if="status == 1 || status == 3"
                 color=" green darken-1"
-                @click.prevent="giveApproval"
+                @click.prevent="show2 = !show2"
                 x-small
                 outlined
                 dark
@@ -129,7 +129,10 @@
         >
           <v-card max-width="300px" max-height="auto">
             <v-card-title class="font-weight-black body-2"
-              >Remarks :</v-card-title
+              >Remarks :
+              <span class="font-weight-medium caption ml-3"
+                >(What is the reason?)</span
+              ></v-card-title
             >
             <v-textarea
               v-model="remarks"
@@ -152,6 +155,27 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog persistent v-model="show2" max-width="320">
+          <v-card>
+            <v-card-title class="caption font-weight-bold black--text"
+              >Verified all the details and confirm approval.</v-card-title
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                class="ml-5"
+                x-small
+                @click.prevent="giveApproval"
+                outlined
+                color="green"
+                >Approve</v-btn
+              >
+              <v-btn color="red" x-small @click="show2 = !show2" outlined
+                >No</v-btn
+              ></v-card-actions
+            >
+          </v-card>
+        </v-dialog>
       </v-flex>
     </v-layout>
   </v-app>
@@ -169,6 +193,7 @@ export default {
       optrdetails: [],
       show: false,
       show1: false,
+      show2: false,
       pan: "",
       gst: "",
       email: null,

@@ -2,6 +2,9 @@
   <v-app>
     <Opage />
     <v-layout class="my-3" row wrap>
+      <v-snackbar v-model="snackbar" color="red" dark timeout="5000">
+        {{ this.message }}
+      </v-snackbar>
       <v-flex lg4></v-flex>
       <v-flex xs12 sm10 md8 lg4>
         <!--Form to add truck details-->
@@ -159,6 +162,8 @@ export default {
       ],
       model: "",
       capacity: "",
+      snackbar: false,
+      message: "",
     };
   },
   methods: {
@@ -171,9 +176,9 @@ export default {
       getAPI
 
         .post(
-          "/api/truck/truck-info-create/",
+          "api/operators/add_truck_detials",
           {
-            truck: localStorage.getItem("tid"),
+            truck_id: localStorage.getItem("tid"),
             manufacturer: this.manufacturer,
             type: this.type,
             model: this.model,
@@ -187,9 +192,15 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
-          localStorage.removeItem("tid");
-          this.$router.push({ name: "Tmanage" });
+          if (this.APIData.response == 200) {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+            localStorage.removeItem("tid");
+            this.$router.push({ name: "Tmanage" });
+          } else {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+          }
         })
         .catch((err) => {
           alert(err);

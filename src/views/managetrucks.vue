@@ -19,31 +19,58 @@
               <tr>
                 <th class="white--text text-left">Truck phonenumber</th>
                 <th class="white--text text-left">Registration Number</th>
+                <th class="white--text text-left">Homelocation</th>
                 <th class="white--text text-left">Verification</th>
                 <th class="white--text text-left">Truck Specification</th>
                 <th class="white--text text-left">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="truck in trucks" :key="truck.truck.id">
+              <tr
+                v-for="truck in trucks"
+                :key="truck.id"
+                @click.prevent="dialog = !dialog"
+              >
                 <td class="font-weight-bold">
                   {{ truck.truck["phone"] }}
                 </td>
                 <td class="font-weight-bold">{{ truck.registration }}</td>
+                <td class="font-weight-bold">{{ truck.homelocation }}</td>
                 <td>
-                  <v-icon
-                    color="green darken-1"
-                    class="mx-5"
-                    small
-                    v-if="truck.truck['is_verified'] == true"
-                    >mdi-checkbox-marked-circle-outline</v-icon
-                  >
-                  <v-icon
-                    color=" red darken-4"
-                    small
-                    class="mx-5"
-                    v-if="truck.truck['is_verified'] == false"
-                    >mdi-close-circle-outline</v-icon
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-if="truck.verification == 1"
+                        v-bind="attrs"
+                        v-on="on"
+                        color="black"
+                        class="mx-5"
+                        small
+                      >
+                        mdi-clock
+                      </v-icon>
+                      <v-icon
+                        v-if="truck.verification == 2"
+                        v-bind="attrs"
+                        v-on="on"
+                        color="green darken-4"
+                        class="mx-5"
+                        small
+                      >
+                        mdi-checkbox-marked-circle-outline
+                      </v-icon>
+                      <v-icon
+                        v-if="truck.verification == 3"
+                        v-bind="attrs"
+                        v-on="on"
+                        color="red darken-4"
+                        class="mx-5"
+                        small
+                      >
+                        mdi-close-circle-outline
+                      </v-icon>
+                    </template>
+                    <span>Remark</span></v-tooltip
                   >
                 </td>
                 <td class="font-weight-bold" @click="showinfo(truck.id)">
@@ -59,34 +86,6 @@
                     >Delete</v-btn
                   >
                 </td>
-
-                <v-dialog persistent v-model="dialog1" max-width="420">
-                  <v-card>
-                    <v-card-title class="body-2 font-weight-black black--text"
-                      >Are you sure want to remove this truck?</v-card-title
-                    >
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        class="ml-10"
-                        x-small
-                        @click="dialog1 = !dialog1"
-                        text
-                        >Close</v-btn
-                      >
-                      <v-btn
-                        x-small
-                        @click.prevent="
-                          deleteTruck(truck.id, truck.registration)
-                        "
-                        text
-                        color="red"
-                        >Remove</v-btn
-                      ></v-card-actions
-                    >
-                  </v-card>
-                </v-dialog>
               </tr>
             </tbody>
           </template>
@@ -152,7 +151,7 @@
                   block
                   depressed
                   color="success"
-                  @click.prevent="infoedit(idt)"
+                  @click.prevent="infoedit"
                   small
                   >Update</v-btn
                 >
@@ -160,6 +159,27 @@
               <v-flex lg2></v-flex>
             </v-layout>
           </form>
+        </v-dialog>
+        <v-dialog persistent v-model="dialog1" max-width="420">
+          <v-card>
+            <v-card-title class="body-2 font-weight-black black--text"
+              >Are you sure want to remove this truck?</v-card-title
+            >
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn class="ml-10" x-small @click="dialog1 = !dialog1" text
+                >Close</v-btn
+              >
+              <v-btn
+                x-small
+                @click.prevent="deleteTruck(truck.id, truck.registration)"
+                text
+                color="red"
+                >Remove</v-btn
+              ></v-card-actions
+            >
+          </v-card>
         </v-dialog>
       </v-flex>
     </v-layout>
@@ -171,10 +191,10 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn x-small color="red darken-1" text @click="speclater()">
+          <v-btn x-small color="red darken-1" text @click.prevent="speclater">
             Later
           </v-btn>
-          <v-btn x-small color="green darken-1" text @click="specnow()">
+          <v-btn x-small color="green darken-1" text @click.prevent="specnow">
             Add Now
           </v-btn>
         </v-card-actions>
@@ -226,11 +246,12 @@ export default {
       //
       dialog3: false,
       specmsg: "",
+      //
     };
   },
   beforeMount: function () {
     getAPI
-      .get("/api/admin/list_vehicle/", {
+      .get("/api/operators/list_truck/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
@@ -264,7 +285,7 @@ export default {
     },
     //
     //Registation edit
-    editreg(tid, owner, truckphn, reg, homeloc) {
+    editreg(tid) {
       console.log(tid);
       getAPI
         .get("/api/truck/truck-detail/" + tid + "/", {
@@ -274,12 +295,13 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          this.trid = tid;
-          this.owner = owner;
-          this.truck_num = truckphn;
-          this.regnum = reg;
-          this.homeloc = homeloc;
-          this.dialog = true;
+          console.log(this.APIData);
+          // this.trid = tid;
+          // this.owner = owner;
+          // this.truck_num = truckphn;
+          // this.regnum = reg;
+          // this.homeloc = homeloc;
+          // this.dialog = true;
         })
         .catch((err) => {
           alert(err);
@@ -315,24 +337,27 @@ export default {
     showinfo(trkid) {
       //Api call to fetch truck info
       getAPI
-        .get("/api/truck/truck-info-detail/" + trkid + "/", {
+        .get("/api/operators/view_truck_details/?id=" + trkid, {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
         .then((response) => {
           this.APIData = response.data;
-          this.cap = this.APIData["capacity"];
-          this.manf = this.APIData["manufacturer"];
-          this.mod = this.APIData["model"];
-          this.typ = this.APIData["type"];
-          this.idt = this.APIData["truck"];
-          this.dialog2 = true;
+          if (this.APIData.response == 200) {
+            this.cap = this.APIData.data["capacity"];
+            this.manf = this.APIData.data["manufacturer"];
+            this.mod = this.APIData.data["model"];
+            this.typ = this.APIData.data["type"];
+            this.idt = this.APIData.data["truck"]["id"];
+            this.dialog2 = true;
+          } else {
+            localStorage.setItem("tid", trkid);
+            this.specmsg = "No specifications added";
+            this.dialog3 = true;
+          }
         })
         .catch((err) => {
-          localStorage.setItem("tid", trkid);
-          this.specmsg = "No specifications added";
-          this.dialog3 = true;
           console.log(err);
         });
       //
@@ -343,14 +368,14 @@ export default {
     speclater() {
       localStorage.removeItem("tid");
       this.dialog3 = false;
-    }, //Calls when operator does'nt wants to add details now
-    infoedit(idt) {
+    }, //Calls when operator does't wants to add details now
+    infoedit() {
       //api call to update truck info
       getAPI
-        .post(
-          "/api/truck/truck-info-update/" + idt + "/",
+        .put(
+          "/api/operators/update_truck_details/",
           {
-            truck: this.idt,
+            truck_id: this.idt,
             manufacturer: this.manf,
             type: this.typ,
             model: this.mod,
@@ -364,7 +389,11 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          window.location.reload();
+          if (this.APIData.response == 200) {
+            window.location.reload();
+          } else {
+            alert(this.APIData.message);
+          }
         })
         .catch((err) => {
           alert(err);
@@ -391,7 +420,7 @@ export default {
   border: solid white 1px;
   padding: 25px;
   border-radius: 15px;
-  background-color: grey;
+  background-color: slategray;
 }
 thead {
   background-color: #1a237e;
