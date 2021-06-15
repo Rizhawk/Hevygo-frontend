@@ -61,7 +61,7 @@
               >PAN Number
               <v-spacer></v-spacer>
               <v-icon @click="show = false" color="red" class="ml-5" small
-                >mdi-close-circle-outline</v-icon
+                >mdi-close</v-icon
               >
             </v-card-title>
             <v-card-subtitle v-text="pan"></v-card-subtitle>
@@ -252,7 +252,7 @@ export default {
           "/api/admin/update_operator_info/",
           {
             id: this.crid,
-            remarks: "verified",
+            remarks: "Verified",
             status: 2,
           },
           {
@@ -292,8 +292,6 @@ export default {
           } else if (this.APIData.response == 200) {
             window.location.reload();
           }
-          console.log(this.APIData);
-          // window.location.reload();
         })
         .catch((err) => {
           console.log(err);

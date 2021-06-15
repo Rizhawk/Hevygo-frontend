@@ -10,6 +10,12 @@
         <!--Form to add truck details-->
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="form4" class="my-5" @submit.prevent="submit">
+            <v-flex row wrap>
+              <p class="mx-3 my-2 black--text font-weight-black subtitle-2">
+                Specifications of your Vechicle
+              </p>
+            </v-flex>
+            <v-flex class="my-4"></v-flex>
             <validation-provider
               v-slot="{ errors }"
               name="manufacturer"
@@ -170,13 +176,12 @@ export default {
     submit() {
       this.$refs.observer.validate();
     },
-    clear() {},
     trucketails() {
       //api call for add truck details
       getAPI
 
         .post(
-          "api/operators/add_truck_detials",
+          "/api/operators/add_truck_detials/",
           {
             truck_id: localStorage.getItem("tid"),
             manufacturer: this.manufacturer,

@@ -125,7 +125,6 @@ export default {
     return {
       snackbar: false,
       message: "",
-      truckphone: localStorage.getItem("truck_phn") || null,
       regnumber: "",
       homeloc: "",
       dropdown: false,
@@ -162,11 +161,13 @@ export default {
       } else {
         getAPI
           .post(
-            "/api/truck/truck-create/",
+            "/api/operators/add_truck/ ",
             {
-              truck_num: this.truckphone,
+              crew_id: localStorage.getItem("truck_id"),
               registration: this.regnumber,
               homelocation: this.homeloc,
+              verification: 1,
+              remarks: "Wait to be Verified",
             },
             {
               headers: {
@@ -176,11 +177,16 @@ export default {
           )
           .then((response) => {
             this.APIData = response.data;
-            this.message = this.APIData["response"];
-            this.snackbar = !this.snackbar;
-            localStorage.removeItem("truck_phn");
-            this.clear();
-            this.$router.push({ name: "Tmanage" });
+            if (this.APIData.response == 200) {
+              this.message = this.APIData.message;
+              this.snackbar = !this.snackbar;
+              localStorage.removeItem("truck_id");
+              localStorage.setItem("tid", this.APIData.data["id"]);
+              this.clear();
+              this.$router.push({ name: "Tdetails" });
+            } else {
+              alert(this.APIData.message);
+            }
           })
           .catch((err) => {
             alert(err);

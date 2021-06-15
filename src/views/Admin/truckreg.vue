@@ -10,7 +10,7 @@
               <th>Registration Number</th>
               <th>Homelocation</th>
               <th>Phonenumber</th>
-              <th>Verified</th>
+              <th>Verification</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -25,15 +25,24 @@
               <td>{{ truck.truck["phone"] }}</td>
               <td>
                 <v-icon
+                  class="mx-5"
+                  color="white"
+                  small
+                  v-if="truck.verification == 1"
+                  >mdi-clock</v-icon
+                >
+                <v-icon
                   color="green darken-1"
                   small
-                  v-if="truck.truck['is_verified'] == true"
+                  class="mx-5"
+                  v-if="truck.verification == 2"
                   >mdi-checkbox-marked-circle-outline</v-icon
                 >
                 <v-icon
                   color="red"
+                  class="mx-5"
                   small
-                  v-if="truck.truck['is_verified'] == false"
+                  v-if="truck.verification == 3"
                   >mdi-close-circle-outline</v-icon
                 >
               </td>
@@ -64,7 +73,7 @@
             >Registration Number
             <v-spacer></v-spacer>
             <v-icon @click="show = false" color="red" class="ml-5" small
-              >mdi-close-circle-outline</v-icon
+              >mdi-close</v-icon
             >
           </v-card-title>
           <v-card-subtitle>{{ regno }}</v-card-subtitle>
@@ -193,7 +202,9 @@
           <v-textarea v-model="remarks" autofocus maxlength="120"></v-textarea>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn x-small color="red" dark outlined>Confirm Rejection </v-btn>
+            <v-btn x-small color="red" dark @click.prevent="reject" outlined
+              >Confirm Rejection
+            </v-btn>
             <v-btn
               x-small
               color="black"
@@ -261,6 +272,8 @@ export default {
       capacity: "",
       //
       show1: false,
+      remarks: "",
+      trid: "",
     };
   },
   beforeCreate: function () {
@@ -300,20 +313,22 @@ export default {
           this.type = this.APIData.data["type"];
           this.model = this.APIData.data["model"];
           this.capacity = this.APIData.data["capacity"];
+          this.trid = this.APIData.data["truck"]["id"];
+          console.log(this.trid);
           this.show = true;
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    giveApproval(id) {
+    giveApproval() {
       getAPI
         .put(
-          "/api/admin/update_truck_info/",
+          "/api/admin/vehicle_approval",
           {
-            id: id,
+            truck_id: this.trid,
             remarks: "Verified",
-            status: 2,
+            verification: 2,
           },
           {
             headers: {
@@ -324,6 +339,34 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    reject() {
+      getAPI
+        .put(
+          "/api/admin/vehicle_approval",
+          {
+            truck_id: this.trid,
+            remarks: this.remarks,
+            verification: 3,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.APIData.response == 400) {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+          } else if (this.APIData.response == 200) {
+            window.location.reload();
+          }
         })
         .catch((err) => {
           console.log(err);

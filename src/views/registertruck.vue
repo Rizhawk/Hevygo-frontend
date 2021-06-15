@@ -229,6 +229,7 @@ export default {
           this.APIData = response.data;
           console.log(this.APIData);
           if (this.APIData.Http_response == 200) {
+            localStorage.setItem("truck_id", this.APIData.data["id"]);
             this.$router.push({ name: "Tadd" });
           } else {
             this.message2 = "Truck Registration Failed";

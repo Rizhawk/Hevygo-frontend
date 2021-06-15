@@ -70,7 +70,7 @@
                         mdi-close-circle-outline
                       </v-icon>
                     </template>
-                    <span>Remark</span></v-tooltip
+                    <span>{{ truck.remarks }}</span></v-tooltip
                   >
                 </td>
                 <td class="font-weight-bold" @click="showinfo(truck.id)">
@@ -82,7 +82,7 @@
                     dark
                     x-small
                     color="red darken-4"
-                    @click.prevent="dialog1 = !dialog1"
+                    @click.prevent="setDelete(truck.id)"
                     >Delete</v-btn
                   >
                 </td>
@@ -133,6 +133,7 @@
             >
             </v-text-field>
             <v-select
+              v-model="typ"
               class="mx-8"
               :items="types"
               label="Type"
@@ -141,7 +142,6 @@
               outlined
               rounded
               dense
-              v-model="typ"
             >
             </v-select>
             <v-layout row wrap>
@@ -171,11 +171,7 @@
               <v-btn class="ml-10" x-small @click="dialog1 = !dialog1" text
                 >Close</v-btn
               >
-              <v-btn
-                x-small
-                @click.prevent="deleteTruck(truck.id, truck.registration)"
-                text
-                color="red"
+              <v-btn x-small @click.prevent="deleteTruck" text color="red"
                 >Remove</v-btn
               ></v-card-actions
             >
@@ -184,7 +180,7 @@
       </v-flex>
     </v-layout>
     <!--Dialog box for confirmation for truck details addition-->
-    <v-dialog v-model="dialog3" max-width="280">
+    <v-dialog v-model="dialog3" max-width="385">
       <v-card>
         <v-card-title class="body-2 font-weight-black black--text">
           {{ this.specmsg }}
@@ -232,6 +228,7 @@ export default {
       cap: "",
       manf: "",
       mod: "",
+      typ: "",
       types: [
         "Tipper",
         "Lorry",
@@ -242,7 +239,7 @@ export default {
         "Container Truck",
         "Car transporter",
       ],
-      typ: "",
+
       //
       dialog3: false,
       specmsg: "",
@@ -265,25 +262,6 @@ export default {
       });
   },
   methods: {
-    //Delete Api call
-    deleteTruck(id, reg) {
-      getAPI
-        .delete("/api/truck/truck-delete/" + id + "/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          this.message = `Truck ${reg} is successfully removed`;
-          window.location.reload();
-          this.snackbar = !this.snackbar;
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    },
-    //
     //Registation edit
     editreg(tid) {
       console.log(tid);
@@ -349,11 +327,11 @@ export default {
             this.manf = this.APIData.data["manufacturer"];
             this.mod = this.APIData.data["model"];
             this.typ = this.APIData.data["type"];
-            this.idt = this.APIData.data["truck"]["id"];
             this.dialog2 = true;
           } else {
             localStorage.setItem("tid", trkid);
-            this.specmsg = "No specifications added";
+            this.specmsg =
+              "Truck specifications are mandatory to get verified by the admin";
             this.dialog3 = true;
           }
         })
@@ -362,13 +340,46 @@ export default {
         });
       //
     },
+    //Delete Api call
+    deleteTruck() {
+      getAPI
+        .put(
+          "/api/operators/delete_truck",
+          {
+            truck_id: this.idt,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.APIData.response == 200) {
+            window.location.reload();
+          } else {
+            alert(this.APIData.message);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    //
+    //Call when the operator wants to delete his truck.
+    setDelete(id) {
+      console.log(id);
+      this.dialog1 = true;
+      this.idt = id;
+    },
     specnow() {
       this.$router.push({ name: "Tdetails" });
-    }, //Calls when operator wants to add details now
+    }, //Call when the operator wants to add details now
     speclater() {
       localStorage.removeItem("tid");
       this.dialog3 = false;
-    }, //Calls when operator does't wants to add details now
+    }, //Call when the operator does't wants to add details now
     infoedit() {
       //api call to update truck info
       getAPI

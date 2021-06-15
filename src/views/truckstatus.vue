@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <Opage />
-    <v-layout row wrap class="my-15">
-      <v-flex xs1 sm2 md2 lg3></v-flex>
+    <v-layout row wrap class="my-10">
+      <v-flex xs1 sm2 md2 lg5></v-flex>
       <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
         ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
       >
-      <v-flex xs10 sm8 md6 lg5>
+      <v-flex xs10 sm8 md6 lg4>
         <!--Form to add a new truck status-->
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="form7" @submit.prevent="submit">
@@ -93,7 +93,7 @@
                   small
                   type="submit"
                   color="primary"
-                  @click="truckdetails(status, loc)"
+                  @click="truckdetails"
                   >Save</v-btn
                 ></v-flex
               >
@@ -146,17 +146,17 @@ export default {
   beforeMount: function () {
     //Api call for fetch the reg number of all trucks
     getAPI
-      .get("api/truck/truck-list/", {
+      .get("/api/operators/list_truck/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.trucks.push(this.APIData[key]["registration"]);
+        for (let key in this.APIData.data) {
+          this.trucks.push(this.APIData.data[key]["registration"]);
         }
-        this.truckdata = this.APIData;
+        this.truckdata = this.APIData.data;
       })
       .catch((err) => {
         alert(err);
@@ -166,17 +166,17 @@ export default {
   mounted: function () {
     //Api call for fetch the names of all drivers
     getAPI
-      .get("api/operators/driver-list/", {
+      .get("/api/operators/list_driver/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        for (let key in this.APIData) {
-          this.drivers.push(this.APIData[key]["driver_name"]);
+        for (let key in this.APIData.data) {
+          this.drivers.push(this.APIData.data[key]["driver_name"]);
         }
-        this.driverdata = this.APIData;
+        this.driverdata = this.APIData.data;
       })
       .catch((err) => {
         alert(err);
@@ -201,7 +201,7 @@ export default {
         }
       }
     },
-    truckdetails(status, loc) {
+    truckdetails() {
       //Api call to create a truck status
       for (let key in this.truckdata) {
         if (this.reg == this.truckdata[key]["registration"]) {
@@ -213,14 +213,16 @@ export default {
           this.did = this.driverdata[key]["id"];
         }
       }
+      console.log(this.tid);
+      console.log(this.did);
       getAPI
         .post(
-          "/api/truck/truck-status-create/",
+          "/api/truck/add_truck_status/",
           {
-            truck: this.tid,
-            driver: this.did,
-            status: status,
-            location: loc,
+            truck_id: this.tid,
+            status: this.status,
+            location: this.location,
+            driver_id: this.did,
           },
           {
             headers: {
@@ -230,16 +232,17 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          this.message = "New Status Created Successfully";
-          this.snackbar = true;
-          this.clear();
+          if (this.APIData.Http_response == 200) {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+            this.clear();
+            this.$router.push({ name: "Tstats" });
+          } else {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+          }
         })
         .catch((err) => {
-          if (err.response.data["truck"]) {
-            alert("Truck " + this.reg + " is already assgined to a driver");
-          } else if (err.response.data["driver"]) {
-            alert(this.driver + " is already assigned to a truck.");
-          }
           console.log(err);
         });
       //
