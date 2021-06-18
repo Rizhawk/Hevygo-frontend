@@ -73,6 +73,7 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         this.APIData.Truckdetails.forEach((arr1, arr2) => {
           this.truckdriver.push({
             truck: arr1["truck"],

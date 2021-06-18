@@ -69,6 +69,7 @@
               <v-text-field
                 v-model="phone"
                 :error-messages="errors"
+                :append-outer-icon="icon"
                 label="Phone Number"
                 outlined
                 dark
@@ -172,6 +173,7 @@ export default {
       name: "",
       phone: "",
       email: null,
+      icon: "",
       show1: false,
       show2: false,
       user_type: 2,

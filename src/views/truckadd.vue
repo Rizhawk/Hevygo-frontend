@@ -177,6 +177,7 @@ export default {
           .then((response) => {
             this.APIData = response.data;
             this.message = this.APIData["response"];
+            console.log(this.APIData);
             this.snackbar = !this.snackbar;
             localStorage.removeItem("truck_phn");
             this.clear();
@@ -184,6 +185,7 @@ export default {
           })
           .catch((err) => {
             alert(err);
+            console.log(err);
           });
       }
     },

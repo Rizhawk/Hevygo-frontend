@@ -204,8 +204,8 @@ export default {
           for (let key in this.routes) {
             this.cost = this.routes[key]["cost"];
           }
-          this.tollCost = this.cost["totalCost"];
-          localStorage.setItem("cost",this.tollCost);
+          this.tollCost = 2000;
+          localStorage.setItem("cost", this.tollCost);
         })
         .catch((err) => {
           console.log(err);

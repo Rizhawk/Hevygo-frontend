@@ -3,6 +3,9 @@
     <Cpage />
     <v-layout class="my-10" row wrap>
       <v-flex xs2 sm2 md2 lg2 class="mx-8"></v-flex>
+      <v-snackbar v-model="show" dark timeout="10000">
+        {{ this.message }}
+      </v-snackbar>
       <v-flex xs12 sm8 md6 lg9>
         <v-simple-table>
           <template v-slot:default>
@@ -165,6 +168,8 @@ export default {
       resr: "",
       connection: null,
       driver: null,
+      message: "",
+      show: false,
     };
   },
   beforeMount() {
@@ -268,7 +273,6 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           this.start_location = response.data.start_location;
           this.vehicle_type = response.data.vehicle_type;
           this.weight = response.data.weight;
@@ -350,18 +354,18 @@ export default {
               let resr = JSON.parse(event.data);
               this.resp = resr["accept_reject"];
               if (this.resp == true) {
-                console.log(" Driver", id, " is accepted the request");
+                alert(` Driver ${id} is accepted your request`);
                 localStorage.setItem("response", 1);
                 localStorage.setItem("driver", id);
               } else if (this.resp == false) {
-                console.log(id, " Rejected the Request");
+                console.log(id, "Rejected the Request");
               }
               setTimeout(() => {
                 if (
                   (this.resp == null || this.resp == false) &
                   (i == trucksLength - 1)
                 ) {
-                  console.log("No one accepted the request");
+                  alert("No Drivers are Available to accept your Ride Request");
                 }
               }, 10000);
             };
