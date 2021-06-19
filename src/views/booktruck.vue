@@ -99,7 +99,6 @@
                 v-model="date"
                 :error-messages="errors"
                 label="Date of Transport"
-                type="date"
                 clearable
                 dark
                 outlined
@@ -240,7 +239,7 @@ export default {
       ],
       vtype: "",
       goodstype: "",
-      date: "",
+      date: "2021-06-19",
       //
       dropdown1: false,
       dropdown2: false,
@@ -345,7 +344,6 @@ export default {
       else {
         localStorage.setItem("sl", this.startlocation);
         localStorage.setItem("el", this.endlocation);
-        localStorage.setItem("dt", this.date);
         localStorage.setItem("wt", this.weight);
         localStorage.setItem("vt", this.vtype);
         localStorage.setItem("gt", this.goodstype);

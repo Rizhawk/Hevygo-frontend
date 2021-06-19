@@ -66,6 +66,7 @@
             class="mx-5 my-10 black--text"
             width="80%"
             rounded
+            small
             shaped
             @click.prevent="logout"
             >Logout</v-btn

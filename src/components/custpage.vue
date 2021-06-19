@@ -59,6 +59,7 @@
             width="80%"
             @click.prevent="logout"
             rounded
+            small
             color="white"
             shaped
             >Logout</v-btn

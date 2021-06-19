@@ -2,19 +2,11 @@
 <template>
   <v-app id="bg">
     <v-system-bar color="white"
-      ><v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" class="mx-2" icon dark color="teal">
-            <v-icon dark> mdi-format-list-bulleted-square </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item router to="/bookings">
-            <v-list-item-title>Back</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu></v-system-bar
-    >
+      ><v-spacer></v-spacer
+      ><v-btn class="mr-4" to="/bookings" x-small color="green darken-4" dark depressed
+        >Proceed to Pay</v-btn
+      >
+    </v-system-bar>
     <p class="my-2 white--text font-weight-medium">
       Route TollCost :<span class="mx-2">{{ this.tollCost }} INR</span>
     </p>
@@ -204,7 +196,8 @@ export default {
           for (let key in this.routes) {
             this.cost = this.routes[key]["cost"];
           }
-          this.tollCost = 2000;
+
+          this.tollCost = this.cost["totalCost"];
           localStorage.setItem("cost", this.tollCost);
         })
         .catch((err) => {

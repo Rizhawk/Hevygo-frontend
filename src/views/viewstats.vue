@@ -60,7 +60,7 @@ export default {
   },
   data: () => {
     return {
-      truckdriver: [],    
+      truckdriver: [],
     };
   },
   created: function () {
@@ -74,27 +74,28 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         console.log(this.APIData);
-        this.APIData.Truckdetails.forEach((arr1, arr2) => {
-          this.truckdriver.push({
-            truck: arr1["truck"],
-            driver: this.APIData.Driverdetails[arr2]["driver_name"],
-            status: arr1["status"],
-            location: arr1["location"],
-          });
-        });
+        this.truckdriver = this.APIData;
+        // this.APIData.Truckdetails.forEach((arr1, arr2) => {
+        //   this.truckdriver.push({
+        //     truck: arr1["truck"],
+        //     driver: this.APIData.Driverdetails[arr2]["driver_name"],
+        //     status: arr1["status"],
+        //     location: arr1["location"],
+        //   });
+        // });
       })
       .catch((err) => {
         alert(err);
       });
     //
   },
-  methods:{
-    showdetail(location){
+  methods: {
+    showdetail(location) {
       console.log(location);
-      this.$session.set('cp',location);
-      this.$router.push({name:'Tracktruck'})
-    }
-  }
+      this.$session.set("cp", location);
+      this.$router.push({ name: "Tracktruck" });
+    },
+  },
 };
 </script>
 <style scoped>

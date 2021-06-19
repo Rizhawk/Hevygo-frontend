@@ -16,7 +16,7 @@
                 <th class="text-left white--text">End Location</th>
                 <th class="text-left white--text">View Route</th>
                 <th class="text-left white--text">Transaction Details</th>
-                <th></th>
+                <th class="text-left white--text">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -30,13 +30,19 @@
                     viewRoute(dest.start_location, dest.end_location)
                   "
                 >
-                  View
+                  <v-icon color="green darken-4"> mdi-map-marker </v-icon>
                 </td>
-                <td
-                  class="font-weight-bold"
-                  @click.prevent="getTransaction(dest.id)"
-                >
-                  View
+                <td class="font-weight-bold">
+                  <v-btn
+                    @click.prevent="getTransaction(dest.id)"
+                    x-small
+                    depressed
+                    color="green darken-3"
+                    outlined
+                    dark
+                  >
+                    Book Now</v-btn
+                  >
                 </td>
                 <v-dialog v-model="dialog2" max-width="350">
                   <v-layout>

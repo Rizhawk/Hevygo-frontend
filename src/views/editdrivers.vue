@@ -52,89 +52,79 @@
                   Edit/Delete
                 </td>
                 <td></td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form6">
-                    <v-text-field
-                      class="mx-8"
-                      label="Driver Name"
-                      clearable
-                      dark
-                      outlined
-                      dense
-                      rounded
-                      v-model="dname"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mx-8"
-                      label="Phone number"
-                      clearable
-                      dark
-                      rounded
-                      dense
-                      outlined
-                      v-model="drphn"
-                    >
-                    </v-text-field>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          depressed
-                          color="success"
-                          small
-                          @click.prevent="updatedr(drid)"
-                          >Update</v-btn
-                        >
-                        <v-btn
-                          class="mx-2"
-                          depressed
-                          color="red"
-                          small
-                          @click="dialog2 = true"
-                          >Delete</v-btn
-                        >
-                        <v-dialog v-model="dialog2" max-width="350">
-                          <v-card>
-                            <v-card-text class="subtitle-1 black--text">
-                              Are you sure want to delete this driver?
-                            </v-card-text>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              small
-                              color="green darken-1"
-                              text
-                              @click="dialog2 = false"
-                            >
-                              Close
-                            </v-btn>
-
-                            <v-btn
-                              small
-                              color="red darken-1"
-                              text
-                              @click="deletenow"
-                            >
-                              Delete
-                            </v-btn>
-                          </v-card>
-                        </v-dialog>
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
         <!--Drivers table ends-->
       </v-flex>
+      <v-dialog :retain-focus="false" v-model="dialog" max-width="400px" light>
+        <form id="form6">
+          <v-text-field
+            class="mx-8"
+            label="Driver Name"
+            clearable
+            dark
+            outlined
+            dense
+            rounded
+            v-model="dname"
+          >
+          </v-text-field>
+          <v-text-field
+            class="mx-8"
+            label="Phone number"
+            clearable
+            dark
+            rounded
+            dense
+            outlined
+            v-model="drphn"
+          >
+          </v-text-field>
+          <v-layout row wrap>
+            <v-flex lg2></v-flex>
+            <v-flex class="mx-10">
+              <v-btn
+                depressed
+                color="success"
+                small
+                @click.prevent="updatedr(drid)"
+                >Update</v-btn
+              >
+              <v-btn
+                class="mx-2"
+                depressed
+                color="red"
+                small
+                @click="dialog2 = true"
+                >Delete</v-btn
+              >
+              <v-dialog v-model="dialog2" max-width="350">
+                <v-card>
+                  <v-card-text class="subtitle-1 black--text">
+                    Are you sure want to delete this driver?
+                  </v-card-text>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    small
+                    color="green darken-1"
+                    text
+                    @click="dialog2 = false"
+                  >
+                    Close
+                  </v-btn>
+
+                  <v-btn small color="red darken-1" text @click="deletenow">
+                    Delete
+                  </v-btn>
+                </v-card>
+              </v-dialog>
+            </v-flex>
+            <v-flex lg2></v-flex>
+          </v-layout>
+        </form>
+      </v-dialog>
     </v-layout>
   </v-app>
 </template>

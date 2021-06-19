@@ -80,7 +80,6 @@
                 v-model="date"
                 :error-messages="errors"
                 label="Date of Transport"
-                type="date"
                 clearable
                 outlined
                 dense
@@ -206,7 +205,7 @@ export default {
     return {
       startlocation: "" || localStorage.getItem("sl"),
       endlocation: "" || localStorage.getItem("el"),
-      date: "" || localStorage.getItem("dt"),
+      date: "2021-06-19",
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
       vtype: "",
@@ -322,6 +321,7 @@ export default {
         //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
+        console.log(this.vtype);
         getAPI
           .post(
             "/api/customer/cust-dest-create/",
@@ -329,9 +329,9 @@ export default {
               start_location: this.startlocation,
               end_location: this.endlocation,
               weight: this.weight,
+              vehicle_type: this.vtype,
               goods_type: this.goodstype,
               date: this.date,
-              vehicle_type: this.vtype,
             },
             {
               headers: {
@@ -341,6 +341,7 @@ export default {
           )
           .then((response) => {
             this.APIData = response.data;
+            console.log(this.APIData);
             this.$session.set("sl", this.startlocation);
             this.$session.set("el", this.endlocation);
             this.clear();
@@ -348,7 +349,7 @@ export default {
             this.$router.push({ name: "HereMap" });
           })
           .catch((err) => {
-            alert(err);
+            console.log(err);
           });
       }
     },

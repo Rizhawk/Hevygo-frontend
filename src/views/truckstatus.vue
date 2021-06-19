@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <Opage />
-    <v-layout row wrap class="my-15">
-      <v-flex xs1 sm2 md2 lg3></v-flex>
+    <v-layout row wrap class="my-12">
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
         ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
       >
-      <v-flex xs10 sm8 md6 lg5>
+      <v-flex xs10 sm8 md6 lg4>
         <!--Form to add a new truck status-->
         <validation-observer ref="observer" v-slot="{ invalid }">
           <form id="form7" @submit.prevent="submit">

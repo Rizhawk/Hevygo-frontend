@@ -40,52 +40,7 @@
                 >
                   {{ truck.truck_num }}
                 </td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form">
-                    <v-text-field
-                      class="mx-8"
-                      label="Registation Number"
-                      dark
-                      clearable
-                      outlined
-                      rounded
-                      dense
-                      v-model="regnum"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mx-8"
-                      label="Homelocation"
-                      dark
-                      disabled
-                      clearable
-                      rounded
-                      outlined
-                      dense
-                      v-model="homeloc"
-                    >
-                    </v-text-field>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          depressed
-                          block
-                          color="success"
-                          small
-                          @click.prevent="uptruck(trid)"
-                          >Update</v-btn
-                        >
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
+
                 <td class="font-weight-bold">{{ truck.registration }}</td>
                 <td class="font-weight-bold" v-if="truck.is_verified == true">
                   &#9989;
@@ -96,75 +51,7 @@
                 <td class="font-weight-bold" @click="showinfo(truck.id)">
                   View/Edit
                 </td>
-                <v-dialog
-                  :retain-focus="false"
-                  v-model="dialog2"
-                  max-width="400px"
-                  light
-                >
-                  <form id="form2">
-                    <v-text-field
-                      class="mx-8"
-                      label="Capacity in ton"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="cap"
-                    >
-                    </v-text-field>
-                    <v-text-field
-                      class="mx-8"
-                      label="Manufacturer"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="manf"
-                    >
-                    </v-text-field>
 
-                    <v-text-field
-                      class="mx-8"
-                      label="Model"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="mod"
-                    >
-                    </v-text-field>
-                    <v-select
-                      class="mx-8"
-                      :items="types"
-                      label="Type"
-                      clearable
-                      dark
-                      outlined
-                      rounded
-                      dense
-                      v-model="typ"
-                    >
-                    </v-select>
-                    <v-layout row wrap>
-                      <v-flex lg2></v-flex>
-                      <v-flex class="mx-10">
-                        <v-btn
-                          block
-                          depressed
-                          color="success"
-                          @click.prevent="infoedit(idt)"
-                          small
-                          >Update</v-btn
-                        >
-                      </v-flex>
-                      <v-flex lg2></v-flex>
-                    </v-layout>
-                  </form>
-                </v-dialog>
                 <td>
                   <v-btn
                     depressed
@@ -177,34 +64,6 @@
                     >Delete</v-btn
                   >
                 </td>
-
-                <v-dialog persistent v-model="dialog1" max-width="380">
-                  <v-card>
-                    <v-card-text class="subtitle-1 font-weight-bold black--text"
-                      >Are you sure want to remove this truck?</v-card-text
-                    >
-                    <v-spacer></v-spacer>
-
-                    <v-flex class="ml-15">
-                      <v-btn
-                        class="ml-10"
-                        small
-                        @click="dialog1 = !dialog1"
-                        text
-                        >Close</v-btn
-                      >
-                      <v-btn
-                        small
-                        @click.prevent="
-                          deleteTruck(truck.id, truck.registration)
-                        "
-                        text
-                        color="red"
-                        >Remove</v-btn
-                      ></v-flex
-                    >
-                  </v-card>
-                </v-dialog>
               </tr>
             </tbody>
           </template>
@@ -212,6 +71,133 @@
         <!--Table ends-->
       </v-flex>
     </v-layout>
+    <v-dialog :retain-focus="false" v-model="dialog2" max-width="400px" light>
+      <form id="form2">
+        <v-text-field
+          class="mx-8"
+          label="Capacity in ton"
+          clearable
+          dark
+          outlined
+          rounded
+          dense
+          v-model="cap"
+        >
+        </v-text-field>
+        <v-text-field
+          class="mx-8"
+          label="Manufacturer"
+          clearable
+          dark
+          outlined
+          rounded
+          dense
+          v-model="manf"
+        >
+        </v-text-field>
+
+        <v-text-field
+          class="mx-8"
+          label="Model"
+          clearable
+          dark
+          outlined
+          rounded
+          dense
+          v-model="mod"
+        >
+        </v-text-field>
+        <v-select
+          class="mx-8"
+          :items="types"
+          label="Type"
+          clearable
+          dark
+          outlined
+          rounded
+          dense
+          v-model="typ"
+        >
+        </v-select>
+        <v-layout row wrap>
+          <v-flex lg2></v-flex>
+          <v-flex class="mx-10">
+            <v-btn
+              block
+              depressed
+              color="success"
+              @click.prevent="infoedit(idt)"
+              small
+              >Update</v-btn
+            >
+          </v-flex>
+          <v-flex lg2></v-flex>
+        </v-layout>
+      </form>
+    </v-dialog>
+
+    <v-dialog persistent v-model="dialog1" max-width="330">
+      <v-card>
+        <v-card-text class="caption font-weight-black black--text"
+          >Are you sure want to remove this truck?</v-card-text
+        >
+        <v-spacer></v-spacer>
+
+        <v-flex class="ml-15">
+          <v-btn class="ml-10" x-small @click="dialog1 = !dialog1" text
+            >Close</v-btn
+          >
+          <v-btn
+            x-small
+            @click.prevent="deleteTruck(truck.id, truck.registration)"
+            text
+            color="red"
+            >Remove</v-btn
+          ></v-flex
+        >
+      </v-card>
+    </v-dialog>
+    <v-dialog :retain-focus="false" v-model="dialog" max-width="400px" light>
+      <form id="form">
+        <v-text-field
+          class="mx-8"
+          label="Registation Number"
+          dark
+          clearable
+          outlined
+          rounded
+          dense
+          v-model="regnum"
+        >
+        </v-text-field>
+        <v-text-field
+          class="mx-8"
+          label="Homelocation"
+          dark
+          disabled
+          clearable
+          rounded
+          outlined
+          dense
+          v-model="homeloc"
+        >
+        </v-text-field>
+        <v-layout row wrap>
+          <v-flex lg2></v-flex>
+          <v-flex class="mx-10">
+            <v-btn
+              depressed
+              block
+              color="success"
+              small
+              @click.prevent="uptruck(trid)"
+              >Update</v-btn
+            >
+          </v-flex>
+          <v-flex lg2></v-flex>
+        </v-layout>
+      </form>
+    </v-dialog>
     <!--Dialog box for confirmation for truck details addition-->
     <v-dialog v-model="dialog3" max-width="250">
       <v-card>

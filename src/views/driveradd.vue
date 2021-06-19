@@ -7,8 +7,7 @@
           <v-card-title class="headline"> Add your Pan card </v-card-title>
 
           <v-card-text>
-            You can register a new driver , only after add your pan card
-            details.
+            You can register a new driver, only after add your pan card details.
           </v-card-text>
 
           <v-card-actions>
