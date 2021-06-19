@@ -44,57 +44,7 @@
                     Book Now</v-btn
                   >
                 </td>
-                <v-dialog v-model="dialog2" max-width="350">
-                  <v-layout>
-                    <v-flex style="background-color: black"
-                      ><v-card-title class="font-weight-bold white--text mx-10"
-                        >SHIPMENT INVOICE</v-card-title
-                      ></v-flex
-                    ></v-layout
-                  >
-                  <v-spacer></v-spacer>
 
-                  <v-simple-table>
-                    <tbody>
-                      <tr>
-                        <td class="subtitle-2 font-weight-black">
-                          Truck Owner
-                        </td>
-                        <td class="subtitle-2 font-weight-bold">
-                          {{ optrname }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="subtitle-2 font-weight-black">
-                          Contact Owner
-                        </td>
-                        <td class="subtitle-2 font-weight-bold">
-                          {{ optrphn }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="subtitle-2 font-weight-black">Truck</td>
-                        <td class="subtitle-2 font-weight-bold">
-                          {{ truckreg }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="subtitle-2 font-weight-black">
-                          Contact Driver
-                        </td>
-                        <td class="subtitle-2 font-weight-bold">
-                          {{ truckphn }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="subtitle-2 font-weight-black">Total Cost</td>
-                        <td class="subtitle-2 font-weight-bold">
-                          {{ cost }} INR
-                        </td>
-                      </tr>
-                    </tbody>
-                  </v-simple-table>
-                </v-dialog>
                 <td>
                   <v-btn
                     depressed
@@ -107,31 +57,70 @@
                     >Cancel</v-btn
                   >
                 </td>
-                <v-dialog persistent v-model="dialog" max-width="380">
-                  <v-card>
-                    <v-card-text class="subtitle-1 font-weight-bold black--text"
-                      >Are you sure want to cancel this booking?</v-card-text
-                    >
-                    <v-spacer></v-spacer>
-                    <v-flex class="ml-15">
-                      <v-btn class="ml-10" small @click="dialog = !dialog" text
-                        >Close</v-btn
-                      >
-                      <v-btn
-                        small
-                        @click.prevent="deleteBook(destid)"
-                        text
-                        color="red"
-                        >Cancel</v-btn
-                      ></v-flex
-                    >
-                  </v-card>
-                </v-dialog>
               </tr>
             </tbody>
           </template>
         </v-simple-table>
       </v-flex>
+      <v-dialog v-model="dialog2" max-width="350">
+        <v-layout>
+          <v-flex style="background-color: black"
+            ><v-card-title class="font-weight-bold white--text mx-10"
+              >SHIPMENT INVOICE</v-card-title
+            ></v-flex
+          ></v-layout
+        >
+        <v-spacer></v-spacer>
+
+        <v-simple-table>
+          <tbody>
+            <tr>
+              <td class="subtitle-2 font-weight-black">Truck Owner</td>
+              <td class="subtitle-2 font-weight-bold">
+                {{ optrname }}
+              </td>
+            </tr>
+            <tr>
+              <td class="subtitle-2 font-weight-black">Contact Owner</td>
+              <td class="subtitle-2 font-weight-bold">
+                {{ optrphn }}
+              </td>
+            </tr>
+            <tr>
+              <td class="subtitle-2 font-weight-black">Truck</td>
+              <td class="subtitle-2 font-weight-bold">
+                {{ truckreg }}
+              </td>
+            </tr>
+            <tr>
+              <td class="subtitle-2 font-weight-black">Contact Driver</td>
+              <td class="subtitle-2 font-weight-bold">
+                {{ truckphn }}
+              </td>
+            </tr>
+            <tr>
+              <td class="subtitle-2 font-weight-black">Total Cost</td>
+              <td class="subtitle-2 font-weight-bold">{{ cost }} INR</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-dialog>
+      <v-dialog persistent v-model="dialog" max-width="380">
+        <v-card>
+          <v-card-text class="subtitle-1 font-weight-bold black--text"
+            >Are you sure want to cancel this booking?</v-card-text
+          >
+          <v-spacer></v-spacer>
+          <v-flex class="ml-15">
+            <v-btn class="ml-10" small @click="dialog = !dialog" text
+              >Close</v-btn
+            >
+            <v-btn small @click.prevent="deleteBook(destid)" text color="red"
+              >Cancel</v-btn
+            ></v-flex
+          >
+        </v-card>
+      </v-dialog>
     </v-layout>
   </v-app>
 </template>

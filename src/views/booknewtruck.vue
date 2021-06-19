@@ -208,7 +208,7 @@ export default {
       date: "2021-06-19",
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
-      vtype: "",
+      vtype: "" || localStorage.getItem("vt"),
       types: [
         "Tipper",
         "Lorry",
