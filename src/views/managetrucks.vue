@@ -21,7 +21,7 @@
                 <th class="white--text text-left">Registration Number</th>
                 <th class="white--text text-left">Verification</th>
                 <th class="white--text text-left">Truck Specification</th>
-                <th></th>
+                <th class="white--text text-left">Action</th>
               </tr>
             </thead>
             <tbody>
