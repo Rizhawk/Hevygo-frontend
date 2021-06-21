@@ -70,7 +70,7 @@
   </v-app>
 </template>
 <script>
-import { getAPI } from "../axios-api";
+import { getAPI } from "../../axios-api";
 import { required, digits, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -153,7 +153,7 @@ export default {
 </script>
 <style scoped>
 #page2 {
-  background: url("../assets/truck-12.jpg");
+  background: url("../../assets/truck-12.jpg");
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;

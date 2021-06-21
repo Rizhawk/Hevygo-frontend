@@ -127,8 +127,8 @@
   </v-app>
 </template>
 <script>
-import { getAPI } from "../axios-api";
-import Cpage from "../components/custpage";
+import { getAPI } from "../../axios-api";
+import Cpage from "../../components/custpage";
 export default {
   name: "Cbookings",
   components: {

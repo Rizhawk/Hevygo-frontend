@@ -1,8 +1,8 @@
 <template>
-  <v-app id="cnewsign">
+  <v-app id="osign">
     <Navbar />
-    <v-layout class="my-5" row wrap>
-      <v-flex xs1 sm2 md3 lg4></v-flex>
+    <v-layout row wrap class="my-3">
+      <v-flex xs1 sm2 md2 lg4></v-flex>
       <v-snackbar
         v-model="snackbar"
         multi-line
@@ -26,14 +26,14 @@
         {{ this.message2 }}
       </v-snackbar>
       <v-flex xs10 sm8 md6 lg4>
-        <!--Customer Sign Up form begining -->
-
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="cnewsignup" @submit.prevent="csignup">
+          <!--Operator signup form begining -->
+
+          <form id="osignup" @submit.prevent="osignup">
             <v-layout class="my-2" row wrap>
               <v-flex class="mx-3"
-                ><p class="font-weight-black white--text">
-                  Create your customer account
+                ><p class="font-weight-black subtitle-1 white--text">
+                  Create your operator account
                 </p></v-flex
               ><v-flex></v-flex>
             </v-layout>
@@ -45,7 +45,7 @@
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                label="Customer Name"
+                label="Operator Name"
                 outlined
                 dark
                 dense
@@ -104,7 +104,7 @@
               v-if="otpfield"
               v-model="otp"
               label="OTP"
-              @input="verified"
+              @input="verified()"
               maxlength="6"
               outlined
               dark
@@ -115,34 +115,35 @@
                 v-model="email"
                 :error-messages="errors"
                 label="E-mail"
-                @input="checkEmail"
                 :append-icon="icon2"
+                @input="checkEmail"
                 outlined
                 dark
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-layout class="my-2" row wrap>
+            <v-layout class="my-1" row wrap>
               <v-flex lg2></v-flex>
               <v-flex class="mx-10">
                 <v-btn
                   color="primary"
+                  class="mr-4"
                   type="submit"
                   dark
                   block
-                  small
                   depressed
+                  small
                   :disabled="invalid"
                 >
-                  Sign Up
+                  Continue
                 </v-btn>
               </v-flex>
               <v-flex lg2></v-flex>
             </v-layout>
             <v-layout class="my-2" row wrap>
               <v-flex lg2></v-flex>
-              <v-flex class="mx-10">
-                <span class="white--text"
+              <v-flex>
+                <span class="mx-13 white--text caption"
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span
@@ -150,15 +151,16 @@
               </v-flex>
             </v-layout>
           </form>
+
+          <!--Operator signup form ends -->
         </validation-observer>
-        <!--Customer Sign Up form end -->
       </v-flex>
     </v-layout>
   </v-app>
 </template>
 <script>
-import Navbar from "../components/Navbar";
-import { getAPI } from "../axios-api";
+import Navbar from "../../components/Navbar";
+import { getAPI } from "../../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -168,8 +170,7 @@ import {
 } from "vee-validate";
 
 setInteractionMode("eager");
-
-// Custom Validation for the form input
+//Custom validation form input fields
 
 extend("digits", {
   ...digits,
@@ -189,6 +190,7 @@ extend("min", {
   ...min,
   message: "{_field_}  should be greater than {length} characters",
 });
+
 extend("email", {
   ...email,
   message: "Email must be valid",
@@ -197,7 +199,6 @@ extend("email", {
 //Custom validation ends
 
 export default {
-  name: "Newcust",
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -211,14 +212,14 @@ export default {
       otpfield: false,
       snackbar: false,
       snackbar2: false,
-      icon: "",
-      icon2: "",
       message: "",
       message2: "",
+      icon: "",
+      icon2: "",
       email: null,
       show1: false,
       show2: false,
-
+      user_type: 1,
       password: "",
       password2: "",
       passwordRules: [
@@ -230,14 +231,13 @@ export default {
   methods: {
     clear() {
       this.name = "";
-      this.phone = "";
+      this.phoneNumber = "";
       this.email = "";
       this.password = "";
-      this.password2 = "";
+      this.confirmPassword = "";
       this.$refs.observer.reset();
     },
-    //Function to call Api after click on the signup button
-    csignup() {
+    osignup() {
       this.$refs.observer.validate();
       getAPI
         .post("/api/accounts/register/", {
@@ -246,21 +246,22 @@ export default {
           name: this.name,
           password: this.password,
           password2: this.password2,
-          user_type: 2,
+          user_type: this.user_type,
           email: this.email,
         })
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {
             this.clear();
-            this.$router.push({ name: "Login" });
+            this.$session.set("user_token", this.APIData.data["token"]);
+            this.$router.push({ name: "Padd" });
           } else {
             this.message = "Registration Failed";
             this.snackbar2 = true;
           }
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     },
     checkPhone() {
@@ -328,15 +329,15 @@ export default {
 };
 </script>
 <style scoped>
-#cnewsignup {
+#osignup {
   border: solid white 1px;
   padding: 30px;
   border-radius: 30px;
   background-color: black;
   opacity: 0.8;
 }
-#cnewsign {
-  background: url("../assets/truck-12.jpg");
+#osign {
+  background: url("../../assets/truck-12.jpg");
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;

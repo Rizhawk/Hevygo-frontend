@@ -184,7 +184,7 @@
 </template>
 <script>
 import Vue from "vue";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
   extend,
@@ -365,7 +365,7 @@ export default {
   opacity: 0.8;
 }
 #btruck {
-  background: url("../assets/truck-12.jpg");
+  background: url("../../assets/truck-12.jpg");
   background-attachment: fixed;
   background-repeat: no-repeat;
   width: 100%;

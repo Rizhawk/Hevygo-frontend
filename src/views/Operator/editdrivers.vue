@@ -113,8 +113,8 @@
   </v-app>
 </template>
 <script>
-import { getAPI } from "../axios-api";
-import Opage from "../components/optrpage";
+import { getAPI } from "../../axios-api";
+import Opage from "../../components/optrpage";
 export default {
   data: () => {
     return {

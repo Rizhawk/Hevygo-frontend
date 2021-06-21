@@ -1,8 +1,8 @@
 <template>
-  <v-app id="csign">
+  <v-app id="cnewsign">
     <Navbar />
-    <v-layout class="my-3" row wrap>
-      <v-flex xs1 sm2 md2 lg4></v-flex>
+    <v-layout class="my-5" row wrap>
+      <v-flex xs1 sm2 md3 lg4></v-flex>
       <v-snackbar
         v-model="snackbar"
         multi-line
@@ -27,12 +27,13 @@
       </v-snackbar>
       <v-flex xs10 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
+
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="csignup" @submit.prevent="csignup">
+          <form id="cnewsignup" @submit.prevent="csignup">
             <v-layout class="my-2" row wrap>
               <v-flex class="mx-3"
-                ><p class="white--text subtitle-1 font-weight-black">
-                  Sign Up to Continue
+                ><p class="font-weight-black white--text">
+                  Create your customer account
                 </p></v-flex
               ><v-flex></v-flex>
             </v-layout>
@@ -45,8 +46,8 @@
                 v-model="name"
                 :error-messages="errors"
                 label="Customer Name"
-                dark
                 outlined
+                dark
                 dense
               ></v-text-field>
             </validation-provider>
@@ -58,8 +59,8 @@
               :rules="passwordRules"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
-              dark
               outlined
+              dark
               dense
             ></v-text-field>
             <v-text-field
@@ -74,8 +75,8 @@
               ]"
               :type="show2 ? 'text' : 'password'"
               @click:append="show2 = !show2"
-              dark
               outlined
+              dark
               dense
             ></v-text-field>
 
@@ -94,8 +95,8 @@
                 maxlength="10"
                 :append-icon="icon"
                 @input="checkPhone"
-                dark
                 outlined
+                dark
                 dense
               ></v-text-field>
             </validation-provider>
@@ -103,7 +104,7 @@
               v-if="otpfield"
               v-model="otp"
               label="OTP"
-              @input="verified()"
+              @input="verified"
               maxlength="6"
               outlined
               dark
@@ -116,18 +117,18 @@
                 label="E-mail"
                 @input="checkEmail"
                 :append-icon="icon2"
-                dark
                 outlined
+                dark
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-layout row wrap>
+            <v-layout class="my-2" row wrap>
               <v-flex lg2></v-flex>
               <v-flex class="mx-10">
                 <v-btn
                   color="primary"
-                  class="mr-4"
                   type="submit"
+                  dark
                   block
                   small
                   depressed
@@ -138,10 +139,10 @@
               </v-flex>
               <v-flex lg2></v-flex>
             </v-layout>
-            <v-layout row wrap>
+            <v-layout class="my-2" row wrap>
               <v-flex lg2></v-flex>
-              <v-flex class="my-4 mx-8">
-                <span class="font-weight-regular white--text body-1"
+              <v-flex class="mx-10">
+                <span class="white--text"
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span
@@ -156,8 +157,8 @@
   </v-app>
 </template>
 <script>
-import Navbar from "../components/Navbar";
-import { getAPI } from "../axios-api";
+import Navbar from "../../components/Navbar";
+import { getAPI } from "../../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
   extend,
@@ -196,6 +197,7 @@ extend("email", {
 //Custom validation ends
 
 export default {
+  name: "Newcust",
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -216,17 +218,15 @@ export default {
       email: null,
       show1: false,
       show2: false,
+
       password: "",
       password2: "",
       passwordRules: [
         (value) => !!value || "Please type password.",
         (value) => (value && value.length >= 6) || "minimum 6 characters",
       ],
-      startlocation: localStorage.getItem("sl"),
-      endlocation: localStorage.getItem("el"),
     };
   },
-
   methods: {
     clear() {
       this.name = "";
@@ -237,7 +237,6 @@ export default {
       this.$refs.observer.reset();
     },
     //Function to call Api after click on the signup button
-
     csignup() {
       this.$refs.observer.validate();
       getAPI
@@ -252,48 +251,16 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           if (this.APIData.Http_response == 200) {
-            this.$session.start();
-            this.$session.set("user_token", this.APIData.data["token"]);
             this.clear();
-            // this.bookTruck();
+            this.$router.push({ name: "Login" });
           } else {
             this.message = "Registration Failed";
             this.snackbar2 = true;
           }
         })
         .catch((err) => {
-          alert(err);
-        });
-    },
-    bookTruck() {
-      getAPI
-        .post(
-          "/api/customer/cust-dest-create/",
-          {
-            start_location: localStorage.getItem("sl"),
-            end_location: localStorage.getItem("el"),
-            weight: localStorage.getItem("wt"),
-            goods_type: localStorage.getItem("gt"),
-            date: localStorage.getItem("dt"),
-            vehicle_type: localStorage.getItem("vt"),
-          },
-          {
-            headers: {
-              Authorization: ` Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          this.$session.set("sl", this.startlocation);
-          this.$session.set("el", this.endlocation);
-          localStorage.clear();
-          this.$router.push({ name: "HereMap" });
-        })
-        .catch((err) => {
-          alert(err);
+          console.log(err);
         });
     },
     checkPhone() {
@@ -340,8 +307,8 @@ export default {
           .get("api/accounts/otp_gen/?phone=" + this.phone)
           .then((response) => {
             this.APIData = response.data;
-            this.otpfield = true;
             this.otp = "";
+            this.otpfield = true;
             this.message = ` Your OTP is ${this.APIData.data["OTP"]}`;
             this.snackbar = true;
           })
@@ -361,15 +328,15 @@ export default {
 };
 </script>
 <style scoped>
-#csignup {
+#cnewsignup {
   border: solid white 1px;
   padding: 30px;
   border-radius: 30px;
   background-color: black;
   opacity: 0.8;
 }
-#csign {
-  background: url("../assets/truck-12.jpg");
+#cnewsign {
+  background: url("../../assets/truck-12.jpg");
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;

@@ -107,8 +107,8 @@
 </template>
 <script>
 // import { ModelSelect } from 'vue-search-select'
-import Opage from "../components/optrpage";
-import { getAPI } from "../axios-api";
+import Opage from "../../components/optrpage";
+import { getAPI } from "../../axios-api";
 import { required, digits, email, max, min } from "vee-validate/dist/rules";
 import {
   extend,

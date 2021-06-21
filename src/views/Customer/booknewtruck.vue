@@ -162,8 +162,8 @@
 </template>
 <script>
 import Vue from "vue";
-import { getAPI } from "../axios-api";
-import Cpage from "../components/custpage";
+import { getAPI } from "../../axios-api";
+import Cpage from "../../components/custpage";
 import { required, digits, max } from "vee-validate/dist/rules";
 import {
   extend,
