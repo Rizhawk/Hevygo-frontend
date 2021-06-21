@@ -35,8 +35,10 @@
                 :key="driver.id"
                 @click="getaDriver(driver.id)"
               >
-                <td class="font-weight-bold">{{ driver.driver_name }}</td>
-                <td class="font-weight-bold">{{ driver.phone }}</td>
+                <td class="font-weight-bold caption">
+                  {{ driver.driver_name }}
+                </td>
+                <td class="font-weight-bold caption">{{ driver.phone }}</td>
               </tr>
             </tbody>
           </template>

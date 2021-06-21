@@ -22,8 +22,8 @@
               :key="details.id"
               @click.prevent="getDetails(details.id)"
             >
-              <td>{{ details.name }}</td>
-              <td>{{ details.phone }}</td>
+              <td class="font-weight-bold caption">{{ details.name }}</td>
+              <td class="font-weight-bold caption">{{ details.phone }}</td>
               <td>
                 <v-icon
                   color="green darken-1"

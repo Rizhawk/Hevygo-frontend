@@ -31,11 +31,11 @@
                 :key="truck.id"
                 @click.prevent="dialog = !dialog"
               >
-                <td class="font-weight-bold">
+                <td class="font-weight-bold caption">
                   {{ truck.truck["phone"] }}
                 </td>
-                <td class="font-weight-bold">{{ truck.registration }}</td>
-                <td class="font-weight-bold">{{ truck.homelocation }}</td>
+                <td class="font-weight-bold caption">{{ truck.registration }}</td>
+                <td class="font-weight-bold caption">{{ truck.homelocation }}</td>
                 <td>
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -73,7 +73,7 @@
                     <span>{{ truck.remarks }}</span></v-tooltip
                   >
                 </td>
-                <td class="font-weight-bold" @click="showinfo(truck.id)">
+                <td class="font-weight-bold caption" @click="showinfo(truck.id)">
                   View/Edit
                 </td>
                 <td>

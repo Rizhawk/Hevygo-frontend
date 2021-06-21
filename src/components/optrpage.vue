@@ -106,7 +106,7 @@
             Manage Drivers
           </v-list-item>
           <v-list-item class="font-weight-black body-2" router to="/driveradd">
-            Add new driver
+            Add New Driver
           </v-list-item>
           <v-list-item class="font-weight-black body-2" router to="/viewstats">
             Update Trucks Status

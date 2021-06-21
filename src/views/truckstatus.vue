@@ -200,6 +200,7 @@ export default {
           this.loc = this.truckdata[key]["homelocation"];
         }
       }
+      console.log(this.loc);
     },
     truckdetails() {
       //Api call to create a truck status
@@ -213,15 +214,13 @@ export default {
           this.did = this.driverdata[key]["id"];
         }
       }
-      console.log(this.tid);
-      console.log(this.did);
       getAPI
         .post(
           "/api/truck/add_truck_status/",
           {
             truck_id: this.tid,
             status: this.status,
-            location: this.location,
+            location: this.loc,
             driver_id: this.did,
           },
           {

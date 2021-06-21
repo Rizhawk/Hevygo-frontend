@@ -20,9 +20,11 @@
               :key="truck.id"
               @click.prevent="getTruckdetails(truck.id)"
             >
-              <td>{{ truck.registration }}</td>
-              <td>{{ truck.homelocation }}</td>
-              <td>{{ truck.truck["phone"] }}</td>
+              <td class="font-weight-bold caption">{{ truck.registration }}</td>
+              <td class="font-weight-bold caption">{{ truck.homelocation }}</td>
+              <td class="font-weight-bold caption">
+                {{ truck.truck["phone"] }}
+              </td>
               <td>
                 <v-icon
                   class="mx-5"
