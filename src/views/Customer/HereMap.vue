@@ -33,10 +33,6 @@ import { getAPI } from "../../axios-api";
 export default {
   name: "HereMap",
   computed: {},
-  // props: {
-  //   center: Object
-  //   // center object { lat: 40.730610, lng: -73.935242 }
-  // },
   data() {
     return {
       center: {},

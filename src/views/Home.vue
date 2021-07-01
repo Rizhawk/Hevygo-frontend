@@ -1,9 +1,11 @@
 <template>
   <v-app id="home">
     <Navbar />
-    <v-layout class=" mx-10" row wrap>
+    <v-layout class="mx-10" row wrap>
       <v-flex class="mx-10" xs12 sm6 md12 lg6>
-        <h3 class="white--text subtitle my-15 font-weight-black mb-5">Welcome to</h3>
+        <h3 class="white--text subtitle my-15 font-weight-black mb-5">
+          Welcome to
+        </h3>
         <h1 class="white--text display-3 font-weight-bold mb-5">SHUTTLE</h1>
         <v-flex lg12 md6 xs12>
           <p class="white--text text-sm-left">
@@ -13,9 +15,16 @@
             asperiores quae maiores deserunt!
           </p></v-flex
         >
-        <v-btn class="btn" rounded elevation="5" router to="/booktruck">
-          Book your Truck Now</v-btn
+        <v-btn
+          color="primary"
+          small
+          rounded
+          elevation="5"
+          router
+          to="/booktruck"
         >
+          Book your Truck Now
+        </v-btn>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <router-link id="link" to="/optrsignup"
@@ -27,24 +36,22 @@
           <span>Create an Operator Account</span>
         </v-tooltip>
       </v-flex>
-    
     </v-layout>
-    <Footer/>
+    <Footer />
   </v-app>
 </template>
 <script>
-import Footer from '../components/footer';
+import Footer from "../components/footer";
 import Navbar from "../components/Navbar";
 export default {
   name: "Home",
   components: {
     Navbar,
-    Footer
+    Footer,
   },
-  data:()=>{
-    return{
-    }
-  }
+  data: () => {
+    return {};
+  },
 };
 </script>
 <style scoped>

@@ -11,7 +11,6 @@ import Admin from "../views/Admin/adminhome.vue";
 import Regadmin from "../views/Admin/newadmin.vue";
 import AOreg from "../views/Admin/optrreg.vue";
 import ATreg from "../views/Admin/truckreg.vue";
-import Tmanage from "../views/Operator/managetrucks.vue";
 import Tstatus from "../views/Operator/truckstatus.vue";
 import Dpage from "../views/driverpage.vue";
 import Treg from "../views/Operator/registertruck";
@@ -21,12 +20,11 @@ import Padd from "../views/Operator/panadd";
 import Tdetails from "../views/Operator/truckdetails";
 import Editdrivers from "../views/Operator/editdrivers";
 import Tstats from "../views/Operator/viewstats";
-import HereMap from "../views/Operator/HereMap";
+import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
 import Newcust from "../views/Customer/newcustsignup";
 import Cbookings from "../views/Customer/bookings";
 import Ctrack from "../views/Customer/custrack";
-import Tracktruck from "../views/Operator/tracktruck";
 import ForgotPass from "../views/forgotpassword.vue";
 import Propage from "../components/profilepage.vue";
 import Changephone from "../views/ProfileUpdate/changephone.vue";
@@ -34,7 +32,9 @@ import Changeemail from "../views/ProfileUpdate/changeemail.vue";
 import Changename from "../views/ProfileUpdate/changename.vue";
 import Changepassword from "../views/ProfileUpdate/changepassword.vue";
 import Changedetails from "../views/ProfileUpdate/changedetails.vue";
-
+import Dashboard from "../views/Operator/dashboard.vue";
+import DataTable from "../views/Operator/optrdatatables.vue";
+import Hmap from "../views/Operator/Map.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -96,11 +96,6 @@ const routes = [
     path: "/optrpage",
     name: "Opage",
     component: Opage,
-  },
-  {
-    path: "/managetrucks",
-    name: "Tmanage",
-    component: Tmanage,
   },
   {
     path: "/truckstatus",
@@ -173,11 +168,6 @@ const routes = [
     component: Ctrack,
   },
   {
-    path: "/tracktruck",
-    name: "Tracktruck",
-    component: Tracktruck,
-  },
-  {
     path: "/forgotpassword",
     name: "ForgotPass",
     component: ForgotPass,
@@ -211,6 +201,21 @@ const routes = [
     path: "/changedetails",
     name: "Changedetails",
     component: Changedetails,
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+  },
+  {
+    path: "/optrdatatables",
+    name: "DataTable",
+    component: DataTable,
+  },
+  {
+    path: "/Map",
+    name: "Hmap",
+    component: Hmap,
   },
 ];
 

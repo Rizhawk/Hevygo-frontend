@@ -99,7 +99,7 @@ export default {
           this.$session.set("user_name", this.APIData.data["username"]);
           this.$session.set("user_id", this.APIData.data["user_id"]);
           if (this.APIData.data["user_type"] == 1) {
-            this.$router.push({ name: "Treg" });
+            this.$router.push({ name: "Dashboard" });
           } else if (this.APIData.data["user_type"] == 2) {
             this.$router.push({ name: "Bnewtruck" });
           } else if (this.APIData.data["user_type"] == 3) {
