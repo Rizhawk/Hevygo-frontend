@@ -55,12 +55,8 @@
   </nav>
 </template>
 <script>
-import "../assets/js/core/bootstrap.min.js";
-import "../assets/js/core/popper.min.js";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/now-ui-dashboard.css";
-import "../assets/js/core/jquery.min.js";
-import "../assets/js/plugins/perfect-scrollbar.jquery.min.js";
 export default {
   name: "Dsidebar",
 };

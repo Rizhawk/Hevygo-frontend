@@ -356,8 +356,6 @@ import Dfooter from "../../components/dashfooter.vue";
 import Dsidebar from "../../components/dashsidebar.vue";
 import Onavbar from "../../components/OptrNav.vue";
 import "../../assets/demo/demo";
-import "../../assets/js/core/jquery.min.js";
-import "../../assets/js/plugins/perfect-scrollbar.jquery.min.js";
 export default {
   name: "Dashboard",
   components: {
