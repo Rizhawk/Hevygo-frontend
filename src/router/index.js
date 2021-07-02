@@ -18,7 +18,6 @@ import Tadd from "../views/Operator/truckadd";
 import Dreg from "../views/Operator/driveradd";
 import Padd from "../views/Operator/panadd";
 import Tdetails from "../views/Operator/truckdetails";
-import Editdrivers from "../views/Operator/editdrivers";
 import Tstats from "../views/Operator/viewstats";
 import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
@@ -32,11 +31,12 @@ import Changeemail from "../views/ProfileUpdate/changeemail.vue";
 import Changename from "../views/ProfileUpdate/changename.vue";
 import Changepassword from "../views/ProfileUpdate/changepassword.vue";
 import Changedetails from "../views/ProfileUpdate/changedetails.vue";
-import Dashboard from "../views/Operator/dashboard.vue";
-import DataTable from "../views/Operator/optrdatatables.vue";
+import Dashboard from "../views/Operator/Dashboard.vue";
+import TrucksTable from "../views/Operator/ManageTrucks.vue";
+import DriverTable from "../views/Operator/ManageDrivers.vue";
+import Vstatus from "../views/Operator/ViewStatus.vue";
 import Hmap from "../views/Operator/Map.vue";
 Vue.use(VueRouter);
-
 const routes = [
   {
     path: "/",
@@ -133,11 +133,6 @@ const routes = [
     component: Tdetails,
   },
   {
-    path: "/editdrivers",
-    name: "Editdrivers",
-    component: Editdrivers,
-  },
-  {
     path: "/viewstats",
     name: "Tstats",
     component: Tstats,
@@ -208,9 +203,19 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/optrdatatables",
-    name: "DataTable",
-    component: DataTable,
+    path: "/managetrucks",
+    name: "TrucksTable",
+    component: TrucksTable,
+  },
+  {
+    path: "/managedrivers",
+    name: "DriverTable",
+    component: DriverTable,
+  },
+  {
+    path: "/viewstatus",
+    name: "Vstatus",
+    component: Vstatus,
   },
   {
     path: "/Map",

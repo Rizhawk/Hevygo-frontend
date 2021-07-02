@@ -83,8 +83,8 @@
                     v-for="truck in truckstats"
                     :key="truck.truck"
                     class="dropdown-item"
-                    @click.prevent="locateTruck(truck.location)"
-                    >{{ truck.truck }}</a
+                    @click.prevent="locateTruck(truck.truck.homelocation)"
+                    >{{ truck.truck.registration }}</a
                   >
                 </div>
               </li>
