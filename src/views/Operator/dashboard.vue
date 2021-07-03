@@ -355,7 +355,7 @@
 import Dfooter from "../../components/dashfooter.vue";
 import Dsidebar from "../../components/dashsidebar.vue";
 import Onavbar from "../../components/OptrNav.vue";
-import "../../assets/demo/demo.js";
+// import "../../assets/demo/demo.js";
 export default {
   name: "Dashboard",
   components: {
@@ -367,8 +367,8 @@ export default {
   data: () => {
     return {};
   },
-  mounted: function () {
-    demo.initDashboardPageCharts();
-  },
+  // mounted: function () {
+  //   demo.initDashboardPageCharts();
+  // },
 };
 </script>
