@@ -362,6 +362,7 @@ export default {
     Dsidebar,
     Dfooter,
     Onavbar,
+
   },
   data: () => {
     return {};

@@ -71,7 +71,7 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a
+            <!-- <a
               class="nav-link dropdown-toggle"
               id="navbarDropdownMenuLink"
               data-toggle="dropdown"
@@ -79,9 +79,6 @@
               aria-expanded="false"
             >
               <i class="now-ui-icons loader_gear"></i>
-              <p>
-                <span class="d-lg-none d-md-block">Some Actions</span>
-              </p>
             </a>
             <div
               class="dropdown-menu dropdown-menu-right"
@@ -93,7 +90,33 @@
               <router-link class="dropdown-item" to="/login"
                 >Sign Out</router-link
               >
-            </div>
+            </div> -->
+
+            <v-menu transition="slide-y-transition" bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  class="my-3"
+                  color="white"
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  mdi-account-settings</v-icon
+                >
+              </template>
+              <v-list>
+                <v-list-item>
+                  <v-list-item-title class="font-weight-medium caption"
+                    >Edit Profile</v-list-item-title
+                  >
+                </v-list-item>
+                <v-list-item to="/login">
+                  <v-list-item-title class="font-weight-medium caption"
+                    >Sign Out</v-list-item-title
+                  >
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </li>
         </ul>
       </div>
@@ -112,6 +135,7 @@ export default {
       vcolor: "",
       vicon: "",
       vmsg: "",
+      demo: {},
     };
   },
   created: function () {
