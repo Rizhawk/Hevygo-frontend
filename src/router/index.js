@@ -31,7 +31,7 @@ import Changeemail from "../views/ProfileUpdate/changeemail.vue";
 import Changename from "../views/ProfileUpdate/changename.vue";
 import Changepassword from "../views/ProfileUpdate/changepassword.vue";
 import Changedetails from "../views/ProfileUpdate/changedetails.vue";
-import Dashboard from "../views/Operator/Dashboard.vue";
+import Dashboard from "../views/Operator/dashboard.vue";
 import TrucksTable from "../views/Operator/ManageTrucks.vue";
 import DriverTable from "../views/Operator/ManageDrivers.vue";
 import Vstatus from "../views/Operator/ViewStatus.vue";
