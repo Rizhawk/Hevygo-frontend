@@ -5,6 +5,7 @@
       bg-primary
       navbar-absolute
     "
+    v-if="navBar"
   >
     <div class="container-fluid">
       <div class="navbar-wrapper">
@@ -71,52 +72,33 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <!-- <a
-              class="nav-link dropdown-toggle"
-              id="navbarDropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="now-ui-icons loader_gear"></i>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-right"
-              aria-labelledby="navbarDropdownMenuLink"
-            >
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <router-link class="dropdown-item" to="/login"
-                >Sign Out</router-link
-              >
-            </div> -->
-
-            <v-menu transition="slide-y-transition" bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-icon
-                  class="my-3"
-                  color="white"
-                  small
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  mdi-account-settings</v-icon
-                >
-              </template>
-              <v-list>
-                <v-list-item>
-                  <v-list-item-title class="font-weight-medium caption"
-                    >Edit Profile</v-list-item-title
+            <div class="dropdown">
+              <v-menu transition="slide-y-transition" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    class="my-3"
+                    color="white"
+                    small
+                    v-bind="attrs"
+                    v-on="on"
                   >
-                </v-list-item>
-                <v-list-item to="/login">
-                  <v-list-item-title class="font-weight-medium caption"
-                    >Sign Out</v-list-item-title
+                    mdi-account-settings</v-icon
                   >
-                </v-list-item>
-              </v-list>
-            </v-menu>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title class="font-weight-medium caption"
+                      >Edit Profile</v-list-item-title
+                    >
+                  </v-list-item>
+                  <v-list-item to="/login">
+                    <v-list-item-title class="font-weight-medium caption"
+                      >Sign Out</v-list-item-title
+                    >
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
           </li>
         </ul>
       </div>
@@ -125,7 +107,6 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
-
 export default {
   name: "Onavbar",
   props: {
@@ -137,9 +118,11 @@ export default {
       vicon: "",
       vmsg: "",
       demo: {},
+      navBar: true,
     };
   },
   created: function () {
+    this.isMobile();
     getAPI
       .get("/api/operators/view_operator_info/", {
         headers: {
@@ -172,6 +155,15 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    isMobile() {
+      if (screen.width <= 760) {
+        this.navBar = false;
+      } else {
+        this.navBar = true;
+      }
+    },
   },
 };
 </script>

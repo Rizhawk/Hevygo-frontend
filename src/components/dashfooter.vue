@@ -16,9 +16,9 @@
       </nav>
       <div class="copyright" id="copyright">
         &copy;Designed by
-        <a href="https://www.invisionapp.com" target="_blank"></a>.
+        <a href="#" target="_blank"></a>.
 
-        <a href="https://www.creative-tim.com" target="_blank">Rizhawk</a>.
+        <a href="#" target="_blank">Rizhawk</a>.
       </div>
     </div>
   </footer>

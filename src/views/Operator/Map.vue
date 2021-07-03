@@ -54,16 +54,8 @@
               </div>
             </form>
             <ul class="navbar-nav">
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="#pablo">
-                  <i class="now-ui-icons media-2_sound-wave"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Stats</span>
-                  </p>
-                </a>
-              </li> -->
               <li class="nav-item dropdown">
-                <a
+                <!-- <a
                   class="nav-link dropdown-toggle"
                   id="navbarDropdownMenuLink"
                   data-toggle="dropdown"
@@ -86,44 +78,31 @@
                     @click.prevent="locateTruck(truck.truck.homelocation)"
                     >{{ truck.truck.registration }}</a
                   >
-                </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#pablo">
-                  <p>
-                    <span class="font-weight-medium caption">{{
-                      this.$session.get("user_name")
-                    }}</span>
-                  </p>
-                  <v-icon x-small color="white" class="mx-1"
-                    >mdi-account</v-icon
-                  >
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  id="navbarDropdownMenuLink"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="now-ui-icons loader_gear"></i>
-                  <p>
-                    <span class="d-lg-none d-md-block">Some Actions</span>
-                  </p>
-                </a>
-                <div
-                  class="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="navbarDropdownMenuLink"
-                >
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <router-link class="dropdown-item" to="/login"
-                    >Sign Out</router-link
-                  >
-                </div>
+                </div> -->
+
+                <v-menu transition="slide-y-transition" bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      class="my-3"
+                      color="white"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      mdi-truck</v-icon
+                    >
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      v-for="truck in truckstats"
+                      :key="truck.truck"
+                      @click.prevent="locateTruck(truck.truck.homelocation)"
+                    >
+                      <v-list-item-title class="font-weight-medium caption">{{
+                        truck.truck.registration
+                      }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
               </li>
             </ul>
           </div>

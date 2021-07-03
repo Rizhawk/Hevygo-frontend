@@ -5,6 +5,7 @@
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
         <Onavbar title="Dashboard" />
+          <mob-nav/>
         <!-- End Navbar -->
         <div class="panel-header panel-header-lg">
           <canvas id="bigDashboardChart"></canvas>
@@ -355,6 +356,7 @@
 import Dfooter from "../../components/dashfooter.vue";
 import Dsidebar from "../../components/dashsidebar.vue";
 import Onavbar from "../../components/OptrNav.vue";
+import MobNav from "../../components/MobNav.vue";
 import "../../assets/demo/demo.js";
 export default {
   name: "Dashboard",
@@ -362,6 +364,7 @@ export default {
     Dsidebar,
     Dfooter,
     Onavbar,
+    MobNav,
   },
   data: () => {
     return {};

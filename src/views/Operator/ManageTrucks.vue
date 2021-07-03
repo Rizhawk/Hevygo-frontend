@@ -5,6 +5,7 @@
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
       <Onavbar title="Details of Trucks"/>
+      <mob-nav/>
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
@@ -181,12 +182,14 @@ import { getAPI } from "../../axios-api";
 import Dsidebar from "../../components/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
 import Onavbar from "../../components/OptrNav.vue";
+import MobNav from "../../components/MobNav.vue";
 export default {
   name: "TrucksTable",
   components: {
     Dsidebar,
     Dfooter,
-    Onavbar
+    Onavbar,
+    MobNav
   },
   data: () => {
     return {

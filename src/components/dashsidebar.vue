@@ -27,7 +27,7 @@
           <li>
             <router-link to="/Map">
               <i class="now-ui-icons location_pin"></i>
-              <p>Maps</p>
+              <p>Map</p>
             </router-link>
           </li>
 
@@ -43,12 +43,6 @@
               <p>Truck Status</p>
             </router-link>
           </li>
-          <!-- <li>
-          <a href="#">
-            <i class="now-ui-icons users_single-02"></i>
-            <p>User Profile</p>
-          </a>
-        </li> -->
         </ul>
       </div>
     </div>
@@ -59,5 +53,20 @@ import "../assets/css/bootstrap.min.css";
 import "../assets/css/now-ui-dashboard.css";
 export default {
   name: "Dsidebar",
+  data: () => {
+    return {
+      // mainSide: true,
+    };
+  },
+  methods: {
+    // isMobile() {
+    //   if (screen.width <= 760) {
+    //     this.mainSide = false;
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // },
+  },
 };
 </script>

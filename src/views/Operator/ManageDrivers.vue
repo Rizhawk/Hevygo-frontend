@@ -4,43 +4,44 @@
       <Dsidebar />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-       <Onavbar title="Details of Drivers"/>
+        <Onavbar title="Details of Drivers" />
+        <mob-nav/>
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
             <div class="col-lg-2"></div>
-              <div class="col-md-12 col-lg-8">
-                <div class="card">
-                  <div class="card-header">
-                    <h4 class="card-title">Registerd Drivers</h4>
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead class="text-primary">
-                          <th>Driver Name</th>
-                          <th class="text-center">Phonenumber</th>
-                        </thead>
-                        <tbody>
-                          <tr
-                            v-for="driver in driverdetails"
-                            :key="driver.id"
-                            @click="getaDriver(driver.id)"
-                          >
-                            <td >
-                              {{ driver.driver_name }}
-                            </td>
-                            <td class="text-center">
-                              {{ driver.phone }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+            <div class="col-md-12 col-lg-8">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Registerd Drivers</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th>Driver Name</th>
+                        <th class="text-center">Phonenumber</th>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="driver in driverdetails"
+                          :key="driver.id"
+                          @click="getaDriver(driver.id)"
+                        >
+                          <td>
+                            {{ driver.driver_name }}
+                          </td>
+                          <td class="text-center">
+                            {{ driver.phone }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
         <Dfooter />
@@ -119,12 +120,14 @@ import { getAPI } from "../../axios-api";
 import Dsidebar from "../../components/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
 import Onavbar from "../../components/OptrNav.vue";
+import MobNav from "../../components/MobNav.vue";
 export default {
   name: "DriverTable",
   components: {
     Dsidebar,
     Dfooter,
-    Onavbar
+    Onavbar,
+    MobNav,
   },
   data: () => {
     return {
