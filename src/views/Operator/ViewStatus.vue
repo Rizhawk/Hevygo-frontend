@@ -13,19 +13,28 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">Current Status of Trucks</h4>
+                  <h4
+                    class="
+                      card-title card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    Current Status of Trucks
+                  </h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
-                      <thead class="text-primary">
+                      <thead class="text-primary font-weight-medium caption text-center">
                         <th>Truck</th>
-                        <th>Driver</th>
-                        <th>Driver's Phone</th>
-                        <th>Status</th>
-                        <th>Location</th>
+                        <th >Driver</th>
+                        <th >Driver's Phone</th>
+                        <th >Status</th>
+                        <th >Location</th>
                       </thead>
-                      <tbody>
+                      <tbody class="font-weight-medium caption text-center">
                         <tr
                           v-for="truck in truckdriver"
                           :key="truck.truck.id"

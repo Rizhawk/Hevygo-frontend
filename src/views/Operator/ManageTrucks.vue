@@ -4,8 +4,8 @@
       <Dsidebar />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-      <Onavbar title="Details of Trucks"/>
-      <mob-nav/>
+        <Onavbar title="Details of Trucks" />
+        <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
@@ -13,12 +13,28 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">Registerd Trucks</h4>
+                  <h4
+                    class="
+                      card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    Registerd Trucks
+                  </h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
-                      <thead class="text-primary">
+                      <thead
+                        class="
+                          text-primary
+                          font-weight-medium
+                          caption
+                          text-center
+                        "
+                      >
                         <th>Phonenumber</th>
                         <th>Registration</th>
                         <th>Homelocation</th>
@@ -26,7 +42,7 @@
                         <th>Specifications</th>
                         <th>Action</th>
                       </thead>
-                      <tbody>
+                      <tbody class="font-weight-medium caption text-center">
                         <tr v-for="truck in trucks" :key="truck.id">
                           <td>
                             {{ truck.truck["phone"] }}
@@ -189,7 +205,7 @@ export default {
     Dsidebar,
     Dfooter,
     Onavbar,
-    MobNav
+    MobNav,
   },
   data: () => {
     return {

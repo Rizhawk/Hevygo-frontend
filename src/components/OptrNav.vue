@@ -32,21 +32,6 @@
         <span class="navbar-toggler-bar navbar-kebab"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navigation">
-        <form>
-          <div class="input-group no-border">
-            <input
-              type="text"
-              value=""
-              class="form-control"
-              placeholder="Search..."
-            />
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <i class="now-ui-icons ui-1_zoom-bold"></i>
-              </div>
-            </div>
-          </div>
-        </form>
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" href="#pablo">
@@ -117,7 +102,6 @@ export default {
       vcolor: "",
       vicon: "",
       vmsg: "",
-      demo: {},
       navBar: true,
     };
   },
@@ -134,9 +118,6 @@ export default {
         if (this.APIData.response == 204) {
           this.$router.push({ name: "Padd" });
         } else {
-          this.username = this.APIData.data["user"]["name"];
-          this.email = this.APIData.data["user"]["email"];
-          this.phone = this.APIData.data["user"]["phone"];
           if (this.APIData.data["status"] == 1) {
             this.vicon = "mdi-clock";
             this.vcolor = "black";

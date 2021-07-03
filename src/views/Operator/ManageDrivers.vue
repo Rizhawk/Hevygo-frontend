@@ -5,7 +5,7 @@
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
         <Onavbar title="Details of Drivers" />
-        <mob-nav/>
+        <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
@@ -14,22 +14,38 @@
             <div class="col-md-12 col-lg-8">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title">Registerd Drivers</h4>
+                  <h4
+                    class="
+                      card-title card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    Registerd Drivers
+                  </h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
-                      <thead class="text-primary">
-                        <th>Driver Name</th>
+                      <thead
+                        class="
+                          text-primary
+                          font-weight-medium
+                          caption
+                          text-center
+                        "
+                      >
+                        <th class="text-center">Driver Name</th>
                         <th class="text-center">Phonenumber</th>
                       </thead>
-                      <tbody>
+                      <tbody class="font-weight-medium caption text-center">
                         <tr
                           v-for="driver in driverdetails"
                           :key="driver.id"
                           @click="getaDriver(driver.id)"
                         >
-                          <td>
+                          <td class="text-center">
                             {{ driver.driver_name }}
                           </td>
                           <td class="text-center">
