@@ -125,6 +125,7 @@
 </template>
 <script>
 import { getAPI } from "../axios-api";
+
 export default {
   name: "Onavbar",
   props: {

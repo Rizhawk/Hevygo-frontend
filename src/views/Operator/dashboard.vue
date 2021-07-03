@@ -355,14 +355,13 @@
 import Dfooter from "../../components/dashfooter.vue";
 import Dsidebar from "../../components/dashsidebar.vue";
 import Onavbar from "../../components/OptrNav.vue";
-import demo from "../../assets/demo/demo.js";
+import "../../assets/demo/demo.js";
 export default {
   name: "Dashboard",
   components: {
     Dsidebar,
     Dfooter,
     Onavbar,
-
   },
   data: () => {
     return {};
