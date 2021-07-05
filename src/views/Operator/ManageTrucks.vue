@@ -13,6 +13,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
+                  <div class="text-right"></div>
                   <h4
                     class="
                       card-title
@@ -22,6 +23,19 @@
                     "
                   >
                     Registerd Trucks
+                    <v-flex row justify-end>
+                      <v-btn
+                        color="primary"
+                        href="/regtruck"
+                        x-small
+                        depressed
+                        dark
+                        outlined
+                      >
+                        Add New
+                        <v-icon x-small color="whte">mdi-plus</v-icon>
+                      </v-btn></v-flex
+                    >
                   </h4>
                 </div>
                 <div class="card-body">
@@ -40,7 +54,7 @@
                         <th>Homelocation</th>
                         <th>Verification</th>
                         <th>Specifications</th>
-                        <th>Action</th>
+                        <th>Remove</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr v-for="truck in trucks" :key="truck.id">
@@ -88,13 +102,11 @@
                           </td>
                           <td @click="showinfo(truck.id)">View/Edit</td>
                           <td>
-                            <v-btn
-                              outlined
-                              dark
-                              x-small
+                            <v-icon
+                              small
                               color="red darken-4"
                               @click.prevent="setDelete(truck.id)"
-                              >Delete</v-btn
+                              >mdi-delete</v-icon
                             >
                           </td>
                         </tr>

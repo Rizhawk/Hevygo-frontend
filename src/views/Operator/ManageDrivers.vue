@@ -23,6 +23,19 @@
                     "
                   >
                     Registerd Drivers
+                    <v-flex row justify-end>
+                      <v-btn
+                        color="primary"
+                        href="/driveradd"
+                        x-small
+                        depressed
+                        dark
+                        outlined
+                      >
+                        Reigster New
+                        <v-icon x-small color="whte">mdi-plus</v-icon>
+                      </v-btn></v-flex
+                    >
                   </h4>
                 </div>
                 <div class="card-body">

@@ -11,13 +11,8 @@ import Admin from "../views/Admin/adminhome.vue";
 import Regadmin from "../views/Admin/newadmin.vue";
 import AOreg from "../views/Admin/optrreg.vue";
 import ATreg from "../views/Admin/truckreg.vue";
-import Tstatus from "../views/Operator/truckstatus.vue";
 import Dpage from "../views/driverpage.vue";
-import Treg from "../views/Operator/registertruck";
-import Tadd from "../views/Operator/truckadd";
-import Dreg from "../views/Operator/driveradd";
 import Padd from "../views/Operator/panadd";
-import Tdetails from "../views/Operator/truckdetails";
 import Tstats from "../views/Operator/viewstats";
 import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
@@ -36,6 +31,11 @@ import TrucksTable from "../views/Operator/ManageTrucks.vue";
 import DriverTable from "../views/Operator/ManageDrivers.vue";
 import Vstatus from "../views/Operator/ViewStatus.vue";
 import Hmap from "../views/Operator/Map.vue";
+import Rtruck from "../views/Operator/RegTruck.vue";
+import InfoTruck from "../views/Operator/InfoTruck.vue";
+import DetailTruck from "../views/Operator/DetailsTruck.vue";
+import AddDriver from "../views/Operator/AddDriver.vue";
+import NewStatus from "../views/Operator/NewStatus.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -98,39 +98,14 @@ const routes = [
     component: Opage,
   },
   {
-    path: "/truckstatus",
-    name: "Tstatus",
-    component: Tstatus,
-  },
-  {
     path: "/driverpage",
     name: "Dpage",
     component: Dpage,
   },
   {
-    path: "/registertruck",
-    name: "Treg",
-    component: Treg,
-  },
-  {
-    path: "/truckadd",
-    name: "Tadd",
-    component: Tadd,
-  },
-  {
-    path: "/driveradd",
-    name: "Dreg",
-    component: Dreg,
-  },
-  {
     path: "/panadd",
     name: "Padd",
     component: Padd,
-  },
-  {
-    path: "/truckdetails",
-    name: "Tdetails",
-    component: Tdetails,
   },
   {
     path: "/viewstats",
@@ -213,6 +188,11 @@ const routes = [
     component: DriverTable,
   },
   {
+    path: "/regtruck",
+    name: "Rtruck",
+    component: Rtruck,
+  },
+  {
     path: "/viewstatus",
     name: "Vstatus",
     component: Vstatus,
@@ -221,6 +201,26 @@ const routes = [
     path: "/Map",
     name: "Hmap",
     component: Hmap,
+  },
+  {
+    path: "/infoadd",
+    name: "InfoTruck",
+    component: InfoTruck,
+  },
+  {
+    path: "/detailadd",
+    name: "DetailTruck",
+    component: DetailTruck,
+  },
+  {
+    path: "/driveradd",
+    name: "AddDriver",
+    component: AddDriver,
+  },
+  {
+    path: "/newstatus",
+    name: "NewStatus",
+    component: NewStatus,
   },
 ];
 

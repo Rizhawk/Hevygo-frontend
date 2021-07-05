@@ -22,17 +22,37 @@
                     "
                   >
                     Current Status of Trucks
+                    <v-flex row justify-end>
+                      <v-btn
+                        color="primary"
+                        href="/newstatus"
+                        x-small
+                        depressed
+                        dark
+                        outlined
+                      >
+                        Add New Status
+                        <v-icon x-small color="whte">mdi-plus</v-icon>
+                      </v-btn></v-flex
+                    >
                   </h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
-                      <thead class="text-primary font-weight-medium caption text-center">
+                      <thead
+                        class="
+                          text-primary
+                          font-weight-medium
+                          caption
+                          text-center
+                        "
+                      >
                         <th>Truck</th>
-                        <th >Driver</th>
-                        <th >Driver's Phone</th>
-                        <th >Status</th>
-                        <th >Location</th>
+                        <th>Driver</th>
+                        <th>Driver's Phone</th>
+                        <th>Status</th>
+                        <th>Location</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr

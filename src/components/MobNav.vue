@@ -16,8 +16,6 @@
               >{{ this.$session.get("user_name") }}
               <v-icon
                 dense
-                v-bind="attrs"
-                v-on="on"
                 small
                 class="mx-1"
                 :color="vcolor"
