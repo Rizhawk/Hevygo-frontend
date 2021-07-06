@@ -76,8 +76,8 @@
                   >
                 </template>
                 <v-list>
-                  <v-list-item>
-                    <v-list-item-title class="font-weight-medium caption"
+                  <v-list-item href="/optrpro">
+                    <v-list-item-title  class="font-weight-medium caption"
                       ><v-icon x-small class="mr-1" color="black"
                         >mdi-account-edit</v-icon
                       >

@@ -59,7 +59,7 @@
               <v-card-actions>
                 <v-btn
                   link
-                  href="/profilepage"
+                  href="/UpdatePage"
                   color="black"
                   x-small
                   rounded

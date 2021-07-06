@@ -21,10 +21,6 @@ import Cbookings from "../views/Customer/bookings";
 import Ctrack from "../views/Customer/custrack";
 import ForgotPass from "../views/forgotpassword.vue";
 import Propage from "../components/profilepage.vue";
-import Changephone from "../views/ProfileUpdate/changephone.vue";
-import Changeemail from "../views/ProfileUpdate/changeemail.vue";
-import Changename from "../views/ProfileUpdate/changename.vue";
-import Changepassword from "../views/ProfileUpdate/changepassword.vue";
 import Changedetails from "../views/ProfileUpdate/changedetails.vue";
 import Dashboard from "../views/Operator/dashboard.vue";
 import TrucksTable from "../views/Operator/ManageTrucks.vue";
@@ -36,6 +32,12 @@ import InfoTruck from "../views/Operator/InfoTruck.vue";
 import DetailTruck from "../views/Operator/DetailsTruck.vue";
 import AddDriver from "../views/Operator/AddDriver.vue";
 import NewStatus from "../views/Operator/NewStatus.vue";
+import Uemail from "../views/ProfileUpdate/UpdateEmail.vue";
+import OptrPro from "../views/ProfileUpdate/ViewOptrProfile.vue";
+import Uphone from "../views/ProfileUpdate/UpdatePhone.vue";
+import Upassword from "../views/ProfileUpdate/UpdatePassword.vue";
+import Uname from "../views/ProfileUpdate/UpdateName.vue";
+import Upan from "../views/ProfileUpdate/UpdatePan.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -148,26 +150,6 @@ const routes = [
     component: Propage,
   },
   {
-    path: "/changephone",
-    name: "Changephone",
-    component: Changephone,
-  },
-  {
-    path: "/changeemail",
-    name: "Changeemail",
-    component: Changeemail,
-  },
-  {
-    path: "/changename",
-    name: "Changename",
-    component: Changename,
-  },
-  {
-    path: "/changepassword",
-    name: "Changepassword",
-    component: Changepassword,
-  },
-  {
     path: "/changedetails",
     name: "Changedetails",
     component: Changedetails,
@@ -221,6 +203,36 @@ const routes = [
     path: "/newstatus",
     name: "NewStatus",
     component: NewStatus,
+  },
+  {
+    path: "/updateemail",
+    name: "Uemail",
+    component: Uemail,
+  },
+  {
+    path: "/optrpro",
+    name: "OptrPro",
+    component: OptrPro,
+  },
+  {
+    path: "/updatephone",
+    name: "Uphone",
+    component: Uphone,
+  },
+  {
+    path: "/updatepass",
+    name: "Upassword",
+    component: Upassword,
+  },
+  {
+    path: "/updatename",
+    name: "Uname",
+    component: Uname,
+  },
+  {
+    path: "/updatepan",
+    name: "Upan",
+    component: Upan,
   },
 ];
 

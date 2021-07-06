@@ -89,7 +89,6 @@ export default {
   name: "Propage",
   data: () => {
     return {
-      drawer: true,
       color: "",
       username: "",
       user_type: "",
@@ -107,6 +106,7 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
+     
         if (this.APIData.data["user_type"] == 1) {
           this.isOptr = true;
           this.color = "indigo darken-4";
