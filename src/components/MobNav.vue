@@ -74,7 +74,7 @@
             <v-list-item-icon>
               <v-icon color="white">mdi-logout</v-icon>
             </v-list-item-icon>
-            <v-list-item-content>
+            <v-list-item-content @click.prevent="signOut">
               <v-list-item-title>Sign Out</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -121,6 +121,15 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    signOut() {
+      this.$session.destroy();
+      localStorage.clear();
+      this.$router.push({
+        name: "Login",
+      });
+    },
   },
 };
 </script>

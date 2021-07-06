@@ -62,6 +62,34 @@
                             dense
                           ></v-text-field>
                         </validation-provider>
+                        <label>Phonenumber</label>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="Phone Number"
+                          :rules="{
+                            required: true,
+                          }"
+                        >
+                          <v-text-field
+                            v-model="phone"
+                            :error-messages="errors"
+                            label=" Phone number to contact your truck *"
+                            maxlength="10"
+                            :append-icon="icon"
+                            @input="checkPhone"
+                            outlined
+                            dense
+                          ></v-text-field>
+                        </validation-provider>
+                        <v-text-field
+                          v-if="otpfield"
+                          v-model="otp"
+                          label="Enter your OTP"
+                          @input="verified()"
+                          maxlength="6"
+                          outlined
+                          dense
+                        ></v-text-field>
                         <label>Password</label>
                         <v-text-field
                           v-model="password"
@@ -87,34 +115,6 @@
                           ]"
                           :type="show2 ? 'text' : 'password'"
                           @click:append="show2 = !show2"
-                          outlined
-                          dense
-                        ></v-text-field>
-                        <label>Phonenumber</label>
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="Phone Number"
-                          :rules="{
-                            required: true,
-                          }"
-                        >
-                          <v-text-field
-                            v-model="phone"
-                            :error-messages="errors"
-                            label=" Phone number to contact your truck *"
-                            maxlength="10"
-                            :append-icon="icon"
-                            @input="checkPhone"
-                            outlined
-                            dense
-                          ></v-text-field>
-                        </validation-provider>
-                        <v-text-field
-                          v-if="otpfield"
-                          v-model="otp"
-                          label="OTP"
-                          @input="verified()"
-                          maxlength="6"
                           outlined
                           dense
                         ></v-text-field>
@@ -202,7 +202,7 @@ export default {
       (this.phone = ""),
         (this.password = ""),
         (this.password2 = ""),
-        (this.name = "")
+        (this.name = "");
     },
     tsignup() {
       getAPI

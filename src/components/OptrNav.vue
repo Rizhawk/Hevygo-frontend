@@ -58,7 +58,12 @@
           </li>
           <li class="nav-item dropdown">
             <div class="dropdown">
-              <v-menu transition="slide-y-transition" bottom>
+              <v-menu
+                transition="slide-y-transition"
+                offset-x
+                close-on-content-click
+                bottom
+              >
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
                     class="my-3"
@@ -73,11 +78,16 @@
                 <v-list>
                   <v-list-item>
                     <v-list-item-title class="font-weight-medium caption"
-                      >Edit Profile</v-list-item-title
+                      ><v-icon x-small class="mr-1" color="black"
+                        >mdi-account-edit</v-icon
+                      >
+                      Edit Profile</v-list-item-title
                     >
                   </v-list-item>
-                  <v-list-item to="/login">
-                    <v-list-item-title class="font-weight-medium caption"
+                  <v-list-item @click.prevent="signOut">
+                    <v-list-item-title class="font-weight-medium caption">
+                      <v-icon class="mr-2" x-small color="black"
+                        >mdi-logout</v-icon
                       >Sign Out</v-list-item-title
                     >
                   </v-list-item>
@@ -144,6 +154,13 @@ export default {
       } else {
         this.navBar = true;
       }
+    },
+    signOut() {
+      this.$session.destroy();
+      localStorage.clear();
+      this.$router.push({
+        name: "Login",
+      });
     },
   },
 };
