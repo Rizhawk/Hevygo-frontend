@@ -38,7 +38,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/viewstatus">
+            <router-link to="/managestatus">
               <i class="now-ui-icons travel_info"></i>
               <p>Truck Status</p>
             </router-link>

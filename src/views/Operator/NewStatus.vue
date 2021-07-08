@@ -257,7 +257,7 @@ export default {
             this.message = this.APIData.message;
             this.snackbar = true;
             this.clear();
-            this.$router.push({ name: "Vstatus" });
+            this.$router.push({ name: "StatusTable" });
           } else {
             this.message = this.APIData.message;
             this.snackbar = true;

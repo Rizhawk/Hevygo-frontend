@@ -62,7 +62,7 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-item link href="/viewstatus">
+          <v-list-item link href="/managestatus">
             <v-list-item-icon>
               <v-icon color="white">mdi-radar</v-icon>
             </v-list-item-icon>

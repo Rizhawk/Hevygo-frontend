@@ -4,82 +4,115 @@
       <Dsidebar />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <Onavbar title="Trucks on Duty" />
+        <Onavbar title="Current Status of Truck" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
               <div class="card">
                 <div class="card-header">
-                  <h4
+                  <h5
                     class="
-                      card-title card-title
+                      card-title
                       font-weight-black
                       text-secondary
                       subtitle-1
                     "
                   >
-                    Current Status of Trucks
-                    <v-flex row justify-end>
-                      <v-btn
-                        color="primary"
-                        href="/newstatus"
-                        x-small
-                        depressed
-                        dark
-                        outlined
-                      >
-                        Add New Status
-                        <v-icon x-small color="whte">mdi-plus</v-icon>
-                      </v-btn></v-flex
-                    >
-                  </h4>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead
-                        class="
-                          text-primary
-                          font-weight-medium
-                          caption
-                          text-center
-                        "
-                      >
-                        <th>Truck</th>
-                        <th>Driver</th>
-                        <th>Driver's Phone</th>
-                        <th>Status</th>
-                        <th>Location</th>
-                      </thead>
-                      <tbody class="font-weight-medium caption text-center">
-                        <tr
-                          v-for="truck in truckdriver"
-                          :key="truck.truck.id"
-                          @click.prevent="
-                            getDetails(truck.truck['truck']['id'])
-                          "
-                        >
-                          <td>
-                            {{ truck.truck.registration }}
-                          </td>
-                          <td>
-                            {{ truck.driver["driver_name"] }}
-                          </td>
-                          <td>
-                            {{ truck.driver["phone"] }}
-                          </td>
-                          <td>
-                            {{ truck.status }}
-                          </td>
-                          <td>
-                            {{ truck.location }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    {{ this.truck }}
+                  </h5>
+                  <div class="card-body">
+                    <form @submit.prevent="updateStatus">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Truck</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              disabled=""
+                              :value="truck"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Driver</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              disabled=""
+                              :value="driver"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Driver's Phone </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              disabled=""
+                              :value="phone"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Current Location</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              disabled=""
+                              :value="cloc"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Current Status</label>
+                            <v-select
+                              class="status"
+                              v-model="status"
+                              :items="stats"
+                              autofocus
+                              rounded
+                              outlined
+                              dense
+                            >
+                            </v-select>
+                          </div>
+                        </div>
+                        <v-flex row class="my-2" justify-center
+                          ><v-btn
+                            type="submit"
+                            x-small
+                            color="green darken-4"
+                            depressed
+                            outlined
+                            >Update</v-btn
+                          >
+                          <v-btn
+                            class="mx-2"
+                            x-small
+                            color="black"
+                            depressed
+                            outlined
+                            @click.prevent="back"
+                            >Back</v-btn
+                          >
+                        </v-flex>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -89,58 +122,12 @@
         <Dfooter />
       </div>
     </div>
-    <v-dialog
-      max-width="350px"
-      max-height="auto"
-      v-model="show"
-      persistent
-      overlay-opacity=".3"
-    >
-      <v-card color="rgb(34, 48, 61)" dark max-width="350px">
-        <v-card-title class="font-weight-black body-1">Truck</v-card-title>
-        <v-card-subtitle>{{ truck }}</v-card-subtitle>
-        <v-card-title class="font-weight-black body-1">Driver</v-card-title>
-        <v-card-subtitle>{{ driver }}</v-card-subtitle>
-        <v-card-title class="font-weight-black body-1">Status </v-card-title>
-        <v-select
-          class="status"
-          v-model="status"
-          :items="stats"
-          autofocus
-          dark
-          outlined
-          dense
-        >
-        </v-select>
-        <v-card-title class="font-weight-black body-1">Location </v-card-title>
-        <v-card-subtitle>{{ location }}</v-card-subtitle>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            x-small
-            dark
-            color="green darken-4"
-            outlined
-            @click.prevent="updateStatus"
-            >Update</v-btn
-          >
-          <v-btn
-            x-small
-            dark
-            color="red darken-4"
-            @click.prevent="show = !show"
-            outlined
-            >Close</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-app>
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Dsidebar from "../../components/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
+import Dsidebar from "../../components/dashsidebar.vue";
 import Onavbar from "../../components/OptrNav.vue";
 import MobNav from "../../components/MobNav.vue";
 export default {
@@ -153,68 +140,47 @@ export default {
   },
   data: () => {
     return {
-      truckdriver: [],
-      show: false,
       truck: "",
       driver: "",
+      phone: "",
+      cloc: "",
       status: "",
-      location: "",
-      tid: "",
       stats: ["Unavailable", "Available"],
     };
   },
-  created: function () {
-    //Api call to fetch status of all trucks
+  beforeCreate: function () {
     getAPI
-      .get("/api/truck/list_truck_status/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
+      .get(
+        "/api/truck/view_truck_status/?truck_id=" + localStorage.getItem("tid"),
+        {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        }
+      )
       .then((response) => {
         this.APIData = response.data;
-        console.log(this.APIData);
-        this.truckdriver = this.APIData.data;
+        if (this.APIData.Http_response == 200) {
+          this.truck = this.APIData.data.truck["registration"];
+          this.driver = this.APIData.data.driver["driver_name"];
+          this.phone = this.APIData.data.driver["phone"];
+          this.cloc = this.APIData.data["location"];
+          this.status = this.APIData.data["status"];
+        } else {
+          alert(this.APIData.message);
+        }
       })
       .catch((err) => {
         alert(err);
       });
-    //
   },
   methods: {
-    showdetail(location) {
-      this.$session.set("cp", location);
-      this.$router.push({ name: "Tracktruck" });
-    },
-    getDetails(id) {
-      console.log(id);
-      getAPI
-        .get("/api/truck/view_truck_status/?truck_id=" + id, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.APIData.Http_response == 200) {
-            this.truck = this.APIData.data.truck["registration"];
-            this.driver = this.APIData.data.driver["driver_name"];
-            this.status = this.APIData.data["status"];
-            this.location = this.APIData.data["location"];
-            this.tid = this.APIData.data["truck"]["id"];
-            this.show = true;
-          }
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    },
     updateStatus() {
       getAPI
         .post(
           "/api/truck/update_truck_status/",
           {
-            truck_id: this.tid,
+            truck_id: localStorage.getItem("tid"),
             status: this.status,
           },
           {
@@ -234,6 +200,10 @@ export default {
         .catch((err) => {
           alert(err);
         });
+    },
+    back() {
+      localStorage.removeItem("tid");
+      this.$router.push({ name: "StatusTable" });
     },
   },
 };

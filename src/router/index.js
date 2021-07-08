@@ -5,15 +5,11 @@ import Booking from "../views/Customer/booktruck.vue";
 import Login from "../views/login.vue";
 import Csignup from "../views/Customer/custsignup.vue";
 import Osignup from "../views/Operator/optrsignup.vue";
-import Cpage from "../components/custpage.vue";
-import Opage from "../components/optrpage.vue";
 import Admin from "../views/Admin/adminhome.vue";
 import Regadmin from "../views/Admin/newadmin.vue";
 import AOreg from "../views/Admin/optrreg.vue";
 import ATreg from "../views/Admin/truckreg.vue";
-import Dpage from "../views/driverpage.vue";
 import Padd from "../views/Operator/panadd";
-import Tstats from "../views/Operator/viewstats";
 import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
 import Newcust from "../views/Customer/newcustsignup";
@@ -25,7 +21,7 @@ import Changedetails from "../views/ProfileUpdate/changedetails.vue";
 import Dashboard from "../views/Operator/dashboard.vue";
 import TrucksTable from "../views/Operator/ManageTrucks.vue";
 import DriverTable from "../views/Operator/ManageDrivers.vue";
-import Vstatus from "../views/Operator/ViewStatus.vue";
+import StatusTable from "../views/Operator/ManageStatus.vue";
 import Hmap from "../views/Operator/Map.vue";
 import Rtruck from "../views/Operator/RegTruck.vue";
 import InfoTruck from "../views/Operator/InfoTruck.vue";
@@ -38,6 +34,9 @@ import Uphone from "../views/ProfileUpdate/UpdatePhone.vue";
 import Upassword from "../views/ProfileUpdate/UpdatePassword.vue";
 import Uname from "../views/ProfileUpdate/UpdateName.vue";
 import Upan from "../views/ProfileUpdate/UpdatePan.vue";
+import Vspecs from "../views/Operator/ViewSpecs.vue";
+import Vstatus from "../views/Operator/ViewStatus.vue";
+import Vdriver from "../views/Operator/ViewDriver.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -90,29 +89,9 @@ const routes = [
     component: ATreg,
   },
   {
-    path: "/custpage",
-    name: "Cpage",
-    component: Cpage,
-  },
-  {
-    path: "/optrpage",
-    name: "Opage",
-    component: Opage,
-  },
-  {
-    path: "/driverpage",
-    name: "Dpage",
-    component: Dpage,
-  },
-  {
     path: "/panadd",
     name: "Padd",
     component: Padd,
-  },
-  {
-    path: "/viewstats",
-    name: "Tstats",
-    component: Tstats,
   },
   {
     path: "/HereMap",
@@ -175,9 +154,9 @@ const routes = [
     component: Rtruck,
   },
   {
-    path: "/viewstatus",
-    name: "Vstatus",
-    component: Vstatus,
+    path: "/managestatus",
+    name: "StatusTable",
+    component: StatusTable,
   },
   {
     path: "/Map",
@@ -233,6 +212,21 @@ const routes = [
     path: "/updatepan",
     name: "Upan",
     component: Upan,
+  },
+  {
+    path: "/viewspecs",
+    name: "Vspecs",
+    component: Vspecs,
+  },
+  {
+    path: "/viewstatus",
+    name: "Vstatus",
+    component: Vstatus,
+  },
+  {
+    path: "/viewdriver",
+    name: "Vdriver",
+    component: Vdriver,
   },
 ];
 
