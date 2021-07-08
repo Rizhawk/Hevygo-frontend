@@ -5,6 +5,7 @@ import Booking from "../views/Customer/booktruck.vue";
 import Login from "../views/login.vue";
 import Csignup from "../views/Customer/custsignup.vue";
 import Osignup from "../views/Operator/optrsignup.vue";
+import Cpage from "../components/custpage.vue";
 import Admin from "../views/Admin/adminhome.vue";
 import Regadmin from "../views/Admin/newadmin.vue";
 import AOreg from "../views/Admin/optrreg.vue";
@@ -16,8 +17,6 @@ import Newcust from "../views/Customer/newcustsignup";
 import Cbookings from "../views/Customer/bookings";
 import Ctrack from "../views/Customer/custrack";
 import ForgotPass from "../views/forgotpassword.vue";
-import Propage from "../components/profilepage.vue";
-import Changedetails from "../views/ProfileUpdate/changedetails.vue";
 import Dashboard from "../views/Operator/dashboard.vue";
 import TrucksTable from "../views/Operator/ManageTrucks.vue";
 import DriverTable from "../views/Operator/ManageDrivers.vue";
@@ -89,6 +88,11 @@ const routes = [
     component: ATreg,
   },
   {
+    path: "/custpage",
+    name: "Cpage",
+    component: Cpage,
+  },
+  {
     path: "/panadd",
     name: "Padd",
     component: Padd,
@@ -122,16 +126,6 @@ const routes = [
     path: "/forgotpassword",
     name: "ForgotPass",
     component: ForgotPass,
-  },
-  {
-    path: "/profilepage",
-    name: "Propage",
-    component: Propage,
-  },
-  {
-    path: "/changedetails",
-    name: "Changedetails",
-    component: Changedetails,
   },
   {
     path: "/dashboard",
