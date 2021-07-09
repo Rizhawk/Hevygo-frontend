@@ -6,8 +6,8 @@
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-3"></div>
+            <div class="col-md-5">
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -24,7 +24,7 @@
                 <div class="card-body">
                   <form>
                     <div class="row">
-                      <div class="col-md-5 pr-1">
+                      <div class="col-md-12">
                         <div class="form-group">
                           <label>Name</label>
                           <input
@@ -36,7 +36,7 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-3 px-1">
+                      <div class="col-md-12">
                         <div class="form-group">
                           <label>Phonenumber</label>
                           <input
@@ -48,41 +48,15 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-4 pl-1">
+                      <div class="col-md-12">
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Email Id</label>
+                          <label>Email Id</label>
                           <input
-                            type="email"
+                            type="text"
                             class="form-control"
+                            disabled=""
                             placeholder="Email Id"
-                            disabled=""
                             :value="email"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6 pr-1">
-                        <div class="form-group">
-                          <label>PAN Number</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="PAN Number"
-                            disabled=""
-                            :value="pan"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-6 pl-1">
-                        <div class="form-group">
-                          <label>Gst Number</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            disabled=""
-                            placeholder="GST Number"
-                            :value="gst"
                           />
                         </div>
                       </div>
@@ -101,7 +75,7 @@
 import { getAPI } from "../../axios-api";
 import Upage from "../ProfileUpdate/UpdatePage.vue";
 export default {
-  name: "OptrPro",
+  name: "CustPro",
   components: {
     Upage,
   },
@@ -110,24 +84,20 @@ export default {
       name: "",
       phone: "",
       email: "",
-      pan: "",
-      gst: "",
     };
   },
-  created: function () {
+  beforeCreate: function () {
     getAPI
-      .get("/api/operators/view_operator_info/", {
+      .get("/api/accounts/is_login/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },
       })
       .then((response) => {
         this.APIData = response.data;
-        this.name = this.APIData.data["user"]["name"];
-        this.phone = this.APIData.data["user"]["phone"];
-        this.email = this.APIData.data["user"]["email"];
-        this.pan = this.APIData.data.pan;
-        this.gst = this.APIData.data.gst_no;
+        this.name = this.APIData.data["username"];
+        this.email = this.APIData.data["email"];
+        this.phone = this.APIData.data["phone"];
       })
       .catch((err) => {
         console.log(err);

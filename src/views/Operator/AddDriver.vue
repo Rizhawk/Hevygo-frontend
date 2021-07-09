@@ -61,7 +61,6 @@
                           <v-text-field
                             v-model="driver_name"
                             :error-messages="errors"
-                            label="Driver Name *"
                             outlined
                             dense
                           ></v-text-field>
@@ -77,7 +76,6 @@
                           <v-text-field
                             v-model="phone"
                             :error-messages="errors"
-                            label="Driver Phone Number *"
                             maxlength="10"
                             :append-icon="icon"
                             @input="checkPhone"
@@ -89,7 +87,7 @@
                           v-if="otpfield"
                           v-model="otp"
                           autofocus
-                          label="OTP"
+                          label="Enter your OTP"
                           @input="verified()"
                           maxlength="6"
                           outlined

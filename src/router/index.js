@@ -36,6 +36,8 @@ import Upan from "../views/ProfileUpdate/UpdatePan.vue";
 import Vspecs from "../views/Operator/ViewSpecs.vue";
 import Vstatus from "../views/Operator/ViewStatus.vue";
 import Vdriver from "../views/Operator/ViewDriver.vue";
+import Newbooking from "../views/Customer/NewTruckBook.vue";
+import CustPro from "../views/ProfileUpdate/ViewCustProfile.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -103,7 +105,7 @@ const routes = [
     component: HereMap,
   },
   {
-    path: "/booknewtruck",
+    path: "/booknewtruckold",
     name: "Bnewtruck",
     component: Bnewtruck,
   },
@@ -188,6 +190,11 @@ const routes = [
     component: OptrPro,
   },
   {
+    path: "/custpro",
+    name: "CustPro",
+    component: CustPro,
+  },
+  {
     path: "/updatephone",
     name: "Uphone",
     component: Uphone,
@@ -221,6 +228,11 @@ const routes = [
     path: "/viewdriver",
     name: "Vdriver",
     component: Vdriver,
+  },
+  {
+    path: "/booknewtruck",
+    name: "Newbooking",
+    component: Newbooking,
   },
 ];
 

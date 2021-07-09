@@ -70,6 +70,15 @@
               <v-list-item-title>Trucks Status</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item link href="/optrpro">
+            <v-list-item-icon>
+              <v-icon color="white">mdi-account-edit</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Edit Profile</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item link href="/login">
             <v-list-item-icon>
               <v-icon color="white">mdi-logout</v-icon>

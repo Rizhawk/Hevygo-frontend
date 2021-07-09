@@ -101,7 +101,7 @@ export default {
           if (this.APIData.data["user_type"] == 1) {
             this.$router.push({ name: "Dashboard" });
           } else if (this.APIData.data["user_type"] == 2) {
-            this.$router.push({ name: "Bnewtruck" });
+            this.$router.push({ name: "Newbooking" });
           } else if (this.APIData.data["user_type"] == 3) {
             this.$router.push({ name: "Dpage" });
           } else if (this.APIData.data["user_type"] == 4) {

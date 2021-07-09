@@ -41,7 +41,6 @@
                         >
                           <v-select
                             v-model="reg"
-                            label="Truck"
                             :error-messages="errors"
                             :items="trucks"
                             @input="getLoction()"
@@ -60,7 +59,6 @@
                         >
                           <v-select
                             v-model="driver"
-                            label="Drivers"
                             :error-messages="errors"
                             :items="drivers"
                             clearable
@@ -79,7 +77,6 @@
                           <v-select
                             v-model="status"
                             :items="stats"
-                            label="Status"
                             :error-messages="errors"
                             clearable
                             outlined
@@ -96,7 +93,6 @@
                         >
                           <v-text-field
                             v-model="loc"
-                            label="Location"
                             :error-messages="errors"
                             clearable
                             outlined

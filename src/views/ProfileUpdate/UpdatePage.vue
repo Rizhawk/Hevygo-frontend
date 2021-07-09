@@ -61,7 +61,7 @@
       </v-list-item>
       <v-divider color="white" class="my-16"></v-divider>
       <v-list dense nav>
-        <v-list-item link href="/optrpro">
+        <v-list-item link :href="profile">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-account</v-icon>
           </v-list-item-icon>
@@ -125,8 +125,10 @@
 import { getAPI } from "../../axios-api";
 export default {
   name: "Upage",
+
   data: () => {
     return {
+      profile: "",
       show: true,
       color: "",
       isOptr: false,
@@ -146,8 +148,10 @@ export default {
         if (this.APIData.data["user_type"] == 1) {
           this.isOptr = true;
           this.color = "red";
+          this.profile = "/optrpro";
         } else if (this.APIData.data["user_type"] == 2) {
           this.color = "blue";
+          this.profile = "/custpro";
         }
         this.user_type = this.APIData.data["user_type"];
       })
@@ -160,7 +164,7 @@ export default {
       if (this.user_type == 1) {
         this.$router.push({ name: "Dashboard" });
       } else if (this.user_type == 2) {
-        this.$router.push({ name: "Cpage" });
+        this.$router.push({ name: "Newbooking" });
       }
     },
   },

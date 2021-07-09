@@ -54,19 +54,8 @@ import "../../assets/css/now-ui-dashboard.css";
 export default {
   name: "Dsidebar",
   data: () => {
-    return {
-      // mainSide: true,
-    };
+    return {};
   },
-  methods: {
-    // isMobile() {
-    //   if (screen.width <= 760) {
-    //     this.mainSide = false;
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
-  },
+  methods: {},
 };
 </script>

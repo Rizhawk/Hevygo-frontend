@@ -42,12 +42,7 @@
               <li class="nav-item dropdown">
                 <v-menu transition="slide-y-transition" bottom>
                   <template v-slot:activator="{ on, attrs }">
-                    <v-icon
-                      class="my-3"
-                      color="white"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
+                    <v-icon class="my-3" color="white" v-bind="attrs" v-on="on">
                       mdi-truck</v-icon
                     >
                   </template>
@@ -74,7 +69,11 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <div class="card-header">Here Map</div>
+              <div
+                class="card-header font-weight-medium text-secondary caption"
+              >
+                Here Map
+              </div>
               <div class="card-body">
                 <!-- <div id="map" class="map"></div> -->
                 <div id="map">

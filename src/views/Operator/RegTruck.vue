@@ -56,7 +56,6 @@
                           <v-text-field
                             v-model="name"
                             :error-messages="errors"
-                            label="Name of your truck"
                             clearable
                             outlined
                             dense
@@ -73,7 +72,6 @@
                           <v-text-field
                             v-model="phone"
                             :error-messages="errors"
-                            label=" Phone number to contact your truck *"
                             maxlength="10"
                             :append-icon="icon"
                             @input="checkPhone"
@@ -93,7 +91,6 @@
                         <label>Password</label>
                         <v-text-field
                           v-model="password"
-                          label="Password *"
                           name="password"
                           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="passwordRules"
@@ -105,7 +102,6 @@
                         <label>Confirm Password</label>
                         <v-text-field
                           v-model="password2"
-                          label="Confirm Password *"
                           name="confirmPassword"
                           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="[
