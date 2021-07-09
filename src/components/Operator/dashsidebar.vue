@@ -49,8 +49,8 @@
   </nav>
 </template>
 <script>
-import "../assets/css/bootstrap.min.css";
-import "../assets/css/now-ui-dashboard.css";
+import "../../assets/css/bootstrap.min.css";
+import "../../assets/css/now-ui-dashboard.css";
 export default {
   name: "Dsidebar",
   data: () => {

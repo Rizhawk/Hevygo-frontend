@@ -118,10 +118,10 @@
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Dsidebar from "../../components/dashsidebar.vue";
+import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
-import Onavbar from "../../components/OptrNav.vue";
-import MobNav from "../../components/MobNav.vue";
+import Onavbar from "../../components/Operator/OptrNav.vue";
+import MobNav from "../../components/Operator/MobNav.vue";
 export default {
   name: "TrucksTable",
   components: {

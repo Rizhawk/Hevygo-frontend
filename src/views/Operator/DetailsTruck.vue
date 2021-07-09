@@ -117,10 +117,10 @@
   </v-app>
 </template>
 <script>
-import Dsidebar from "../../components/dashsidebar.vue";
+import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
-import Onavbar from "../../components/OptrNav.vue";
-import MobNav from "../../components/MobNav.vue";
+import Onavbar from "../../components/Operator/OptrNav.vue";
+import MobNav from "../../components/Operator/MobNav.vue";
 import { getAPI } from "../../axios-api";
 import { required } from "vee-validate/dist/rules";
 import {

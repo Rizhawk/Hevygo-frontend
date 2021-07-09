@@ -96,7 +96,7 @@
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Dsidebar from "../../components/dashsidebar.vue";
+import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
 import "../../assets/js/plugins/perfect-scrollbar.jquery.min.js";
 import "../../assets/js/core/jquery.min.js";

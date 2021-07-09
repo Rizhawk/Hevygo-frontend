@@ -354,9 +354,9 @@
 </template>
 <script>
 import Dfooter from "../../components/dashfooter.vue";
-import Dsidebar from "../../components/dashsidebar.vue";
-import Onavbar from "../../components/OptrNav.vue";
-import MobNav from "../../components/MobNav.vue";
+import Dsidebar from "../../components/Operator/dashsidebar.vue";
+import Onavbar from "../../components/Operator/OptrNav.vue";
+import MobNav from "../../components/Operator/MobNav.vue";
 import "../../assets/demo/demo.js";
 export default {
   name: "Dashboard",
