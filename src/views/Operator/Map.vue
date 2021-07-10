@@ -19,7 +19,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Maps</a>
+            <a class="navbar-brand" href="#pablo">Locate Your Truck</a>
           </div>
           <button
             class="navbar-toggler"

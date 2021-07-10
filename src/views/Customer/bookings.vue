@@ -130,7 +130,7 @@
 import { getAPI } from "../../axios-api";
 import Cpage from "../../components/custpage";
 export default {
-  name: "Cbookings",
+  name: "Cbooking",
   components: {
     Cpage,
   },
@@ -170,7 +170,7 @@ export default {
   beforeMount() {
     //Api call to fetch all destination details of current customer
     getAPI
-      .get("api/customer/cust-dest-list/", {
+      .get("api/customers/cust-dest-list/", {
         headers: {
           Authorization: `Token ${this.$session.get("user_token")}`,
         },

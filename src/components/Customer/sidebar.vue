@@ -19,7 +19,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to="#">
+            <router-link to="/bookings">
               <i class="now-ui-icons ui-1_calendar-60"></i>
               <p>Current Bookings</p>
             </router-link>

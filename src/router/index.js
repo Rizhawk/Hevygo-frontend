@@ -14,7 +14,7 @@ import Padd from "../views/Operator/panadd";
 import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
 import Newcust from "../views/Customer/newcustsignup";
-import Cbookings from "../views/Customer/bookings";
+import Cbooking from "../views/Customer/bookings";
 import Ctrack from "../views/Customer/custrack";
 import ForgotPass from "../views/forgotpassword.vue";
 import Dashboard from "../views/Operator/dashboard.vue";
@@ -38,6 +38,8 @@ import Vstatus from "../views/Operator/ViewStatus.vue";
 import Vdriver from "../views/Operator/ViewDriver.vue";
 import Newbooking from "../views/Customer/NewTruckBook.vue";
 import CustPro from "../views/ProfileUpdate/ViewCustProfile.vue";
+import Cbookings from "../views/Customer/CurrentBookings.vue";
+import RouteMap from "../views/Customer/ShowRoute.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -115,9 +117,9 @@ const routes = [
     component: Newcust,
   },
   {
-    path: "/bookings",
-    name: "Cbookings",
-    component: Cbookings,
+    path: "/oldbookings",
+    name: "Cbooking",
+    component: Cbooking,
   },
   {
     path: "/custrack",
@@ -233,6 +235,16 @@ const routes = [
     path: "/booknewtruck",
     name: "Newbooking",
     component: Newbooking,
+  },
+  {
+    path: "/bookings",
+    name: "Cbookings",
+    component: Cbookings,
+  },
+  {
+    path: "/showroute",
+    name: "RouteMap",
+    component: RouteMap,
   },
 ];
 

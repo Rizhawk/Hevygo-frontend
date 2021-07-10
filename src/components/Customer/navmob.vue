@@ -34,7 +34,7 @@
               <v-list-item-title>Book a New Truck</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link href="#">
+          <v-list-item link href="/bookings">
             <v-list-item-icon>
               <v-icon color="white">mdi-truck</v-icon>
             </v-list-item-icon>

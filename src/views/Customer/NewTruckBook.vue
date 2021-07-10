@@ -336,7 +336,7 @@ export default {
       } else {
         getAPI
           .post(
-            "/api/customer/cust-dest-create/",
+            "api/customers/cust-dest-create/",
             {
               start_location: this.startlocation,
               end_location: this.endlocation,
@@ -357,7 +357,7 @@ export default {
             this.$session.set("el", this.endlocation);
             this.clear();
             localStorage.clear();
-            this.$router.push({ name: "HereMap" });
+            this.$router.push({ name: "RouteMap" });
           })
           .catch((err) => {
             alert(err);

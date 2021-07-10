@@ -1,0 +1,94 @@
+<template>
+  <v-app>
+    <div class="wrapper">
+      <Csidebar />
+      <div class="main-panel" id="main-panel">
+        <!-- Navbar -->
+        <Cnavbar title="Current Bookings" />
+        <Cmobnav />
+        <div class="panel-header panel-header-sm"></div>
+        <div class="content">
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="
+                      card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    Current Bookings
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead
+                        class="
+                          text-primary
+                          font-weight-medium
+                          caption
+                          text-center
+                        "
+                      >
+                        <th>Date of Transport</th>
+                        <th>Start Location</th>
+                        <th>End Location</th>
+                      </thead>
+                      <tbody class="font-weight-medium caption text-center">
+                        <tr v-for="dest in destdetails" :key="dest.id">
+                          <td>{{ dest.date }}</td>
+                          <td>{{ dest.start_location }}</td>
+                          <td>{{ dest.end_location }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </v-app>
+</template>
+<script>
+import { getAPI } from "../../axios-api";
+import Csidebar from "../../components/Customer/sidebar.vue";
+import Cnavbar from "../../components/Customer/navbar.vue";
+import Cmobnav from "../../components/Customer/navmob.vue";
+export default {
+  name: "Cbookings",
+  components: {
+    Csidebar,
+    Cnavbar,
+    Cmobnav,
+  },
+  data: () => {
+    return {
+      destdetails: [],
+    };
+  },
+  beforeMount: function () {
+    //Api call to fetch all destination details of current customer
+    getAPI
+      .get("api/customers/cust-dest-list/", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.destdetails = this.APIData;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+};
+</script>
