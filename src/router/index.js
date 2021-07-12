@@ -40,6 +40,7 @@ import Newbooking from "../views/Customer/NewTruckBook.vue";
 import CustPro from "../views/ProfileUpdate/ViewCustProfile.vue";
 import Cbookings from "../views/Customer/CurrentBookings.vue";
 import RouteMap from "../views/Customer/ShowRoute.vue";
+import Vdestdetail from "../views/Customer/ViewDestDetails.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -245,6 +246,11 @@ const routes = [
     path: "/showroute",
     name: "RouteMap",
     component: RouteMap,
+  },
+  {
+    path: "/viewdestdetails",
+    name: "Vdestdetail",
+    component: Vdestdetail,
   },
 ];
 

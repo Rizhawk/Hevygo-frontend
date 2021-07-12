@@ -40,7 +40,11 @@
                         <th>End Location</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
-                        <tr v-for="dest in destdetails" :key="dest.id">
+                        <tr
+                          v-for="dest in destdetails"
+                          :key="dest.id"
+                          @click.prevent="viewDest(dest.id)"
+                        >
                           <td>{{ dest.date }}</td>
                           <td>{{ dest.start_location }}</td>
                           <td>{{ dest.end_location }}</td>
@@ -84,11 +88,17 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-        this.destdetails = this.APIData;
+        this.destdetails = this.APIData.data;
       })
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    viewDest(id) {
+      localStorage.setItem("destid", id);
+      this.$router.push({ name: "Vdestdetail" });
+    },
   },
 };
 </script>
