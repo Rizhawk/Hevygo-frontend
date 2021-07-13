@@ -47,7 +47,7 @@
     <!-- End Navbar -->
     <div class="panel-header panel-header-sm">
       <v-flex row justify-end>
-        <v-btn x-small color=" green lighten-1" depressed dark outlined
+        <v-btn x-small color=" green lighten-1" to="/bookings" depressed dark outlined
           >Proceed to Pay</v-btn
         ></v-flex
       >

@@ -9,8 +9,8 @@
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -38,6 +38,7 @@
                         <th>Date of Transport</th>
                         <th>Start Location</th>
                         <th>End Location</th>
+                        <th>Status of Transport</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr
@@ -48,6 +49,52 @@
                           <td>{{ dest.date }}</td>
                           <td>{{ dest.start_location }}</td>
                           <td>{{ dest.end_location }}</td>
+                          <td>
+                            <p
+                              v-if="dest.status == 1"
+                              class="
+                                font-weight-medium
+                                caption
+                                text-center
+                                orange--text
+                              "
+                            >
+                              Payment Pending
+                            </p>
+                            <p
+                              v-if="dest.status == 2"
+                              class="
+                                font-weight-medium
+                                caption
+                                text-center
+                                blue--text
+                              "
+                            >
+                              In Progress
+                            </p>
+                            <p
+                              v-if="dest.status == 3"
+                              class="
+                                font-weight-medium
+                                caption
+                                text-center
+                                green--text
+                              "
+                            >
+                              Completed
+                            </p>
+                            <p
+                              v-if="dest.status == 4"
+                              class="
+                                font-weight-medium
+                                caption
+                                text-center
+                                red--text
+                              "
+                            >
+                              Not Found
+                            </p>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -102,3 +149,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+#id {
+  text-decoration: none;
+}
+</style>

@@ -30,10 +30,10 @@
                         <div class="form-group">
                           <label>Start Location</label>
                           <input
+                            v-model="sl"
                             type="text"
                             class="form-control"
                             disabled=""
-                            :value="sl"
                           />
                         </div>
                       </div>
@@ -42,10 +42,10 @@
                         <div class="form-group">
                           <label>End Location</label>
                           <input
+                            v-model="el"
                             type="text"
                             class="form-control"
                             disabled=""
-                            :value="el"
                           />
                         </div>
                       </div>
@@ -55,10 +55,10 @@
                         <div class="form-group">
                           <label>Weight of Goods</label>
                           <input
+                            v-model="wt"
                             type="text"
                             class="form-control"
-                            disabled=""
-                            :value="wt"
+                            :disabled="change"
                           />
                         </div>
                       </div>
@@ -66,22 +66,26 @@
                         <div class="form-group">
                           <label> Type of Goods</label>
                           <input
+                            v-model="gt"
                             type="text"
                             class="form-control"
-                            disabled=""
-                            :value="gt"
+                            :disabled="change"
                           />
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label>Type of Vehicle</label>
-                          <input
-                            type="text"
+                          <label for="types">Type of Vehicle</label>
+                          <select
+                            v-model="vt"
+                            id="types"
                             class="form-control"
-                            disabled=""
-                            :value="vt"
-                          />
+                            :disabled="change"
+                          >
+                            <option v-for="vt in types" :key="vt" :value="vt">
+                              {{ vt }}
+                            </option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -90,10 +94,10 @@
                         <div class="form-group">
                           <label>Date of Transport</label>
                           <input
-                            type="text"
+                            v-model="dt"
+                            type="date"
                             class="form-control"
-                            disabled=""
-                            :value="dt"
+                            :disabled="change"
                           />
                         </div>
                       </div>
@@ -101,23 +105,51 @@
                         <div class="form-group">
                           <label>Status of Transport</label>
                           <input
+                            v-model="st"
                             type="text"
                             class="form-control"
                             disabled=""
-                            :value="st"
                           />
                         </div>
                       </div>
-                      <v-flex row class="my-2" justify-center
-                        ><v-btn
+                      <v-flex row class="my-2" justify-center>
+                        <v-btn
+                          v-if="stn == 1"
+                          x-small
+                          color="green"
+                          depressed
+                          to="/payment"
+                          outlined
+                          >Payment</v-btn
+                        >
+                        <v-btn
+                          v-if="stn == 3"
+                          x-small
+                          color="green"
+                          depressed
+                          outlined
+                          @click.prevent="show = true"
+                          >Book Again</v-btn
+                        >
+                        <v-btn
                           type="submit"
                           x-small
+                          class="mx-2"
                           color="black"
                           depressed
                           outlined
                           >Back</v-btn
-                        ></v-flex
-                      >
+                        >
+                        <v-btn
+                          v-if="stn == 3"
+                          x-small
+                          @click.prevent="change = !change"
+                          color="orange"
+                          depressed
+                          outlined
+                          >Edit Details</v-btn
+                        >
+                      </v-flex>
                     </div>
                   </form>
                 </div>
@@ -129,10 +161,26 @@
                 <div class="card-body">
                   <div class="author">
                     <a href="#">
-                      <h5 class="title">Transaction Details</h5>
+                      <h5
+                        class="
+                          card-title
+                          font-weight-black
+                          text-secondary
+                          blue--text
+                          subtitle-1
+                        "
+                      >
+                        Transaction Details
+                      </h5>
                     </a>
-                    <p class="description">Destination</p>
+                    <p class="description caption font-weight-bold">
+                      {{ this.st }}
+                    </p>
                   </div>
+                  <!-- <v-card>
+                    <v-card-title class="body-2">Driver</v-card-title>
+                    <v-card-subtitle>Rajan</v-card-subtitle>
+                  </v-card> -->
                 </div>
                 <hr />
                 <div class="button-container">
@@ -161,6 +209,28 @@
         </div>
       </div>
     </div>
+    <v-dialog persistent v-model="show" max-width="365">
+      <v-card>
+        <v-card-title class="caption font-weight-bold black--text"
+          >Are you sure want to book a new shipment with the current
+          details?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="ml-5"
+            x-small
+            @click.prevent="bookTruck"
+            outlined
+            color="green"
+            >Book</v-btn
+          >
+          <v-btn color="red" x-small @click="show = !show" outlined
+            >No</v-btn
+          ></v-card-actions
+        >
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <script>
@@ -184,6 +254,19 @@ export default {
       gt: "",
       dt: "",
       st: "",
+      stn: "",
+      change: true,
+      show: false,
+      types: [
+        "Tipper",
+        "Lorry",
+        "Pickup",
+        "Tanker",
+        "Tow truck",
+        "Van",
+        "Container Truck",
+        "Car transporter",
+      ],
     };
   },
   beforeCreate: function () {
@@ -204,7 +287,19 @@ export default {
         this.vt = this.APIData.data.vehicle_type;
         this.gt = this.APIData.data.goods_type;
         this.dt = this.APIData.data.date;
-        this.st = this.APIData.data.status;
+        if (this.APIData.data.status == 1) {
+          this.st = "Payment Pending";
+          this.stn = 1;
+        } else if (this.APIData.data.status == 2) {
+          this.st = "In Progress";
+          this.stn = 2;
+        } else if (this.APIData.data.status == 3) {
+          this.st = "Completed";
+          this.stn = 3;
+        } else if (this.APIData.data.status == 4) {
+          this.st = "Not Found  (Unable to find a Driver)";
+          this.stn = 4;
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -214,6 +309,34 @@ export default {
     back() {
       localStorage.removeItem("destid");
       this.$router.push({ name: "Cbookings" });
+    },
+    bookTruck() {
+      getAPI
+        .post(
+          "api/customers/cust-dest-create/",
+          {
+            start_location: this.sl,
+            end_location: this.el,
+            weight: this.wt,
+            goods_type: this.gt,
+            date: this.dt,
+            vehicle_type: this.vt,
+          },
+          {
+            headers: {
+              Authorization: ` Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          this.$session.set("sl", this.sl);
+          this.$session.set("el", this.el);
+          this.$router.push({ name: "RouteMap" });
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };
