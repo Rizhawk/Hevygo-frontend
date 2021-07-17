@@ -186,7 +186,7 @@
                       {{ this.st }}
                     </p>
                   </div>
-                  <!-- <v-card>
+                  <v-card>
                     <v-card-title
                       class="
                         font-weight-black
@@ -196,7 +196,7 @@
                       "
                       >Truck</v-card-title
                     >
-                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-subtitle>{{ truck }}</v-card-subtitle>
 
                     <v-card-title
                       class="
@@ -207,7 +207,7 @@
                       "
                       >Driver</v-card-title
                     >
-                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-subtitle>{{ driver }}</v-card-subtitle>
                     <v-card-title
                       class="
                         font-weight-black
@@ -217,7 +217,7 @@
                       "
                       >Contact Driver</v-card-title
                     >
-                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-subtitle>{{ drphn }}</v-card-subtitle>
                     <v-card-title
                       class="
                         font-weight-black
@@ -227,7 +227,7 @@
                       "
                       >Operator</v-card-title
                     >
-                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-subtitle>{{ optr }}</v-card-subtitle>
                     <v-card-title
                       class="
                         font-weight-black
@@ -237,7 +237,7 @@
                       "
                       >Contact Operator</v-card-title
                     >
-                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-subtitle>{{ optrphn }}</v-card-subtitle>
                     <v-card-title
                       class="
                         font-weight-black
@@ -247,8 +247,8 @@
                       "
                       >Cost</v-card-title
                     >
-                    <v-card-subtitle></v-card-subtitle>
-                  </v-card> -->
+                    <v-card-subtitle>{{ cost }}</v-card-subtitle>
+                  </v-card>
                 </div>
                 <hr />
                 <div class="button-container">
@@ -321,9 +321,17 @@ export default {
         "Container Truck",
         "Car transporter",
       ],
+      //
+      truck: "",
+      driver: "",
+      drphn: "",
+      optr: "",
+      optrphn: "",
+      cost: "",
+      //
     };
   },
-  beforeCreate: function () {
+  beforeMount: function () {
     getAPI
       .get(
         "/api/customers/cust-dest-detail/?id=" + localStorage.getItem("destid"),
@@ -353,6 +361,26 @@ export default {
         } else if (this.APIData.data.status == 4) {
           this.st = "Not Found  (Unable to find a Driver)";
           this.stn = 4;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  mounted: function () {
+    getAPI
+      .get(
+        "api/customers/cust-trans-detail/?id=" + localStorage.getItem("destid"),
+        {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        this.APIData = response.data;
+        if (this.APIData.Http_response == 200) {
+          this.getStatus(this.APIData.data.truck);
         }
       })
       .catch((err) => {
@@ -390,6 +418,28 @@ export default {
         })
         .catch((err) => {
           alert(err);
+        });
+    },
+    getStatus(id) {
+      getAPI
+        .get("/api/truck/view_truck_status/?truck_id=" + id, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.APIData.Http_response == 200) {
+            this.truck = this.APIData.data["truck"]["registration"];
+            this.driver = this.APIData.data["driver"]["driver_name"];
+            this.drphn = this.APIData.data["driver"]["phone"];
+            this.optr = this.APIData.data["truck"]["owner"]["name"];
+            this.optrphn = this.APIData.data["truck"]["owner"]["phone"];
+            this.cost = 5000;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
   },

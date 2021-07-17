@@ -20,6 +20,7 @@ export default {
       //
       status: "",
       st: "",
+      owner: "",
     };
   },
   beforeMount: function () {
@@ -136,6 +137,59 @@ export default {
           console.log(err);
         });
     },
+    createTrans() {
+      getAPI
+        .post(
+          "api/customers/cust-trans-create/",
+          {
+            destination: localStorage.getItem("destid"),
+            operator: this.owner,
+            truck: this.driver,
+            cost: 5000,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+          if (this.APIData.Http_response == 200) {
+            this.status = 2;
+            this.acceptOrreject();
+          } else {
+            alert("Something Went Wrong! Please try Again");
+            this.$router.push({ name: "Vdestdetail" });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getOwnerid() {
+      getAPI
+        .get("/api/truck/view_truck_status/?truck_id=" + this.driver, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.APIData.Http_response == 200) {
+            this.owner = this.APIData.data["truck"]["owner"]["id"];
+            console.log(this.owner);
+            this.createTrans();
+          } else {
+            alert("Something Went Wrong! Please try Again");
+            this.$router.push({ name: "Vdestdetail" });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     getList() {
       getAPI
         .post(
@@ -242,8 +296,7 @@ export default {
           localStorage.removeItem("driver");
           localStorage.removeItem("response");
           console.log(this.driver);
-          this.status = 2;
-          this.acceptOrreject();
+          this.getOwnerid();
         }
       }, 10000);
     },
