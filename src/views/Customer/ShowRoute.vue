@@ -230,21 +230,19 @@ export default {
       this.getCost();
     },
     getCost() {
+      console.log(this.start);
+      console.log(this.end);
       getAPI
         .post(
-          "/api/maps/set-route/",
+          "https://fleet.ls.hereapi.com/2/calculateroute.json?apikey=ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E&mode=fastest;truck;traffic:disabled&currency=INR&tollVehicleType=3&commercial=1&fuelType=Diesel&costPerConsumptionUnit=0&vehicleNumberAxles=3&legAttributes=none",
           {
-            start_point: this.start,
-            end_point: this.end,
+            waypoint0: this.start,
+            waypoint1: this.end,
           },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
         )
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           for (let key in this.APIData) {
             this.routes = this.APIData[key]["route"];
           }

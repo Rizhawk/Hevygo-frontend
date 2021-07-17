@@ -38,7 +38,7 @@
                         <th>Date of Transport</th>
                         <th>Start Location</th>
                         <th>End Location</th>
-                        <th>Status of Transport</th>
+                        <th>Booking Status</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr

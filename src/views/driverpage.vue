@@ -52,7 +52,7 @@ export default {
   created: function () {
     try {
       this.ws = new WebSocket(
-        "ws://shuttle-server.herokuapp.com/ws/" +
+        "ws://shuttletestserver.herokuapp.com/ws/" +
           this.$session.get("user_id") +
           "/"
       );

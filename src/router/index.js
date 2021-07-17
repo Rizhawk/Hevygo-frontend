@@ -42,6 +42,7 @@ import Cbookings from "../views/Customer/CurrentBookings.vue";
 import RouteMap from "../views/Customer/ShowRoute.vue";
 import Vdestdetail from "../views/Customer/ViewDestDetails.vue";
 import PayReq from "../views/Customer/PayandRequest.vue";
+import Dpage from "../views/driverpage.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -258,6 +259,13 @@ const routes = [
     name: "PayReq",
     component: PayReq,
   },
+  //
+  {
+    path: "/driverpage",
+    name: "Dpage",
+    component: Dpage,
+  },
+  //
 ];
 
 const router = new VueRouter({

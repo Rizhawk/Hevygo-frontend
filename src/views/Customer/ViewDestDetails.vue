@@ -103,7 +103,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Status of Transport</label>
+                          <label>Booking Status</label>
                           <input
                             v-model="st"
                             type="text"
@@ -130,6 +130,15 @@
                           outlined
                           @click.prevent="show = true"
                           >Book Again</v-btn
+                        >
+                        <v-btn
+                          v-if="stn == 4"
+                          x-small
+                          color="orange"
+                          depressed
+                          outlined
+                          to="/payment"
+                          >Try Again</v-btn
                         >
                         <v-btn
                           type="submit"
@@ -178,30 +187,75 @@
                     </p>
                   </div>
                   <!-- <v-card>
-                    <v-card-title class="body-2">Driver</v-card-title>
-                    <v-card-subtitle>Rajan</v-card-subtitle>
+                    <v-card-title
+                      class="
+                        font-weight-black
+                        black-text
+                        caption
+                        text-secondary
+                      "
+                      >Truck</v-card-title
+                    >
+                    <v-card-subtitle></v-card-subtitle>
+
+                    <v-card-title
+                      class="
+                        font-weight-black
+                        black-text
+                        caption
+                        text-secondary
+                      "
+                      >Driver</v-card-title
+                    >
+                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-title
+                      class="
+                        font-weight-black
+                        black-text
+                        caption
+                        text-secondary
+                      "
+                      >Contact Driver</v-card-title
+                    >
+                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-title
+                      class="
+                        font-weight-black
+                        black-text
+                        caption
+                        text-secondary
+                      "
+                      >Operator</v-card-title
+                    >
+                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-title
+                      class="
+                        font-weight-black
+                        black-text
+                        caption
+                        text-secondary
+                      "
+                      >Contact Operator</v-card-title
+                    >
+                    <v-card-subtitle></v-card-subtitle>
+                    <v-card-title
+                      class="
+                        font-weight-black
+                        black-text
+                        caption
+                        text-secondary
+                      "
+                      >Cost</v-card-title
+                    >
+                    <v-card-subtitle></v-card-subtitle>
                   </v-card> -->
                 </div>
                 <hr />
                 <div class="button-container">
-                  <button
-                    href="#"
-                    class="btn btn-neutral btn-icon btn-round btn-lg"
+                  <v-btn x-small outlined depressed dark href="#" color="green"
+                    >Track this Shipment
+                    <v-icon right x-small>mdi-map-marker</v-icon></v-btn
                   >
-                    <i class="fab fa-facebook-f"></i>
-                  </button>
-                  <button
-                    href="#"
-                    class="btn btn-neutral btn-icon btn-round btn-lg"
-                  >
-                    <i class="fab fa-twitter"></i>
-                  </button>
-                  <button
-                    href="#"
-                    class="btn btn-neutral btn-icon btn-round btn-lg"
-                  >
-                    <i class="fab fa-google-plus-g"></i>
-                  </button>
                 </div>
               </div>
             </div>
