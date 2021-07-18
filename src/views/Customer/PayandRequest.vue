@@ -240,7 +240,7 @@ export default {
     sendMessage(i, trucksLength, id) {
       return new Promise((resolve) => {
         this.connection = new WebSocket(
-          "ws://shuttletestserver.herokuapp.com/ws/" + id + "/"
+          "wss://shuttletestserver.herokuapp.com/ws/" + id + "/"
         );
         this.connection.onopen = function () {};
         setTimeout(() => {
