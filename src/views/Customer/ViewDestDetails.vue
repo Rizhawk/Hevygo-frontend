@@ -252,7 +252,14 @@
                 </div>
                 <hr />
                 <div class="button-container">
-                  <v-btn x-small outlined depressed dark href="#" color="green"
+                  <v-btn
+                    v-if="track"
+                    x-small
+                    outlined
+                    depressed
+                    dark
+                    @click.prevent="trackTruck"
+                    color="green"
                     >Track this Shipment
                     <v-icon right x-small>mdi-map-marker</v-icon></v-btn
                   >
@@ -321,6 +328,8 @@ export default {
         "Container Truck",
         "Car transporter",
       ],
+      trid: "",
+      track: false,
       //
       truck: "",
       driver: "",
@@ -381,6 +390,8 @@ export default {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
           this.getStatus(this.APIData.data.truck);
+          this.trid = this.APIData.data.truck;
+          this.track = true;
         }
       })
       .catch((err) => {
@@ -441,6 +452,10 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    trackTruck() {
+      localStorage.setItem("trid", this.trid);
+      this.$router.push({ name: "Ctrack" });
     },
   },
 };

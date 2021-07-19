@@ -24,12 +24,6 @@
               <p>Current Bookings</p>
             </router-link>
           </li>
-          <li>
-            <router-link to="#">
-              <i class="now-ui-icons location_pin"></i>
-              <p>Track Shipments</p>
-            </router-link>
-          </li>
         </ul>
       </div>
     </div>

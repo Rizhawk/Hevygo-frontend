@@ -15,7 +15,7 @@ import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
 import Newcust from "../views/Customer/newcustsignup";
 import Cbooking from "../views/Customer/bookings";
-import Ctrack from "../views/Customer/custrack";
+import Ctrack from "../views/Customer/TrackShipment.vue";
 import ForgotPass from "../views/forgotpassword.vue";
 import Dashboard from "../views/Operator/dashboard.vue";
 import TrucksTable from "../views/Operator/ManageTrucks.vue";
@@ -125,7 +125,7 @@ const routes = [
     component: Cbooking,
   },
   {
-    path: "/custrack",
+    path: "/trackshipment",
     name: "Ctrack",
     component: Ctrack,
   },
