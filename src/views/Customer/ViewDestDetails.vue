@@ -401,6 +401,7 @@ export default {
   methods: {
     back() {
       localStorage.removeItem("destid");
+      localStorage.removeItem("trid");
       this.$router.push({ name: "Cbookings" });
     },
     bookTruck() {
