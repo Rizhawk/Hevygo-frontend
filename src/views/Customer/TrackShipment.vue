@@ -15,7 +15,12 @@
                 <div
                   class="card-header font-weight-bold text-secondary caption"
                 >
-                  Current Location : <span  class="card-header font-weight-medium text-secondary body-1">{{ this.crtLocation }}</span>
+                  Current Location :
+                  <span
+                    class="card-header font-weight-medium text-secondary body-2"
+                    ><v-icon color="green darken 4" small>mdi-map-marker</v-icon
+                    >{{ this.crtLocation }}</span
+                  >
                 </div>
                 <div class="card-body">
                   <!-- <div id="map" class="map"></div> -->
@@ -53,9 +58,6 @@ export default {
   },
   data: () => {
     return {
-      platform: null,
-      apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
-      map: {},
       crtLocation: "",
       sl: "",
       el: "",

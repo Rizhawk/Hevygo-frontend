@@ -25,13 +25,6 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/Map">
-              <i class="now-ui-icons location_pin"></i>
-              <p>Map</p>
-            </router-link>
-          </li>
-
-          <li>
             <router-link to="/managedrivers">
               <i class="now-ui-icons users_single-02"></i>
               <p>Drivers</p>

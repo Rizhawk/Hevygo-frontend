@@ -23,6 +23,28 @@
                     "
                   >
                     {{ this.truck }}
+                    <v-flex row justify-end>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            color="green darken-4"
+                            x-small
+                            fab
+                            depressed
+                            href="/map"
+                            dark
+                            outlined
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon small to="/map" color="green darken-4"
+                              >mdi-map-marker</v-icon
+                            >
+                          </v-btn>
+                        </template>
+                        <span>Locate on Map</span>
+                      </v-tooltip>
+                    </v-flex>
                   </h5>
                   <div class="card-body">
                     <form @submit.prevent="updateStatus">
