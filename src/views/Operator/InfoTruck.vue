@@ -9,8 +9,8 @@
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-5">
+            <div class="col-md-2"></div>
+            <div class="col-md-7">
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -31,13 +31,11 @@
                         <label>Registration Number</label>
                         <validation-provider
                           v-slot="{ errors }"
-                          name="Registration Number"
                           rules="required"
                         >
                           <v-text-field
                             v-model="regnumber"
                             :error-messages="errors"
-                            label="Registration Number *"
                             required
                             clearable
                             outlined
@@ -47,13 +45,11 @@
                         <label>Home Location</label>
                         <validation-provider
                           v-slot="{ errors }"
-                          name="Home Location"
                           rules="required"
                         >
                           <v-text-field
                             v-model="homeloc"
                             :error-messages="errors"
-                            label="Home Location *"
                             type="search"
                             @input="doSearch"
                             required
@@ -74,6 +70,129 @@
                             </tbody>
                           </v-simple-table>
                         </v-flex>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Rc Book</label>
+                              <validation-provider
+                                v-slot="{ errors }"
+                                name="Rc Book"
+                                rules="required"
+                              >
+                                <v-file-input
+                                  v-model="rcbook"
+                                  :error-messages="errors"
+                                  required
+                                  clearable
+                                  outlined
+                                  dense
+                                ></v-file-input>
+                              </validation-provider>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Validity Upto</label>
+                              <v-text-field
+                                v-model="rcexp"
+                                :error-messages="errors"
+                                type="date"
+                                required
+                                clearable
+                                outlined
+                                dense
+                              ></v-text-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Fitness Certificate</label>
+                              <validation-provider
+                                v-slot="{ errors }"
+                                rules="required"
+                              >
+                                <v-file-input
+                                  v-model="fitcert"
+                                  :error-messages="errors"
+                                  required
+                                  clearable
+                                  outlined
+                                  dense
+                                ></v-file-input>
+                              </validation-provider>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Validity Upto</label>
+                              <v-text-field
+                                v-model="fitexp"
+                                :error-messages="errors"
+                                type="date"
+                                required
+                                clearable
+                                outlined
+                                dense
+                              ></v-text-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Insurance Certificate</label>
+                              <validation-provider
+                                v-slot="{ errors }"
+                                rules="required"
+                              >
+                                <v-file-input
+                                  v-model="insur"
+                                  :error-messages="errors"
+                                  required
+                                  clearable
+                                  outlined
+                                  dense
+                                ></v-file-input>
+                              </validation-provider>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Validity Upto</label>
+                              <v-text-field
+                                v-model="insexp"
+                                :error-messages="errors"
+                                type="date"
+                                required
+                                clearable
+                                outlined
+                                dense
+                              ></v-text-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label>Permit Paper</label>
+                              <validation-provider
+                                v-slot="{ errors }"
+                                rules="required"
+                              >
+                                <v-file-input
+                                  v-model="permit"
+                                  :error-messages="errors"
+                                  required
+                                  clearable
+                                  outlined
+                                  dense
+                                ></v-file-input>
+                              </validation-provider>
+                            </div>
+                          </div>
+                        </div>
                         <v-flex row justify-center
                           ><v-btn
                             type="submit"
@@ -159,7 +278,7 @@ export default {
       (this.optrphone = ""),
         (this.truckphone = ""),
         (this.regnumber = ""),
-        (this.homeloc = "")
+        (this.homeloc = "");
     },
     truckadd() {
       if (this.dropdown == true) {
