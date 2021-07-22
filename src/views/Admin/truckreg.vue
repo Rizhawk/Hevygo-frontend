@@ -245,7 +245,7 @@
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Admin from "../Admin/adminhome.vue";
+import Admin from "./AdminsSidebar.vue";
 export default {
   name: "ATreg",
   components: {

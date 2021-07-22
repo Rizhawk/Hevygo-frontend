@@ -105,7 +105,7 @@ export default {
           } else if (this.APIData.data["user_type"] == 3) {
             this.$router.push({ name: "Dpage" });
           } else if (this.APIData.data["user_type"] == 4) {
-            this.$router.push({ name: "Admin" });
+            this.$router.push({ name: "AdminDash" });
           }
         })
         .catch((err) => {

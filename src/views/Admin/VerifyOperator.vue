@@ -1,0 +1,329 @@
+<template>
+  <v-app>
+    <div class="wrapper">
+      <Admin />
+      <div class="main-panel" id="main-panel">
+        <!-- Navbar -->
+        <AdminNav title="Operators Verifcation" />
+        <mob-nav />
+        <!-- End Navbar -->
+        <div class="panel-header panel-header-sm"></div>
+        <div class="content">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+              <div class="card">
+                <div class="card-header">
+                  <h5
+                    class="
+                      card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    Operators
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead
+                        class="
+                          text-primary
+                          font-weight-medium
+                          caption
+                          text-center
+                        "
+                      >
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Phonenumber</th>
+                        <th class="text-center">Verified</th>
+                        <th class="text-center">Action</th>
+                      </thead>
+                      <tbody class="font-weight-medium caption text-center">
+                        <tr
+                          v-for="details in optrdetails"
+                          :key="details.id"
+                          @click.prevent="getDetails(details.id)"
+                        >
+                          <td class="text-center">{{ details.name }}</td>
+                          <td class="text-center">{{ details.phone }}</td>
+                          <td class="text-center">
+                            <v-icon
+                              color="green darken-1"
+                              small
+                              v-if="details.is_verified == true"
+                              >mdi-checkbox-marked-circle-outline</v-icon
+                            >
+                            <v-icon
+                              color="red"
+                              small
+                              v-if="details.is_verified == false"
+                              >mdi-close-circle-outline</v-icon
+                            >
+                          </td>
+                          <td>
+                            <v-btn
+                              :disabled="details.is_verified == false"
+                              class="mx-1"
+                              color="red lighten-1"
+                              x-small
+                              outlined
+                              dark
+                              >Suspend
+                            </v-btn>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <v-dialog
+      max-width="300px"
+      max-height="auto"
+      v-model="show"
+      persistent
+      overlay-opacity=".3"
+    >
+      <v-card color="#263238" dark max-width="300px">
+        <v-card-title class="font-weight-black body-1"
+          >PAN Number
+          <v-spacer></v-spacer>
+          <v-icon @click="show = false" color="red" class="ml-5" small
+            >mdi-close</v-icon
+          >
+        </v-card-title>
+        <v-card-subtitle v-text="pan"></v-card-subtitle>
+        <v-card-title class="font-weight-black body-1">GST Number</v-card-title>
+        <v-card-subtitle v-text="gst"></v-card-subtitle>
+        <v-card-title v-if="email != null" class="font-weight-black body-1"
+          >E-mail ID</v-card-title
+        >
+        <v-card-subtitle v-if="email != null">{{ email }}</v-card-subtitle>
+        <v-card-title class="font-weight-black body-1">Name</v-card-title>
+        <v-card-subtitle v-text="name"></v-card-subtitle>
+        <v-card-title class="font-weight-black body-1"
+          >Phonenumber</v-card-title
+        >
+        <v-card-subtitle v-text="phone"></v-card-subtitle>
+        <v-card-actions>
+          <v-btn
+            v-if="status == 2"
+            class="mx-16"
+            color=" green darken-1"
+            x-small
+            outlined
+            dark
+            >Approved
+            <v-icon small>mdi-checkbox-marked-circle-outline</v-icon>
+          </v-btn>
+          <v-btn
+            v-if="status == 1 || status == 3"
+            color=" green darken-1"
+            @click.prevent="show2 = !show2"
+            x-small
+            outlined
+            dark
+            >Approve
+          </v-btn>
+          <v-btn
+            v-if="status == 1"
+            color="red lighten-1"
+            x-small
+            outlined
+            dark
+            @click.prevent="show1 = !show1"
+            >Reject
+          </v-btn>
+          <v-btn v-if="status == 3" color="red lighten-1" x-small outlined dark
+            >Rejected
+            <v-icon small>mdi-close-circle-outline</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="show1"
+      hide-overlay
+      persistent
+      max-width="300px"
+      max-height="auto"
+    >
+      <v-card max-width="300px" max-height="auto">
+        <v-card-title class="font-weight-black body-2"
+          >Remarks :
+          <span class="font-weight-medium caption ml-3"
+            >(What is the reason?)</span
+          ></v-card-title
+        >
+        <v-textarea v-model="remarks" autofocus maxlength="120"></v-textarea>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn x-small color="red" dark outlined @click.prevent="reject"
+            >Confirm Rejection
+          </v-btn>
+          <v-btn
+            x-small
+            color="black"
+            dark
+            outlined
+            @click.prevent="show1 = !show1"
+            >Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog persistent v-model="show2" max-width="320">
+      <v-card>
+        <v-card-title class="caption font-weight-bold black--text"
+          >Verified all the details and confirm approval.</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="ml-5"
+            x-small
+            @click.prevent="giveApproval"
+            outlined
+            color="green"
+            >Approve</v-btn
+          >
+          <v-btn color="red" x-small @click="show2 = !show2" outlined
+            >No</v-btn
+          ></v-card-actions
+        >
+      </v-card>
+    </v-dialog>
+  </v-app>
+</template>
+<script>
+import { getAPI } from "../../axios-api";
+import Admin from "./AdminsSidebar.vue";
+import AdminNav from "../Admin/AdminNavbar.vue";
+import MobNav from "../Admin/MobNav.vue";
+export default {
+  name: "VerifyOptr",
+  components: {
+    Admin,
+    AdminNav,
+    MobNav,
+  },
+  data: () => {
+    return {
+      optrdetails: [],
+      show: false,
+      show1: false,
+      show2: false,
+      pan: "",
+      gst: "",
+      email: null,
+      crid: "",
+      is_verified: null,
+      status: null,
+      name: "",
+      phone: "",
+      remarks: "",
+      snackbar: false,
+      message: "",
+    };
+  },
+  beforeCreate: function () {
+    getAPI
+      .get("/api/admin/list_operator/", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.optrdetails = this.APIData.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  methods: {
+    getDetails(id) {
+      getAPI
+        .get("/api/admin/view_operator_info/?id=" + id, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.pan = this.APIData.data["pan"];
+          this.gst = this.APIData.data["gst_no"];
+          this.email = this.APIData.data["user"]["email"];
+          this.name = this.APIData.data["user"]["name"];
+          this.phone = this.APIData.data["user"]["phone"];
+          this.is_verified = this.APIData.data["user"]["is_verified"];
+          this.status = this.APIData.data["status"];
+          this.crid = id;
+          this.show = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    giveApproval() {
+      getAPI
+        .put(
+          "/api/admin/update_operator_info/",
+          {
+            id: this.crid,
+            remarks: "Verified",
+            status: 2,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    reject() {
+      getAPI
+        .put(
+          "/api/admin/update_operator_info/",
+          {
+            id: this.crid,
+            remarks: this.remarks,
+            status: 3,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.APIData.response == 400) {
+            this.message = this.APIData.message;
+            this.snackbar = true;
+          } else if (this.APIData.response == 200) {
+            window.location.reload();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+};
+</script>

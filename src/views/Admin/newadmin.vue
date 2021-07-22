@@ -137,7 +137,7 @@
   </v-app>
 </template>
 <script>
-import Admin from "../Admin/adminhome.vue";
+import Admin from "./AdminsSidebar.vue";
 import { getAPI } from "../../axios-api";
 import { required, digits, email } from "vee-validate/dist/rules";
 import {
