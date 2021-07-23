@@ -6,7 +6,7 @@
         @click.prevent="mobDraw = !mobDraw"
         color="blue darken-4"
       ></v-app-bar-nav-icon>
-      <v-navigation-drawer dark v-model="mobDraw" clipped fixed top color="red">
+      <v-navigation-drawer dark v-model="mobDraw" clipped fixed top color="green">
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="font-weight-black subtile-1 white--text">
@@ -26,7 +26,7 @@
         </v-list-item>
         <v-divider color="white"></v-divider>
         <v-list dense nav>
-          <v-list-item link href="/dashboard">
+          <v-list-item link href="/admindash">
             <v-list-item-icon>
               <v-icon color="white">mdi-view-dashboard</v-icon>
             </v-list-item-icon>
@@ -34,7 +34,7 @@
               <v-list-item-title>Dashboard</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link href="/managetrucks">
+          <v-list-item link href="/verifyoperator">
             <v-list-item-icon>
               <v-icon color="white">mdi-account</v-icon>
             </v-list-item-icon>
@@ -42,7 +42,7 @@
               <v-list-item-title>Operator Verification</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link href="">
+          <v-list-item link href="/verifytruck">
             <v-list-item-icon>
               <v-icon color="white">mdi-truck</v-icon>
             </v-list-item-icon>
@@ -50,7 +50,7 @@
               <v-list-item-title>Truck Verifcation</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link href="">
+          <v-list-item link href="/addnewadmin">
             <v-list-item-icon>
               <v-icon color="white">mdi-account-multiple-plus</v-icon>
             </v-list-item-icon>

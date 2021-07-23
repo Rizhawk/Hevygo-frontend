@@ -6,8 +6,6 @@ import Login from "../views/login.vue";
 import Csignup from "../views/Customer/custsignup.vue";
 import Osignup from "../views/Operator/optrsignup.vue";
 import Cpage from "../components/custpage.vue";
-import Regadmin from "../views/Admin/newadmin.vue";
-import AOreg from "../views/Admin/optrreg.vue";
 import ATreg from "../views/Admin/truckreg.vue";
 import Padd from "../views/Operator/panadd";
 import HereMap from "../views/Customer/HereMap";
@@ -45,6 +43,8 @@ import Dpage from "../views/driverpage.vue";
 import AdminDash from "../views/Admin/AdminDash.vue";
 import VerifyOptr from "../views/Admin/VerifyOperator.vue";
 import VerifyTruck from "../views/Admin/VerifyTruck.vue";
+import AddAdmin from "../views/Admin/AddAdmin.vue";
+import ViewOperator from "../views/Admin/ViewOperator.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -77,19 +77,9 @@ const routes = [
     component: Osignup,
   },
   {
-    path: "/newadmin",
-    name: "Regadmin",
-    component: Regadmin,
-  },
-  {
     path: "/admindash",
     name: "AdminDash",
     component: AdminDash,
-  },
-  {
-    path: "/optrreg",
-    name: "AOreg",
-    component: AOreg,
   },
   {
     path: "/truckreg",
@@ -270,6 +260,16 @@ const routes = [
     path: "/verifytruck",
     name: "VerifyTruck",
     component: VerifyTruck,
+  },
+  {
+    path: "/addnewadmin",
+    name: "AddAdmin",
+    component: AddAdmin,
+  },
+  {
+    path: "/adminviewoptr",
+    name: "ViewOperator",
+    component: ViewOperator,
   },
   //
   {
