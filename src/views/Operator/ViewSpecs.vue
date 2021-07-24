@@ -182,7 +182,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="ml-10" x-small @click="dialog2 = !dialog2" text
+          <v-btn class="ml-10" x-small @click="back" text
             >Later</v-btn
           >
           <v-btn x-small @click.prevent="addSpec" text color="red"

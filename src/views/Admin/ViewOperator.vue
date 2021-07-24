@@ -44,107 +44,107 @@
                       <v-icon small>mdi-close-circle-outline</v-icon>
                     </v-btn>
                   </v-flex>
-                  <div class="card-body my-4">
-                    <form @submit.prevent="">
-                      <div class="row">
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Name</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              disabled=""
-                              :value="name"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Phonenumber</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              disabled=""
-                              :value="phone"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Email Id</label>
-                            <input
-                              type="text"
-                              placeholder="Email Id"
-                              class="form-control"
-                              disabled=""
-                              :value="email"
-                            />
-                          </div>
+                </div>
+                <div class="card-body my-4">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                            :value="name"
+                          />
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label>PAN</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              disabled=""
-                              :value="pan"
-                            />
-                          </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Phonenumber</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                            :value="phone"
+                          />
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label>GST Number</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              disabled=""
-                              :value="gst"
-                            />
-                          </div>
-                        </div>
-                        <v-flex row class="my-2" justify-center>
-                          <v-btn
-                            v-if="status == 1 || status == 3"
-                            color=" green darken-1"
-                            @click.prevent="show2 = !show2"
-                            x-small
-                            outlined
-                            dark
-                            >Approve
-                          </v-btn>
-                          <v-btn
-                            v-if="status == 2"
-                            color="red lighten-1"
-                            x-small
-                            outlined
-                            dark
-                            >Suspend
-                          </v-btn>
-                          <v-btn
-                            class="mx-2"
-                            color="black"
-                            x-small
-                            @click.prevent="back"
-                            outlined
-                            dark
-                            >Back
-                          </v-btn>
-                          <v-btn
-                            v-if="status == 1"
-                            color="red lighten-1"
-                            x-small
-                            outlined
-                            dark
-                            @click.prevent="show1 = !show1"
-                            >Reject
-                          </v-btn>
-                        </v-flex>
                       </div>
-                    </form>
-                  </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Email Id</label>
+                          <input
+                            type="text"
+                            placeholder="Email Id"
+                            class="form-control"
+                            disabled=""
+                            :value="email"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>PAN</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                            :value="pan"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>GST Number</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                            :value="gst"
+                          />
+                        </div>
+                      </div>
+                      <v-flex row class="my-2" justify-center>
+                        <v-btn
+                          v-if="status == 1 || status == 3"
+                          color=" green darken-1"
+                          @click.prevent="show2 = !show2"
+                          x-small
+                          outlined
+                          dark
+                          >Approve
+                        </v-btn>
+                        <v-btn
+                          v-if="status == 2"
+                          color="red lighten-1"
+                          x-small
+                          outlined
+                          dark
+                          >Suspend
+                        </v-btn>
+                        <v-btn
+                          class="mx-2"
+                          color="black"
+                          x-small
+                          @click.prevent="back"
+                          outlined
+                          dark
+                          >Back
+                        </v-btn>
+                        <v-btn
+                          v-if="status == 1"
+                          color="red lighten-1"
+                          x-small
+                          outlined
+                          dark
+                          @click.prevent="show1 = !show1"
+                          >Reject
+                        </v-btn>
+                      </v-flex>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>

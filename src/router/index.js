@@ -6,7 +6,6 @@ import Login from "../views/login.vue";
 import Csignup from "../views/Customer/custsignup.vue";
 import Osignup from "../views/Operator/optrsignup.vue";
 import Cpage from "../components/custpage.vue";
-import ATreg from "../views/Admin/truckreg.vue";
 import Padd from "../views/Operator/panadd";
 import HereMap from "../views/Customer/HereMap";
 import Bnewtruck from "../views/Customer/booknewtruck";
@@ -45,6 +44,7 @@ import VerifyOptr from "../views/Admin/VerifyOperator.vue";
 import VerifyTruck from "../views/Admin/VerifyTruck.vue";
 import AddAdmin from "../views/Admin/AddAdmin.vue";
 import ViewOperator from "../views/Admin/ViewOperator.vue";
+import ViewTruck from "../views/Admin/ViewTruck.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -80,11 +80,6 @@ const routes = [
     path: "/admindash",
     name: "AdminDash",
     component: AdminDash,
-  },
-  {
-    path: "/truckreg",
-    name: "ATreg",
-    component: ATreg,
   },
   {
     path: "/custpage",
@@ -270,6 +265,11 @@ const routes = [
     path: "/adminviewoptr",
     name: "ViewOperator",
     component: ViewOperator,
+  },
+  {
+    path: "/adminviewtruck",
+    name: "ViewTruck",
+    component: ViewTruck,
   },
   //
   {
