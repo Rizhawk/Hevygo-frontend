@@ -26,7 +26,7 @@
                     <v-flex row justify-end>
                       <v-btn
                         color="primary"
-                        href="/regtruck"
+                        href="/infoadd"
                         x-small
                         depressed
                         dark

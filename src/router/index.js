@@ -18,7 +18,6 @@ import TrucksTable from "../views/Operator/ManageTrucks.vue";
 import DriverTable from "../views/Operator/ManageDrivers.vue";
 import StatusTable from "../views/Operator/ManageStatus.vue";
 import Hmap from "../views/Operator/Map.vue";
-import Rtruck from "../views/Operator/RegTruck.vue";
 import InfoTruck from "../views/Operator/InfoTruck.vue";
 import DetailTruck from "../views/Operator/DetailsTruck.vue";
 import AddDriver from "../views/Operator/AddDriver.vue";
@@ -135,11 +134,6 @@ const routes = [
     path: "/managedrivers",
     name: "DriverTable",
     component: DriverTable,
-  },
-  {
-    path: "/regtruck",
-    name: "Rtruck",
-    component: Rtruck,
   },
   {
     path: "/managestatus",
