@@ -52,21 +52,15 @@
                     <form @submit.prevent="tsignup">
                       <div class="form-group">
                         <div class="row">
-                          <div class="col-md-6">
+                          <div :class="hideotp">
                             <label>Name</label>
-                            <validation-provider
-                              v-slot="{ errors }"
-                              name="Name"
-                            >
-                              <v-text-field
-                                v-model="name"
-                                :error-messages="errors"
-                                outlined
-                                dense
-                              ></v-text-field>
-                            </validation-provider>
+                            <v-text-field
+                              v-model="name"
+                              outlined
+                              dense
+                            ></v-text-field>
                           </div>
-                          <div class="col-md-6">
+                          <div :class="hideotp">
                             <label>Phonenumber</label>
                             <validation-provider
                               v-slot="{ errors }"
@@ -86,10 +80,7 @@
                               ></v-text-field>
                             </validation-provider>
                           </div>
-                        </div>
-                        <div class="row" v-if="otpfield">
-                          <div class="col-md-3"></div>
-                          <div class="col-md-6">
+                          <div class="col-md-4" v-if="otpfield">
                             <label>Enter your OTP</label>
                             <v-text-field
                               v-model="otp"
@@ -99,7 +90,6 @@
                               dense
                             ></v-text-field>
                           </div>
-                          <div class="col-md-3"></div>
                         </div>
                         <div class="row">
                           <div class="col-md-6">
@@ -209,7 +199,6 @@
                             <label>Validity Upto</label>
                             <v-text-field
                               v-model="rcexp"
-                              :error-messages="errors"
                               type="date"
                               required
                               clearable
@@ -219,7 +208,7 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                             <label>Fitness Certificate</label>
                             <validation-provider
                               v-slot="{ errors }"
@@ -235,11 +224,21 @@
                               ></v-file-input>
                             </validation-provider>
                           </div>
-                          <div class="col-md-6">
+                          <div class="col-md-4">
+                            <label>Fitness Number</label>
+                            <v-text-field
+                              v-model="fitno"
+                              type="text"
+                              required
+                              clearable
+                              outlined
+                              dense
+                            ></v-text-field>
+                          </div>
+                          <div class="col-md-4">
                             <label>Validity Upto</label>
                             <v-text-field
                               v-model="fitexp"
-                              :error-messages="errors"
                               type="date"
                               required
                               clearable
@@ -249,7 +248,7 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                             <label>Insurance Certificate</label>
                             <validation-provider
                               v-slot="{ errors }"
@@ -265,11 +264,22 @@
                               ></v-file-input>
                             </validation-provider>
                           </div>
-                          <div class="col-md-6">
+                          <div class="col-md-4">
+                            <label>Insurance Number</label>
+                            <v-text-field
+                              v-model="insno"
+                              type="text"
+                              required
+                              clearable
+                              outlined
+                              dense
+                            ></v-text-field>
+                          </div>
+
+                          <div class="col-md-4">
                             <label>Validity Upto</label>
                             <v-text-field
                               v-model="insexp"
-                              :error-messages="errors"
                               type="date"
                               required
                               clearable
@@ -278,7 +288,7 @@
                             ></v-text-field>
                           </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                           <div class="col-md-12">
                             <label>Permit Paper</label>
                             <validation-provider
@@ -295,7 +305,7 @@
                               ></v-file-input>
                             </validation-provider>
                           </div>
-                        </div>
+                        </div> -->
                         <v-flex row justify-center
                           ><v-btn
                             type="submit"
@@ -370,6 +380,7 @@ export default {
       name: null,
       phone: "",
       otpfield: false,
+      hideotp: "col-md-6",
       otp: "",
       password: "",
       password2: "",
@@ -389,8 +400,10 @@ export default {
       rcbook: "",
       rcexp: "",
       fitcert: "",
+      fitno: "",
       fitexp: "",
       insur: "",
+      insno: "",
       insexp: "",
       permit: "",
     };
@@ -478,6 +491,7 @@ export default {
             this.APIData = response.data;
             this.otp = "";
             this.otpfield = true;
+            this.hideotp = "col-md-4";
             this.message = ` Your OTP is ${this.APIData.data["OTP"]}`;
             this.snackbar = true;
           })
@@ -504,6 +518,14 @@ export default {
               crew_id: id,
               registration: this.regnumber,
               homelocation: this.homeloc,
+              fitness_no: this.fitno,
+              insurance_no: this.insno,
+              rc_scan: this.rcbook,
+              rc_exp: this.rcexp,
+              insurance_scan: this.insur,
+              insurance_exp: this.insexp,
+              fitness_scan: this.fitcert,
+              fitness_exp: this.fitexp,
               verification: 1,
               remarks: "Wait to be Verified",
             },
