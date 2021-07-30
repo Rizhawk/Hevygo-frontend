@@ -44,7 +44,7 @@
                               <span class="material-icons"> swap_vert </span>
                             </v-btn></v-flex
                           >
-                          <v-flex>
+                          <v-flex class="myDropdown">
                             <v-simple-table dense v-if="dropdown1">
                               <thead>
                                 <tr @click.prevent="getLocation()">
@@ -78,7 +78,7 @@
                           outlined
                           dense
                         ></v-text-field>
-                        <v-flex>
+                        <v-flex class="myDropdown">
                           <v-simple-table dense v-if="dropdown2">
                             <tbody>
                               <tr v-for="end in results2" :key="end.id">
@@ -367,3 +367,13 @@ export default {
   },
 };
 </script>
+<style scoped>
+.myDropdown {
+  position: absolute;
+  color: black;
+  background-color: #f6f6f6;
+  min-width: 250px;
+  overflow: auto;
+  z-index: 1;
+}
+</style>
