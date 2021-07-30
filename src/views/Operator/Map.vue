@@ -11,9 +11,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <div
-                class="card-header font-weight-bold text-secondary body-2"
-              >
+              <div class="card-header font-weight-bold text-secondary body-2">
                 {{ this.truck }}
                 <span
                   class="card-header font-weight-medium text-secondary body-2"
@@ -113,13 +111,13 @@ export default {
       addEventListener("resize", () => map.getViewPort().resize());
       // add behavior control
       new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
+      const ui = H.ui.UI.createDefault(this.map, maptypes);
       // add UI
-      H.ui.UI.createDefault(this.map, maptypes);
       // End rendering the initial map
       // Get an instance of the search service:
-      this.locateTruck();
+      this.locateTruck(ui);
     },
-    locateTruck() {
+    locateTruck(ui) {
       let service = this.platform.getSearchService();
       // Call the reverse geocode method with the geocoding parameters,
       // the callback and an error callback function (called if a
@@ -133,7 +131,19 @@ export default {
             // Assumption: ui is instantiated
             // Create an InfoBubble at the returned location with
             // the address as its contents:
-            this.map.addObject(new H.map.Marker(item.position));
+            const marker = new H.map.Marker(item.position);
+            marker.addEventListener(
+              "tap",
+              (event) => {
+                ui.addBubble(
+                  new H.ui.InfoBubble(item.position, {
+                    content: item.address.label,
+                  })
+                );
+              },
+              false
+            );
+            this.map.addObject(marker);
           });
         }
       );

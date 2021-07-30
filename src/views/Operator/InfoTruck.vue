@@ -366,8 +366,6 @@ export default {
   data: () => {
     return {
       //Registration
-      message: "",
-      snackbar: false,
       message2: "",
       snackbar2: false,
       drawer: false,

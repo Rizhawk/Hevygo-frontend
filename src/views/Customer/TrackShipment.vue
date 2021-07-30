@@ -138,6 +138,7 @@ export default {
       new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
       // add UI
       H.ui.UI.createDefault(map, defaultLayers);
+      const ui = H.ui.UI.createDefault(map, defaultLayers);
       // Instantiate a map and platform object:
       // Get an instance of the geocoding service:
       var service = platform.getSearchService();
@@ -181,7 +182,19 @@ export default {
             // Assumption: ui is instantiated
             // Create an InfoBubble at the returned location with
             // the address as its contents:
-            map.addObject(new H.map.Marker(item.position));
+            const marker = new H.map.Marker(item.position);
+            marker.addEventListener(
+              "tap",
+              (event) => {
+                ui.addBubble(
+                  new H.ui.InfoBubble(item.position, {
+                    content: item.address.label,
+                  })
+                );
+              },
+              false
+            );
+            map.addObject(marker);
           });
         }
       );

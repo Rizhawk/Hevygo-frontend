@@ -5,7 +5,7 @@
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
         <Onavbar title="Dashboard" />
-          <mob-nav/>
+        <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-lg">
           <canvas id="bigDashboardChart"></canvas>
@@ -114,11 +114,81 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-category">Transactions Management</h5>
+                  <h4
+                    class="
+                      card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    List of Transactions
+                  </h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th>City</th>
+                        <th class="text-right">Salary</th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Dakota Rice</td>
+                          <td>Niger</td>
+                          <td>Oud-Turnhout</td>
+                          <td class="text-right">$36,738</td>
+                        </tr>
+                        <tr>
+                          <td>Minerva Hooper</td>
+                          <td>Curaçao</td>
+                          <td>Sinaai-Waas</td>
+                          <td class="text-right">$23,789</td>
+                        </tr>
+                        <tr>
+                          <td>Sage Rodriguez</td>
+                          <td>Netherlands</td>
+                          <td>Baileux</td>
+                          <td class="text-right">$56,142</td>
+                        </tr>
+                        <tr>
+                          <td>Doris Greene</td>
+                          <td>Malawi</td>
+                          <td>Feldkirchen in Kärnten</td>
+                          <td class="text-right">$63,542</td>
+                        </tr>
+                        <tr>
+                          <td>Mason Porter</td>
+                          <td>Chile</td>
+                          <td>Gloucester</td>
+                          <td class="text-right">$78,615</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
               <div class="card card-tasks">
                 <div class="card-header">
-                  <h5 class="card-category">Backend development</h5>
-                  <h4 class="card-title">Tasks</h4>
+                  <h5 class="card-category">Notifications</h5>
+                  <h4
+                    class="
+                      card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    What's New
+                  </h4>
                 </div>
                 <div class="card-body">
                   <div class="table-full-width table-responsive">
@@ -289,58 +359,6 @@
                   <div class="stats">
                     <i class="now-ui-icons loader_refresh spin"></i> Updated 3
                     minutes ago
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="card-category">All Persons List</h5>
-                  <h4 class="card-title">Employees Stats</h4>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead class="text-primary">
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th class="text-right">Salary</th>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Dakota Rice</td>
-                          <td>Niger</td>
-                          <td>Oud-Turnhout</td>
-                          <td class="text-right">$36,738</td>
-                        </tr>
-                        <tr>
-                          <td>Minerva Hooper</td>
-                          <td>Curaçao</td>
-                          <td>Sinaai-Waas</td>
-                          <td class="text-right">$23,789</td>
-                        </tr>
-                        <tr>
-                          <td>Sage Rodriguez</td>
-                          <td>Netherlands</td>
-                          <td>Baileux</td>
-                          <td class="text-right">$56,142</td>
-                        </tr>
-                        <tr>
-                          <td>Doris Greene</td>
-                          <td>Malawi</td>
-                          <td>Feldkirchen in Kärnten</td>
-                          <td class="text-right">$63,542</td>
-                        </tr>
-                        <tr>
-                          <td>Mason Porter</td>
-                          <td>Chile</td>
-                          <td>Gloucester</td>
-                          <td class="text-right">$78,615</td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
                 </div>
               </div>

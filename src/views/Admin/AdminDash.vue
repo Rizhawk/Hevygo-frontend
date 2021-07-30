@@ -112,7 +112,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <div class="card card-tasks">
                 <div class="card-header">
                   <h5 class="card-category">Backend development</h5>
@@ -290,12 +290,21 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
+            </div> -->
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-category">All Persons List</h5>
-                  <h4 class="card-title">Employees Stats</h4>
+                  <h5 class="card-category">Transactions Management</h5>
+                  <h4
+                    class="
+                      card-title
+                      font-weight-black
+                      text-secondary
+                      subtitle-1
+                    "
+                  >
+                    List of Transactions
+                  </h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
