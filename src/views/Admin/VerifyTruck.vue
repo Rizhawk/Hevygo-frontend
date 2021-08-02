@@ -68,9 +68,9 @@
                               >mdi-checkbox-marked-circle-outline</v-icon
                             >
                             <v-icon
-                              color="red"
-                              class="mx-5"
+                              color="red darken-1"
                               small
+                              class="mx-5"
                               v-if="truck.verification == 3"
                               >mdi-close-circle-outline</v-icon
                             >

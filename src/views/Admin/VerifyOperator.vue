@@ -56,7 +56,7 @@
                               >mdi-checkbox-marked-circle-outline</v-icon
                             >
                             <v-icon
-                              color="red"
+                              color="red darken-1"
                               small
                               v-if="details.is_verified == false"
                               >mdi-close-circle-outline</v-icon

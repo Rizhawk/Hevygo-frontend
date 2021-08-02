@@ -13,7 +13,7 @@
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
           <li>
-            <router-link to="/dashboard">
+            <router-link to="/optrdash">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </router-link>

@@ -309,42 +309,57 @@
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
-                      <thead class="text-primary">
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th class="text-right">Salary</th>
+                      <thead
+                        class="
+                          text-primary
+                          font-weight-medium
+                          caption
+                          text-center
+                        "
+                      >
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Operator</th>
+                        <th class="text-center">Customer</th>
+                        <th class="text-center">Start Location</th>
+                        <th class="text-center">End Location</th>
+                        <th class="text-center">Cost</th>
+                        <th class="text-center">Settlement</th>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>Dakota Rice</td>
-                          <td>Niger</td>
-                          <td>Oud-Turnhout</td>
-                          <td class="text-right">$36,738</td>
-                        </tr>
-                        <tr>
-                          <td>Minerva Hooper</td>
-                          <td>Curaçao</td>
-                          <td>Sinaai-Waas</td>
-                          <td class="text-right">$23,789</td>
-                        </tr>
-                        <tr>
-                          <td>Sage Rodriguez</td>
-                          <td>Netherlands</td>
-                          <td>Baileux</td>
-                          <td class="text-right">$56,142</td>
-                        </tr>
-                        <tr>
-                          <td>Doris Greene</td>
-                          <td>Malawi</td>
-                          <td>Feldkirchen in Kärnten</td>
-                          <td class="text-right">$63,542</td>
-                        </tr>
-                        <tr>
-                          <td>Mason Porter</td>
-                          <td>Chile</td>
-                          <td>Gloucester</td>
-                          <td class="text-right">$78,615</td>
+                      <tbody class="font-weight-medium caption text-center">
+                        <tr
+                          v-for="trans in transdetails"
+                          :key="trans.destination.id"
+                        >
+                          <td class="text-center">
+                            {{ trans.destination.date }}
+                          </td>
+                          <td class="text-center"></td>
+                          <td class="text-center">
+                            {{ trans.destination.customer.name }}
+                          </td>
+                          <td class="text-center">
+                            {{ trans.destination.start_location }}
+                          </td>
+                          <td class="text-center">
+                            {{ trans.destination.end_location }}
+                          </td>
+                          <td class="text-center">{{ trans.cost }}</td>
+                          <td class="text-center">
+                            <v-icon
+                              color="green darken-1"
+                              small
+                              class="mx-5"
+                              v-if="trans.is_settled == true"
+                              >mdi-checkbox-marked-circle-outline</v-icon
+                            >
+                            <v-icon
+                              color="red darken-1"
+                              small
+                              class="mx-5"
+                              v-if="trans.is_settled == false"
+                              >mdi-close-circle-outline</v-icon
+                            >
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -359,6 +374,7 @@
   </v-app>
 </template>
 <script>
+import { getAPI } from "../../axios-api";
 import Admin from "./AdminsSidebar.vue";
 import AdminNav from "../Admin/AdminNavbar.vue";
 import MobNav from "../Admin/MobNav.vue";
@@ -371,7 +387,24 @@ export default {
     MobNav,
   },
   data: () => {
-    return {};
+    return {
+      transdetails: [],
+    };
+  },
+  beforeCreate: function () {
+    getAPI
+      .get("/api/admin/transaction_listing", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.transdetails = this.APIData.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   mounted: function () {
     demo.initDashboardPageCharts();

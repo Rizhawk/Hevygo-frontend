@@ -26,7 +26,7 @@
         </v-list-item>
         <v-divider color="white"></v-divider>
         <v-list dense nav>
-          <v-list-item link href="/dashboard">
+          <v-list-item link href="/optrdash">
             <v-list-item-icon>
               <v-icon color="white">mdi-view-dashboard</v-icon>
             </v-list-item-icon>

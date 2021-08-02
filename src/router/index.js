@@ -115,7 +115,7 @@ const routes = [
     component: ForgotPass,
   },
   {
-    path: "/dashboard",
+    path: "/optrdash",
     name: "Dashboard",
     component: Dashboard,
   },
