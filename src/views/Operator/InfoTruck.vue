@@ -241,7 +241,6 @@
                               v-model="fitexp"
                               type="date"
                               required
-                              clearable
                               outlined
                               dense
                             ></v-text-field>
@@ -282,7 +281,6 @@
                               v-model="insexp"
                               type="date"
                               required
-                              clearable
                               outlined
                               dense
                             ></v-text-field>
@@ -456,6 +454,7 @@ export default {
           } else {
             this.message2 = "Truck Registration Failed";
             this.snackbar2 = true;
+            console.log(this.APIData.message);
           }
         })
         .catch((err) => {

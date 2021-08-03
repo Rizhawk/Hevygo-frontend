@@ -105,7 +105,7 @@ import { getAPI } from "../../axios-api";
 export default {
   name: "Onavbar",
   props: {
-    title: "",
+    title: null,
   },
   data: () => {
     return {
@@ -130,7 +130,7 @@ export default {
         } else {
           if (this.APIData.data["status"] == 1) {
             this.vicon = "mdi-clock";
-            this.vcolor = "black";
+            this.vcolor = "white";
             this.vmsg = this.APIData.data["remarks"];
           } else if (this.APIData.data["status"] == 2) {
             this.vicon = "mdi-check-circle";

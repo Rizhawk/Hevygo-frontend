@@ -90,7 +90,7 @@
 export default {
   name: "Cnavbar",
   props: {
-    title: "",
+    title: null,
   },
   data: () => {
     return {

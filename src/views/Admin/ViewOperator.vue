@@ -250,10 +250,10 @@ export default {
         this.APIData = response.data;
         this.pan = this.APIData.data["pan"];
         this.gst = this.APIData.data["gst_no"];
-        this.email = this.APIData.data["user"]["email"];
-        this.name = this.APIData.data["user"]["name"];
-        this.phone = this.APIData.data["user"]["phone"];
-        this.is_verified = this.APIData.data["user"]["is_verified"];
+        this.email = this.APIData.data["operator"]["email"];
+        this.name = this.APIData.data["operator"]["name"];
+        this.phone = this.APIData.data["operator"]["phone"];
+        this.is_verified = this.APIData.data["operator"]["is_verified"];
         this.status = this.APIData.data["status"];
         this.show = true;
       })
@@ -279,7 +279,6 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           window.location.reload();
         })
         .catch((err) => {
