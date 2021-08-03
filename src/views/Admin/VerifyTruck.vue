@@ -115,6 +115,7 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         this.truckdetails = this.APIData.data;
+        console.log(this.APIData);
       })
       .catch((err) => {
         console.log(err);
