@@ -86,8 +86,6 @@ export default {
         this.APIData = response.data;
         this.sl = this.APIData.data.start_location;
         this.el = this.APIData.data.end_location;
-        console.log(this.sl);
-        console.log(this.el);
       })
       .catch((err) => {
         console.log(err);
@@ -96,8 +94,7 @@ export default {
   async mounted() {
     getAPI
       .get(
-        "/api/truck/view_truck_status/?truck_id=" +
-          localStorage.getItem("trid"),
+        "api/customers/cust-trans-detail/?id=" + localStorage.getItem("trid"),
         {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
@@ -107,7 +104,7 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
-          this.crtLocation = this.APIData.data.location;
+          this.crtLocation = this.APIData.data.truck.location;
           this.initializeHereMap();
         }
       })
@@ -195,6 +192,11 @@ export default {
               false
             );
             map.addObject(marker);
+            defaultLayers.vector.normal.map,
+              {
+                zoom: 10,
+                center: { lat: item.position.lat, lng: item.position.lng },
+              };
           });
         }
       );

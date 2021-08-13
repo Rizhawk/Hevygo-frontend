@@ -389,9 +389,14 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
-          this.getStatus(this.APIData.data.truck);
-          this.trid = this.APIData.data.truck;
+          this.trid = this.APIData.data.destination.id;
           this.track = true;
+          this.truck = this.APIData.data.truck.truck.registration;
+          this.driver = this.APIData.data["truck"]["driver"]["driver_name"];
+          this.drphn = this.APIData.data["truck"]["driver"]["phone"];
+          this.optr = this.APIData.data["truck"]["truck"]["owner"]["name"];
+          this.optrphn = this.APIData.data["truck"]["truck"]["owner"]["phone"];
+          this.cost = this.APIData.data.cost;
         }
       })
       .catch((err) => {
@@ -430,28 +435,6 @@ export default {
         })
         .catch((err) => {
           alert(err);
-        });
-    },
-    getStatus(id) {
-      getAPI
-        .get("/api/truck/view_truck_status/?truck_id=" + id, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.APIData.Http_response == 200) {
-            this.truck = this.APIData.data["truck"]["registration"];
-            this.driver = this.APIData.data["driver"]["driver_name"];
-            this.drphn = this.APIData.data["driver"]["phone"];
-            this.optr = this.APIData.data["truck"]["owner"]["name"];
-            this.optrphn = this.APIData.data["truck"]["owner"]["phone"];
-            this.cost = 5000;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
         });
     },
     trackTruck() {

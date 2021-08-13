@@ -138,12 +138,14 @@ export default {
         });
     },
     createTrans() {
+      console.log(localStorage.getItem("destid"));
+      console.log(this.owner);console.log(this.driver);
       getAPI
         .post(
           "api/customers/cust-trans-create/",
           {
             destination: localStorage.getItem("destid"),
-            operator: this.owner,
+            operator: this.orwne,
             truck: this.driver,
             cost: 5000,
           },
@@ -155,6 +157,7 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           if (this.APIData.Http_response == 200) {
             this.status = 2;
             this.acceptOrreject();
@@ -177,7 +180,8 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {
-            this.owner = this.APIData.data["truck"]["owner"]["id"];
+            this.owner = this.APIData.data.truck.owner.id;
+            console.log(this.owner);
             this.createTrans();
           } else {
             alert("Something Went Wrong! Please try Again");
@@ -293,7 +297,6 @@ export default {
           this.driver = localStorage.getItem("driver");
           localStorage.removeItem("driver");
           localStorage.removeItem("response");
-          console.log(this.driver);
           this.getOwnerid();
         }
       }, 10000);
