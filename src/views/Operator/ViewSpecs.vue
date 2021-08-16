@@ -118,13 +118,13 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <v-select
-                              v-model="type"
+                            <v-combobox
+                              v-model="typ"
                               rounded
                               :items="types"
                               outlined
                               dense
-                            ></v-select>
+                            ></v-combobox>
                           </div>
                         </div>
                         <v-flex row class="my-2" justify-center
@@ -182,9 +182,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn class="ml-10" x-small @click="back" text
-            >Later</v-btn
-          >
+          <v-btn class="ml-10" x-small @click="back" text>Later</v-btn>
           <v-btn x-small @click.prevent="addSpec" text color="red"
             >Add now</v-btn
           ></v-card-actions
@@ -214,16 +212,15 @@ export default {
       cap: "",
       manf: "",
       model: "",
-      type: "",
+      typ: "",
       types: [
-        "Tipper",
-        "Lorry",
-        "Pickup",
-        "Tanker",
-        "Tow truck",
-        "Van",
-        "Container Truck",
-        "Car transporter",
+        "6 Tyre Truck - 2 Axles",
+        "10 Tyre Multy Axle Truck - 3 Axles",
+        "12 Tyre Single Chassis Rigid Truck - 4 Axles",
+        "14 Tyre Single Chassis Rigid Truck - 5 Axles",
+        "14 Tyre Semi Trailer - 4 Axles",
+        "18 Tyre Semi Trailer - 5 Axles ",
+        "22 Tyre Semi Trailer - 6 Axles",
       ],
       dialog1: false,
       dialog2: false,
@@ -248,7 +245,7 @@ export default {
           this.cap = this.APIData.data["capacity"];
           this.manf = this.APIData.data["manufacturer"];
           this.model = this.APIData.data["model"];
-          this.type = this.APIData.data["type"];
+          this.typ = this.APIData.data["type"];
         } else {
           this.dialog2 = true;
         }
@@ -266,7 +263,7 @@ export default {
           {
             truck_id: localStorage.getItem("tid"),
             manufacturer: this.manf,
-            type: this.type,
+            type: this.typ,
             model: this.model,
             capacity: this.cap,
           },
