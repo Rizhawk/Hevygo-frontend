@@ -48,7 +48,7 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <validation-observer ref="observer1" v-slot="{ invalid }">
+                  <validation-observer ref="observer1">
                     <form @submit.prevent="tsignup">
                       <div class="form-group">
                         <div class="row">
@@ -141,13 +141,9 @@
                           </div>
                           <div class="col-md-6">
                             <label>Home Location</label>
-                            <validation-provider
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
+                            <validation-provider rules="required">
                               <v-text-field
                                 v-model="homeloc"
-                                :error-messages="errors"
                                 type="search"
                                 @input="doSearch"
                                 required
@@ -181,13 +177,12 @@
                           <div class="col-md-6">
                             <label>Rc Book</label>
                             <validation-provider
-                              v-slot="{ errors }"
                               name="Rc Book"
                               rules="required"
                             >
                               <v-file-input
                                 v-model="rcbook"
-                                :error-messages="errors"
+                                accept="image/png,image/jpeg"
                                 required
                                 clearable
                                 outlined
@@ -210,19 +205,14 @@
                         <div class="row">
                           <div class="col-md-4">
                             <label>Fitness Certificate</label>
-                            <validation-provider
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <v-file-input
-                                v-model="fitcert"
-                                :error-messages="errors"
-                                required
-                                clearable
-                                outlined
-                                dense
-                              ></v-file-input>
-                            </validation-provider>
+                            <v-file-input
+                              v-model="fitcert"
+                              accept="image/png,image/jpeg"
+                              required
+                              clearable
+                              outlined
+                              dense
+                            ></v-file-input>
                           </div>
                           <div class="col-md-4">
                             <label>Fitness Number</label>
@@ -249,13 +239,10 @@
                         <div class="row">
                           <div class="col-md-4">
                             <label>Insurance Certificate</label>
-                            <validation-provider
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
+                            <validation-provider rules="required">
                               <v-file-input
                                 v-model="insur"
-                                :error-messages="errors"
+                                accept="image/png,image/jpeg"
                                 required
                                 clearable
                                 outlined
@@ -309,7 +296,6 @@
                             type="submit"
                             x-small
                             color="rgb(34, 48, 61)"
-                            :disabled="invalid"
                             depressed
                             outlined
                             >Sumbit</v-btn
@@ -400,8 +386,7 @@ export default {
       fitexp: "",
       insur: "",
       insno: "",
-      insexp: "",
-      permit: "",
+      insexp: ""
     };
   },
   methods: {
@@ -454,7 +439,7 @@ export default {
           } else {
             this.message2 = "Truck Registration Failed";
             this.snackbar2 = true;
-            console.log(this.APIData.message);
+            alert(this.APIData.message);
           }
         })
         .catch((err) => {
@@ -508,27 +493,29 @@ export default {
       if (this.dropdown == true) {
         alert("Select a Location");
       } else {
+        let bodyFormData = new FormData();
+        bodyFormData.append("crew_id", id);
+        bodyFormData.append("registration", this.regnumber);
+        bodyFormData.append("homelocation", this.homeloc);
+        bodyFormData.append("fitness_no", this.fitno);
+        bodyFormData.append("fitness_validity", this.fitexp);
+        bodyFormData.append("insurance_no", this.insno);
+        bodyFormData.append("rc_scan", this.rcbook);
+        bodyFormData.append("registration_validity", this.rcexp);
+        bodyFormData.append("insurance_scan", this.insur);
+        bodyFormData.append("insurance_validity", this.insexp);
+        bodyFormData.append("fitness_scan", this.fitcert);
+        bodyFormData.append("verification", 1);
+        bodyFormData.append("remarks", "Wait to be Verified");
         getAPI
           .post(
-            "/api/operators/add_truck/ ",
-            {
-              crew_id: id,
-              registration: this.regnumber,
-              homelocation: this.homeloc,
-              fitness_no: this.fitno,
-              insurance_no: this.insno,
-              rc_scan: this.rcbook,
-              rc_exp: this.rcexp,
-              insurance_scan: this.insur,
-              insurance_exp: this.insexp,
-              fitness_scan: this.fitcert,
-              fitness_exp: this.fitexp,
-              verification: 1,
-              remarks: "Wait to be Verified",
-            },
+            "/api/operators/add_truck/",
+               bodyFormData,
             {
               headers: {
+                'Content-Type': 'multipart/form-data',
                 Authorization: ` Token ${this.$session.get("user_token")}`,
+                
               },
             }
           )
@@ -543,7 +530,7 @@ export default {
             }
           })
           .catch((err) => {
-            alert(err);
+            console.log(err);
           });
       }
     },

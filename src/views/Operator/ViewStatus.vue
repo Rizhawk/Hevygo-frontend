@@ -102,16 +102,15 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label>Current Status</label>
-                            <v-select
+                            <v-combobox
                               class="status"
                               v-model="status"
                               :items="stats"
-                              autofocus
                               rounded
                               outlined
                               dense
                             >
-                            </v-select>
+                            </v-combobox>
                           </div>
                         </div>
                         <v-flex row class="my-2" justify-center
