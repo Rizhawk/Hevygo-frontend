@@ -10,8 +10,8 @@
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-2"></div>
+            <div class="col-md-7">
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -62,7 +62,6 @@
                             />
                           </div>
                         </div>
-
                         <div class="col-md-6">
                           <div class="form-group">
                             <label>Homelocation </label>
@@ -75,57 +74,98 @@
                           </div>
                         </div>
                       </div>
+                      <label>Uploads</label>
+                      <div class="form-control">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <v-chip v-model="rclink" @click="select(rc)">
+                              <span>Rc Book</span>&nbsp;
+                            </v-chip>
+                          </div>
+                          <div class="col-md-4">
+                            <v-chip v-model="fitlink" @click="select(rc)">
+                              <span>Fitness</span>&nbsp;
+                            </v-chip>
+                          </div>
+                          <div class="col-md-4">
+                            <v-chip v-model="inslink" @click="select(rc)">
+                              <span>Insurance</span>&nbsp;
+                            </v-chip>
+                          </div>
+                        </div>
+                      </div>
+                      <label>Dates of Validity</label>
+                      <div class="form-control">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <label>RC Book</label>
+                            <input
+                              v-model="rcdate"
+                              type="date"
+                              class="form-control"
+                            />
+                          </div>
+                          <div class="col-md-4">
+                            <label>Fintness</label>
+                            <input
+                              v-model="fitdate"
+                              type="date"
+                              class="form-control"
+                            />
+                          </div>
+                          <div class="col-md-4">
+                            <label>Insurance</label>
+                            <input
+                              v-model="insdate"
+                              type="date"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                      </div>
                       <label>Capcity</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <div class="form-group">
-                            <v-text-field
-                              v-model="cap"
-                              rounded
-                              outlined
-                              dense
-                            ></v-text-field>
-                          </div>
+                          <v-text-field
+                            v-model="cap"
+                            rounded
+                            outlined
+                            dense
+                          ></v-text-field>
                         </div>
                       </div>
                       <label>Manufacturer</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <div class="form-group">
-                            <v-text-field
-                              v-model="manf"
-                              rounded
-                              outlined
-                              dense
-                            ></v-text-field>
-                          </div>
+                          <v-text-field
+                            v-model="manf"
+                            rounded
+                            outlined
+                            dense
+                          ></v-text-field>
                         </div>
                       </div>
                       <label>Model</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <div class="form-group">
-                            <v-text-field
-                              v-model="model"
-                              rounded
-                              outlined
-                              dense
-                            ></v-text-field>
-                          </div>
+                          <v-text-field
+                            v-model="model"
+                            rounded
+                            outlined
+                            dense
+                          ></v-text-field>
                         </div>
                       </div>
                       <label>Type</label>
                       <div class="row">
                         <div class="col-md-12">
-                          <div class="form-group">
-                            <v-combobox
-                              v-model="typ"
-                              rounded
-                              :items="types"
-                              outlined
-                              dense
-                            ></v-combobox>
-                          </div>
+                          <v-combobox
+                            v-model="typ"
+                            rounded
+                            :items="types"
+                            outlined
+                            dense
+                          ></v-combobox>
                         </div>
                         <v-flex row class="my-2" justify-center
                           ><v-btn
@@ -209,6 +249,12 @@ export default {
     return {
       reg: "",
       home: "",
+      rclink: "",
+      fitlink: "",
+      inslink: "",
+      rcdate: "",
+      fitdate: "",
+      insdate: "",
       cap: "",
       manf: "",
       model: "",
@@ -319,6 +365,9 @@ export default {
     back() {
       localStorage.removeItem("tid");
       this.$router.push({ name: "TrucksTable" });
+    },
+    select(link) {
+      window.open(link);
     },
   },
 };

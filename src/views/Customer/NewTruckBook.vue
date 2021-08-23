@@ -227,14 +227,13 @@ export default {
       vtype: "",
       //
       types: [
-        "Tipper",
-        "Lorry",
-        "Pickup",
-        "Tanker",
-        "Tow truck",
-        "Van",
-        "Container Truck",
-        "Car transporter",
+        "6 Tyre Truck - 2 Axles",
+        "10 Tyre Multy Axle Truck - 3 Axles",
+        "12 Tyre Single Chassis Rigid Truck - 4 Axles",
+        "14 Tyre Single Chassis Rigid Truck - 5 Axles",
+        "14 Tyre Semi Trailer - 4 Axles",
+        "18 Tyre Semi Trailer - 5 Axles ",
+        "22 Tyre Semi Trailer - 6 Axles",
       ],
       //
       dropdown1: false,

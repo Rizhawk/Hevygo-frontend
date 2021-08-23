@@ -11,7 +11,7 @@
         <div class="content">
           <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -22,7 +22,7 @@
                       subtitle-1
                     "
                   >
-                    {{regno}}
+                    {{ regno }}
                   </h5>
                   <v-flex row justify-end>
                     <v-btn
@@ -96,7 +96,56 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <label>Uploads</label>
+                    <div class="form-control">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <v-chip v-model="rclink" @click="select(rc)">
+                            <span>Rc Book</span>&nbsp;
+                          </v-chip>
+                        </div>
+                        <div class="col-md-4">
+                          <v-chip v-model="fitlink" @click="select(rc)">
+                            <span>Fitness</span>&nbsp;
+                          </v-chip>
+                        </div>
+                        <div class="col-md-4">
+                          <v-chip v-model="inslink" @click="select(rc)">
+                            <span>Insurance</span>&nbsp;
+                          </v-chip>
+                        </div>
+                      </div>
+                    </div>
+                    <label>Dates of Validity</label>
+                    <div class="form-control">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <label>RC Book</label>
+                          <input
+                            v-model="rcdate"
+                            type="date"
+                            class="form-control"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label>Fintness</label>
+                          <input
+                            v-model="fitdate"
+                            type="date"
+                            class="form-control"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label>Insurance</label>
+                          <input
+                            v-model="insdate"
+                            type="date"
+                            class="form-control"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row my-2">
                       <div class="col-md-6">
                         <div class="form-group">
                           <v-expansion-panels>
@@ -325,6 +374,12 @@ export default {
       regno: "",
       homeloc: "",
       status: null,
+      rclink: "",
+      fitlink: "",
+      inslink: "",
+      rcdate: "",
+      fitdate: "",
+      insdate: "",
       //Operator details
       optrname: "",
       optrphone: "",
@@ -352,6 +407,7 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         this.name = this.APIData.data["truck"]["truck"]["name"];
         this.phone = this.APIData.data["truck"]["truck"]["phone"];
         this.status = this.APIData.data["truck"]["verification"];
@@ -388,6 +444,7 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           window.location.reload();
         })
         .catch((err) => {
@@ -421,6 +478,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    select(link) {
+      window.open(link);
     },
     back() {
       localStorage.removeItem("optrid");
