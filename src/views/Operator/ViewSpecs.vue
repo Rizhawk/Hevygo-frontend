@@ -78,19 +78,52 @@
                       <div class="form-control">
                         <div class="row">
                           <div class="col-md-4">
-                            <v-chip v-model="rclink" @click="select(rc)">
-                              <span>Rc Book</span>&nbsp;
+                            <v-chip @click="viewURL(rclink)">
+                              <v-icon left> mdi-file-image </v-icon>
+                              <span class="font-weight-bold caption"
+                                >Rc Book</span
+                              >
+                              &nbsp;
                             </v-chip>
+                            <v-btn
+                              fab
+                              v-if="status == 1 || status == 3"
+                              depressed
+                              x-small
+                              @click="editUpload(1)"
+                            >
+                              <v-icon dark x-small> mdi-pencil </v-icon></v-btn
+                            >
                           </div>
                           <div class="col-md-4">
-                            <v-chip v-model="fitlink" @click="select(rc)">
-                              <span>Fitness</span>&nbsp;
+                            <v-chip @click="viewURL(fitlink)">
+                              <v-icon left> mdi-file-image </v-icon>
+                              <span class="font-weight-bold caption"
+                                >Fitness</span
+                              >
+                              &nbsp;
                             </v-chip>
+                            <v-btn fab depressed x-small @click="editUpload(2)">
+                              <v-icon dark x-small> mdi-pencil </v-icon></v-btn
+                            >
                           </div>
                           <div class="col-md-4">
-                            <v-chip v-model="inslink" @click="select(rc)">
-                              <span>Insurance</span>&nbsp;
+                            <v-chip @click="viewURL(inslink)">
+                              <v-icon left> mdi-file-image </v-icon>
+                              <span class="font-weight-bold caption"
+                                >Insurance</span
+                              >
+                              &nbsp;
                             </v-chip>
+                            <v-btn
+                              fab
+                              x-small
+                              depressed
+                              retain-focus-on-click
+                              @click="editUpload(3)"
+                            >
+                              <v-icon dark x-small> mdi-pencil </v-icon></v-btn
+                            >
                           </div>
                         </div>
                       </div>
@@ -101,26 +134,108 @@
                             <label>RC Book</label>
                             <input
                               v-model="rcdate"
-                              type="date"
+                              type="text"
                               class="form-control"
+                              disabled=""
                             />
                           </div>
                           <div class="col-md-4">
                             <label>Fintness</label>
                             <input
                               v-model="fitdate"
-                              type="date"
+                              type="text"
                               class="form-control"
+                              disabled=""
                             />
                           </div>
                           <div class="col-md-4">
                             <label>Insurance</label>
                             <input
                               v-model="insdate"
-                              type="date"
+                              type="text"
                               class="form-control"
+                              disabled=""
                             />
                           </div>
+                        </div>
+                      </div>
+
+                      <label v-if="show1">RC Book</label>
+                      <div v-if="show1" class="row">
+                        <div class="col-md-12">
+                          <v-file-input
+                            v-model="rc"
+                            autofocus
+                            accept="image/png,image/jpeg"
+                            rounded
+                            outlined
+                            dense
+                          ></v-file-input>
+                        </div>
+                      </div>
+                      <label v-if="show1">RC's Validity</label>
+                      <div v-if="show1" class="row">
+                        <div class="col-md-12">
+                          <v-text-field
+                            v-model="vor"
+                            type="date"
+                            autofocus
+                            rounded
+                            outlined
+                            dense
+                          ></v-text-field>
+                        </div>
+                      </div>
+                      <label v-if="show2">Fitness</label>
+                      <div v-if="show2" class="row">
+                        <div class="col-md-12">
+                          <v-file-input
+                            v-model="fit"
+                            autofocus
+                            accept="image/png,image/jpeg"
+                            rounded
+                            outlined
+                            dense
+                          ></v-file-input>
+                        </div>
+                      </div>
+                      <label v-if="show2">Fitness's Validity</label>
+                      <div v-if="show2" class="row">
+                        <div class="col-md-12">
+                          <v-text-field
+                            v-model="vof"
+                            type="date"
+                            autofocus
+                            rounded
+                            outlined
+                            dense
+                          ></v-text-field>
+                        </div>
+                      </div>
+                      <label v-if="show3">Insurance</label>
+                      <div v-if="show3" class="row">
+                        <div class="col-md-12">
+                          <v-file-input
+                            v-model="ins"
+                            accept="image/png,image/jpeg"
+                            autofocus
+                            rounded
+                            outlined
+                            dense
+                          ></v-file-input>
+                        </div>
+                      </div>
+                      <label v-if="show3">Insurance's Validity</label>
+                      <div v-if="show3" class="row">
+                        <div class="col-md-12">
+                          <v-text-field
+                            v-model="voi"
+                            type="date"
+                            autofocus
+                            rounded
+                            outlined
+                            dense
+                          ></v-text-field>
                         </div>
                       </div>
                       <label>Capcity</label>
@@ -249,12 +364,26 @@ export default {
     return {
       reg: "",
       home: "",
+      status: null,
+      //
       rclink: "",
       fitlink: "",
       inslink: "",
       rcdate: "",
       fitdate: "",
       insdate: "",
+      //
+      //
+      rc: "",
+      fit: "",
+      ins: "",
+      vor: "",
+      vof: "",
+      voi: "",
+      show1: false,
+      show2: false,
+      show3: false,
+      //
       cap: "",
       manf: "",
       model: "",
@@ -292,6 +421,13 @@ export default {
           this.manf = this.APIData.data["manufacturer"];
           this.model = this.APIData.data["model"];
           this.typ = this.APIData.data["type"];
+          this.status = this.APIData.data.truck.verification;
+          this.rclink = this.APIData.data.truck.rc_scan;
+          this.fitlink = this.APIData.data.truck.fitness_scan;
+          this.inslink = this.APIData.data.truck.insurance_scan;
+          this.rcdate = this.APIData.data.truck.registration_validity;
+          this.fitdate = this.APIData.data.truck.fitness_validity;
+          this.insdate = this.APIData.data.truck.insurance_validity;
         } else {
           this.dialog2 = true;
         }
@@ -302,27 +438,30 @@ export default {
   },
   methods: {
     infoedit() {
-      //api call to update truck info
+      let updateFormData = new FormData();
+      updateFormData.append("truck_id", localStorage.getItem("tid"));
+      updateFormData.append("manufacturer", this.manf);
+      updateFormData.append("type", this.typ);
+      updateFormData.append("model", this.model);
+      updateFormData.append("capacity", this.cap);
+      updateFormData.append("fitness_scan", this.fit);
+      updateFormData.append("fitness_validity", this.vof);
+      updateFormData.append("insurance_scan", this.ins);
+      updateFormData.append("insurance_validity", this.voi);
+      updateFormData.append("rc_scan", this.rc);
+      updateFormData.append("registration_validity", this.vor);
       getAPI
-        .put(
-          "/api/operators/update_truck_details/",
-          {
-            truck_id: localStorage.getItem("tid"),
-            manufacturer: this.manf,
-            type: this.typ,
-            model: this.model,
-            capacity: this.cap,
+        .put("/api/operators/update_truck_details/", updateFormData, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
+        })
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           if (this.APIData.response == 200) {
             window.location.reload();
+            // console.log(this.APIData.message);
           } else {
             alert(this.APIData.message);
           }
@@ -366,8 +505,17 @@ export default {
       localStorage.removeItem("tid");
       this.$router.push({ name: "TrucksTable" });
     },
-    select(link) {
+    viewURL(link) {
       window.open(link);
+    },
+    editUpload(show) {
+      if (show == 1) {
+        this.show1 = !this.show1;
+      } else if (show === 2) {
+        this.show2 = !this.show2;
+      } else if (show == 3) {
+        this.show3 = !this.show3;
+      }
     },
   },
 };

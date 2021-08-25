@@ -100,18 +100,26 @@
                     <div class="form-control">
                       <div class="row">
                         <div class="col-md-4">
-                          <v-chip v-model="rclink" @click="select(rc)">
-                            <span>Rc Book</span>&nbsp;
+                          <v-chip @click="viewURL(rclink)">
+                            <v-icon left> mdi-file-image </v-icon>
+                            <span class="font-weight-bold caption">Rc Book</span
+                            >&nbsp;
                           </v-chip>
                         </div>
                         <div class="col-md-4">
-                          <v-chip v-model="fitlink" @click="select(rc)">
-                            <span>Fitness</span>&nbsp;
+                          <v-chip @click="viewURL(fitlink)">
+                            <v-icon left> mdi-file-image </v-icon>
+                            <span class="font-weight-bold caption">
+                              Fitness</span
+                            >&nbsp;
                           </v-chip>
                         </div>
                         <div class="col-md-4">
-                          <v-chip v-model="inslink" @click="select(rc)">
-                            <span>Insurance</span>&nbsp;
+                          <v-chip @click="viewURL(inslink)">
+                            <v-icon left> mdi-file-image </v-icon>
+                            <span class="font-weight-bold caption"
+                              >Insurance</span
+                            >&nbsp;
                           </v-chip>
                         </div>
                       </div>
@@ -374,12 +382,14 @@ export default {
       regno: "",
       homeloc: "",
       status: null,
+      //
       rclink: "",
       fitlink: "",
       inslink: "",
       rcdate: "",
       fitdate: "",
       insdate: "",
+      //
       //Operator details
       optrname: "",
       optrphone: "",
@@ -407,7 +417,6 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
-        console.log(this.APIData);
         this.name = this.APIData.data["truck"]["truck"]["name"];
         this.phone = this.APIData.data["truck"]["truck"]["phone"];
         this.status = this.APIData.data["truck"]["verification"];
@@ -421,12 +430,24 @@ export default {
         this.model = this.APIData.data["model"];
         this.capacity = this.APIData.data["capacity"];
         this.trid = this.APIData.data["truck"]["id"];
+        this.rclink = this.APIData.data.truck.rc_scan;
+        this.fitlink = this.APIData.data.truck.fitness_scan;
+        this.inslink = this.APIData.data.truck.insurance_scan;
+        // this.rcdate = this.APIData.data.truck.registration_validity;
+        let date3 = this.APIData.data.truck.fitness_validity;
+        console.log(date3);
+        this.formatDate(date3);
+        // this.insdate = this.APIData.data.truck.insurance_validity;
       })
       .catch((err) => {
         console.log(err);
       });
   },
   methods: {
+    formatDate(date) {
+      this.fitdate = date.split("-").reverse().join("-");
+      console.log(this.fitdate);
+    },
     giveApproval() {
       getAPI
         .put(
@@ -479,7 +500,7 @@ export default {
           console.log(err);
         });
     },
-    select(link) {
+    viewURL(link) {
       window.open(link);
     },
     back() {

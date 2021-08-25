@@ -74,14 +74,13 @@
                             required: true,
                           }"
                         >
-                          <v-select
+                          <v-text-field
                             v-model="status"
-                            :items="stats"
                             :error-messages="errors"
                             clearable
                             outlined
                             dense
-                          ></v-select>
+                          ></v-text-field>
                         </validation-provider>
                         <label>Location</label>
                         <validation-provider
@@ -154,7 +153,6 @@ export default {
     return {
       truckdata: [],
       driverdata: [],
-      stats: ["Available", "Unavailable"],
       loc: "",
       status: "",
       reg: "",
@@ -216,9 +214,9 @@ export default {
       for (let key in this.truckdata) {
         if (this.reg == this.truckdata[key]["registration"]) {
           this.loc = this.truckdata[key]["homelocation"];
+          this.status = "Available";
         }
       }
-      console.log(this.loc);
     },
     truckdetails() {
       //Api call to create a truck status
@@ -237,7 +235,7 @@ export default {
           "/api/truck/add_truck_status/",
           {
             truck_id: this.tid,
-            status: this.status,
+            status: "Offline",
             location: this.loc,
             driver_id: this.did,
           },
