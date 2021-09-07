@@ -52,10 +52,11 @@ export default {
   created: function () {
     try {
       this.ws = new WebSocket(
-        "wss://shuttletestserver.herokuapp.com/ws/" +
+        "wss://3.108.118.96/ws/" +
           this.$session.get("user_id") +
           "/"
       );
+      console.log(this.ws);
       this.ws.onmessage = ({ data }) => {
         let req = JSON.parse(data);
         console.log(req);

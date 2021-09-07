@@ -101,12 +101,13 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <label>Current Status</label>
+                            <label>Availablity</label>
                             <v-combobox
                               class="status"
                               v-model="status"
                               :items="stats"
                               rounded
+                              :disabled="show"
                               outlined
                               dense
                             >
@@ -167,6 +168,8 @@ export default {
       cloc: "",
       status: "",
       stats: ["Unavailable", "Available"],
+      stat: "",
+      show: false,
     };
   },
   beforeCreate: function () {
@@ -186,7 +189,17 @@ export default {
           this.driver = this.APIData.data.driver["driver_name"];
           this.phone = this.APIData.data.driver["phone"];
           this.cloc = this.APIData.data["location"];
-          this.status = this.APIData.data["status"];
+          if (this.APIData.data["status"] === "Offline") {
+            this.status = "Available";
+          } else if (
+            this.APIData.data["status"] != "Offline" &&
+            this.APIData.data["status"] != "Unavailable"
+          ) {
+            this.show = true;
+            this.status = this.APIData.data["status"];
+          } else {
+            this.status = this.APIData.data["status"];
+          }
         } else {
           alert(this.APIData.message);
         }
@@ -197,12 +210,17 @@ export default {
   },
   methods: {
     updateStatus() {
+      if (this.status === "Available") {
+        this.stat = "Offline";
+      } else {
+        this.stat = this.status;
+      }
       getAPI
         .post(
           "/api/truck/update_truck_status/",
           {
             truck_id: localStorage.getItem("tid"),
-            status: this.status,
+            status: this.stat,
           },
           {
             headers: {

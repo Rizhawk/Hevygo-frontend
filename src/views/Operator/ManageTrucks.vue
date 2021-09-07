@@ -58,7 +58,7 @@
                         <tr
                           v-for="truck in trucks"
                           :key="truck.id"
-                          @click.prevent="viewSpec(truck.id)"
+                          @click.prevent="viewSpec(truck.truck.id)"
                         >
                           <td>
                             {{ truck.truck["phone"] }}
@@ -144,6 +144,7 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         this.trucks = this.APIData.data;
       })
       .catch((err) => {

@@ -135,6 +135,7 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         this.destdetails = this.APIData.data;
       })
       .catch((err) => {

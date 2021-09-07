@@ -47,7 +47,13 @@
     <!-- End Navbar -->
     <div class="panel-header panel-header-sm">
       <v-flex row justify-end>
-        <v-btn x-small color=" green lighten-1" to="/bookings" depressed dark outlined
+        <v-btn
+          x-small
+          color=" green lighten-1"
+          to="/bookings"
+          depressed
+          dark
+          outlined
           >Proceed to Pay</v-btn
         ></v-flex
       >
@@ -79,8 +85,10 @@
 <script>
 import { getAPI } from "../../axios-api";
 import Csidebar from "../../components/Customer/sidebar.vue";
+import store from "../../../store";
 export default {
   name: "RouteMap",
+  store: store,
   components: {
     Csidebar,
   },
@@ -162,6 +170,7 @@ export default {
             // map.addObject(new H.map.Marker(item.position));
             this.dest.push(item.position["lat"]);
             this.dest.push(item.position["lng"]);
+            console.log(this.dest);
           });
           let Ndest = this.dest.slice(0, 2);
           this.end = Ndest.toString();
@@ -193,7 +202,6 @@ export default {
             let linestring = H.geo.LineString.fromFlexiblePolyline(
               section.polyline
             );
-
             // Create a polyline to display the route:
             let routeLine = new H.map.Polyline(linestring, {
               style: { strokeColor: "blue", lineWidth: 3 },
@@ -220,7 +228,6 @@ export default {
       };
       // Get an instance of the routing service version 8:
       var router = platform.getRoutingService(null, 8);
-
       // Call calculateRoute() with the routing parameters,
       // the callback and an error callback function (called if a
       // communication error occurs):
@@ -232,26 +239,23 @@ export default {
     getCost() {
       console.log(this.start);
       console.log(this.end);
+      let wayPoints = new FormData();
+      wayPoints.append("waypoint0", this.start);
+      wayPoints.append("waypoint1", this.end);
+      console.log(this.$session.get("user_token"));
       getAPI
-        .post(
-          "https://fleet.ls.hereapi.com/2/calculateroute.json?apikey=ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E&mode=fastest;truck;traffic:disabled&currency=INR&tollVehicleType=3&commercial=1&fuelType=Diesel&costPerConsumptionUnit=0&vehicleNumberAxles=3&legAttributes=none",
-          {
-            waypoint0: this.start,
-            waypoint1: this.end,
+        .post("/api/map/get_cost/", wayPoints, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
-        )
+        })
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
-          for (let key in this.APIData) {
-            this.routes = this.APIData[key]["route"];
-          }
-          for (let key in this.routes) {
-            this.cost = this.routes[key]["cost"];
-          }
-          this.tollCost = this.cost["totalCost"];
-          console.log(this.tollCost);
-          localStorage.setItem("cost", this.tollCost);
+          // localStorage.setItem("cost", this.APIData.data.details.tollCost);
+          this.tollCost = this.APIData.data.details.tollCost;
+          this.$store.commit("updateCost", this.tollCost);
+          console.log(this.$store.getters.totalCost);
         })
         .catch((err) => {
           console.log(err);

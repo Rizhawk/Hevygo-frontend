@@ -51,7 +51,7 @@
                         <th>Truck</th>
                         <th>Driver</th>
                         <th>Driver's Phone</th>
-                        <th>Status</th>
+                        <th>Current Status</th>
                         <th>Location</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
@@ -132,7 +132,6 @@ export default {
       localStorage.setItem("tid", id);
       this.$router.push({ name: "Vstatus" });
     },
-
   },
 };
 </script>

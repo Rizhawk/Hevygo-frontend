@@ -82,6 +82,9 @@
                             class="form-control"
                             :disabled="change"
                           >
+                            <option :value="vt" hidden disabled selected>
+                              {{ vt }}
+                            </option>
                             <option v-for="vt in types" :key="vt" :value="vt">
                               {{ vt }}
                             </option>
@@ -89,8 +92,9 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row"></div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label>Date of Transport</label>
                           <input
@@ -101,11 +105,22 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label>Booking Status</label>
                           <input
                             v-model="st"
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>Total Shipment Cost</label>
+                          <input
+                            v-model="cost"
                             type="text"
                             class="form-control"
                             disabled=""
@@ -299,8 +314,10 @@ import { getAPI } from "../../axios-api";
 import Csidebar from "../../components/Customer/sidebar.vue";
 import Cnavbar from "../../components/Customer/navbar.vue";
 import Cmobnav from "../../components/Customer/navmob.vue";
+import store from "../../../store";
 export default {
   name: "Vdestdetail",
+  store: store,
   components: {
     Csidebar,
     Cnavbar,
@@ -316,17 +333,17 @@ export default {
       dt: "",
       st: "",
       stn: "",
+      cost: "",
       change: true,
       show: false,
       types: [
-        "Tipper",
-        "Lorry",
-        "Pickup",
-        "Tanker",
-        "Tow truck",
-        "Van",
-        "Container Truck",
-        "Car transporter",
+        "6 Tyre Truck - 2 Axles",
+        "10 Tyre Multy Axle Truck - 3 Axles",
+        "12 Tyre Single Chassis Rigid Truck - 4 Axles",
+        "14 Tyre Single Chassis Rigid Truck - 5 Axles",
+        "14 Tyre Semi Trailer - 4 Axles",
+        "18 Tyre Semi Trailer - 5 Axles ",
+        "22 Tyre Semi Trailer - 6 Axles",
       ],
       trid: "",
       track: false,
@@ -358,6 +375,7 @@ export default {
         this.vt = this.APIData.data.vehicle_type;
         this.gt = this.APIData.data.goods_type;
         this.dt = this.APIData.data.date;
+        this.cost = this.$store.getters.totalCost;
         if (this.APIData.data.status == 1) {
           this.st = "Payment Pending";
           this.stn = 1;

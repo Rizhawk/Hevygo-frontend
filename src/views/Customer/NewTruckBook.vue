@@ -185,6 +185,7 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
+import axios from "axios";
 
 setInteractionMode("eager");
 
@@ -243,6 +244,11 @@ export default {
       //
       crntltln: [],
       crntloc: "",
+      //
+      origin: [],
+      dest: [],
+      startCords: "",
+      endCords: "",
     };
   },
   methods: {
@@ -289,17 +295,11 @@ export default {
       this.inputCrntloc();
     },
     inputCrntloc() {
-      //Performing the Reverse Geocodeing to get the user's geolocation address.
       const H = window.H;
-      // Instantiate a map and platform object:
       var platform = new H.service.Platform({
         apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
       });
-      // Get an instance of the search service:
       var service = platform.getSearchService();
-      // Call the reverse geocode method with the geocoding parameters,
-      // the callback and an error callback function (called if a
-      // communication error occurs):
       service.reverseGeocode(
         {
           at: this.crntloc,
@@ -310,8 +310,7 @@ export default {
             this.crntltln = [];
           });
           this.dropdown1 = false;
-        },
-        alert
+        }
       );
     },
     swapLoc() {
@@ -328,14 +327,64 @@ export default {
       this.date = "";
       this.goodstype = "";
     },
+    getCords() {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.geocode(
+        {
+          q: this.startlocation,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.origin.push(item.position["lat"]);
+            this.origin.push(item.position["lng"]);
+          });
+          let Norigin = this.origin.slice(0, 2);
+          this.startCords = Norigin.toString();
+          console.log(this.startCords);
+        }
+      );
+      service.geocode(
+        {
+          q: this.endlocation,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.dest.push(item.position["lat"]);
+            this.dest.push(item.position["lng"]);
+          });
+          let Ndest = this.dest.slice(0, 2);
+          this.endCords = Ndest.toString();
+          console.log(this.endCords);
+          // this.bookTruck();
+        }
+      );
+    },
     bookTruck() {
       if ((this.dropdown1 || this.dropdown2) == true) {
         //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
+        // let src = JSON.stringify({
+        //   waypoint: this.startCords,
+        //   address: this.startlocation,
+        // });
+        // let dest = JSON.stringify({
+        //   waypoint: this.endCords,
+        //   address: this.endlocation,
+        // });
+        // console.log(src);
+        // console.log(dest);
         getAPI
           .post(
-            "api/customers/cust-dest-create/",
+            "/api/customers/cust-dest-create/",
             {
               start_location: this.startlocation,
               end_location: this.endlocation,
@@ -352,6 +401,7 @@ export default {
           )
           .then((response) => {
             this.APIData = response.data;
+            console.log(this.APIData);
             this.$session.set("sl", this.startlocation);
             this.$session.set("el", this.endlocation);
             this.clear();
@@ -359,7 +409,7 @@ export default {
             this.$router.push({ name: "RouteMap" });
           })
           .catch((err) => {
-            alert(err);
+            console.log(err);
           });
       }
     },

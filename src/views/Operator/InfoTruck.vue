@@ -273,34 +273,24 @@
                             ></v-text-field>
                           </div>
                         </div>
-                        <!-- <div class="row">
-                          <div class="col-md-12">
-                            <label>Permit Paper</label>
-                            <validation-provider
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <v-file-input
-                                v-model="permit"
-                                :error-messages="errors"
-                                required
-                                clearable
-                                outlined
-                                dense
-                              ></v-file-input>
-                            </validation-provider>
-                          </div>
-                        </div> -->
                         <v-flex row justify-center
                           ><v-btn
+                            v-if="showButton"
                             type="submit"
                             x-small
                             color="rgb(34, 48, 61)"
                             depressed
                             outlined
                             >Sumbit</v-btn
-                          ></v-flex
-                        >
+                          >
+                          <v-progress-circular
+                            v-if="showProgress"
+                            :size="35"
+                            :width="4"
+                            color="red"
+                            indeterminate
+                          ></v-progress-circular>
+                        </v-flex>
                       </div>
                     </form>
                   </validation-observer>
@@ -386,7 +376,10 @@ export default {
       fitexp: "",
       insur: "",
       insno: "",
-      insexp: ""
+      insexp: "",
+      //
+      showProgress: false,
+      showButton: true,
     };
   },
   methods: {
@@ -436,6 +429,8 @@ export default {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {
             this.truckadd(this.APIData.data["id"]);
+            this.showProgress = true;
+            this.showButton = false;
           } else {
             this.message2 = "Truck Registration Failed";
             this.snackbar2 = true;
@@ -508,17 +503,12 @@ export default {
         bodyFormData.append("verification", 1);
         bodyFormData.append("remarks", "Wait to be Verified");
         getAPI
-          .post(
-            "/api/operators/add_truck/",
-               bodyFormData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: ` Token ${this.$session.get("user_token")}`,
-                
-              },
-            }
-          )
+          .post("/api/operators/add_truck/", bodyFormData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: ` Token ${this.$session.get("user_token")}`,
+            },
+          })
           .then((response) => {
             this.APIData = response.data;
             if (this.APIData.response == 200) {

@@ -1,7 +1,9 @@
 <template></template>
 <script>
+import store from "../../../store";
 import { getAPI } from "../../axios-api";
 export default {
+  store: store,
   name: "PayReq",
   data: () => {
     return {
@@ -139,15 +141,16 @@ export default {
     },
     createTrans() {
       console.log(localStorage.getItem("destid"));
-      console.log(this.owner);console.log(this.driver);
+      console.log(this.owner);
+      console.log(this.driver);
       getAPI
         .post(
           "api/customers/cust-trans-create/",
           {
             destination: localStorage.getItem("destid"),
-            operator: this.orwne,
+            operator: this.owner,
             truck: this.driver,
-            cost: 5000,
+            cost: this.$store.getters.totalCost,
           },
           {
             headers: {
@@ -181,7 +184,6 @@ export default {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {
             this.owner = this.APIData.data.truck.owner.id;
-            console.log(this.owner);
             this.createTrans();
           } else {
             alert("Something Went Wrong! Please try Again");
@@ -254,7 +256,7 @@ export default {
             let customer = this.$session.get("user_name");
             let src = this.start_location;
             let dest = this.end_location;
-            let fee = localStorage.getItem("cost");
+            let fee = this.$store.getters.totalCost;
             let accept_reject = null;
             let msg = JSON.stringify({
               customer: customer,

@@ -56,8 +56,9 @@
                             <label>Resigtration</label>
                             <input
                               type="text"
+                              id="change"
                               class="form-control"
-                              disabled=""
+                              :disabled="editReg"
                               :value="reg"
                             />
                           </div>
@@ -65,13 +66,29 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label>Homelocation </label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              disabled=""
-                              :value="home"
-                            />
+                            <v-text-field
+                              v-model="home"
+                              type="search"
+                              @input="doSearch"
+                              required
+                              clearable
+                              outlined
+                              rounded
+                              dense
+                            ></v-text-field>
                           </div>
+                          <v-flex class="myDropdown">
+                            <v-simple-table fixed-header dense v-if="dropdown">
+                              <tbody>
+                                <tr v-for="result in results" :key="result.id">
+                                  <v-icon dense>mdi-map-marker</v-icon>
+                                  <td @click.prevent="getLoc(result.title)">
+                                    {{ result.title }}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </v-simple-table>
+                          </v-flex>
                         </div>
                       </div>
                       <label>Uploads</label>
@@ -347,11 +364,16 @@
   </v-app>
 </template>
 <script>
+import Vue from "vue";
 import { getAPI } from "../../axios-api";
 import Dfooter from "../../components/dashfooter.vue";
 import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Onavbar from "../../components/Operator/OptrNav.vue";
 import MobNav from "../../components/Operator/MobNav.vue";
+Vue.config.productionTip = false;
+Vue.config.devtools = false;
+const apiKey = "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E";
+const url = `https://autosuggest.search.hereapi.com/v1/autosuggest?at=30.22,-92.02&limit=10&apikey=${apiKey}&q=`;
 export default {
   name: "Vspecs",
   components: {
@@ -363,8 +385,11 @@ export default {
   data: () => {
     return {
       reg: "",
+      editReg: true,
       home: "",
       status: null,
+      dropdown: false,
+      results: [],
       //
       rclink: "",
       fitlink: "",
@@ -422,6 +447,9 @@ export default {
           this.model = this.APIData.data["model"];
           this.typ = this.APIData.data["type"];
           this.status = this.APIData.data.truck.verification;
+          if (this.status == 1 || this.status == 3) {
+            this.editReg = false;
+          }
           this.rclink = this.APIData.data.truck.rc_scan;
           this.fitlink = this.APIData.data.truck.fitness_scan;
           this.inslink = this.APIData.data.truck.insurance_scan;
@@ -437,22 +465,50 @@ export default {
       });
   },
   methods: {
+    async doSearch() {
+      //Auto suggestion Function call for Homelocation Field
+      this.dropdown = true;
+      if (this.home === "") return;
+      let resp = await fetch(url + encodeURIComponent(this.home));
+      let data = await resp.json();
+      this.results = data.items;
+    },
+    getLoc(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Endlocation
+      this.home = place;
+      this.dropdown = false;
+    },
     infoedit() {
-      let updateFormData = new FormData();
-      updateFormData.append("truck_id", localStorage.getItem("tid"));
-      updateFormData.append("manufacturer", this.manf);
-      updateFormData.append("type", this.typ);
-      updateFormData.append("model", this.model);
-      updateFormData.append("capacity", this.cap);
-      updateFormData.append("fitness_scan", this.fit);
-      updateFormData.append("fitness_validity", this.vof);
-      updateFormData.append("insurance_scan", this.ins);
-      updateFormData.append("insurance_validity", this.voi);
-      updateFormData.append("rc_scan", this.rc);
-      updateFormData.append("registration_validity", this.vor);
+      let updateInfo = new FormData();
+      if (this.vor != "") {
+        this.rcdate = this.vor;
+      }
+      if (this.vof != "") {
+        this.fitdate = this.vof;
+      }
+      if (this.voi != "") {
+        this.insdate = this.voi;
+      }
+      if (this.rc != "") {
+        this.rclink = this.rc;
+      }
+      if (this.fit != "") {
+        this.fitlink = this.fit;
+      }
+      if (this.ins != "") {
+        this.inslink = this.ins;
+      }
+      updateInfo.append("truck_id", localStorage.getItem("tid"));
+      updateInfo.append("fitness_scan", this.fit);
+      updateInfo.append("fitness_validity", this.fitdate);
+      updateInfo.append("insurance_scan", this.ins);
+      updateInfo.append("insurance_validity", this.insdate);
+      updateInfo.append("rc_scan", this.rc);
+      updateInfo.append("registration_validity", this.rcdate);
       getAPI
-        .put("/api/operators/update_truck_details/", updateFormData, {
+        .put("/api/operators/update_truck/", updateInfo, {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
         })
@@ -460,8 +516,7 @@ export default {
           this.APIData = response.data;
           console.log(this.APIData);
           if (this.APIData.response == 200) {
-            window.location.reload();
-            // console.log(this.APIData.message);
+            // this.detailsEdit();
           } else {
             alert(this.APIData.message);
           }
@@ -471,6 +526,37 @@ export default {
         });
       //
     },
+    detailsEdit() {
+      getAPI
+        .put(
+          "/api/operators/update_truck_details/",
+          {
+            truck_id: localStorage.getItem("tid"),
+            manufacturer: this.manf,
+            type: this.typ,
+            model: this.model,
+            capacity: this.cap,
+          },
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+          if (this.APIData.response == 200) {
+            window.location.reload();
+          } else {
+            alert(this.APIData.message);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+
     deleteTruck() {
       getAPI
         .put(
@@ -521,4 +607,12 @@ export default {
 };
 </script>
 <style scoped>
+.myDropdown {
+  position: absolute;
+  color: black;
+  background-color: #f6f6f6;
+  min-width: 250px;
+  overflow: auto;
+  z-index: 1;
+}
 </style>
