@@ -29,7 +29,7 @@
                 </div>
                 <div class="card-body">
                   <validation-observer ref="observer1" v-slot="{ invalid }">
-                    <form @submit.prevent="truckdetails">
+                    <form @submit.prevent="getCoords">
                       <div class="form-group">
                         <label>Truck</label>
                         <validation-provider
@@ -164,6 +164,9 @@ export default {
       did: "",
       message: "",
       snackbar: false,
+      //
+      cloc: [],
+      curCords: "",
     };
   },
   beforeMount: function () {
@@ -213,10 +216,33 @@ export default {
     getLoction() {
       for (let key in this.truckdata) {
         if (this.reg == this.truckdata[key]["registration"]) {
-          this.loc = this.truckdata[key]["homelocation"];
+          this.loc = this.truckdata[key]["address"];
           this.status = "Available";
         }
       }
+    },
+    getCoords() {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.geocode(
+        {
+          q: this.loc,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.cloc.push(item.position["lat"]);
+            this.cloc.push(item.position["lng"]);
+          });
+          let crloc = this.cloc.slice(0, 2);
+          this.curCords = crloc.toString();
+          this.truckdetails();
+        }
+      );
     },
     truckdetails() {
       //Api call to create a truck status
@@ -230,13 +256,16 @@ export default {
           this.did = this.driverdata[key]["id"];
         }
       }
+     console.log(this.loc);
+     console.log(this.curCords);
       getAPI
         .post(
           "/api/truck/add_truck_status/",
           {
             truck_id: this.tid,
             status: "Offline",
-            location: this.loc,
+            coord: this.curCords,
+            address: this.loc,
             driver_id: this.did,
           },
           {

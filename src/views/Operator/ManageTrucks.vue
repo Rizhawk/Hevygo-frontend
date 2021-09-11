@@ -64,7 +64,7 @@
                             {{ truck.truck["phone"] }}
                           </td>
                           <td>{{ truck.registration }}</td>
-                          <td>{{ truck.homelocation }}</td>
+                          <td>{{ truck.address }}</td>
                           <td>
                             <v-tooltip bottom>
                               <template v-slot:activator="{ on, attrs }">

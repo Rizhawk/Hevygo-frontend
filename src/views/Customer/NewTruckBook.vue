@@ -185,7 +185,6 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-import axios from "axios";
 
 setInteractionMode("eager");
 
@@ -372,22 +371,22 @@ export default {
         //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
-        // let src = JSON.stringify({
-        //   waypoint: this.startCords,
-        //   address: this.startlocation,
-        // });
-        // let dest = JSON.stringify({
-        //   waypoint: this.endCords,
-        //   address: this.endlocation,
-        // });
-        // console.log(src);
-        // console.log(dest);
+        let src = JSON.stringify({
+          waypoint: this.startCords,
+          address: this.startlocation,
+        });
+        let dest = JSON.stringify({
+          waypoint: this.endCords,
+          address: this.endlocation,
+        });
+        console.log(src);
+        console.log(dest);
         getAPI
           .post(
             "/api/customers/cust-dest-create/",
             {
-              start_location: this.startlocation,
-              end_location: this.endlocation,
+              start_location: src,
+              end_location: dest,
               weight: this.weight,
               goods_type: this.goodstype,
               date: this.date,

@@ -45,10 +45,10 @@
                         <tr
                           v-for="truck in truckdetails"
                           :key="truck.id"
-                          @click.prevent="getTruckdetails(truck.id)"
+                          @click.prevent="getTruckdetails(truck.truck.id)"
                         >
                           <td class="text-center">{{ truck.registration }}</td>
-                          <td class="text-center">{{ truck.homelocation }}</td>
+                          <td class="text-center">{{ truck.address }}</td>
                           <td class="text-center">
                             {{ truck.truck["phone"] }}
                           </td>

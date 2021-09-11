@@ -380,6 +380,10 @@ export default {
       //
       showProgress: false,
       showButton: true,
+      //
+      hloc: [],
+      tid: "",
+      homeCords: "",
     };
   },
   methods: {
@@ -428,13 +432,14 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {
-            this.truckadd(this.APIData.data["id"]);
+            this.tid = this.APIData.data["id"];
             this.showProgress = true;
             this.showButton = false;
+            this.getCords();
           } else {
             this.message2 = "Truck Registration Failed";
             this.snackbar2 = true;
-            alert(this.APIData.message);
+            console.log(this.APIData);
           }
         })
         .catch((err) => {
@@ -484,14 +489,38 @@ export default {
         this.icon = "mdi-close-circle-outline";
       }
     },
-    truckadd(id) {
+    getCords() {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.geocode(
+        {
+          q: this.homeloc,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.hloc.push(item.position["lat"]);
+            this.hloc.push(item.position["lng"]);
+          });
+          let hmloc = this.hloc.slice(0, 2);
+          this.homeCords = hmloc.toString();
+          this.truckadd();
+        }
+      );
+    },
+    truckadd() {
       if (this.dropdown == true) {
         alert("Select a Location");
       } else {
         let bodyFormData = new FormData();
-        bodyFormData.append("crew_id", id);
+        bodyFormData.append("crew_id", this.tid);
         bodyFormData.append("registration", this.regnumber);
-        bodyFormData.append("homelocation", this.homeloc);
+        bodyFormData.append("address", this.homeloc);
+        bodyFormData.append("coord", this.homeCords);
         bodyFormData.append("fitness_no", this.fitno);
         bodyFormData.append("fitness_validity", this.fitexp);
         bodyFormData.append("insurance_no", this.insno);
@@ -512,11 +541,11 @@ export default {
           .then((response) => {
             this.APIData = response.data;
             if (this.APIData.response == 200) {
-              localStorage.setItem("tid", this.APIData.data["id"]);
+              localStorage.setItem("tid", this.APIData.data.truck["id"]);
               this.clear();
               this.$router.push({ name: "DetailTruck" });
             } else {
-              alert(this.APIData.message);
+              console.log(this.APIData);
             }
           })
           .catch((err) => {

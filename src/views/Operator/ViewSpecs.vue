@@ -22,7 +22,20 @@
                       subtitle-1
                     "
                   >
-                    {{ this.reg }}
+                    {{ this.treg }}
+                    <span>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon
+                            v-bind="attrs"
+                            v-on="on"
+                            :color="vcolor"
+                            small
+                            >{{ vicon }}</v-icon
+                          ></template
+                        ><span>{{ this.vmsg }}</span></v-tooltip
+                      ></span
+                    >
                     <v-flex row justify-end>
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on, attrs }">
@@ -55,11 +68,11 @@
                           <div class="form-group">
                             <label>Resigtration</label>
                             <input
+                              v-model="reg"
                               type="text"
                               id="change"
                               class="form-control"
                               :disabled="editReg"
-                              :value="reg"
                             />
                           </div>
                         </div>
@@ -176,7 +189,6 @@
                           </div>
                         </div>
                       </div>
-
                       <label v-if="show1">RC Book</label>
                       <div v-if="show1" class="row">
                         <div class="col-md-12">
@@ -398,6 +410,10 @@ export default {
       fitdate: "",
       insdate: "",
       //
+      treg: "",
+      temploc: "",
+      hloc: [],
+      homeCoords: "",
       //
       rc: "",
       fit: "",
@@ -408,6 +424,11 @@ export default {
       show1: false,
       show2: false,
       show3: false,
+      //
+      //
+      vcolor: "",
+      vicon: "",
+      vmsg: "",
       //
       cap: "",
       manf: "",
@@ -439,9 +460,12 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         if (this.APIData.response == 200) {
           this.reg = this.APIData.data["truck"]["registration"];
-          this.home = this.APIData.data["truck"]["homelocation"];
+          this.treg = this.reg;
+          this.home = this.APIData.data["truck"]["address"];
+          this.temploc = this.home;
           this.cap = this.APIData.data["capacity"];
           this.manf = this.APIData.data["manufacturer"];
           this.model = this.APIData.data["model"];
@@ -450,12 +474,31 @@ export default {
           if (this.status == 1 || this.status == 3) {
             this.editReg = false;
           }
+          if (this.status == 1) {
+            this.vcolor = "black";
+            this.vicon = "mdi-clock";
+            this.vmsg = "Wait to be Verified";
+          } else if (this.status == 2) {
+            this.vcolor = "green";
+            this.vicon = "mdi-checkbox-marked-circle";
+            this.vmsg = "Verified";
+          } else if (this.status == 3) {
+            this.vcolor = "red";
+            this.vicon = "mdi-close-circle";
+            this.vmsg = "Rejected";
+          }
           this.rclink = this.APIData.data.truck.rc_scan;
           this.fitlink = this.APIData.data.truck.fitness_scan;
           this.inslink = this.APIData.data.truck.insurance_scan;
-          this.rcdate = this.APIData.data.truck.registration_validity;
-          this.fitdate = this.APIData.data.truck.fitness_validity;
-          this.insdate = this.APIData.data.truck.insurance_validity;
+          this.rcdate = this.formatDate(
+            this.APIData.data.truck.registration_validity
+          );
+          this.fitdate = this.formatDate(
+            this.APIData.data.truck.fitness_validity
+          );
+          this.insdate = this.formatDate(
+            this.APIData.data.truck.insurance_validity
+          );
         } else {
           this.dialog2 = true;
         }
@@ -478,33 +521,58 @@ export default {
       this.home = place;
       this.dropdown = false;
     },
+    getCoords() {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.geocode(
+        {
+          q: this.home,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.hloc.push(item.position["lat"]);
+            this.hloc.push(item.position["lng"]);
+          });
+          let hmloc = this.hloc.slice(0, 2);
+          this.homeCoords = hmloc.toString();
+        }
+      );
+    },
+    formatDate(date) {
+      return date.split("-").reverse().join("-");
+    },
     infoedit() {
       let updateInfo = new FormData();
-      if (this.vor != "") {
-        this.rcdate = this.vor;
-      }
-      if (this.vof != "") {
-        this.fitdate = this.vof;
-      }
-      if (this.voi != "") {
-        this.insdate = this.voi;
-      }
-      if (this.rc != "") {
-        this.rclink = this.rc;
+      updateInfo.append("truck_id", localStorage.getItem("tid"));
+      updateInfo.append("registration", this.reg);
+      if (this.home != this.temploc) {
+        this.getCoords();
+        updateInfo.append("coord", this.homeCoords);
+        updateInfo.append("address", this.home);
       }
       if (this.fit != "") {
-        this.fitlink = this.fit;
+        updateInfo.append("fitness_scan", this.fit);
+      }
+      if (this.vof != "") {
+        updateInfo.append("fitness_validity", this.vof);
       }
       if (this.ins != "") {
-        this.inslink = this.ins;
+        updateInfo.append("insurance_scan", this.ins);
       }
-      updateInfo.append("truck_id", localStorage.getItem("tid"));
-      updateInfo.append("fitness_scan", this.fit);
-      updateInfo.append("fitness_validity", this.fitdate);
-      updateInfo.append("insurance_scan", this.ins);
-      updateInfo.append("insurance_validity", this.insdate);
-      updateInfo.append("rc_scan", this.rc);
-      updateInfo.append("registration_validity", this.rcdate);
+      if (this.voi != "") {
+        updateInfo.append("insurance_validity", this.vof);
+      }
+      if (this.rc != "") {
+        updateInfo.append("rc_scan", this.rc);
+      }
+      if (this.vor != "") {
+        updateInfo.append("registration_validity", this.vor);
+      }
       getAPI
         .put("/api/operators/update_truck/", updateInfo, {
           headers: {
@@ -516,7 +584,7 @@ export default {
           this.APIData = response.data;
           console.log(this.APIData);
           if (this.APIData.response == 200) {
-            // this.detailsEdit();
+            this.detailsEdit();
           } else {
             alert(this.APIData.message);
           }
@@ -545,7 +613,6 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           if (this.APIData.response == 200) {
             window.location.reload();
           } else {
@@ -580,7 +647,7 @@ export default {
           }
         })
         .catch((err) => {
-          alert(err);
+          console(err);
         });
     },
     addSpec() {

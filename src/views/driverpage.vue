@@ -52,20 +52,21 @@ export default {
   created: function () {
     try {
       this.ws = new WebSocket(
-        "wss://3.108.118.96/ws/" +
-          this.$session.get("user_id") +
-          "/"
+        "ws://shuttletestserver.herokuapp.com/ws/" + this.$session.get("user_id") + "/"
       );
       console.log(this.ws);
-      this.ws.onmessage = ({ data }) => {
-        let req = JSON.parse(data);
-        console.log(req);
-        this.customer = req["customer"];
-        this.start_location = req["src"];
-        this.end_location = req["dest"];
-        this.fee = req["fee"];
-        this.showAlert();
-      };
+      (this.ws.onopen = function () {
+        console.log("Websocket Connection Successfull!");
+      }),
+        (this.ws.onmessage = ({ data }) => {
+          let req = JSON.parse(data);
+          console.log(req);
+          this.customer = req["customer"];
+          this.start_location = req["src"];
+          this.end_location = req["dest"];
+          this.fee = req["fee"];
+          this.showAlert();
+        });
     } catch (err) {
       console.log(err);
     }

@@ -131,7 +131,8 @@
                           <label>RC Book</label>
                           <input
                             v-model="rcdate"
-                            type="date"
+                            type="text"
+                            disabled=""
                             class="form-control"
                           />
                         </div>
@@ -139,7 +140,8 @@
                           <label>Fintness</label>
                           <input
                             v-model="fitdate"
-                            type="date"
+                            type="text"
+                            disabled=""
                             class="form-control"
                           />
                         </div>
@@ -147,7 +149,8 @@
                           <label>Insurance</label>
                           <input
                             v-model="insdate"
-                            type="date"
+                            type="text"
+                            disabled=""
                             class="form-control"
                           />
                         </div>
@@ -417,11 +420,12 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         this.name = this.APIData.data["truck"]["truck"]["name"];
         this.phone = this.APIData.data["truck"]["truck"]["phone"];
         this.status = this.APIData.data["truck"]["verification"];
         this.regno = this.APIData.data["truck"]["registration"];
-        this.homeloc = this.APIData.data["truck"]["homelocation"];
+        this.homeloc = this.APIData.data["truck"]["address"];
         this.optrname = this.APIData.data["truck"]["owner"]["name"];
         this.optrphone = this.APIData.data["truck"]["owner"]["phone"];
         this.optremail = this.APIData.data["truck"]["owner"]["email"];
@@ -429,15 +433,19 @@ export default {
         this.type = this.APIData.data["type"];
         this.model = this.APIData.data["model"];
         this.capacity = this.APIData.data["capacity"];
-        this.trid = this.APIData.data["truck"]["id"];
+        this.trid = this.APIData.data["truck"]["truck"]["id"];
         this.rclink = this.APIData.data.truck.rc_scan;
         this.fitlink = this.APIData.data.truck.fitness_scan;
         this.inslink = this.APIData.data.truck.insurance_scan;
-        // this.rcdate = this.APIData.data.truck.registration_validity;
-        let date3 = this.APIData.data.truck.fitness_validity;
-        console.log(date3);
-        this.formatDate(date3);
-        // this.insdate = this.APIData.data.truck.insurance_validity;
+        this.rcdate = this.formatDate(
+          this.APIData.data.truck.registration_validity
+        );
+        this.fitdate = this.formatDate(
+          this.APIData.data.truck.fitness_validity
+        );
+        this.insdate = this.formatDate(
+          this.APIData.data.truck.insurance_validity
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -445,8 +453,7 @@ export default {
   },
   methods: {
     formatDate(date) {
-      this.fitdate = date.split("-").reverse().join("-");
-      console.log(this.fitdate);
+      return date.split("-").reverse().join("-");
     },
     giveApproval() {
       getAPI
@@ -465,7 +472,6 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           window.location.reload();
         })
         .catch((err) => {

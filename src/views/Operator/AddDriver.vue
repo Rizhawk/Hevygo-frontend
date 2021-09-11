@@ -118,7 +118,7 @@
     <v-dialog persistent v-model="dialog" max-width="320">
       <v-card>
         <v-card-title class="caption font-weight-bold black--text">
-          You can register a new driver , only after add your pan card
+          You can register a new driver , only after added your pan card
           details.</v-card-title
         >
         <v-card-actions>
@@ -202,7 +202,6 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-
           if (this.APIData.response == 200) {
             this.message = this.APIData.message;
             this.snackbar = true;

@@ -279,6 +279,7 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
+          this.show2false;
           window.location.reload();
         })
         .catch((err) => {
