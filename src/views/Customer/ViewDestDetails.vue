@@ -120,11 +120,20 @@
                         <div class="form-group">
                           <label>Total Shipment Cost</label>
                           <input
+                            v-if="costField"
                             v-model="cost"
                             type="text"
                             class="form-control"
                             disabled=""
                           />
+                          <v-progress-circular
+                            v-if="prog"
+                            class="mx-2"
+                            size="20"
+                            width="2"
+                            indeterminate
+                            color="black"
+                          ></v-progress-circular>
                         </div>
                       </div>
                       <v-flex row class="my-2" justify-center>
@@ -262,7 +271,7 @@
                       "
                       >Cost</v-card-title
                     >
-                    <v-card-subtitle>{{ cost }}</v-card-subtitle>
+                    <v-card-subtitle>{{ tcost }}</v-card-subtitle>
                   </v-card>
                 </div>
                 <hr />
@@ -354,7 +363,11 @@ export default {
       optr: "",
       optrphn: "",
       cost: "",
+      tcost: "",
       //
+      //
+      prog: true,
+      costField: false,
     };
   },
   beforeMount: function () {
@@ -369,13 +382,16 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
-        this.sl = this.APIData.data.start_location;
-        this.el = this.APIData.data.end_location;
+        this.sl = this.APIData.data.start_address;
+        this.el = this.APIData.data.end_address;
         this.wt = this.APIData.data.weight;
         this.vt = this.APIData.data.vehicle_type;
         this.gt = this.APIData.data.goods_type;
         this.dt = this.APIData.data.date;
-        this.cost = this.$store.getters.totalCost;
+        this.getCost(
+          this.APIData.data.start_location,
+          this.APIData.data.end_location
+        );
         if (this.APIData.data.status == 1) {
           this.st = "Payment Pending";
           this.stn = 1;
@@ -414,7 +430,7 @@ export default {
           this.drphn = this.APIData.data["truck"]["driver"]["phone"];
           this.optr = this.APIData.data["truck"]["truck"]["owner"]["name"];
           this.optrphn = this.APIData.data["truck"]["truck"]["owner"]["phone"];
-          this.cost = this.APIData.data.cost;
+          this.tcost = this.APIData.data.cost;
         }
       })
       .catch((err) => {
@@ -422,10 +438,27 @@ export default {
       });
   },
   methods: {
-    back() {
-      localStorage.removeItem("destid");
-      localStorage.removeItem("trid");
-      this.$router.push({ name: "Cbookings" });
+    getCost(sl, el) {
+      let wayPoints = new FormData();
+      wayPoints.append("waypoint0", sl);
+      wayPoints.append("waypoint1", el);
+      getAPI
+        .post("/api/map/get_cost/", wayPoints, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.costField = true;
+          this.prog = false;
+          this.$store.commit("updateCost", this.APIData.data.details.tollCost);
+          this.cost = this.$store.getters.totalCost;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     bookTruck() {
       getAPI
@@ -458,6 +491,11 @@ export default {
     trackTruck() {
       localStorage.setItem("trid", this.trid);
       this.$router.push({ name: "Ctrack" });
+    },
+    back() {
+      localStorage.removeItem("destid");
+      localStorage.removeItem("trid");
+      this.$router.push({ name: "Cbookings" });
     },
   },
 };

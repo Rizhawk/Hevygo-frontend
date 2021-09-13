@@ -16,7 +16,7 @@
                 <span
                   class="card-header font-weight-medium text-secondary body-2"
                   ><v-icon color="green darken 4" small>mdi-map-marker</v-icon
-                  >{{ this.crtLocation }}</span
+                  >{{ this.crtAddress }}</span
                 >
               </div>
               <div class="card-body">
@@ -63,6 +63,8 @@ export default {
       apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
       truck: "",
       crtLocation: "",
+      crtAddress: "",
+      maptypes: "",
     };
   },
   async mounted() {
@@ -100,9 +102,9 @@ export default {
       const mapContainer = this.$refs.hereMap;
       const H = window.H;
       // Obtain the default map types from the platform object
-      let maptypes = this.platform.createDefaultLayers();
+      this.maptypes = this.platform.createDefaultLayers();
       // Instantiate (and display) a map object:
-      this.map = new H.Map(mapContainer, maptypes.vector.normal.map, {
+      this.map = new H.Map(mapContainer, this.maptypes.vector.normal.map, {
         zoom: 4,
         center: { lat: 20.5937, lng: 78.9629 },
         pixelRatio: window.devicePixelRatio || 1,
@@ -111,7 +113,7 @@ export default {
       addEventListener("resize", () => map.getViewPort().resize());
       // add behavior control
       new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
-      const ui = H.ui.UI.createDefault(this.map, maptypes);
+      const ui = H.ui.UI.createDefault(this.map, this.maptypes);
       // add UI
       // End rendering the initial map
       // Get an instance of the search service:
@@ -122,15 +124,16 @@ export default {
       // Call the reverse geocode method with the geocoding parameters,
       // the callback and an error callback function (called if a
       // communication error occurs):
-      service.geocode(
+      service.reverseGeocode(
         {
-          q: this.crtLocation,
+          at: this.crtLocation,
         },
         (result) => {
           result.items.forEach((item) => {
             // Assumption: ui is instantiated
             // Create an InfoBubble at the returned location with
             // the address as its contents:
+            this.crtAddress = item.address.label;
             const marker = new H.map.Marker(item.position);
             marker.addEventListener(
               "tap",
@@ -143,7 +146,12 @@ export default {
               },
               false
             );
+            let coords = { lat: item.position.lat, lng: item.position.lng };
+            this.map.setCenter(coords);
+            this.map.setZoom(18);
             this.map.addObject(marker);
+            console.log(item.position.lat);
+            console.log(item.position.lng);
           });
         }
       );

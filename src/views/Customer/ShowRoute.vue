@@ -17,7 +17,7 @@
               <span class="navbar-toggler-bar bar3"></span>
             </button>
           </div>
-          <a class="navbar-brand" href="#pablo">Route of your Shipment</a>
+          <a class="navbar-brand">Route of your Shipment</a>
         </div>
         <button
           class="navbar-toggler"
@@ -62,8 +62,8 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header font-weight-bold body-2 black--text">
-              Cost of Route : {{ this.tollCost }}
+            <div class="caption font-weight-black black--text">
+              Cost of Route : {{ this.tollCost }} Rs
             </div>
             <div class="card-body">
               <!-- <div id="map" class="map"></div> -->
@@ -97,16 +97,7 @@ export default {
       center: {},
       platform: null,
       apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
-      router: {},
-      geocoder: {},
-      directions: [],
-      routes: "",
-      start: "",
-      end: "",
-      cost: [],
       tollCost: "",
-      origin: [],
-      dest: [],
     };
   },
   mounted() {
@@ -117,7 +108,6 @@ export default {
     });
     // Retrieve the target element for the map:
     // var targetElement = document.getElementById("mapContainer");
-
     // Get the default map types from the platform object:
     var defaultLayers = platform.createDefaultLayers();
 
@@ -137,56 +127,19 @@ export default {
     H.ui.UI.createDefault(map, defaultLayers);
     // Instantiate a map and platform object:
     // Get an instance of the geocoding service:
-    var service = platform.getSearchService();
-    this.getGeocord(H, map, service, platform);
+    // var service = platform.getSearchService();
+    this.setRoute(H, map, platform);
   },
   methods: {
-    getGeocord(H, map, service, platform) {
-      // Call the geocode method with the geocoding parameters,
-      // the callback and an error callback function (called if a
-      // communication error occurs):
-      service.geocode(
-        {
-          q: this.$session.get("sl"),
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.origin.push(item.position["lat"]);
-            this.origin.push(item.position["lng"]);
-          });
-          let Norigin = this.origin.slice(0, 2);
-          this.start = Norigin.toString();
-        }
-      );
-      service.geocode(
-        {
-          q: this.$session.get("el"),
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.dest.push(item.position["lat"]);
-            this.dest.push(item.position["lng"]);
-            console.log(this.dest);
-          });
-          let Ndest = this.dest.slice(0, 2);
-          this.end = Ndest.toString();
-          this.setRoute(H, map, platform);
-        }
-      );
-    },
     setRoute(H, map, platform) {
       // Create the parameters for the routing request:
       var routingParameters = {
         routingMode: "fast",
         transportMode: "truck",
         // The start point of the route:
-        origin: this.start, //'28.61554,77.23272'
+        origin: this.$session.get("sl"), //'28.61554,77.23272'
         // The end point of the route:
-        destination: this.end, //'18.92232,72.83375'
+        destination: this.$session.get("el"), //'18.92232,72.83375'
         // Include the route shape in the response
         return: "polyline",
       };
@@ -224,7 +177,6 @@ export default {
               .setLookAtData({ bounds: routeLine.getBoundingBox() });
           });
         }
-        console.log(result);
       };
       // Get an instance of the routing service version 8:
       var router = platform.getRoutingService(null, 8);
@@ -237,12 +189,9 @@ export default {
       this.getCost();
     },
     getCost() {
-      console.log(this.start);
-      console.log(this.end);
       let wayPoints = new FormData();
-      wayPoints.append("waypoint0", this.start);
-      wayPoints.append("waypoint1", this.end);
-      console.log(this.$session.get("user_token"));
+      wayPoints.append("waypoint0", this.$session.get("sl"));
+      wayPoints.append("waypoint1", this.$session.get("el"));
       getAPI
         .post("/api/map/get_cost/", wayPoints, {
           headers: {
@@ -252,10 +201,8 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          // localStorage.setItem("cost", this.APIData.data.details.tollCost);
           this.tollCost = this.APIData.data.details.tollCost;
           this.$store.commit("updateCost", this.tollCost);
-          console.log(this.$store.getters.totalCost);
         })
         .catch((err) => {
           console.log(err);

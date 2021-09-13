@@ -248,7 +248,7 @@ export default {
       //Api call to create a truck status
       for (let key in this.truckdata) {
         if (this.reg == this.truckdata[key]["registration"]) {
-          this.tid = this.truckdata[key]["id"];
+          this.tid = this.truckdata[key]["truck"]["id"];
         }
       }
       for (let key in this.driverdata) {
@@ -256,24 +256,21 @@ export default {
           this.did = this.driverdata[key]["id"];
         }
       }
-     console.log(this.loc);
-     console.log(this.curCords);
+      console.log(this.curCords);
+      console.log(this.tid);
+      console.log(this.did);
+      let statusData = new FormData();
+      statusData.append("truck_id", this.tid);
+      statusData.append("status", "Offline");
+      statusData.append("location", this.curCords);
+      statusData.append("driver_id", this.did);
       getAPI
-        .post(
-          "/api/truck/add_truck_status/",
-          {
-            truck_id: this.tid,
-            status: "Offline",
-            coord: this.curCords,
-            address: this.loc,
-            driver_id: this.did,
+        .post("/api/truck/add_truck_status/", statusData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
+        })
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {

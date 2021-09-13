@@ -47,8 +47,8 @@
                           @click.prevent="viewDest(dest.id)"
                         >
                           <td>{{ dest.date }}</td>
-                          <td>{{ dest.start_location }}</td>
-                          <td>{{ dest.end_location }}</td>
+                          <td>{{ dest.start_address }}</td>
+                          <td>{{ dest.end_address}}</td>
                           <td>
                             <p
                               v-if="dest.status == 1"
@@ -135,7 +135,6 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-        console.log(this.APIData);
         this.destdetails = this.APIData.data;
       })
       .catch((err) => {

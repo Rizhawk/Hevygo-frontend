@@ -26,7 +26,7 @@
                 </div>
                 <div class="card-body">
                   <validation-observer ref="observer" v-slot="{ invalid }">
-                    <form @submit.prevent="bookTruck">
+                    <form @submit.prevent="getCords">
                       <div class="form-group">
                         <label>Start Location</label>
                         <v-text-field
@@ -179,6 +179,7 @@ import Csidebar from "../../components/Customer/sidebar.vue";
 import Cnavbar from "../../components/Customer/navbar.vue";
 import Cmobnav from "../../components/Customer/navmob.vue";
 import { required, digits, max } from "vee-validate/dist/rules";
+import store from "../../../store";
 import {
   extend,
   ValidationObserver,
@@ -210,6 +211,7 @@ const apiKey = "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E";
 const url = `https://autosuggest.search.hereapi.com/v1/autosuggest?at=30.22,-92.02&limit=10&apikey=${apiKey}&q=`;
 export default {
   name: "Newbooking",
+  store: store,
   components: {
     Csidebar,
     Cnavbar,
@@ -345,7 +347,6 @@ export default {
           });
           let Norigin = this.origin.slice(0, 2);
           this.startCords = Norigin.toString();
-          console.log(this.startCords);
         }
       );
       service.geocode(
@@ -361,8 +362,7 @@ export default {
           });
           let Ndest = this.dest.slice(0, 2);
           this.endCords = Ndest.toString();
-          console.log(this.endCords);
-          // this.bookTruck();
+          this.bookTruck();
         }
       );
     },
@@ -371,22 +371,14 @@ export default {
         //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
-        let src = JSON.stringify({
-          waypoint: this.startCords,
-          address: this.startlocation,
-        });
-        let dest = JSON.stringify({
-          waypoint: this.endCords,
-          address: this.endlocation,
-        });
-        console.log(src);
-        console.log(dest);
         getAPI
           .post(
             "/api/customers/cust-dest-create/",
             {
-              start_location: src,
-              end_location: dest,
+              start_location: this.startCords,
+              start_address: this.startlocation,
+              end_location: this.endCords,
+              end_address: this.endlocation,
               weight: this.weight,
               goods_type: this.goodstype,
               date: this.date,
@@ -400,12 +392,14 @@ export default {
           )
           .then((response) => {
             this.APIData = response.data;
-            console.log(this.APIData);
-            this.$session.set("sl", this.startlocation);
-            this.$session.set("el", this.endlocation);
-            this.clear();
-            localStorage.clear();
-            this.$router.push({ name: "RouteMap" });
+            if (this.APIData.Http_response == 200) {
+              this.$session.set("sl", this.APIData.data.start_location);
+              this.$session.set("el", this.APIData.data.end_location);
+              this.clear();
+              this.$router.push({ name: "RouteMap" });
+            } else {
+              alert(this.APIData.message);
+            }
           })
           .catch((err) => {
             console.log(err);

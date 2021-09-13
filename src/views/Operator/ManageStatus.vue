@@ -52,7 +52,6 @@
                         <th>Driver</th>
                         <th>Driver's Phone</th>
                         <th>Current Status</th>
-                        <th>Location</th>
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr
@@ -73,9 +72,6 @@
                           </td>
                           <td>
                             {{ truck.status }}
-                          </td>
-                          <td>
-                            {{ truck.location }}
                           </td>
                         </tr>
                       </tbody>

@@ -343,7 +343,7 @@
     </div>
     <v-dialog persistent v-model="dialog1" max-width="420">
       <v-card>
-        <v-card-title class="body-2 font-weight-black black--text"
+        <v-card-title class="caption font-weight-bold black--text"
           >Are you sure want to remove this truck?</v-card-title
         >
 

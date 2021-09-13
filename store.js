@@ -3,7 +3,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
-    totalCost: 7000,
+    totalCost: null,
   },
   mutations: {
     updateCost(state, cost) {

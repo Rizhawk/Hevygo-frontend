@@ -188,7 +188,7 @@ export default {
           this.truck = this.APIData.data.truck["registration"];
           this.driver = this.APIData.data.driver["driver_name"];
           this.phone = this.APIData.data.driver["phone"];
-          this.cloc = this.APIData.data["location"];
+          this.getAddress(this.APIData.data["location"]);
           if (this.APIData.data["status"] === "Offline") {
             this.status = "Available";
           } else if (
@@ -243,6 +243,24 @@ export default {
     back() {
       localStorage.removeItem("tid");
       this.$router.push({ name: "StatusTable" });
+    },
+    getAddress(loc) {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.reverseGeocode(
+        {
+          at: loc,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            this.cloc = item.address.label;
+          });
+        }
+      );
     },
   },
 };
