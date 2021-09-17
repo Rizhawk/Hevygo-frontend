@@ -90,7 +90,7 @@
                             </tbody>
                           </v-simple-table>
                         </v-flex>
-                        <label>Date of Transport</label>
+                        <!-- <label>Date of Transport</label>
                         <validation-provider
                           v-slot="{ errors }"
                           name="Date"
@@ -104,7 +104,7 @@
                             outlined
                             dense
                           ></v-text-field>
-                        </validation-provider>
+                        </validation-provider> -->
                         <label>Weight of Goods (In ton)</label>
                         <validation-provider
                           v-slot="{ errors }"
@@ -223,7 +223,7 @@ export default {
     return {
       startlocation: "" || localStorage.getItem("sl"),
       endlocation: "" || localStorage.getItem("el"),
-      date: "" || localStorage.getItem("dt"),
+      date: null || localStorage.getItem("dt"),
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
       vtype: "",
