@@ -23,6 +23,9 @@ export default {
       status: "",
       st: "",
       owner: "",
+      //
+      saddr: "",
+      eaddr: "",
     };
   },
   beforeMount: function () {
@@ -41,9 +44,11 @@ export default {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
           this.start_location = this.APIData.data.start_location;
+
           this.vehicle_type = this.APIData.data.vehicle_type;
           this.weight = this.APIData.data.weight;
           this.end_location = this.APIData.data.end_location;
+
           this.st = this.APIData.data.status;
           this.payment();
         } else {
@@ -195,21 +200,18 @@ export default {
         });
     },
     getList() {
+      let srcData = new FormData();
+      srcData.append("start_location", this.start_location);
+      srcData.append("vehicle_type", this.vehicle_type);
+      srcData.append("weight", this.weight);
+      srcData.append("end_location", this.end_location);
       getAPI
-        .post(
-          "api/customers/truckbooking/ ",
-          {
-            start_location: this.start_location,
-            vehicle_type: this.vehicle_type,
-            weight: this.weight,
-            end_location: this.end_location,
+        .post("/api/customers/truckbooking/ ", srcData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
+        })
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.response == 200) {
@@ -219,7 +221,8 @@ export default {
             for (let key in this.APIData.priority2) {
               this.trucks.push(this.APIData.priority2[key].truck.id);
             }
-            this.connectSocket();
+            console.log(this.trucks);
+            this.getAddress();
           } else {
             alert("Something Went Wrong! Please try Again");
             this.$router.push({ name: "Vdestdetail" });
@@ -228,6 +231,36 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    getAddress() {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.reverseGeocode(
+        {
+          at: this.start_location,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            this.saddr = item.address.label;
+          });
+        }
+      );
+      service.reverseGeocode(
+        {
+          at: this.end_location,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            this.eaddr = item.address.label;
+          });
+          this.connectSocket();
+        }
+      );
     },
     async connectSocket() {
       let i = 0;
@@ -244,9 +277,10 @@ export default {
       this.clearLocal();
     },
     sendMessage(i, trucksLength, id) {
+      console.log(`connected to ${id}`);
       return new Promise((resolve) => {
         this.connection = new WebSocket(
-          "wss://shuttletestserver.herokuapp.com/ws/" + id + "/"
+          "ws://3.108.118.96:8001/ws/" + id + "/"
         );
         this.connection.onopen = function () {};
         setTimeout(() => {
@@ -254,8 +288,8 @@ export default {
             this.connection.close();
           } else {
             let customer = this.$session.get("user_name");
-            let src = this.start_location;
-            let dest = this.end_location;
+            let src = this.saddr;
+            let dest = this.eaddr;
             let fee = this.$store.getters.totalCost;
             let accept_reject = null;
             let msg = JSON.stringify({

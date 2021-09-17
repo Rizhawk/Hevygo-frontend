@@ -65,6 +65,7 @@ export default {
       crtLocation: "",
       crtAddress: "",
       maptypes: "",
+      map:""
     };
   },
   async mounted() {
@@ -110,7 +111,7 @@ export default {
         pixelRatio: window.devicePixelRatio || 1,
         // center object { lat: 40.730610, lng: -73.935242 }
       });
-      addEventListener("resize", () => map.getViewPort().resize());
+      addEventListener("resize", () => this.map.getViewPort().resize());
       // add behavior control
       new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
       const ui = H.ui.UI.createDefault(this.map, this.maptypes);

@@ -19,7 +19,7 @@
                   <span
                     class="card-header font-weight-medium text-secondary body-2"
                     ><v-icon color="green darken 4" small>mdi-map-marker</v-icon
-                    >{{ this.crtLocation }}</span
+                    >{{ this.crtAddress }}</span
                   >
                 </div>
                 <div class="card-body">
@@ -59,8 +59,7 @@ export default {
   data: () => {
     return {
       crtLocation: "",
-      sl: "",
-      el: "",
+      crtAddress: "",
       //
       origin: [],
       dest: [],
@@ -84,8 +83,12 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
-        this.sl = this.APIData.data.start_location;
-        this.el = this.APIData.data.end_location;
+        if (this.APIData.Http_response == 200) {
+          this.start = this.APIData.data.start_location;
+          this.end = this.APIData.data.end_location;
+        } else {
+          alert("Something went wrong");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -120,7 +123,6 @@ export default {
       });
       // Get the default map types from the platform object:
       var defaultLayers = platform.createDefaultLayers();
-
       // Instantiate the map:
       var map = new H.Map(
         document.getElementById("mapContainer"),
@@ -138,70 +140,9 @@ export default {
       const ui = H.ui.UI.createDefault(map, defaultLayers);
       // Instantiate a map and platform object:
       // Get an instance of the geocoding service:
-      var service = platform.getSearchService();
-      service.geocode(
-        {
-          q: this.sl,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.origin.push(item.position["lat"]);
-            this.origin.push(item.position["lng"]);
-          });
-          let Norigin = this.origin.slice(0, 2);
-          this.start = Norigin.toString();
-        }
-      );
-      service.geocode(
-        {
-          q: this.el,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.dest.push(item.position["lat"]);
-            this.dest.push(item.position["lng"]);
-          });
-          let Ndest = this.dest.slice(0, 2);
-          this.end = Ndest.toString();
-          this.setRoute(H, map, platform);
-        }
-      );
-      service.geocode(
-        {
-          q: this.crtLocation,
-        },
-        (result) => {
-          result.items.forEach((item) => {
-            // Assumption: ui is instantiated
-            // Create an InfoBubble at the returned location with
-            // the address as its contents:
-            const marker = new H.map.Marker(item.position);
-            marker.addEventListener(
-              "tap",
-              (event) => {
-                ui.addBubble(
-                  new H.ui.InfoBubble(item.position, {
-                    content: item.address.label,
-                  })
-                );
-              },
-              false
-            );
-            map.addObject(marker);
-            defaultLayers.vector.normal.map,
-              {
-                zoom: 10,
-                center: { lat: item.position.lat, lng: item.position.lng },
-              };
-          });
-        }
-      );
+      this.setRoute(H, map, platform, ui);
     },
-    setRoute(H, map, platform) {
+    setRoute(H, map, platform, ui) {
       // Create the parameters for the routing request:
       var routingParameters = {
         routingMode: "fast",
@@ -213,7 +154,6 @@ export default {
         // Include the route shape in the response
         return: "polyline",
       };
-
       // Define a callback function to process the routing response:
       var onResult = function (result) {
         // ensure that at least one route was found
@@ -224,7 +164,6 @@ export default {
               section.polyline
             );
             //Within the onResult callback:
-
             // Create an outline for the route polyline:
             var routeOutline = new H.map.Polyline(linestring, {
               style: {
@@ -251,24 +190,47 @@ export default {
             routeLine.addObjects([routeOutline, routeArrows]);
             // Add the route polyline and the two markers to the map:
             map.addObjects([routeLine]);
-
-            // Set the map's viewport to make the whole route visible:
-            map
-              .getViewModel()
-              .setLookAtData({ bounds: routeLine.getBoundingBox() });
           });
         }
       };
-
       // Get an instance of the routing service version 8:
       var router = platform.getRoutingService(null, 8);
-
       // Call calculateRoute() with the routing parameters,
       // the callback and an error callback function (called if a
       // communication error occurs):
       router.calculateRoute(routingParameters, onResult, function (error) {
         console.log(error.message);
       });
+      var service = platform.getSearchService();
+      service.reverseGeocode(
+        {
+          at: this.crtLocation,
+        },
+        (result) => {
+          result.items.forEach((item) => {
+            // Assumption: ui is instantiated
+            // Create an InfoBubble at the returned location with
+            // the address as its contents:
+            this.crtAddress = item.address.label;
+            const marker = new H.map.Marker(item.position);
+            marker.addEventListener(
+              "tap",
+              (event) => {
+                ui.addBubble(
+                  new H.ui.InfoBubble(item.position, {
+                    content: item.address.label,
+                  })
+                );
+              },
+              false
+            );
+            let coords = { lat: item.position.lat, lng: item.position.lng };
+            map.setCenter(coords);
+            map.setZoom(18);
+            map.addObject(marker);
+          });
+        }
+      );
     },
   },
 };
