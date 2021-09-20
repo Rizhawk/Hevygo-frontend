@@ -333,7 +333,7 @@
                           <td class="text-center">
                             {{ trans.destination.date }}
                           </td>
-                          <td class="text-center">{{trans.operator.name}}</td>
+                          <td class="text-center">{{ trans.operator.name }}</td>
                           <td class="text-center">
                             {{ trans.destination.customer.name }}
                           </td>

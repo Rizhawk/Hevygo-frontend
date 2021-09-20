@@ -31,6 +31,17 @@
                 dense
               ></v-text-field>
             </validation-provider>
+            <validation-provider name="PAN card" required>
+              <v-file-input
+                v-model="panfile"
+                accept="image/png,image/jpeg"
+                label="Upload PAN Card"
+                required
+                dark
+                outlined
+                dense
+              ></v-file-input>
+            </validation-provider>
             <validation-provider
               v-slot="{ errors }"
               name="GST Number"
@@ -47,6 +58,17 @@
                 outlined
                 dense
               ></v-text-field>
+            </validation-provider>
+            <validation-provider name="GST Paper" required>
+              <v-file-input
+                v-model="gstfile"
+                accept="image/png,image/jpeg"
+                label="Upload GST"
+                required
+                dark
+                outlined
+                dense
+              ></v-file-input>
             </validation-provider>
             <v-layout row wrap>
               <v-flex lg3></v-flex>
@@ -106,7 +128,9 @@ export default {
   data: () => {
     return {
       pan: "",
+      panfile: "",
       gst_no: "",
+      gstfile: "",
       message: "",
       text1: false,
       text2: false,
@@ -119,20 +143,19 @@ export default {
       (this.pan = ""), (this.gst_no = ""), this.$refs.observer3.reset();
     },
     panadd() {
-      this.$refs.observer3.validate();
+      let optrInfo = new FormData();
+      optrInfo.append("pan", this.pan);
+      optrInfo.append("pan_scan", this.panfile);
+      optrInfo.append("gst_no", this.gst_no);
+      optrInfo.append("gst_scan ", this.gstfile);
+      optrInfo.append("status", 1);
+      optrInfo.append("remarks", "Please wait to be verified");
       getAPI
-        .post(
-          "api/operators/add_operator_info/",
-          {
-            pan: this.pan,
-            gst_no: this.gst_no,
+        .post("api/operators/add_operator_info/", optrInfo, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
+        })
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.response == 200) {

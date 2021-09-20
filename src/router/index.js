@@ -8,7 +8,7 @@ import Osignup from "../views/Operator/optrsignup.vue";
 import Cpage from "../components/custpage.vue";
 import Padd from "../views/Operator/panadd";
 import HereMap from "../views/Customer/HereMap";
-import Newcust from "../views/Customer/newcustsignup";
+import Newcust from "../views/Customer/Newcustsignup";
 import Cbooking from "../views/Customer/bookings";
 import Ctrack from "../views/Customer/TrackShipment.vue";
 import ForgotPass from "../views/forgotpassword.vue";
@@ -95,7 +95,7 @@ const routes = [
     component: HereMap,
   },
   {
-    path: "/newcustsignup",
+    path: "/Newcustsignup",
     name: "Newcust",
     component: Newcust,
   },

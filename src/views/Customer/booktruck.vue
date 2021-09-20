@@ -6,7 +6,7 @@
       <v-flex xs10 sm8 md6 lg4>
         <!--Truck booking form begining-->
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="book" @submit.prevent="submit">
+          <form id="book" @submit.prevent="getCords">
             <v-layout class="my-2" row wrap
               ><v-flex class="mx-3"
                 ><h2 class="white--text">Book a Truck</h2></v-flex
@@ -168,7 +168,6 @@
                   router
                   small
                   depressed
-                  @click.prevent="saveData"
                 >
                   Continue
                 </v-btn>
@@ -229,18 +228,22 @@ export default {
       service: null,
       weight: "",
       types: [
-        "Tipper",
-        "Lorry",
-        "Pickup",
-        "Tanker",
-        "Tow truck",
-        "Van",
-        "Container Truck",
-        "Car transporter",
+        "6 Tyre Truck - 2 Axles",
+        "10 Tyre Multy Axle Truck - 3 Axles",
+        "12 Tyre Single Chassis Rigid Truck - 4 Axles",
+        "14 Tyre Single Chassis Rigid Truck - 5 Axles",
+        "14 Tyre Semi Trailer - 4 Axles",
+        "18 Tyre Semi Trailer - 5 Axles ",
+        "22 Tyre Semi Trailer - 6 Axles",
       ],
       vtype: "",
       goodstype: "",
       date: "",
+      //
+      origin: [],
+      dest: [],
+      startCords: "",
+      endCords: "",
       //
       dropdown1: false,
       dropdown2: false,
@@ -326,9 +329,6 @@ export default {
       this.startlocation = this.endlocation;
       this.endlocation = temp;
     },
-    submit() {
-      this.$refs.observer.validate();
-    },
     clear() {
       this.startlocation = "";
       this.endlocation = "";
@@ -337,14 +337,55 @@ export default {
       this.goodstype = "";
       this.$refs.observer.reset();
     },
+    getCords() {
+      const H = window.H;
+      var platform = new H.service.Platform({
+        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      });
+      var service = platform.getSearchService();
+      service.geocode(
+        {
+          q: this.startlocation,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.origin.push(item.position["lat"]);
+            this.origin.push(item.position["lng"]);
+          });
+          let Norigin = this.origin.slice(0, 2);
+          this.startCords = Norigin.toString();
+        }
+      );
+      service.geocode(
+        {
+          q: this.endlocation,
+        },
+        (result) => {
+          // Add a marker for each location found
+          result.items.forEach((item) => {
+            // map.addObject(new H.map.Marker(item.position));
+            this.dest.push(item.position["lat"]);
+            this.dest.push(item.position["lng"]);
+          });
+          let Ndest = this.dest.slice(0, 2);
+          this.endCords = Ndest.toString();
+          this.saveData();
+        }
+      );
+    },
     saveData() {
       //Saving the datas on localstorage and redirect to sign up page
       if ((this.dropdown1 || this.dropdown2) == true) {
         alert("Select a Location");
       } //Checking if the user inputed the value from dropdown data.
       else {
-        localStorage.setItem("sl", this.startlocation);
-        localStorage.setItem("el", this.endlocation);
+        
+        localStorage.setItem("sl", this.startCords);
+        localStorage.setItem("sladdr", this.startlocation);
+        localStorage.setItem("el", this.endCords);
+        localStorage.setItem("eladdr", this.endlocation);
         localStorage.setItem("dt", this.date);
         localStorage.setItem("wt", this.weight);
         localStorage.setItem("vt", this.vtype);

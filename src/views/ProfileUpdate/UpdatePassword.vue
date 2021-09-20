@@ -32,7 +32,7 @@
                       card-title
                       font-weight-black
                       text-secondary
-                      subtitle-1
+                      subtitle-2
                     "
                   >
                     Change Password
@@ -43,7 +43,6 @@
                         <label>Current Password</label>
                         <v-text-field
                           v-model="oldpassword"
-                          label="Current Password"
                           name="password"
                           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="show ? 'text' : 'password'"
@@ -54,7 +53,6 @@
                         <label>New Password</label>
                         <v-text-field
                           v-model="password"
-                          label="New Password"
                           name="password"
                           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="passwordRules"
@@ -66,7 +64,6 @@
                         <label>Confirm New Password</label>
                         <v-text-field
                           v-model="password2"
-                          label="Confirm New Password"
                           name="confirmPassword"
                           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                           :rules="[

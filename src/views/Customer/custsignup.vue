@@ -141,7 +141,7 @@
             <v-layout row wrap>
               <v-flex lg2></v-flex>
               <v-flex class="my-4 mx-8">
-                <span class="font-weight-regular white--text body-1"
+                <span class="white--text caption"
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span
@@ -257,7 +257,7 @@ export default {
             this.$session.start();
             this.$session.set("user_token", this.APIData.data["token"]);
             this.clear();
-            // this.bookTruck();
+            this.bookTruck();
           } else {
             this.message = "Registration Failed";
             this.snackbar2 = true;
@@ -270,10 +270,12 @@ export default {
     bookTruck() {
       getAPI
         .post(
-          "/api/customer/cust-dest-create/",
+          "/api/customers/cust-dest-create/",
           {
             start_location: localStorage.getItem("sl"),
+            start_address: localStorage.getItem("sladdr"),
             end_location: localStorage.getItem("el"),
+            end_address: localStorage.getItem("eladdr"),
             weight: localStorage.getItem("wt"),
             goods_type: localStorage.getItem("gt"),
             date: localStorage.getItem("dt"),
@@ -287,10 +289,10 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          this.$session.set("sl", this.startlocation);
-          this.$session.set("el", this.endlocation);
+          this.$session.set("sl", this.APIData.data.start_location);
+          this.$session.set("el", this.APIData.data.end_location);
           localStorage.clear();
-          this.$router.push({ name: "HereMap" });
+          this.$router.push({ name: "RouteMap" });
         })
         .catch((err) => {
           alert(err);

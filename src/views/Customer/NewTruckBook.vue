@@ -221,12 +221,12 @@ export default {
   },
   data: () => {
     return {
-      startlocation: "" || localStorage.getItem("sl"),
-      endlocation: "" || localStorage.getItem("el"),
+      startlocation: "" || localStorage.getItem("sladdr"),
+      endlocation: "" || localStorage.getItem("eladdr"),
       date: null || localStorage.getItem("dt"),
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
-      vtype: "",
+      vtype: ""||localStorage.getItem("vt"),
       //
       types: [
         "6 Tyre Truck - 2 Axles",

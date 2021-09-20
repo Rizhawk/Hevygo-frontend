@@ -142,7 +142,7 @@
             <v-layout class="my-2" row wrap>
               <v-flex lg2></v-flex>
               <v-flex class="mx-10">
-                <span class="white--text"
+                <span class="white--text caption"
                   >Already have an account?<router-link to="/login"
                     >Login</router-link
                   ></span

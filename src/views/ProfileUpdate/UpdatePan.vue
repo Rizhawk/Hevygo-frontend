@@ -10,7 +10,7 @@
         <div class="content">
           <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-5">
+            <div class="col-md-6">
               <div class="card">
                 <div class="card-header">
                   <h5
@@ -18,40 +18,96 @@
                       card-title
                       font-weight-black
                       text-secondary
-                      subtitle-1
+                      subtitle-2
                     "
                   >
-                    Change Pan & Gst
+                    Change PAN & GST
                   </h5>
                   <div class="card-body">
-                    <form @submit.prevent="changeDeatils">
+                    <form>
                       <div class="form-group">
-                        <label>PAN Number</label>
-                        <v-text-field
-                          v-model="pan"
-                          label="PAN Number"
-                          maxlength="10"
-                          outlined
-                          dense
-                        ></v-text-field>
-                        <label>GST Number</label>
-                        <v-text-field
-                          v-model="gst"
-                          label="GST Number"
-                          maxlength="15"
-                          outlined
-                          dense
-                        ></v-text-field>
-                        <v-flex row justify-center
-                          ><v-btn
-                            type="submit"
-                            x-small
-                            color="rgb(34, 48, 61)"
-                            depressed
-                            outlined
-                            >Update</v-btn
-                          ></v-flex
-                        >
+                        <v-expansion-panels>
+                          <v-expansion-panel>
+                            <v-expansion-panel-header
+                              color="grey lighten-2"
+                              expand-icon="mdi-menu-down"
+                              class="font-weight-bold caption text-secondary"
+                            >
+                              Update PAN Details
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <div class="form-control">
+                                <label>PAN Number</label>
+                                <v-text-field
+                                  v-model="pan"
+                                  maxlength="10"
+                                  outlined
+                                  dense
+                                ></v-text-field>
+                                <v-file-input
+                                  v-model="panfile"
+                                  accept="image/png,image/jpeg"
+                                  label="Upload PAN Card"
+                                  required
+                                  outlined
+                                  dense
+                                ></v-file-input>
+                                <v-flex row justify-center
+                                  ><v-btn
+                                    @click.prevent="changeDeatils"
+                                    x-small
+                                    class="my-3"
+                                    color="rgb(34, 48, 61)"
+                                    depressed
+                                    outlined
+                                    >Update</v-btn
+                                  ></v-flex
+                                >
+                              </div>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                        <v-expansion-panels class="my-10">
+                          <v-expansion-panel>
+                            <v-expansion-panel-header
+                              color="grey lighten-2"
+                              expand-icon="mdi-menu-down"
+                              class="font-weight-bold caption text-secondary"
+                            >
+                              Update GST Details
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
+                              <div class="form-control">
+                                <label>GST Number</label>
+                                <v-text-field
+                                  v-model="gst"
+                                  maxlength="15"
+                                  outlined
+                                  dense
+                                ></v-text-field>
+                                <v-file-input
+                                  v-model="gstfile"
+                                  accept="image/png,image/jpeg"
+                                  label="Upload GST"
+                                  required
+                                  outlined
+                                  dense
+                                ></v-file-input>
+                                <v-flex row justify-center
+                                  ><v-btn
+                                    @click.prevent="changeDeatils"
+                                    x-small
+                                    class="my-3"
+                                    color="rgb(34, 48, 61)"
+                                    depressed
+                                    outlined
+                                    >Update</v-btn
+                                  ></v-flex
+                                >
+                              </div>
+                            </v-expansion-panel-content>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
                       </div>
                     </form>
                   </div>
@@ -75,28 +131,37 @@ export default {
   data: () => {
     return {
       pan: "",
+      panfile: "",
       gst: "",
+      gstfile: "",
       snackbar: false,
       message: "",
     };
   },
   methods: {
     changeDeatils() {
+      let uptInfo = new FormData();
+      if (this.pan != "") {
+        uptInfo.append("pan", this.pan);
+      }
+      if (this.panfile != "") {
+        uptInfo.append("pan_scan", this.panfile);
+      }
+      if (this.gst != "") {
+        uptInfo.append("gst_no", this.gst);
+      }
+      if (this.gstfile != "") {
+        uptInfo.append("gst_scan", this.gstfile);
+      }
       getAPI
-        .put(
-          "/api/operators/update_operator_info/",
-          {
-            pan: this.pan,
-            gst_no: this.gst,
+        .put("/api/operators/update_operator_info/", uptInfo, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
           },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
+        })
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           if (this.APIData.response == 200) {
             this.message = this.APIData.message;
             this.snackbar = true;
@@ -109,6 +174,8 @@ export default {
     },
     clear() {
       this.pan = "";
+      this.panfile = "";
+      this.gstfile = "";
       this.gst = "";
     },
   },

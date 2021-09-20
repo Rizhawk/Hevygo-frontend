@@ -71,7 +71,7 @@
         </v-list-item>
         <v-list-item link href="/updatephone">
           <v-list-item-icon>
-            <v-icon color="white" small>mdi-cellphone-android</v-icon>
+            <v-icon color="white" small>mdi-cellphone</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Change Phonenumber</v-list-item-title>
@@ -146,9 +146,9 @@ export default {
         this.APIData = response.data;
         this.username = this.APIData.data.username;
         if (this.APIData.data["user_type"] == 1) {
-          this.isOptr = true;
           this.color = "red";
           this.profile = "/optrpro";
+          this.getOptrpro();
         } else if (this.APIData.data["user_type"] == 2) {
           this.color = "blue";
           this.profile = "/custpro";
@@ -160,6 +160,23 @@ export default {
       });
   },
   methods: {
+    getOptrpro() {
+      getAPI
+        .get("/api/operators/view_operator_info/", {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.APIData.data.status == 1 || this.APIData.data.status == 3) {
+            this.isOptr = true;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     backTopage() {
       if (this.user_type == 1) {
         this.$router.push({ name: "Dashboard" });

@@ -37,7 +37,7 @@
                       card-title
                       font-weight-black
                       text-secondary
-                      subtitle-1
+                      subtitle-2
                     "
                   >
                     Change Email Id
@@ -49,7 +49,6 @@
                       <label>New Email Id</label>
                       <v-text-field
                         v-model="email"
-                        label="Email Id"
                         :append-icon="icon"
                         @input="checkEmail"
                         outlined

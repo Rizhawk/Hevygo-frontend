@@ -84,27 +84,37 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label>PAN</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            disabled=""
-                            :value="pan"
-                          />
-                        </div>
+                      <div class="col-md-3">
+                        <label>PAN</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          disabled=""
+                          :value="pan"
+                        />
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label>GST Number</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            disabled=""
-                            :value="gst"
-                          />
-                        </div>
+                      <div class="col-md-3 my-7">
+                        <v-chip small light @click="viewURL(panfile)">
+                          <v-icon left> mdi-file-image </v-icon>
+                          <span class="caption">PAN Card</span>
+                          &nbsp;
+                        </v-chip>
+                      </div>
+                      <div class="col-md-3">
+                        <label>GST Number</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          disabled=""
+                          :value="gst"
+                        />
+                      </div>
+                      <div class="col-md-3 my-7">
+                        <v-chip light small @click="viewURL(gstfile)">
+                          <v-icon left> mdi-file-image </v-icon>
+                          <span class="caption">GST Card</span>
+                          &nbsp;
+                        </v-chip>
                       </div>
                       <v-flex row class="my-2" justify-center>
                         <v-btn
@@ -224,7 +234,9 @@ export default {
       show1: false,
       show2: false,
       pan: "",
+      panfile: "",
       gst: "",
+      gstfile: "",
       email: null,
       crid: "",
       is_verified: null,
@@ -249,6 +261,8 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         this.pan = this.APIData.data["pan"];
+        this.panfile = this.APIData.data.pan_scan;
+        this.gstfile = this.APIData.data.gst_scan;
         this.gst = this.APIData.data["gst_no"];
         this.email = this.APIData.data["operator"]["email"];
         this.name = this.APIData.data["operator"]["name"];
@@ -313,6 +327,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    viewURL(link) {
+      window.open(link);
     },
     back() {
       localStorage.removeItem("optrid");

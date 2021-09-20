@@ -32,7 +32,7 @@
                       card-title
                       font-weight-black
                       text-secondary
-                      subtitle-1
+                      subtitle-2
                     "
                   >
                     Change Name
@@ -43,7 +43,6 @@
                         <label>New Name</label>
                         <v-text-field
                           v-model="name"
-                          label="New Name"
                           outlined
                           dense
                         ></v-text-field>

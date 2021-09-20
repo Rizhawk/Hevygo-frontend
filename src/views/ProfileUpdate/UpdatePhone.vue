@@ -37,7 +37,7 @@
                       card-title
                       font-weight-black
                       text-secondary
-                      subtitle-1
+                      subtitle-2
                     "
                   >
                     Change Phonenumber
@@ -48,7 +48,6 @@
                         <label>New Phone Number</label>
                         <v-text-field
                           v-model="phone"
-                          label="Phone Number"
                           maxlength="10"
                           :append-icon="icon"
                           @input="checkPhone"

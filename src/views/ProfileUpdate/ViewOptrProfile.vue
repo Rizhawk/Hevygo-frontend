@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div class="wrapper">
-      <Upage/>
+      <Upage />
       <div class="main-panel" id="main-panel">
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
@@ -24,7 +24,7 @@
                 <div class="card-body">
                   <form>
                     <div class="row">
-                      <div class="col-md-5 pr-1">
+                      <div class="col-md-5">
                         <div class="form-group">
                           <label>Name</label>
                           <input
@@ -36,7 +36,7 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-3 px-1">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label>Phonenumber</label>
                           <input
@@ -48,7 +48,7 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-4 pl-1">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label for="exampleInputEmail1">Email Id</label>
                           <input
@@ -61,9 +61,9 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6 pr-1">
-                        <div class="form-group">
+                    <div class="form-control my-6">
+                      <div class="row">
+                        <div class="col-md-3">
                           <label>PAN Number</label>
                           <input
                             type="text"
@@ -73,9 +73,16 @@
                             :value="pan"
                           />
                         </div>
-                      </div>
-                      <div class="col-md-6 pl-1">
-                        <div class="form-group">
+                        <div class="col-md-3 my-4">
+                          <v-chip small light @click="viewURL(panfile)">
+                            <v-icon left> mdi-file-image </v-icon>
+                            <span class="caption"
+                              >PAN Card</span
+                            >
+                            &nbsp;
+                          </v-chip>
+                        </div>
+                        <div class="col-md-3">
                           <label>Gst Number</label>
                           <input
                             type="text"
@@ -84,6 +91,15 @@
                             placeholder="GST Number"
                             :value="gst"
                           />
+                        </div>
+                        <div class="col-md-3 my-4">
+                          <v-chip light small @click="viewURL(gstfile)">
+                            <v-icon left> mdi-file-image </v-icon>
+                            <span class="caption"
+                              >GST Card</span
+                            >
+                            &nbsp;
+                          </v-chip>
                         </div>
                       </div>
                     </div>
@@ -111,7 +127,9 @@ export default {
       phone: "",
       email: "",
       pan: "",
+      panfile: "",
       gst: "",
+      gstfile: "",
     };
   },
   created: function () {
@@ -123,15 +141,22 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-        this.name = this.APIData.data["user"]["name"];
-        this.phone = this.APIData.data["user"]["phone"];
-        this.email = this.APIData.data["user"]["email"];
+        this.name = this.APIData.data["operator"]["name"];
+        this.phone = this.APIData.data["operator"]["phone"];
+        this.email = this.APIData.data["operator"]["email"];
         this.pan = this.APIData.data.pan;
+        this.panfile = this.APIData.data.pan_scan;
         this.gst = this.APIData.data.gst_no;
+        this.gstfile = this.APIData.data.gst_scan;
       })
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    viewURL(link) {
+      window.open(link);
+    },
   },
 };
 </script>
