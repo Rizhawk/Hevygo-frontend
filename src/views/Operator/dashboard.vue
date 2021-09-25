@@ -159,10 +159,10 @@
                             {{ trans.destination.customer.name }}
                           </td>
                           <td class="text-center">
-                            {{ trans.destination.start_location }}
+                            {{ trans.destination.start_address }}
                           </td>
                           <td class="text-center">
-                            {{ trans.destination.end_location }}
+                            {{ trans.destination.end_address }}
                           </td>
                           <td class="text-center">{{ trans.cost }}</td>
                           <td class="text-center">

@@ -145,9 +145,6 @@ export default {
         });
     },
     createTrans() {
-      console.log(localStorage.getItem("destid"));
-      console.log(this.owner);
-      console.log(this.driver);
       getAPI
         .post(
           "api/customers/cust-trans-create/",
@@ -222,7 +219,12 @@ export default {
               this.trucks.push(this.APIData.priority2[key].truck.id);
             }
             console.log(this.trucks);
-            this.getAddress();
+            if (this.trucks.length == 0) {
+              this.status = 4;
+              this.acceptOrreject();
+            } else {
+              this.getAddress();
+            }
           } else {
             alert("Something Went Wrong! Please try Again");
             this.$router.push({ name: "Vdestdetail" });

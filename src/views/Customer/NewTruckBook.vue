@@ -371,6 +371,8 @@ export default {
         //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
+        let dt=new Date();
+        console.log(dt);
         getAPI
           .post(
             "/api/customers/cust-dest-create/",
@@ -381,7 +383,7 @@ export default {
               end_address: this.endlocation,
               weight: this.weight,
               goods_type: this.goodstype,
-              date: this.date,
+              date: "2022-09-10",
               vehicle_type: this.vtype,
             },
             {
@@ -398,7 +400,7 @@ export default {
               this.clear();
               this.$router.push({ name: "RouteMap" });
             } else {
-              alert(this.APIData.message);
+              alert(this.APIData.message); 
             }
           })
           .catch((err) => {
