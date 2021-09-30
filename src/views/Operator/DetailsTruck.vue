@@ -25,7 +25,7 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <validation-observer ref="observer" v-slot="{ invalid }">
+                  <validation-observer ref="observer">
                     <form @submit.prevent="trucketails">
                       <div class="form-group">
                         <label>Manufacturer</label>
@@ -36,7 +36,6 @@
                         >
                           <v-text-field
                             v-model="manufacturer"
-                            label="Manufacturer"
                             :error-messages="errors"
                             name="manufacturer"
                             clearable
@@ -52,7 +51,6 @@
                         >
                           <v-combobox
                             v-model="type"
-                            label="Type "
                             :items="types"
                             name="type"
                             :error-messages="errors"
@@ -71,7 +69,6 @@
                           <v-text-field
                             v-model="model"
                             :error-messages="errors"
-                            label="Model"
                             clearable
                             outlined
                             dense
@@ -86,7 +83,6 @@
                           <v-text-field
                             v-model="capacity"
                             :error-messages="errors"
-                            label="Capacity in ton"
                             clearable
                             outlined
                             dense
@@ -97,7 +93,6 @@
                             type="submit"
                             x-small
                             color="rgb(34, 48, 61)"
-                            :disabled="invalid"
                             depressed
                             outlined
                             >Save
@@ -163,8 +158,6 @@ export default {
       ],
       model: "",
       capacity: "",
-      snackbar: false,
-      message: "",
     };
   },
   methods: {
@@ -194,8 +187,7 @@ export default {
             localStorage.removeItem("tid");
             this.$router.push({ name: "TrucksTable" });
           } else {
-            this.message = this.APIData.message;
-            this.snackbar = true;
+            alert(this.APIData.message);
           }
         })
         .catch((err) => {

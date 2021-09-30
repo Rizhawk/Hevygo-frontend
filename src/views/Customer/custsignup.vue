@@ -278,7 +278,7 @@ export default {
             end_address: localStorage.getItem("eladdr"),
             weight: localStorage.getItem("wt"),
             goods_type: localStorage.getItem("gt"),
-            date: localStorage.getItem("dt"),
+            date: "2020-10-05",
             vehicle_type: localStorage.getItem("vt"),
           },
           {

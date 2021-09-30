@@ -371,8 +371,8 @@ export default {
         //Checking if the user inputed the value from dropdown data.
         alert("Select a Location");
       } else {
-        let dt=new Date();
-        console.log(dt);
+        // let dt=new Date();
+        // console.log(dt);
         getAPI
           .post(
             "/api/customers/cust-dest-create/",

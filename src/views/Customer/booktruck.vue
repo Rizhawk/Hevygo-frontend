@@ -90,7 +90,7 @@
                 </tbody>
               </v-simple-table>
             </v-flex>
-            <validation-provider
+            <!-- <validation-provider
               v-slot="{ errors }"
               name="Date"
               rules="required"
@@ -105,7 +105,7 @@
                 outlined
                 dense
               ></v-text-field>
-            </validation-provider>
+            </validation-provider> -->
             <validation-provider
               v-slot="{ errors }"
               name="Weight"
@@ -145,7 +145,7 @@
             <validation-provider
               v-slot="{ errors }"
               name="Goods Type"
-              rules="required|max:10"
+              rules="required"
             >
               <v-text-field
                 v-model="goodstype"

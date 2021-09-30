@@ -437,7 +437,7 @@ export default {
             this.showButton = false;
             this.getCords();
           } else {
-            this.message2 = "Truck Registration Failed";
+            this.message2 = this.APIData.message;
             this.snackbar2 = true;
             console.log(this.APIData);
           }
@@ -545,7 +545,7 @@ export default {
               this.clear();
               this.$router.push({ name: "DetailTruck" });
             } else {
-              console.log(this.APIData);
+              alert(this.APIData.message);
             }
           })
           .catch((err) => {
