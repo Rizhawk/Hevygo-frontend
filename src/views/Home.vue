@@ -9,10 +9,6 @@
         <h1 class="white--text display-3 font-weight-bold mb-5">SHUTTLE</h1>
         <v-flex lg12 md6 xs12>
           <p class="white--text text-sm-left">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-            quidem laudantium hic, tempore ratione aliquam porro voluptatem
-            aspernatur sint nulla sit adipisci repellat ipsam qui molestias
-            asperiores quae maiores deserunt!
           </p></v-flex
         >
         <v-btn
