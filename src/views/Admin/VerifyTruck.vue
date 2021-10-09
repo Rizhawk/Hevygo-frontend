@@ -26,7 +26,7 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <div class="table-responsive">
+                  <div class="table-scroll">
                     <table class="table">
                       <thead
                         class="
@@ -103,6 +103,7 @@ export default {
   data: () => {
     return {
       truckdetails: [],
+      page: 1,
     };
   },
   beforeCreate: function () {
@@ -115,7 +116,6 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         this.truckdetails = this.APIData.data;
-        console.log(this.APIData);
       })
       .catch((err) => {
         console.log(err);
@@ -129,3 +129,5 @@ export default {
   },
 };
 </script>
+<style scoped>
+</style>

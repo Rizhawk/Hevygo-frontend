@@ -368,6 +368,9 @@ export default {
       //
       prog: true,
       costField: false,
+      //
+      sCoord: "",
+      eCoord: "",
     };
   },
   beforeMount: function () {
@@ -392,6 +395,10 @@ export default {
           this.APIData.data.start_location,
           this.APIData.data.end_location
         );
+        this.sCoord = this.APIData.data.start_location;
+        this.eCoord = this.APIData.data.end_location;
+        console.log(this.sCoord);
+        console.log(this.eCoord);
         if (this.APIData.data.status == 1) {
           this.st = "Payment Pending";
           this.stn = 1;
@@ -465,8 +472,10 @@ export default {
         .post(
           "api/customers/cust-dest-create/",
           {
-            start_location: this.sl,
-            end_location: this.el,
+            start_location: this.sCoord,
+            start_address: this.sl,
+            end_location: this.eCoord,
+            end_address: this.el,
             weight: this.wt,
             goods_type: this.gt,
             date: this.dt,
@@ -480,8 +489,8 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          this.$session.set("sl", this.sl);
-          this.$session.set("el", this.el);
+          this.$session.set("sl", this.APIData.data.start_location);
+          this.$session.set("el", this.APIData.data.end_location);
           this.$router.push({ name: "RouteMap" });
         })
         .catch((err) => {

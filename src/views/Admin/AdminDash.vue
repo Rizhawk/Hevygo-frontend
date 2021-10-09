@@ -341,7 +341,7 @@
                             {{ trans.destination.start_address }}
                           </td>
                           <td class="text-center">
-                            {{ trans.destination.end_address}}
+                            {{ trans.destination.end_address }}
                           </td>
                           <td class="text-center">{{ trans.cost }}</td>
                           <td class="text-center">
@@ -363,6 +363,17 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        circle
+                        v-model="page"
+                        dark
+                        light
+                        :length="10"
+                        @input="handlePage"
+                        total-visible="3"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -378,7 +389,6 @@ import { getAPI } from "../../axios-api";
 import Admin from "./AdminsSidebar.vue";
 import AdminNav from "../Admin/AdminNavbar.vue";
 import MobNav from "../Admin/MobNav.vue";
-import "../../assets/demo/demo.js";
 export default {
   name: "AdminDash",
   components: {
@@ -389,6 +399,7 @@ export default {
   data: () => {
     return {
       transdetails: [],
+      page: 1,
     };
   },
   beforeCreate: function () {
@@ -401,6 +412,7 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         this.transdetails = this.APIData.data;
+        console.log(this.APIData);
       })
       .catch((err) => {
         console.log(err);
@@ -408,6 +420,11 @@ export default {
   },
   mounted: function () {
     demo.initDashboardPageCharts();
+  },
+  methods: {
+    handlePage(value) {
+      console.log(value);
+    },
   },
 };
 </script>

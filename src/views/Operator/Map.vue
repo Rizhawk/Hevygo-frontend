@@ -44,11 +44,6 @@ import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Dfooter from "../../components/dashfooter.vue";
 import Onavbar from "../../components/Operator/OptrNav.vue";
 import MobNav from "../../components/Operator/MobNav.vue";
-import "../../assets/js/plugins/perfect-scrollbar.jquery.min.js";
-import "../../assets/js/core/jquery.min.js";
-import "../../assets/js/plugins/bootstrap-notify.js";
-import "../../assets/js/plugins/chartjs.min.js";
-import "../../assets/demo/demo.js";
 export default {
   name: "Hmap",
   components: {

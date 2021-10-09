@@ -188,6 +188,7 @@ export default {
           this.truck = this.APIData.data.truck["registration"];
           this.driver = this.APIData.data.driver["driver_name"];
           this.phone = this.APIData.data.driver["phone"];
+          console.log(this.APIData.data["location"]);
           this.getAddress(this.APIData.data["location"]);
           if (this.APIData.data["status"] === "Offline") {
             this.status = "Available";

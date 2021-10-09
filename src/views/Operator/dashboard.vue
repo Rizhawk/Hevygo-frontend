@@ -7,10 +7,16 @@
         <Onavbar title="Dashboard" />
         <mob-nav />
         <!-- End Navbar -->
-        <div class="panel-header panel-header-lg">
-          <canvas id="bigDashboardChart"></canvas>
+        <div class="panel-header panel-header-sm"></div>
+        <div class="content my-5">
+          <div
+            class="chart-container"
+            style="position: relative; height: 30vh; width: 70vw"
+          >
+            <DataChart />
+          </div>
         </div>
-        <div class="content">
+        <div class="content my-10">
           <div class="row">
             <div class="col-lg-4">
               <div class="card card-chart">
@@ -41,9 +47,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="lineChartExample"></canvas>
-                  </div>
+                  <div class="chart-area"></div>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -82,9 +86,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="lineChartExampleWithNumbersAndGrid"></canvas>
-                  </div>
+                  <div class="chart-area"></div>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -101,9 +103,7 @@
                   <h4 class="card-title">24 Hours Performance</h4>
                 </div>
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="barChartSimpleGradientsNumbers"></canvas>
-                  </div>
+                  <div class="chart-area"></div>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -184,6 +184,16 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        circle
+                        v-model="page"
+                        dark
+                        light
+                        :length="10"
+                        total-visible="3"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -389,10 +399,11 @@ import Dfooter from "../../components/dashfooter.vue";
 import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Onavbar from "../../components/Operator/OptrNav.vue";
 import MobNav from "../../components/Operator/MobNav.vue";
-import "../../assets/demo/demo.js";
+import DataChart from "../Operator/DashCharts/DataChart.vue";
 export default {
   name: "Dashboard",
   components: {
+    DataChart,
     Dsidebar,
     Dfooter,
     Onavbar,
@@ -401,6 +412,7 @@ export default {
   data: () => {
     return {
       transdetails: [],
+      page: 1,
     };
   },
   beforeCreate: function () {
@@ -417,9 +429,6 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-  },
-  mounted: function () {
-    demo.initDashboardPageCharts();
   },
 };
 </script>
