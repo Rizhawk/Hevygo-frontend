@@ -1,5 +1,29 @@
 <template>
   <div>
+    <div class="row my-3">
+      <div class="col-md-4">
+        <div class="text-start">
+          <v-btn
+            v-if="this.switch != 0"
+            x-small
+            outlined
+            @click.prevent="drillBack"
+            ><v-icon x-small left>mdi-arrow-left</v-icon> Back</v-btn
+          >
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <div class="text-end">
+          <v-btn-toggle dense color="#47b784">
+            <v-btn x-small depressed @click="switchType(0)">Bar</v-btn
+            ><v-btn depressed x-small @click="switchType(1)"
+              >Line</v-btn
+            ></v-btn-toggle
+          >
+        </div>
+      </div>
+    </div>
     <canvas id="myChart"></canvas>
   </div>
 </template>
@@ -14,7 +38,8 @@ export default {
       averageData: "",
       dataChartData: {},
       myChart: {},
-      switch: null,
+      switch: 0, // Variable to controll the Drilldown flow of the chart.
+      chartType: "bar",
       //
       year: "",
       month: "",
@@ -29,6 +54,7 @@ export default {
   },
   methods: {
     getData() {
+      // Api call, which return chart data in json format.
       getAPI
         .get("/api/chart/operator_stat/", {
           headers: {
@@ -37,11 +63,12 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          if (this.switch == null) {
+          if (this.switch == 0) {
+            //Data of the chart by default/Chart Intialization.
             this.labelData = this.APIData.data.annual.year;
             this.revenueData = this.APIData.data.annual.revenue;
             this.averageData = this.APIData.data.annual.average;
-            this.renderChart();
+            this.renderChart(); // Fucntion call to render chart.
           } else if (this.switch == 1) {
             this.labelData = this.APIData.data.annual[this.year]["month"];
             this.revenueData = this.APIData.data.annual[this.year]["revenue"];
@@ -70,9 +97,9 @@ export default {
               this.APIData.data.annual[this.year][this.month][this.week][
                 "average"
               ];
-            this.value = `Day ${
+            this.value = `${
               this.APIData.data.annual[this.year][this.month][this.week]["day"]
-            }th of the Month ${this.month} of ${this.year}`;
+            }th Week of the Month ${this.month} of ${this.year}`;
             this.myChart.destroy();
             this.renderChart();
           }
@@ -82,8 +109,9 @@ export default {
         });
     },
     renderChart() {
+      // Function, which defining and rendering the chart.
       this.dataChartData = {
-        type: "bar",
+        type: this.chartType,
         data: {
           labels: this.labelData,
           datasets: [
@@ -120,7 +148,7 @@ export default {
       };
       const ctx = document.getElementById("myChart");
       this.myChart = new Chart(ctx, this.dataChartData);
-      ctx.onclick = this.clickHandler;
+      ctx.onclick = this.clickHandler; // Fucntion call, when the user click on the chart element.
     },
     clickHandler(click) {
       const points = this.myChart.getElementsAtEventForMode(
@@ -137,21 +165,38 @@ export default {
           this.myChart.data.datasets[firstPoint.datasetIndex].data[
             firstPoint.index
           ];
-        // console.log(firstPoint.index);
-        // console.log(label);
-        if (this.switch == null) {
-          this.switch = 1;
+        //Condition to check the Drilldown stage.
+        if (this.switch == 0) {
+          this.switch = 1; // On the first click.
           this.year = label;
           this.getData();
         } else if (this.switch == 1) {
-          this.switch = 2;
+          this.switch = 2; // On the second click.
           this.month = label;
           this.getData();
         } else if (this.switch == 2) {
-          this.switch = 3;
+          this.switch = 3; // On the third click.
           this.week = label;
           this.getData();
         }
+      }
+    },
+    drillBack() {
+      // Function handling the Drill back.
+      this.switch -= 1;
+      this.myChart.destroy();
+      this.getData();
+    },
+    switchType(value) {
+      // Fucntion for performing the type switching of chart.
+      if (value == 0) {
+        this.chartType = "bar";
+        this.myChart.destroy();
+        this.getData();
+      } else if (value == 1) {
+        this.chartType = "line";
+        this.myChart.destroy();
+        this.getData();
       }
     },
   },
