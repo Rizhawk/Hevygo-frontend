@@ -20,13 +20,19 @@
                         prepend-inner-icon="mdi-magnify"
                         class="search"
                         label="Search your truck.."
+                        @input="searchTruck"
                         dense
                         filled
                         single-line
                       ></v-text-field>
                     </div>
                     <div class="col-md-2 text-start">
-                      <v-btn x-small color="primary" class="my-3" outlined
+                      <v-btn
+                        @click="searchTruck"
+                        x-small
+                        color="primary"
+                        class="my-3"
+                        outlined
                         >Search</v-btn
                       >
                     </div>
@@ -112,6 +118,13 @@
                             >
                           </td>
                         </tr>
+                        <tr v-if="this.dataCount == 0">
+                          <td>
+                            <p class="caption font-weight-medium">
+                              No records found !!
+                            </p>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                     <div class="text-center">
@@ -153,6 +166,7 @@ export default {
       trucks: [],
       search: "",
       page: 1,
+      dataCount: 0,
     };
   },
   beforeCreate: function () {
@@ -165,6 +179,7 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         this.trucks = this.APIData.data;
+        this.dataCount = this.trucks.length;
       })
       .catch((err) => {
         alert(err);
@@ -174,6 +189,22 @@ export default {
     viewSpec(id) {
       localStorage.setItem("tid", id);
       this.$router.push({ name: "Vspecs" });
+    },
+    searchTruck() {
+      getAPI
+        .get("/api/operators/truck_search?search=" + this.search, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.trucks = this.APIData.data;
+          this.dataCount = this.trucks.length;
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };
