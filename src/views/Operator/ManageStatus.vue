@@ -55,6 +55,7 @@
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr
+                          class="rowHover"
                           v-for="truck in truckdriver"
                           :key="truck.truck.id"
                           @click.prevent="
@@ -131,3 +132,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.rowHover:hover {
+  background-color: lightgrey;
+}
+</style>

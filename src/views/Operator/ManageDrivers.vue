@@ -54,6 +54,7 @@
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr
+                          class="rowHover"
                           v-for="driver in driverdetails"
                           :key="driver.id"
                           @click="viewDriver(driver.id)"
@@ -129,5 +130,8 @@ export default {
   padding: 25px;
   border-radius: 15px;
   background-color: rgb(34, 48, 61);
+}
+.rowHover:hover {
+  background-color: lightgrey;
 }
 </style>

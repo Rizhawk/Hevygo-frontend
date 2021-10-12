@@ -149,6 +149,7 @@
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr
+                          class="rowHover"
                           v-for="trans in transdetails"
                           :key="trans.destination.id"
                         >
@@ -188,7 +189,6 @@
                       <v-pagination
                         circle
                         v-model="page"
-                        dark
                         light
                         :length="10"
                         total-visible="3"
@@ -432,3 +432,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.rowHover:hover {
+  background-color: lightgrey;
+}
+</style>

@@ -13,20 +13,28 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <div class="text-right"></div>
-                  <h4
-                    class="
-                      card-title
-                      font-weight-black
-                      text-secondary
-                      subtitle-1
-                    "
-                  >
-                    Registerd Trucks
-                    <v-flex row justify-end>
+                  <div class="row">
+                    <div class="col-md-6 text-start">
+                      <v-text-field
+                        v-model="search"
+                        prepend-inner-icon="mdi-magnify"
+                        class="search"
+                        label="Search your truck.."
+                        dense
+                        filled
+                        single-line
+                      ></v-text-field>
+                    </div>
+                    <div class="col-md-2 text-start">
+                      <v-btn x-small color="primary" class="my-3" outlined
+                        >Search</v-btn
+                      >
+                    </div>
+                    <div class="col-md-4 text-end">
                       <v-btn
                         color="primary"
                         href="/infoadd"
+                        class="my-3"
                         x-small
                         depressed
                         dark
@@ -34,9 +42,9 @@
                       >
                         Add New
                         <v-icon x-small color="whte">mdi-plus</v-icon>
-                      </v-btn></v-flex
-                    >
-                  </h4>
+                      </v-btn>
+                    </div>
+                  </div>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -56,6 +64,7 @@
                       </thead>
                       <tbody class="font-weight-medium caption text-center">
                         <tr
+                          class="rowHover"
                           v-for="truck in trucks"
                           :key="truck.id"
                           @click.prevent="viewSpec(truck.truck.id)"
@@ -105,6 +114,15 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        circle
+                        v-model="page"
+                        light
+                        :length="10"
+                        total-visible="3"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -133,6 +151,8 @@ export default {
   data: () => {
     return {
       trucks: [],
+      search: "",
+      page: 1,
     };
   },
   beforeCreate: function () {
@@ -144,7 +164,6 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-        console.log(this.APIData);
         this.trucks = this.APIData.data;
       })
       .catch((err) => {
@@ -165,5 +184,11 @@ export default {
   padding: 25px;
   border-radius: 15px;
   background-color: rgb(34, 48, 61);
+}
+.rowHover:hover {
+  background-color: lightgrey;
+}
+.search {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>
