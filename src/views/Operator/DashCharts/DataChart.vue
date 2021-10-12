@@ -6,7 +6,8 @@
           <v-btn
             v-if="this.switch != 0"
             x-small
-            outlined
+            elevation="5"
+            rounded
             @click.prevent="drillBack"
             ><v-icon x-small left>mdi-arrow-left</v-icon> Back</v-btn
           >
@@ -15,9 +16,9 @@
       <div class="col-md-4"></div>
       <div class="col-md-4">
         <div class="text-end">
-          <v-btn-toggle dense color="#47b784">
-            <v-btn x-small depressed @click="switchType(0)">Bar</v-btn
-            ><v-btn depressed x-small @click="switchType(1)"
+          <v-btn-toggle dense rounded color="#47b784">
+            <v-btn x-small elevation="5" dense @click="switchType(0)">Bar</v-btn
+            ><v-btn x-small elevation="5" dense outlined @click="switchType(1)"
               >Line</v-btn
             ></v-btn-toggle
           >
@@ -133,7 +134,6 @@ export default {
         },
         options: {
           responsive: true,
-          lineTension: 1,
           scales: {
             yAxes: [
               {
