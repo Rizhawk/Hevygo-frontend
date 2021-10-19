@@ -27,14 +27,6 @@
                       ></v-text-field>
                     </div>
                     <div class="col-md-2 text-start">
-                      <v-btn
-                        @click="searchTruck"
-                        x-small
-                        color="primary"
-                        class="my-3"
-                        outlined
-                        >Search</v-btn
-                      >
                     </div>
                     <div class="col-md-4 text-end">
                       <v-btn
