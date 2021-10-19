@@ -48,7 +48,7 @@
                         >
                           <td>{{ dest.date }}</td>
                           <td>{{ dest.start_address }}</td>
-                          <td>{{ dest.end_address}}</td>
+                          <td>{{ dest.end_address }}</td>
                           <td>
                             <p
                               v-if="dest.status == 1"
@@ -98,6 +98,18 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        v-model="page"
+                        circle
+                        light
+                        color="grey darken-3"
+                        :length="2"
+                        total-visible="3"
+                        prev-icon="mdi-menu-left"
+                        next-icon="mdi-menu-right"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -123,6 +135,7 @@ export default {
   data: () => {
     return {
       destdetails: [],
+      page: 1,
     };
   },
   beforeMount: function () {

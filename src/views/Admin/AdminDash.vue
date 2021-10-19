@@ -365,13 +365,14 @@
                     </table>
                     <div class="text-center">
                       <v-pagination
-                        circle
                         v-model="page"
-                        dark
+                        circle
                         light
-                        :length="10"
-                        @input="handlePage"
+                        color="grey darken-3"
+                        :length="2"
                         total-visible="3"
+                        prev-icon="mdi-menu-left"
+                        next-icon="mdi-menu-right"
                       ></v-pagination>
                     </div>
                   </div>

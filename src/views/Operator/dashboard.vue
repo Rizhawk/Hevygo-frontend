@@ -114,7 +114,7 @@
             </div>
           </div> -->
           <div class="row my-5">
-            <div class="col-md-8">
+            <div class="col-md-9">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-category">Transactions Management</h5>
@@ -187,18 +187,22 @@
                     </table>
                     <div class="text-center">
                       <v-pagination
-                        circle
                         v-model="page"
+                        circle
                         light
-                        :length="10"
+                        color="grey darken-3"
+                        @input="_getTranslist"
+                        :length="2"
                         total-visible="3"
+                        prev-icon="mdi-menu-left"
+                        next-icon="mdi-menu-right"
                       ></v-pagination>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="card card-tasks">
                 <div class="card-header">
                   <h5 class="card-category">Notifications</h5>
@@ -412,23 +416,29 @@ export default {
   data: () => {
     return {
       transdetails: [],
+      count: null,
       page: 1,
     };
   },
-  beforeCreate: function () {
-    getAPI
-      .get("/api/operators/trans-list/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        this.transdetails = this.APIData.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  mounted: function () {
+    this._getTranslist();
+  },
+  methods: {
+    _getTranslist() {
+      getAPI
+        .get("/api/operators/trans-list/?page=" + this.page, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.transdetails = this.APIData.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

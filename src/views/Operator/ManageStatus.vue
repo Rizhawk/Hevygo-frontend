@@ -77,6 +77,18 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        v-model="page"
+                        circle
+                        light
+                        color="grey darken-3"
+                        :length="2"
+                        total-visible="3"
+                        prev-icon="mdi-menu-left"
+                        next-icon="mdi-menu-right"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -105,6 +117,7 @@ export default {
   data: () => {
     return {
       truckdriver: [],
+      page: 1,
     };
   },
   created: function () {
