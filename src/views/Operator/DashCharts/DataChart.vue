@@ -69,6 +69,7 @@ export default {
             this.labelData = this.APIData.data.annual.year;
             this.revenueData = this.APIData.data.annual.revenue;
             this.averageData = this.APIData.data.annual.average;
+            this.value = "Year";
             this.renderChart(); // Fucntion call to render chart.
           } else if (this.switch == 1) {
             this.labelData = this.APIData.data.annual[this.year]["month"];
