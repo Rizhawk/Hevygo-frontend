@@ -369,7 +369,8 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="page_count"
+                        @input="_getTranslist"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -401,28 +402,29 @@ export default {
     return {
       transdetails: [],
       page: 1,
+      page_count: null,
     };
   },
-  beforeCreate: function () {
-    getAPI
-      .get("/api/admin/transaction_listing", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        this.transdetails = this.APIData.data;
-        console.log(this.APIData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
   mounted: function () {
-    demo.initDashboardPageCharts();
+    this._getTranslist();
   },
   methods: {
+    _getTranslist() {
+      getAPI
+        .get("/api/admin/transaction_listing?page=" + this.page, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.transdetails = this.APIData.data;
+          this.page_count = this.APIData.page_count;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     handlePage(value) {
       console.log(value);
     },

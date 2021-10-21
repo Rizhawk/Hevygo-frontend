@@ -192,7 +192,7 @@
                         light
                         color="grey darken-3"
                         @input="_getTranslist"
-                        :length="2"
+                        :length="this.page_count"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -418,6 +418,7 @@ export default {
       transdetails: [],
       count: null,
       page: 1,
+      page_count: null,
     };
   },
   mounted: function () {
@@ -434,6 +435,7 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           this.transdetails = this.APIData.data;
+          this.page_count = this.APIData.page_count;
         })
         .catch((err) => {
           console.log(err);
