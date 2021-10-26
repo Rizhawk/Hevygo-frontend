@@ -394,7 +394,9 @@ export default {
       this.dropdown = false;
     },
     testReg() {
-      this.regEx = new RegExp("^[A-Z]{2}[-][0-9]{1,2}[-][0-9]{4}");
+      this.regEx = new RegExp(
+        "^[A-Z]{2}[-][0-9]{1,2}[-][A-Z]{1,2}[-][0-9]{3,4}"
+      );
       if (this.regEx.test(this.regnumber) == false) {
         this.errmsg = "Invalid Reg.Number";
       } else {
