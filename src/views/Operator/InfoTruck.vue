@@ -71,7 +71,6 @@
                             >
                               <v-text-field
                                 v-model="phone"
-                                autofocus
                                 :error-messages="errors"
                                 maxlength="10"
                                 :append-icon="icon"
@@ -395,7 +394,7 @@ export default {
     },
     testReg() {
       this.regEx = new RegExp(
-        "^[A-Z]{2}[-][0-9]{1,2}[-][A-Z]{1,2}[-][0-9]{3,4}"
+        "^[A-Z]{2}[-][0-9/A-Z]{1,2}[-][A-Z]{1,2}[-][0-9]{3,4}"
       );
       if (this.regEx.test(this.regnumber) == false) {
         this.errmsg = "Invalid Reg.Number";
