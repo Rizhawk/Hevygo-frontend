@@ -356,6 +356,7 @@ export default {
       snackbar: false,
       message: "",
       regnumber: "",
+      regEx: "",
       errmsg: "",
       homeloc: "",
       dropdown: false,
@@ -378,9 +379,6 @@ export default {
       homeCords: "",
     };
   },
-  mounted: function () {
-    this.testReg();
-  },
   methods: {
     async doSearch() {
       //Auto suggestion Function call for Homelocation Field
@@ -396,8 +394,8 @@ export default {
       this.dropdown = false;
     },
     testReg() {
-      const regEx = new RegExp("^[A-Z]{2}[-][0-9]{1,2}[-][0-9]{4}");
-      if (regEx.test(this.regnumber) == false) {
+      this.regEx = new RegExp("^[A-Z]{2}[-][0-9]{1,2}[-][0-9]{4}");
+      if (this.regEx.test(this.regnumber) == false) {
         this.errmsg = "Invalid Reg.Number";
       } else {
         this.errmsg = "";
@@ -414,8 +412,7 @@ export default {
       this.name = "";
     },
     tsignup() {
-      const regEx = new RegExp("^[A-Z]{2}[-][0-9]{1,2}[-][0-9]{4}");
-      if (regEx.test(this.regnumber) == false) {
+      if (this.regEx.test(this.regnumber) == false) {
         alert("Invalid Input");
       } else {
         getAPI
