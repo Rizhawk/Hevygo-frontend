@@ -176,7 +176,7 @@ export default {
         this.dataCount = this.trucks.length;
       })
       .catch((err) => {
-        alert(err);
+        console.log(err);
       });
   },
   methods: {
@@ -197,7 +197,7 @@ export default {
           this.dataCount = this.trucks.length;
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
         });
     },
   },

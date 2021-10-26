@@ -71,6 +71,7 @@
                             >
                               <v-text-field
                                 v-model="phone"
+                                autofocus
                                 :error-messages="errors"
                                 maxlength="10"
                                 :append-icon="icon"
@@ -126,32 +127,27 @@
                         <div class="row">
                           <div class="col-md-6">
                             <label>Registration Number</label>
-                            <validation-provider
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <v-text-field
-                                v-model="regnumber"
-                                :error-messages="errors"
-                                required
-                                outlined
-                                dense
-                              ></v-text-field>
-                            </validation-provider>
+                            <v-text-field
+                              v-model="regnumber"
+                              required
+                              :error-messages="errmsg"
+                              @input="testReg"
+                              outlined
+                              dense
+                            ></v-text-field>
                           </div>
                           <div class="col-md-6">
                             <label>Home Location</label>
-                            <validation-provider rules="required">
-                              <v-text-field
-                                v-model="homeloc"
-                                type="search"
-                                @input="doSearch"
-                                required
-                                clearable
-                                outlined
-                                dense
-                              ></v-text-field>
-                            </validation-provider>
+                            <v-text-field
+                              v-model="homeloc"
+                              type="search"
+                              @input="doSearch"
+                              required
+                              clearable
+                              outlined
+                              dense
+                            ></v-text-field>
+
                             <v-flex class="myDropdown">
                               <v-simple-table
                                 fixed-header
@@ -176,19 +172,15 @@
                         <div class="row">
                           <div class="col-md-6">
                             <label>Rc Book</label>
-                            <validation-provider
-                              name="Rc Book"
-                              rules="required"
-                            >
-                              <v-file-input
-                                v-model="rcbook"
-                                accept="image/png,image/jpeg"
-                                required
-                                clearable
-                                outlined
-                                dense
-                              ></v-file-input>
-                            </validation-provider>
+
+                            <v-file-input
+                              v-model="rcbook"
+                              accept="image/png,image/jpeg"
+                              required
+                              clearable
+                              outlined
+                              dense
+                            ></v-file-input>
                           </div>
                           <div class="col-md-6">
                             <label>Validity Upto</label>
@@ -239,16 +231,15 @@
                         <div class="row">
                           <div class="col-md-4">
                             <label>Insurance Certificate</label>
-                            <validation-provider rules="required">
-                              <v-file-input
-                                v-model="insur"
-                                accept="image/png,image/jpeg"
-                                required
-                                clearable
-                                outlined
-                                dense
-                              ></v-file-input>
-                            </validation-provider>
+
+                            <v-file-input
+                              v-model="insur"
+                              accept="image/png,image/jpeg"
+                              required
+                              clearable
+                              outlined
+                              dense
+                            ></v-file-input>
                           </div>
                           <div class="col-md-4">
                             <label>Insurance Number</label>
@@ -365,6 +356,7 @@ export default {
       snackbar: false,
       message: "",
       regnumber: "",
+      errmsg: "",
       homeloc: "",
       dropdown: false,
       results: [],
@@ -386,6 +378,9 @@ export default {
       homeCords: "",
     };
   },
+  mounted: function () {
+    this.testReg();
+  },
   methods: {
     async doSearch() {
       //Auto suggestion Function call for Homelocation Field
@@ -400,6 +395,14 @@ export default {
       this.homeloc = place;
       this.dropdown = false;
     },
+    testReg() {
+      const regEx = new RegExp("^[A-Z]{2}[-][0-9]{1,2}[-][0-9]{4}");
+      if (regEx.test(this.regnumber) == false) {
+        this.errmsg = "Invalid Reg.Number";
+      } else {
+        this.errmsg = "";
+      }
+    },
     clear() {
       this.optrphone = "";
       this.truckphone = "";
@@ -411,40 +414,45 @@ export default {
       this.name = "";
     },
     tsignup() {
-      getAPI
-        .post(
-          "/api/accounts/register_crew/",
-          {
-            name: this.name,
-            phone: this.phone,
-            otp: this.otp,
-            password: this.password,
-            password2: this.password2,
-            user_type: this.user_type,
-            email: null,
-          },
-          {
-            headers: {
-              Authorization: ` Token ${this.$session.get("user_token")}`,
+      const regEx = new RegExp("^[A-Z]{2}[-][0-9]{1,2}[-][0-9]{4}");
+      if (regEx.test(this.regnumber) == false) {
+        alert("Invalid Input");
+      } else {
+        getAPI
+          .post(
+            "/api/accounts/register_crew/",
+            {
+              name: this.name,
+              phone: this.phone,
+              otp: this.otp,
+              password: this.password,
+              password2: this.password2,
+              user_type: this.user_type,
+              email: null,
             },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.APIData.Http_response == 200) {
-            this.tid = this.APIData.data["id"];
-            this.showProgress = true;
-            this.showButton = false;
-            this.getCords();
-          } else {
-            this.message2 = this.APIData.message;
-            this.snackbar2 = true;
-            console.log(this.APIData);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            {
+              headers: {
+                Authorization: ` Token ${this.$session.get("user_token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.Http_response == 200) {
+              this.tid = this.APIData.data["id"];
+              this.showProgress = true;
+              this.showButton = false;
+              this.getCords();
+            } else {
+              this.message2 = this.APIData.message;
+              this.snackbar2 = true;
+              console.log(this.APIData);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     },
     checkPhone() {
       if (this.phone.length == 10) {
