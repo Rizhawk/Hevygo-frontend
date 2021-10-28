@@ -21,6 +21,29 @@
                     ><v-icon color="green darken 4" small>mdi-map-marker</v-icon
                     >{{ this.crtAddress }}</span
                   >
+                  <div class="text-end">
+                    <v-btn
+                      x-small
+                      outlined
+                      :disabled="stop"
+                      depressed
+                      color="green"
+                      @click.prevent="getLiveLocation"
+                    >
+                      <v-icon x-small dense class="mx-1">mdi-navigation</v-icon
+                      >Live Tracking
+                    </v-btn>
+                    <v-btn
+                      class="mx-2"
+                      v-if="stop"
+                      x-small
+                      outlined
+                      depressed
+                      color="red"
+                      @click.prevent="stopTracking"
+                      >Stop</v-btn
+                    >
+                  </div>
                 </div>
                 <div class="card-body">
                   <!-- <div id="map" class="map"></div> -->
@@ -43,6 +66,7 @@
   </v-app>
 </template>
 <script>
+import { loadOptions } from "@babel/core";
 import { getAPI } from "../../axios-api";
 import Cnavbar from "../../components/Customer/navbar.vue";
 import Cmobnav from "../../components/Customer/navmob.vue";
@@ -69,6 +93,16 @@ export default {
       routes: "",
       start: "",
       end: "",
+      //
+      platform: null,
+      apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      maptypes: "",
+      map: "",
+      marker: "",
+      //
+      ws: "",
+      stop: false,
+      tid: "",
     };
   },
   beforeCreate: function () {
@@ -95,6 +129,11 @@ export default {
       });
   },
   async mounted() {
+    // Initialize the platform object:
+    const platform = new window.H.service.Platform({
+      apikey: this.apikey,
+    });
+    this.platform = platform;
     getAPI
       .get(
         "api/customers/cust-trans-detail/?id=" + localStorage.getItem("trid"),
@@ -108,6 +147,7 @@ export default {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
           this.crtLocation = this.APIData.data.truck.location;
+          this.tid = this.APIData.data.truck.truck.truck.id;
           this.initializeHereMap();
         }
       })
@@ -116,31 +156,49 @@ export default {
       });
   },
   methods: {
+    getLiveLocation() {
+      this.stop = true;
+      try {
+        this.ws = new WebSocket("ws://3.108.118.96:8001/ws/" + this.tid);
+        console.log(this.ws);
+        (this.ws.onopen = function () {
+          console.log("Websocket Connection Successfull!");
+        }),
+          (this.ws.onmessage = ({ data }) => {
+            let req = JSON.parse(data);
+            this.crtLocation = req["location"];
+            this.map.removeObject(this.marker);
+            this.locateTruck();
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    stopTracking() {
+      this.ws.close();
+      this.stop = false;
+    },
     initializeHereMap() {
-      // Instantiate a map and platform object:
-      var platform = new H.service.Platform({
-        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+      // rendering map
+      const mapContainer = this.$refs.hereMap;
+      const H = window.H;
+      // Obtain the default map types from the platform object
+      this.maptypes = this.platform.createDefaultLayers();
+      // Instantiate (and display) a map object:
+      this.map = new H.Map(mapContainer, this.maptypes.vector.normal.map, {
+        zoom: 4,
+        center: { lat: 20.5937, lng: 78.9629 },
+        pixelRatio: window.devicePixelRatio || 1,
+        // center object { lat: 40.730610, lng: -73.935242 }
       });
-      // Get the default map types from the platform object:
-      var defaultLayers = platform.createDefaultLayers();
-      // Instantiate the map:
-      var map = new H.Map(
-        document.getElementById("mapContainer"),
-        defaultLayers.vector.normal.map,
-        {
-          zoom: 10,
-          center: { lat: 20.5937, lng: 78.9629 },
-        }
-      );
-      addEventListener("resize", () => map.getViewPort().resize());
+      addEventListener("resize", () => this.map.getViewPort().resize());
       // add behavior control
-      new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+      new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
+      const ui = H.ui.UI.createDefault(this.map, this.maptypes);
       // add UI
-      H.ui.UI.createDefault(map, defaultLayers);
-      const ui = H.ui.UI.createDefault(map, defaultLayers);
-      // Instantiate a map and platform object:
-      // Get an instance of the geocoding service:
-      this.setRoute(H, map, platform, ui);
+      // End rendering the initial map
+      // Get an instance of the search service:
+      this.setRoute(H, this.map, this.platform, ui);
     },
     setRoute(H, map, platform, ui) {
       // Create the parameters for the routing request:
@@ -201,7 +259,10 @@ export default {
       router.calculateRoute(routingParameters, onResult, function (error) {
         console.log(error.message);
       });
-      var service = platform.getSearchService();
+      this.locateTruck();
+    },
+    locateTruck() {
+      var service = this.platform.getSearchService();
       service.reverseGeocode(
         {
           at: this.crtLocation,
@@ -212,8 +273,8 @@ export default {
             // Create an InfoBubble at the returned location with
             // the address as its contents:
             this.crtAddress = item.address.label;
-            const marker = new H.map.Marker(item.position);
-            marker.addEventListener(
+            this.marker = new H.map.Marker(item.position);
+            this.marker.addEventListener(
               "tap",
               (event) => {
                 ui.addBubble(
@@ -225,9 +286,9 @@ export default {
               false
             );
             let coords = { lat: item.position.lat, lng: item.position.lng };
-            map.setCenter(coords);
-            map.setZoom(18);
-            map.addObject(marker);
+            this.map.setCenter(coords);
+            this.map.setZoom(18);
+            this.map.addObject(this.marker);
           });
         }
       );

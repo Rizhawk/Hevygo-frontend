@@ -18,6 +18,29 @@
                   ><v-icon color="green darken 4" small>mdi-map-marker</v-icon
                   >{{ this.crtAddress }}</span
                 >
+                <div class="text-end">
+                  <v-btn
+                    x-small
+                    outlined
+                    :disabled="stop"
+                    depressed
+                    color="green"
+                    @click.prevent="getLiveLocation"
+                  >
+                    <v-icon x-small dense class="mx-1">mdi-navigation</v-icon
+                    >Live Tracking
+                  </v-btn>
+                  <v-btn
+                    class="mx-2"
+                    v-if="stop"
+                    x-small
+                    outlined
+                    depressed
+                    color="red"
+                    @click.prevent="stopTracking"
+                    >Stop</v-btn
+                  >
+                </div>
               </div>
               <div class="card-body">
                 <!-- <div id="map" class="map"></div> -->
@@ -57,10 +80,14 @@ export default {
       platform: null,
       apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
       truck: "",
+      tid: "",
       crtLocation: "",
       crtAddress: "",
       maptypes: "",
-      map:""
+      map: "",
+      marker: "",
+      stop: false,
+      ws: "",
     };
   },
   async mounted() {
@@ -83,6 +110,7 @@ export default {
         if (this.APIData.Http_response == 200) {
           this.crtLocation = this.APIData.data.location;
           this.truck = this.APIData.data.truck.registration;
+          this.tid = this.APIData.data.truck.id;
           this.initializeHereMap();
         } else {
           console.log(this.APIData.message);
@@ -93,6 +121,30 @@ export default {
       });
   },
   methods: {
+    getLiveLocation() {
+      this.stop = true;
+      try {
+        this.ws = new WebSocket(
+          "ws://3.108.118.96:8001/ws/" + localStorage.getItem("tid")
+        );
+        console.log(this.ws);
+        (this.ws.onopen = function () {
+          console.log("Websocket Connection Successfull!");
+        }),
+          (this.ws.onmessage = ({ data }) => {
+            let req = JSON.parse(data);
+            this.crtLocation = req["location"];
+            this.map.removeObject(this.marker);
+            this.locateTruck();
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    stopTracking() {
+      this.ws.close();
+      this.stop = false;
+    },
     initializeHereMap() {
       // rendering map
       const mapContainer = this.$refs.hereMap;
@@ -113,9 +165,9 @@ export default {
       // add UI
       // End rendering the initial map
       // Get an instance of the search service:
-      this.locateTruck(ui);
+      this.locateTruck();
     },
-    locateTruck(ui) {
+    locateTruck() {
       let service = this.platform.getSearchService();
       // Call the reverse geocode method with the geocoding parameters,
       // the callback and an error callback function (called if a
@@ -130,8 +182,8 @@ export default {
             // Create an InfoBubble at the returned location with
             // the address as its contents:
             this.crtAddress = item.address.label;
-            const marker = new H.map.Marker(item.position);
-            marker.addEventListener(
+            this.marker = new H.map.Marker(item.position);
+            this.marker.addEventListener(
               "tap",
               (event) => {
                 ui.addBubble(
@@ -145,9 +197,7 @@ export default {
             let coords = { lat: item.position.lat, lng: item.position.lng };
             this.map.setCenter(coords);
             this.map.setZoom(18);
-            this.map.addObject(marker);
-            console.log(item.position.lat);
-            console.log(item.position.lng);
+            this.map.addObject(this.marker);
           });
         }
       );

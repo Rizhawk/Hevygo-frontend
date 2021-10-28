@@ -52,7 +52,7 @@ export default {
   created: function () {
     try {
       this.ws = new WebSocket(
-        "ws://3.108.118.96:8001/ws/" + this.$session.get("user_id") + "/"
+        "ws://3.108.118.96:8001/ws/" + this.$session.get("user_id")
       );
       console.log(this.ws);
       (this.ws.onopen = function () {
