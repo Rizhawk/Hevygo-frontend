@@ -28,7 +28,7 @@ export default {
       eaddr: "",
     };
   },
-  beforeMount: function () {
+  beforeMount: function() {
     this.$isLoading(true);
     localStorage.setItem("response", 0);
     getAPI
@@ -281,10 +281,8 @@ export default {
     sendMessage(i, trucksLength, id) {
       console.log(`connected to ${id}`);
       return new Promise((resolve) => {
-        this.connection = new WebSocket(
-          "ws://3.108.118.96:8001/ws/" + id + "/"
-        );
-        this.connection.onopen = function () {};
+        this.connection = new WebSocket("ws://65.1.30.73:8001/ws/" + id + "/");
+        this.connection.onopen = function() {};
         setTimeout(() => {
           if (localStorage.getItem("response") == 1) {
             this.connection.close();
@@ -294,15 +292,17 @@ export default {
             let dest = this.eaddr;
             let fee = this.$store.getters.totalCost;
             let accept_reject = null;
+            let location = null;
             let msg = JSON.stringify({
               customer: customer,
               src: src,
               dest: dest,
               fee: fee,
               accept_reject: accept_reject,
+              location: location,
             });
             this.connection.send(msg);
-            this.connection.onmessage = function (event) {
+            this.connection.onmessage = function(event) {
               let resr = JSON.parse(event.data);
               this.resp = resr["accept_reject"];
               if (this.resp == true) {

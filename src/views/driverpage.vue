@@ -49,13 +49,13 @@ export default {
       ws: "",
     };
   },
-  created: function () {
+  created: function() {
     try {
       this.ws = new WebSocket(
-        "ws://3.108.118.96:8001/ws/" + this.$session.get("user_id")
+        "ws://65.1.30.73:8001/ws/" + this.$session.get("user_id")
       );
       console.log(this.ws);
-      (this.ws.onopen = function () {
+      (this.ws.onopen = function() {
         console.log("Websocket Connection Successfull!");
       }),
         (this.ws.onmessage = ({ data }) => {
@@ -80,12 +80,14 @@ export default {
       let src = this.start_location;
       let dest = this.end_location;
       let fee = this.fee;
+      let location = null;
       let msg = JSON.stringify({
         customer: customer,
         src: src,
         dest: dest,
         fee: fee,
         accept_reject: accept_reject,
+        location: location,
       });
       this.ws.send(msg);
       this.disconnect();
