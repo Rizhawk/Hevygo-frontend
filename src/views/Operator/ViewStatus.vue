@@ -114,11 +114,12 @@
                             </v-combobox>
                           </div>
                         </div>
-                        <v-flex row class="my-2" justify-center
+                        <v-flex row class="my-2 mx-4" justify-center
                           ><v-btn
                             type="submit"
                             x-small
                             color="green darken-4"
+                            :disabled="show"
                             depressed
                             outlined
                             >Update</v-btn
@@ -131,6 +132,16 @@
                             outlined
                             @click.prevent="back"
                             >Back</v-btn
+                          >
+                          <v-btn
+                            v-if="status == 'Accident'"
+                            x-small
+                            @click.prevent="incident"
+                            color="red"
+                            depressed
+                            outlined
+                          >
+                            Incident Details</v-btn
                           >
                         </v-flex>
                       </div>
@@ -172,7 +183,7 @@ export default {
       show: false,
     };
   },
-  beforeCreate: function () {
+  beforeCreate: function() {
     getAPI
       .get(
         "/api/truck/view_truck_status/?truck_id=" + localStorage.getItem("tid"),
@@ -188,7 +199,6 @@ export default {
           this.truck = this.APIData.data.truck["registration"];
           this.driver = this.APIData.data.driver["driver_name"];
           this.phone = this.APIData.data.driver["phone"];
-          console.log(this.APIData.data["location"]);
           this.getAddress(this.APIData.data["location"]);
           if (this.APIData.data["status"] === "Offline") {
             this.status = "Available";
@@ -244,6 +254,9 @@ export default {
     back() {
       localStorage.removeItem("tid");
       this.$router.push({ name: "StatusTable" });
+    },
+    incident() {
+      this.$router.push({ name: "IncidentDetails" });
     },
     getAddress(loc) {
       const H = window.H;

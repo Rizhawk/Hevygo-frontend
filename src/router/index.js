@@ -29,6 +29,7 @@ import Uname from "../views/ProfileUpdate/UpdateName.vue";
 import Upan from "../views/ProfileUpdate/UpdatePan.vue";
 import Vspecs from "../views/Operator/ViewSpecs.vue";
 import Vstatus from "../views/Operator/ViewStatus.vue";
+import IncidentDetails from "../views/Operator/ViewIncident.vue";
 import Vdriver from "../views/Operator/ViewDriver.vue";
 import Newbooking from "../views/Customer/NewTruckBook.vue";
 import CustPro from "../views/ProfileUpdate/ViewCustProfile.vue";
@@ -43,6 +44,7 @@ import VerifyTruck from "../views/Admin/VerifyTruck.vue";
 import AddAdmin from "../views/Admin/AddAdmin.vue";
 import ViewOperator from "../views/Admin/ViewOperator.vue";
 import ViewTruck from "../views/Admin/ViewTruck.vue";
+import ViewIncidents from "../views/Operator/ManageIncidents.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -204,6 +206,18 @@ const routes = [
     name: "Vstatus",
     component: Vstatus,
   },
+  {
+    path: "/listincidents",
+    name: "ViewIncidents",
+    component: ViewIncidents,
+  },
+
+  {
+    path: "/viewincident",
+    name: "IncidentDetails",
+    component: IncidentDetails,
+  },
+
   {
     path: "/viewdriver",
     name: "Vdriver",

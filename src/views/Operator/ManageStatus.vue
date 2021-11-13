@@ -72,7 +72,15 @@
                             {{ truck.driver["phone"] }}
                           </td>
                           <td>
-                            {{ truck.status }}
+                            <p
+                              v-if="truck.status == 'Accident'"
+                              class="red--text"
+                            >
+                              {{ truck.status }}
+                            </p>
+                            <p v-if="truck.status != 'Accident'">
+                              {{ truck.status }}
+                            </p>
                           </td>
                         </tr>
                       </tbody>
@@ -120,7 +128,7 @@ export default {
       page: 1,
     };
   },
-  created: function () {
+  created: function() {
     //Api call to fetch status of all trucks
     getAPI
       .get("/api/truck/list_truck_status/", {

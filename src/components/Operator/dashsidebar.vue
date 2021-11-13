@@ -36,6 +36,12 @@
               <p>Truck Status</p>
             </router-link>
           </li>
+          <li>
+            <router-link to="/listincidents">
+              <i class="now-ui-icons ui-2_settings-90"></i>
+              <p>Truck Incidents</p>
+            </router-link>
+          </li>
         </ul>
       </div>
     </div>
