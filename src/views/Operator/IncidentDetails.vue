@@ -22,6 +22,18 @@
                       subtitle-1
                     "
                   >
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                          x-small
+                          :color="active"
+                          left
+                          >mdi-circle</v-icon
+                        > </template
+                      ><span>{{ message }}</span></v-tooltip
+                    >
                     {{ this.truck }}
                     <v-flex row justify-end>
                       <v-tooltip bottom>
@@ -224,7 +236,7 @@ import Dsidebar from "../../components/Operator/dashsidebar.vue";
 import Onavbar from "../../components/Operator/OptrNav.vue";
 import MobNav from "../../components/Operator/MobNav.vue";
 export default {
-  name: "IncidentDetails",
+  name: "DrillIncident",
   components: {
     Dsidebar,
     Dfooter,
@@ -247,13 +259,15 @@ export default {
       dop: "",
       cus: "",
       phn: "",
+      active: "",
+      message: "",
     };
   },
   beforeCreate: function() {
     getAPI
       .get(
-        "/api/operators/view_active_incident/?truck_id=" +
-          localStorage.getItem("tid"),
+        "/api/operators/detail_incident/?incident_id=" +
+          localStorage.getItem("inc_id"),
         {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
@@ -262,20 +276,27 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
-        this.truck = this.APIData.data[0].truck.truck.registration;
-        this.incident = this.APIData.data[0].incident;
-        this.image = this.APIData.data[0].incident_image;
-        this.getAddress(this.APIData.data[0].truck.location);
-        this.reptime = this.APIData.data[0].report_time;
-        this.uptime = this.APIData.data[0].update_time;
-        this.driver = this.APIData.data[0].truck.driver.driver_name;
-        this.dphone = this.APIData.data[0].truck.driver.phone;
+        this.truck = this.APIData.data.truck.truck.registration;
+        this.incident = this.APIData.data.incident;
+        this.image = this.APIData.data.incident_image;
+        if (this.APIData.data.is_active == true) {
+          this.active = "green";
+          this.message = "Active Incident";
+        } else {
+          this.active = "red";
+          this.message = "In-active Incident";
+        }
+        this.getAddress(this.APIData.data.truck.location);
+        this.reptime = this.APIData.data.report_time;
+        this.uptime = this.APIData.data.update_time;
+        this.driver = this.APIData.data.truck.driver.driver_name;
+        this.dphone = this.APIData.data.truck.driver.phone;
         //
-        this.start = this.APIData.data[0].destination.start_address;
-        this.end = this.APIData.data[0].destination.end_address;
-        this.dop = this.APIData.data[0].destination.date;
-        this.cus = this.APIData.data[0].destination.customer.name;
-        this.phn = this.APIData.data[0].destination.customer.phone;
+        this.start = this.APIData.data.destination.start_address;
+        this.end = this.APIData.data.destination.end_address;
+        this.dop = this.APIData.data.destination.date;
+        this.cus = this.APIData.data.destination.customer.name;
+        this.phn = this.APIData.data.destination.customer.phone;
       })
       .catch((err) => {
         alert(err);
@@ -304,11 +325,11 @@ export default {
       if (link != null) {
         window.open(link);
       } else {
-        alert("Image is not available for this incident");
+        alert("Image is not available for this incident.");
       }
     },
     back() {
-      this.$router.push({ name: "Vstatus" });
+      this.$router.push({ name: "ViewIncidents" });
     },
   },
 };

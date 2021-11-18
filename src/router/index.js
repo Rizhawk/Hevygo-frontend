@@ -45,6 +45,7 @@ import AddAdmin from "../views/Admin/AddAdmin.vue";
 import ViewOperator from "../views/Admin/ViewOperator.vue";
 import ViewTruck from "../views/Admin/ViewTruck.vue";
 import ViewIncidents from "../views/Operator/ManageIncidents.vue";
+import DrillIncident from "../views/Operator/IncidentDetails.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -216,6 +217,12 @@ const routes = [
     path: "/viewincident",
     name: "IncidentDetails",
     component: IncidentDetails,
+  },
+
+  {
+    path: "/incidentdetails",
+    name: "DrillIncident",
+    component: DrillIncident,
   },
 
   {

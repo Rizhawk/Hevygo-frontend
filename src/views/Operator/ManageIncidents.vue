@@ -49,6 +49,7 @@
                           class="rowHover"
                           v-for="incident in incidents"
                           :key="incident.truck.truck.id"
+                          @click.prevent="moreDetails(incident.id)"
                         >
                           <td>
                             {{ incident.truck.truck.registration }}
@@ -149,6 +150,10 @@ export default {
         .catch((err) => {
           alert(err);
         });
+    },
+    moreDetails(id) {
+      localStorage.setItem("inc_id", id);
+      this.$router.push({ name: "DrillIncident" });
     },
   },
 };
