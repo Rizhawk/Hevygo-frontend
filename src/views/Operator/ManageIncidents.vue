@@ -54,21 +54,7 @@
                             {{ incident.truck.truck.registration }}
                           </td>
                           <td>
-                            <p class="my-2" v-if="incident.incident == 1">
-                              Tyre Puncture
-                            </p>
-                            <p class="my-2" v-if="incident.incident == 2">
-                              Accident
-                            </p>
-                            <p class="my-2" v-if="incident.incident == 3">
-                              Engine Break Down
-                            </p>
-                            <p class="my-2" v-if="incident.incident == 4">
-                              Fuel Tank Empty
-                            </p>
-                            <p class="my-2" v-if="incident.incident == 5">
-                              Police/Customs Issue
-                            </p>
+                            {{ incident.incident }}
                           </td>
                           <td>{{ incident.report_time }}</td>
                           <td>
