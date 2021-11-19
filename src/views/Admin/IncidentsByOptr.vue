@@ -1,49 +1,32 @@
 <template>
   <v-app>
     <div class="wrapper">
-      <Dsidebar />
+      <Admin />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <Onavbar title=" Truck Incidents" />
+        <AdminNav :title="title" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
         <div class="content">
           <div class="row">
             <div class="col-md-12">
-              <v-toolbar dense flat prominent>
-                <v-text-field
-                  v-model="search"
-                  prepend-inner-icon="mdi-magnify"
-                  class="mx-4 my-10 search"
-                  label="Search your truck.."
-                  @input="searchTruck"
-                  dense
-                  rounded
-                  filled
-                  single-line
-                ></v-text-field>
-                <template v-slot:extension>
-                  <v-tabs v-model="tab" centered icons-and-text>
-                    <v-tabs-slider></v-tabs-slider>
-                    <v-tab
-                      class="tab"
-                      href="#tab-1"
-                      @click.prevent="getDetails(0)"
-                    >
-                      Active Incidents
-                    </v-tab>
+              <v-tabs
+                v-model="tab"
+                background-color="white"
+                centered
+                icons-and-text
+              >
+                <v-tabs-slider></v-tabs-slider>
 
-                    <v-tab
-                      class="tab"
-                      href="#tab-2"
-                      @click.prevent="getDetails(1)"
-                    >
-                      All Incidents
-                    </v-tab>
-                  </v-tabs>
-                </template>
-              </v-toolbar>
+                <v-tab class="tab" href="#tab-1" @click.prevent="getDetails(0)">
+                  Active Incidents
+                </v-tab>
+
+                <v-tab class="tab" href="#tab-2" @click.prevent="getDetails(1)">
+                  All Incidents
+                </v-tab>
+              </v-tabs>
               <v-tabs-items v-model="tab">
                 <v-tabs-item>
                   <div class="table-responsive">
@@ -56,6 +39,7 @@
                           text-center
                         "
                       >
+                        <th>Operator</th>
                         <th>Truck</th>
                         <th>Incident</th>
                         <th>Reported Time</th>
@@ -68,6 +52,7 @@
                           :key="incident.truck.truck.id"
                           @click.prevent="moreDetails(incident.id)"
                         >
+                          <td>{{ incident.truck.truck.owner.name }}</td>
                           <td>
                             {{ incident.truck.truck.registration }}
                           </td>
@@ -98,39 +83,40 @@
             </div>
           </div>
         </div>
-        <Dfooter />
       </div>
     </div>
   </v-app>
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Dfooter from "../../components/dashfooter.vue";
-import Dsidebar from "../../components/Operator/dashsidebar.vue";
-import Onavbar from "../../components/Operator/OptrNav.vue";
-import MobNav from "../../components/Operator/MobNav.vue";
+import Admin from "./AdminsSidebar.vue";
+import AdminNav from "../Admin/AdminNavbar.vue";
+import MobNav from "../Admin/MobNav.vue";
 export default {
-  name: "ViewIncidents",
+  name: "IncidentsByOptr",
   components: {
-    Dsidebar,
-    Dfooter,
-    Onavbar,
+    Admin,
+    AdminNav,
     MobNav,
   },
   data: () => {
     return {
       incidents: [],
       tab: null,
-      search: "",
+      title: "",
     };
   },
-  beforeMount: function() {
+  beforeCreate: function() {
     getAPI
-      .get("/api/operators/list_incident/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
+      .get(
+        "/api/admin/incident_by_vendor/?operator_id=" +
+          localStorage.getItem("oid"),
+        {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        }
+      )
       .then((response) => {
         this.APIData = response.data;
         for (let key in this.APIData.data) {
@@ -143,14 +129,33 @@ export default {
         alert(err);
       });
   },
+  created: function() {
+    getAPI
+      .get("/api/admin/view_operator_info/?id=" + localStorage.getItem("oid"), {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.title = this.APIData.data.operator.name;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
     getDetails(tab) {
       getAPI
-        .get("/api/operators/list_incident/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
+        .get(
+          "/api/admin/incident_by_vendor/?operator_id=" +
+            localStorage.getItem("oid"),
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
         .then((response) => {
           this.APIData = response.data;
           if (tab == 0) {
@@ -171,7 +176,7 @@ export default {
     },
     moreDetails(id) {
       localStorage.setItem("inc_id", id);
-      this.$router.push({ name: "DrillIncident" });
+      this.$router.push({ name: "MoreDetails" });
     },
   },
 };
@@ -182,8 +187,5 @@ export default {
 }
 .rowHover:hover {
   background-color: lightgrey;
-}
-.search {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>

@@ -46,6 +46,10 @@ import ViewOperator from "../views/Admin/ViewOperator.vue";
 import ViewTruck from "../views/Admin/ViewTruck.vue";
 import ViewIncidents from "../views/Operator/ManageIncidents.vue";
 import DrillIncident from "../views/Operator/IncidentDetails.vue";
+import IncidentsAdmin from "../views/Admin/TruckIncidents.vue";
+import IncidentDetailsAdmin from "../views/Admin/IncidentDetails.vue";
+import IncidentsByOptr from "../views/Admin/IncidentsByOptr.vue";
+import MoreDetails from "../views/Admin/MoreDetails.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -81,6 +85,29 @@ const routes = [
     path: "/admindash",
     name: "AdminDash",
     component: AdminDash,
+  },
+
+  {
+    path: "/incidentsadmin",
+    name: "IncidentsAdmin",
+    component: IncidentsAdmin,
+  },
+
+  {
+    path: "/incidentdetailsadmin",
+    name: "IncidentDetailsAdmin",
+    component: IncidentDetailsAdmin,
+  },
+
+  {
+    path: "/incidentsbyoptr",
+    name: "IncidentsByOptr",
+    component: IncidentsByOptr,
+  },
+  {
+    path: "/moredetails",
+    name: "MoreDetails",
+    component: MoreDetails,
   },
   {
     path: "/custpage",

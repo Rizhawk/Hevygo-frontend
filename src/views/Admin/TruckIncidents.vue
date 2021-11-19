@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <div class="wrapper">
-      <Dsidebar />
+      <Admin />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <Onavbar title=" Truck Incidents" />
+        <AdminNav title="TRUCK INCIDENTS" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
@@ -24,7 +24,12 @@
                   single-line
                 ></v-text-field>
                 <template v-slot:extension>
-                  <v-tabs v-model="tab" centered icons-and-text>
+                  <v-tabs
+                    v-model="tab"
+                    background-color="white"
+                    centered
+                    icons-and-text
+                  >
                     <v-tabs-slider></v-tabs-slider>
                     <v-tab
                       class="tab"
@@ -33,7 +38,6 @@
                     >
                       Active Incidents
                     </v-tab>
-
                     <v-tab
                       class="tab"
                       href="#tab-2"
@@ -56,6 +60,7 @@
                           text-center
                         "
                       >
+                        <th>Operator</th>
                         <th>Truck</th>
                         <th>Incident</th>
                         <th>Reported Time</th>
@@ -68,6 +73,7 @@
                           :key="incident.truck.truck.id"
                           @click.prevent="moreDetails(incident.id)"
                         >
+                          <td>{{ incident.truck.truck.owner.name }}</td>
                           <td>
                             {{ incident.truck.truck.registration }}
                           </td>
@@ -98,23 +104,20 @@
             </div>
           </div>
         </div>
-        <Dfooter />
       </div>
     </div>
   </v-app>
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Dfooter from "../../components/dashfooter.vue";
-import Dsidebar from "../../components/Operator/dashsidebar.vue";
-import Onavbar from "../../components/Operator/OptrNav.vue";
-import MobNav from "../../components/Operator/MobNav.vue";
+import Admin from "./AdminsSidebar.vue";
+import AdminNav from "../Admin/AdminNavbar.vue";
+import MobNav from "../Admin/MobNav.vue";
 export default {
-  name: "ViewIncidents",
+  name: "IncidentsAdmin",
   components: {
-    Dsidebar,
-    Dfooter,
-    Onavbar,
+    Admin,
+    AdminNav,
     MobNav,
   },
   data: () => {
@@ -124,7 +127,7 @@ export default {
       search: "",
     };
   },
-  beforeMount: function() {
+  beforeCreate: function() {
     getAPI
       .get("/api/operators/list_incident/", {
         headers: {
@@ -171,7 +174,7 @@ export default {
     },
     moreDetails(id) {
       localStorage.setItem("inc_id", id);
-      this.$router.push({ name: "DrillIncident" });
+      this.$router.push({ name: "IncidentDetailsAdmin" });
     },
   },
 };

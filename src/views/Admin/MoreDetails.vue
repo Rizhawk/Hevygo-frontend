@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <div class="wrapper">
-      <Dsidebar />
+      <Admin />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <Onavbar :title="truck" />
+        <AdminNav :title="truck" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
@@ -58,6 +58,30 @@
                     </v-flex>
                   </h5>
                   <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Operator</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                            :value="optr"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Phonenumber</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            disabled=""
+                            :value="optrphn"
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
@@ -222,27 +246,27 @@
             </div>
           </div>
         </div>
-        <Dfooter />
       </div>
     </div>
   </v-app>
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Dfooter from "../../components/dashfooter.vue";
-import Dsidebar from "../../components/Operator/dashsidebar.vue";
-import Onavbar from "../../components/Operator/OptrNav.vue";
-import MobNav from "../../components/Operator/MobNav.vue";
+import Admin from "./AdminsSidebar.vue";
+import AdminNav from "../Admin/AdminNavbar.vue";
+import MobNav from "../Admin/MobNav.vue";
 export default {
-  name: "DrillIncident",
+  name: "MoreDetails",
   components: {
-    Dsidebar,
-    Dfooter,
-    Onavbar,
+    Admin,
+    AdminNav,
     MobNav,
   },
   data: () => {
     return {
+      oid: "",
+      optr: "",
+      optrphn: "",
       truck: "",
       incident: "",
       image: "",
@@ -274,6 +298,9 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
+        this.optr = this.APIData.data.truck.truck.owner.name;
+        this.optrphn = this.APIData.data.truck.truck.owner.phone;
+        this.oid = this.APIData.data.truck.truck.owner.id;
         this.truck = this.APIData.data.truck.truck.registration;
         this.incident = this.APIData.data.incident;
         this.image = this.APIData.data.incident_image;
@@ -327,7 +354,7 @@ export default {
       }
     },
     back() {
-      this.$router.push({ name: "ViewIncidents" });
+      this.$router.push({ name: "IncidentsByOptr" });
     },
   },
 };

@@ -32,6 +32,12 @@
             </router-link>
           </li>
           <li>
+            <router-link to="/incidentsadmin">
+              <i class="now-ui-icons ui-2_settings-90"></i>
+              <p>Truck Incidents</p>
+            </router-link>
+          </li>
+          <li>
             <router-link to="/addnewadmin">
               <i class="now-ui-icons users_circle-08"></i>
               <p>Add New Admin</p>
