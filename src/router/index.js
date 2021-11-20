@@ -50,6 +50,7 @@ import IncidentsAdmin from "../views/Admin/TruckIncidents.vue";
 import IncidentDetailsAdmin from "../views/Admin/IncidentDetails.vue";
 import IncidentsByOptr from "../views/Admin/IncidentsByOptr.vue";
 import MoreDetails from "../views/Admin/MoreDetails.vue";
+import ViewIncident from "../views/Customer/ViewIncident.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -114,6 +115,13 @@ const routes = [
     name: "Cpage",
     component: Cpage,
   },
+
+  {
+    path: "/viewincident",
+    name: "ViewIncident",
+    component: ViewIncident,
+  },
+
   {
     path: "/panadd",
     name: "Padd",

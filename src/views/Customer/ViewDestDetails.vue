@@ -206,11 +206,14 @@
                         Transaction Details
                       </h5>
                     </a>
-                    <p class="description caption font-weight-bold">
-                      {{ this.st }}
+                    <p
+                      :style="statuscolor"
+                      class="description caption font-weight-bold"
+                    >
+                      {{ this.truckstatus }}
                     </p>
                   </div>
-                  <v-card>
+                  <v-card flat>
                     <v-card-title
                       class="
                         font-weight-black
@@ -272,21 +275,35 @@
                       >Cost</v-card-title
                     >
                     <v-card-subtitle>{{ tcost }}</v-card-subtitle>
+                    <div class="row my-2">
+                      <div class="col-md-12">
+                        <div class="text-center">
+                          <v-btn
+                            v-if="track"
+                            x-small
+                            outlined
+                            depressed
+                            dark
+                            @click.prevent="trackTruck"
+                            color="green"
+                            >Track
+                            <v-icon right x-small>mdi-map-marker</v-icon></v-btn
+                          >
+                          <v-btn
+                            v-if="accident"
+                            class="mx-2"
+                            x-small
+                            outlined
+                            @click.prevent="viewIncident"
+                            depressed
+                            dark
+                            color="red"
+                            >View Accident Details
+                          </v-btn>
+                        </div>
+                      </div>
+                    </div>
                   </v-card>
-                </div>
-                <hr />
-                <div class="button-container">
-                  <v-btn
-                    v-if="track"
-                    x-small
-                    outlined
-                    depressed
-                    dark
-                    @click.prevent="trackTruck"
-                    color="green"
-                    >Track this Shipment
-                    <v-icon right x-small>mdi-map-marker</v-icon></v-btn
-                  >
                 </div>
               </div>
             </div>
@@ -356,6 +373,9 @@ export default {
       ],
       trid: "",
       track: false,
+      truckstatus: "",
+      statuscolor: "color:grey",
+      accident: false,
       //
       truck: "",
       driver: "",
@@ -373,7 +393,7 @@ export default {
       eCoord: "",
     };
   },
-  beforeMount: function () {
+  beforeMount: function() {
     getAPI
       .get(
         "/api/customers/cust-dest-detail/?id=" + localStorage.getItem("destid"),
@@ -397,8 +417,6 @@ export default {
         );
         this.sCoord = this.APIData.data.start_location;
         this.eCoord = this.APIData.data.end_location;
-        console.log(this.sCoord);
-        console.log(this.eCoord);
         if (this.APIData.data.status == 1) {
           this.st = "Payment Pending";
           this.stn = 1;
@@ -417,7 +435,7 @@ export default {
         console.log(err);
       });
   },
-  mounted: function () {
+  mounted: function() {
     getAPI
       .get(
         "api/customers/cust-trans-detail/?id=" + localStorage.getItem("destid"),
@@ -430,7 +448,12 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
-          this.trid = this.APIData.data.destination.id;
+          this.truckstatus = this.APIData.data.truck.status;
+          if (this.truckstatus == "Accident") {
+            this.statuscolor = "color:red";
+            this.accident = true;
+          }
+          this.trid = this.APIData.data.truck.truck.truck.id;
           this.track = true;
           this.truck = this.APIData.data.truck.truck.registration;
           this.driver = this.APIData.data["truck"]["driver"]["driver_name"];
@@ -498,8 +521,11 @@ export default {
         });
     },
     trackTruck() {
-      localStorage.setItem("trid", this.trid);
       this.$router.push({ name: "Ctrack" });
+    },
+    viewIncident() {
+      localStorage.setItem("trid", this.trid);
+      this.$router.push({ name: "ViewIncident" });
     },
     back() {
       localStorage.removeItem("destid");

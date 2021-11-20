@@ -136,7 +136,7 @@ export default {
     this.platform = platform;
     getAPI
       .get(
-        "api/customers/cust-trans-detail/?id=" + localStorage.getItem("trid"),
+        "api/customers/cust-trans-detail/?id=" + localStorage.getItem("destid"),
         {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
