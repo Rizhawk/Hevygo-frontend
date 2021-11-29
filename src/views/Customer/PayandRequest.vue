@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <v-app></v-app>
+</template>
 <script>
 import store from "../../../store";
 import { getAPI } from "../../axios-api";
@@ -17,7 +19,7 @@ export default {
       trucks: [],
       resp: "",
       resr: "",
-      connection: null,
+      // connection: null,
       driver: null,
       //
       status: "",

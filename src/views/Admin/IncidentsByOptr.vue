@@ -19,11 +19,11 @@
               >
                 <v-tabs-slider></v-tabs-slider>
 
-                <v-tab class="tab" href="#tab-1" @click.prevent="getDetails(0)">
+                <v-tab class="tab" href="#tab-1" @click.prevent="getDetails">
                   Active Incidents
                 </v-tab>
 
-                <v-tab class="tab" href="#tab-2" @click.prevent="getDetails(1)">
+                <v-tab class="tab" href="#tab-2" @click.prevent="getDetails">
                   All Incidents
                 </v-tab>
               </v-tabs>
@@ -39,7 +39,6 @@
                           text-center
                         "
                       >
-                        <th>Operator</th>
                         <th>Truck</th>
                         <th>Incident</th>
                         <th>Reported Time</th>
@@ -52,7 +51,6 @@
                           :key="incident.truck.truck.id"
                           @click.prevent="moreDetails(incident.id)"
                         >
-                          <td>{{ incident.truck.truck.owner.name }}</td>
                           <td>
                             {{ incident.truck.truck.registration }}
                           </td>
@@ -77,6 +75,18 @@
                         </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        v-model="page"
+                        circle
+                        light
+                        color="grey darken-3"
+                        :length="2"
+                        total-visible="3"
+                        prev-icon="mdi-menu-left"
+                        next-icon="mdi-menu-right"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </v-tabs-item>
               </v-tabs-items>
@@ -102,8 +112,9 @@ export default {
   data: () => {
     return {
       incidents: [],
-      tab: null,
+      tab: "tab-1",
       title: "",
+      page: 1,
     };
   },
   beforeCreate: function() {
@@ -145,7 +156,7 @@ export default {
       });
   },
   methods: {
-    getDetails(tab) {
+    getDetails() {
       getAPI
         .get(
           "/api/admin/incident_by_vendor/?operator_id=" +
@@ -158,14 +169,14 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
-          if (tab == 0) {
+          if (this.tab == "tab-1") {
             this.incidents = [];
             for (let key in this.APIData.data) {
               if (this.APIData.data[key].is_active == true) {
                 this.incidents.push(this.APIData.data[key]);
               }
             }
-          } else if (tab == 1) {
+          } else if (this.tab == "tab-2") {
             this.incidents = [];
             this.incidents = this.APIData.data;
           }

@@ -22,6 +22,7 @@
                         label="Search your truck.."
                         @input="searchTruck"
                         dense
+                        rounded
                         filled
                         single-line
                       ></v-text-field>

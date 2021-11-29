@@ -17,7 +17,7 @@
                   prepend-inner-icon="mdi-magnify"
                   class="mx-4 my-10 search"
                   label="Search your truck.."
-                  @input="searchTruck"
+                  @input="searchIncident"
                   dense
                   rounded
                   filled
@@ -34,14 +34,14 @@
                     <v-tab
                       class="tab"
                       href="#tab-1"
-                      @click.prevent="getDetails(0)"
+                      @click.prevent="getDetails"
                     >
                       Active Incidents
                     </v-tab>
                     <v-tab
                       class="tab"
                       href="#tab-2"
-                      @click.prevent="getDetails(1)"
+                      @click.prevent="getDetails"
                     >
                       All Incidents
                     </v-tab>
@@ -96,8 +96,27 @@
                             >
                           </td>
                         </tr>
+                        <tr v-if="this.dataCount == 0">
+                          <td>
+                            <p class="caption font-weight-medium">
+                              No records found !!
+                            </p>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
+                    <div class="text-center">
+                      <v-pagination
+                        v-model="page"
+                        circle
+                        light
+                        color="grey darken-3"
+                        :length="2"
+                        total-visible="3"
+                        prev-icon="mdi-menu-left"
+                        next-icon="mdi-menu-right"
+                      ></v-pagination>
+                    </div>
                   </div>
                 </v-tabs-item>
               </v-tabs-items>
@@ -123,8 +142,10 @@ export default {
   data: () => {
     return {
       incidents: [],
-      tab: null,
+      tab: "tab-1",
       search: "",
+      dataCount: 0,
+      page: 1,
     };
   },
   beforeCreate: function() {
@@ -139,6 +160,7 @@ export default {
         for (let key in this.APIData.data) {
           if (this.APIData.data[key].is_active == true) {
             this.incidents.push(this.APIData.data[key]);
+            this.dataCount = this.incidents.length;
           }
         }
       })
@@ -147,7 +169,7 @@ export default {
       });
   },
   methods: {
-    getDetails(tab) {
+    getDetails() {
       getAPI
         .get("/api/operators/list_incident/", {
           headers: {
@@ -156,16 +178,51 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          if (tab == 0) {
+          if (this.tab == "tab-1") {
             this.incidents = [];
             for (let key in this.APIData.data) {
               if (this.APIData.data[key].is_active == true) {
                 this.incidents.push(this.APIData.data[key]);
+                this.dataCount = this.incidents.length;
               }
             }
-          } else if (tab == 1) {
+          } else if (this.tab == "tab-2") {
             this.incidents = [];
             this.incidents = this.APIData.data;
+            this.dataCount = this.incidents.length;
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
+    searchIncident() {
+      getAPI
+        .get("/api/operators/incident_search/?search=" + this.search, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          if (this.tab == "tab-1") {
+            this.incidents = [];
+            if (this.APIData.data.length != 0) {
+              for (let key in this.APIData.data) {
+                if (this.APIData.data[key].is_active == true) {
+                  this.incidents.push(this.APIData.data[key]);
+                  this.dataCount = this.incidents.length;
+                } else {
+                  this.dataCount = this.incidents.length;
+                }
+              }
+            } else {
+              this.dataCount = 0;
+            }
+          } else if (this.tab == "tab-2") {
+            this.incidents = [];
+            this.incidents = this.APIData.data;
+            this.dataCount = this.incidents.length;
           }
         })
         .catch((err) => {
