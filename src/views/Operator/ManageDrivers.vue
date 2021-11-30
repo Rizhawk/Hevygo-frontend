@@ -21,7 +21,7 @@
                         prepend-inner-icon="mdi-magnify"
                         class="search"
                         label="Search driver.."
-                        @input="searchDriver"
+                        @input="getDriversList"
                         dense
                         rounded
                         filled
@@ -72,6 +72,13 @@
                             {{ driver.phone }}
                           </td>
                         </tr>
+                        <tr v-if="this.dataCount == 0">
+                          <td>
+                            <p class="caption font-weight-medium">
+                              No records found !!
+                            </p>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                     <div class="text-center">
@@ -80,7 +87,8 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="NoPages"
+                        @input="getDriversList"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -115,41 +123,39 @@ export default {
     return {
       driverdetails: [],
       page: 1,
+      dataCount: 0,
       search: "",
+      NoPages: null,
     };
   },
   beforeMount: function() {
-    //Api call for fetching the data into table
-    getAPI
-      .get("/api/operators/list_driver/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        this.driverdetails = this.APIData.data;
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    //
+    this.getDriversList();
   },
   methods: {
-    searchDriver() {
+    getDriversList() {
+      //Api call for fetching the data into table
       getAPI
-        .get("/api/operators/driver_search/?search=" + this.search, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
+        .get(
+          "/api/operators/driver_search/?page=" +
+            this.page +
+            "&search=" +
+            this.search,
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
         .then((response) => {
           this.APIData = response.data;
           this.driverdetails = this.APIData.data;
+          this.dataCount = this.driverdetails.length;
+          this.NoPages = this.APIData.page_count;
         })
         .catch((err) => {
           alert(err);
         });
+      //
     },
     viewDriver(id) {
       localStorage.setItem("drid", id);

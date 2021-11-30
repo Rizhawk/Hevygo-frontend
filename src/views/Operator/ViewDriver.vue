@@ -144,7 +144,7 @@ export default {
       phone: "",
     };
   },
-  beforeCreate: function () {
+  beforeCreate: function() {
     getAPI
       .get("/api/operators/view_driver/?id=" + localStorage.getItem("drid"), {
         headers: {
@@ -167,7 +167,7 @@ export default {
           "/api/operators/update_driver/",
           {
             id: localStorage.getItem("drid"),
-            driver_name: this.name,
+            driver_name: this.driver,
             phone: this.phone,
           },
           {

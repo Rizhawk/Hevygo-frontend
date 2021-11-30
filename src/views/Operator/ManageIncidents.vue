@@ -17,7 +17,7 @@
                   prepend-inner-icon="mdi-magnify"
                   class="mx-4 my-10 search"
                   label="Search your truck.."
-                  @input="searchIncident"
+                  @input="getIncidentsList"
                   dense
                   rounded
                   filled
@@ -29,14 +29,14 @@
                     <v-tab
                       class="tab"
                       href="#tab-1"
-                      @click.prevent="getDetails"
+                      @click.prevent="getIncidentsList"
                     >
                       Active Incidents
                     </v-tab>
                     <v-tab
                       class="tab"
                       href="#tab-2"
-                      @click.prevent="getDetails"
+                      @click.prevent="getIncidentsList"
                     >
                       All Incidents
                     </v-tab>
@@ -103,7 +103,8 @@
                       circle
                       light
                       color="grey darken-3"
-                      :length="2"
+                      :length="NoPages"
+                      @input="getIncidentsList"
                       total-visible="3"
                       prev-icon="mdi-menu-left"
                       next-icon="mdi-menu-right"
@@ -139,81 +140,50 @@ export default {
       tab: "tab-1",
       search: "",
       dataCount: 0,
+      NoPages: null,
       page: 1,
     };
   },
   beforeMount: function() {
-    getAPI
-      .get("/api/operators/list_incident/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        for (let key in this.APIData.data) {
-          if (this.APIData.data[key].is_active == true) {
-            this.incidents.push(this.APIData.data[key]);
-            this.dataCount = this.incidents.length;
-          }
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    this.getIncidentsList();
   },
   methods: {
-    getDetails() {
+    getIncidentsList() {
       getAPI
-        .get("/api/operators/list_incident/", {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.tab == "tab-1") {
-            this.incidents = [];
-            for (let key in this.APIData.data) {
-              if (this.APIData.data[key].is_active == true) {
-                this.incidents.push(this.APIData.data[key]);
-                this.dataCount = this.incidents.length;
-              }
-            }
-          } else if (this.tab == "tab-2") {
-            this.incidents = [];
-            this.incidents = this.APIData.data;
-            this.dataCount = this.incidents.length;
+        .get(
+          "/api/operators/incident_search/?page=" +
+            this.page +
+            "&search=" +
+            this.search,
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
           }
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    },
-    searchIncident() {
-      getAPI
-        .get("/api/operators/incident_search/?search=" + this.search, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
+        )
         .then((response) => {
           this.APIData = response.data;
+          this.NoPages = this.APIData.page_count; // For the dynamic pagination.
           if (this.tab == "tab-1") {
-            this.incidents = [];
+            // Check for the tab change. tab-1 by default.
+            this.incidents = []; // Re-Initilize every time when api calls, to perform search and active-inactive filtering perfectly.
             if (this.APIData.data.length != 0) {
+              // Make sure the data array has atleast one data/object.
               for (let key in this.APIData.data) {
+                // Loop through data array, when there is any data.
                 if (this.APIData.data[key].is_active == true) {
+                  // Filtering active incident for tab-1.
                   this.incidents.push(this.APIData.data[key]);
                   this.dataCount = this.incidents.length;
                 } else {
-                  this.dataCount = this.incidents.length;
+                  this.dataCount = this.incidents.length; // "dataCount" variable is for the message to user, when there is no data(No value in "incidents" array.).
                 }
               }
             } else {
               this.dataCount = 0;
             }
           } else if (this.tab == "tab-2") {
+            // For tab-2 we need all the incidents, so no filtering checks needed.
             this.incidents = [];
             this.incidents = this.APIData.data;
             this.dataCount = this.incidents.length;

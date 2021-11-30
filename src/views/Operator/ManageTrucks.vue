@@ -20,7 +20,7 @@
                         prepend-inner-icon="mdi-magnify"
                         class="search"
                         label="Search your truck.."
-                        @input="searchTruck"
+                        @input="getTrucksList"
                         dense
                         rounded
                         filled
@@ -125,7 +125,8 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="NoPages"
+                        @input="getTrucksList"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -162,44 +163,39 @@ export default {
       search: "",
       page: 1,
       dataCount: 0,
+      NoPages: null,
     };
   },
-  beforeCreate: function () {
-    getAPI
-      .get("/api/operators/list_truck/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        this.trucks = this.APIData.data;
-        this.dataCount = this.trucks.length;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  beforeMount: function() {
+    this.getTrucksList();
   },
   methods: {
-    viewSpec(id) {
-      localStorage.setItem("tid", id);
-      this.$router.push({ name: "Vspecs" });
-    },
-    searchTruck() {
+    getTrucksList() {
       getAPI
-        .get("/api/operators/truck_search?search=" + this.search, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
+        .get(
+          "/api/operators/truck_search/?page=" +
+            this.page +
+            "&search=" +
+            this.search,
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
         .then((response) => {
           this.APIData = response.data;
           this.trucks = this.APIData.data;
+          this.NoPages = this.APIData.page_count;
           this.dataCount = this.trucks.length;
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+    viewSpec(id) {
+      localStorage.setItem("tid", id);
+      this.$router.push({ name: "Vspecs" });
     },
   },
 };

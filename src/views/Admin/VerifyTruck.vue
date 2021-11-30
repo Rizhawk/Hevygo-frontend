@@ -116,9 +116,10 @@ export default {
     return {
       truckdetails: [],
       page: 1,
+      NoPages: null,
     };
   },
-  beforeCreate: function () {
+  beforeCreate: function() {
     getAPI
       .get("/api/admin/list_vehicle/", {
         headers: {
@@ -141,5 +142,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>
