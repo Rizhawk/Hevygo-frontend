@@ -76,6 +76,13 @@
                             >
                           </td>
                         </tr>
+                        <tr v-if="this.dataCount == 0">
+                          <td>
+                            <p class="caption font-weight-medium">
+                              No records found !!
+                            </p>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                     <div class="text-center">
@@ -84,7 +91,8 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="NoPages"
+                        @input="getTrucksList"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -117,24 +125,31 @@ export default {
       truckdetails: [],
       page: 1,
       NoPages: null,
+      dataCount: 0,
     };
   },
-  beforeCreate: function() {
-    getAPI
-      .get("/api/admin/list_vehicle/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        this.truckdetails = this.APIData.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  beforeMount: function() {
+    this.getTrucksList();
   },
   methods: {
+    getTrucksList() {
+      getAPI
+        .get("/api/admin/list_vehicle/?page=" + this.page, {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          this.truckdetails = this.APIData.data;
+          this.dataCount = this.truckdetails.length;
+          this.NoPages = this.APIData.page_count;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     getTruckdetails(id) {
       localStorage.setItem("trid", id);
       this.$router.push({ name: "ViewTruck" });

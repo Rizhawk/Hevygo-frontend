@@ -19,11 +19,19 @@
               >
                 <v-tabs-slider></v-tabs-slider>
 
-                <v-tab class="tab" href="#tab-1" @click.prevent="getDetails">
+                <v-tab
+                  class="tab"
+                  href="#tab-1"
+                  @click.prevent="getIncidentsListByOptr"
+                >
                   Active Incidents
                 </v-tab>
 
-                <v-tab class="tab" href="#tab-2" @click.prevent="getDetails">
+                <v-tab
+                  class="tab"
+                  href="#tab-2"
+                  @click.prevent="getIncidentsListByOptr"
+                >
                   All Incidents
                 </v-tab>
               </v-tabs>
@@ -81,7 +89,7 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="NoPages"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -115,30 +123,12 @@ export default {
       tab: "tab-1",
       title: "",
       page: 1,
+      NoPages: null,
+      dataCount: 0,
     };
   },
-  beforeCreate: function() {
-    getAPI
-      .get(
-        "/api/admin/incident_by_vendor/?operator_id=" +
-          localStorage.getItem("oid"),
-        {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        this.APIData = response.data;
-        for (let key in this.APIData.data) {
-          if (this.APIData.data[key].is_active == true) {
-            this.incidents.push(this.APIData.data[key]);
-          }
-        }
-      })
-      .catch((err) => {
-        alert(err);
-      });
+  beforeMount: function() {
+    this.getIncidentsListByOptr();
   },
   created: function() {
     getAPI
@@ -156,11 +146,13 @@ export default {
       });
   },
   methods: {
-    getDetails() {
+    getIncidentsListByOptr() {
       getAPI
         .get(
           "/api/admin/incident_by_vendor/?operator_id=" +
-            localStorage.getItem("oid"),
+            localStorage.getItem("oid") +
+            "&page=" +
+            this.page,
           {
             headers: {
               Authorization: `Token ${this.$session.get("user_token")}`,
@@ -169,22 +161,26 @@ export default {
         )
         .then((response) => {
           this.APIData = response.data;
+          this.NoPages = this.APIData.page_count;
           if (this.tab == "tab-1") {
             this.incidents = [];
             for (let key in this.APIData.data) {
               if (this.APIData.data[key].is_active == true) {
                 this.incidents.push(this.APIData.data[key]);
+                this.dataCount = this.incidents.length;
               }
             }
           } else if (this.tab == "tab-2") {
             this.incidents = [];
             this.incidents = this.APIData.data;
+            this.dataCount = this.incidents.length;
           }
         })
         .catch((err) => {
           alert(err);
         });
     },
+
     moreDetails(id) {
       localStorage.setItem("inc_id", id);
       this.$router.push({ name: "MoreDetails" });
