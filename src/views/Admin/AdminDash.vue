@@ -329,9 +329,10 @@
                         <tr
                           v-for="trans in transdetails"
                           :key="trans.destination.id"
+                          @click.prevent="getDetails(trans.destination.id)"
                         >
                           <td class="text-center">
-                            {{ trans.destination.date }}
+                            {{ trans.time }}
                           </td>
                           <td class="text-center">{{ trans.operator.name }}</td>
                           <td class="text-center">
@@ -369,7 +370,7 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="page_count"
+                        :length="NoPages"
                         @input="_getTranslist"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
@@ -402,10 +403,10 @@ export default {
     return {
       transdetails: [],
       page: 1,
-      page_count: null,
+      NoPages: null,
     };
   },
-  mounted: function () {
+  mounted: function() {
     this._getTranslist();
   },
   methods: {
@@ -418,8 +419,9 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
+
           this.transdetails = this.APIData.data;
-          this.page_count = this.APIData.page_count;
+          this.NoPages = this.APIData.page_count;
         })
         .catch((err) => {
           console.log(err);
@@ -427,6 +429,10 @@ export default {
     },
     handlePage(value) {
       console.log(value);
+    },
+    getDetails(id) {
+      localStorage.setItem("Trid", id);
+      this.$router.push({ name: "TrxDetails" });
     },
   },
 };

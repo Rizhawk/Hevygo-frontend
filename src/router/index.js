@@ -51,6 +51,7 @@ import IncidentDetailsAdmin from "../views/Admin/IncidentDetails.vue";
 import IncidentsByOptr from "../views/Admin/IncidentsByOptr.vue";
 import MoreDetails from "../views/Admin/MoreDetails.vue";
 import ViewIncident from "../views/Customer/ViewIncident.vue";
+import TrxDetails from "../views/Admin/TransactionDetails.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -86,6 +87,12 @@ const routes = [
     path: "/admindash",
     name: "AdminDash",
     component: AdminDash,
+  },
+
+  {
+    path: "/trxdetails",
+    name: "TrxDetails",
+    component: TrxDetails,
   },
 
   {

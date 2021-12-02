@@ -14,16 +14,17 @@
             <div class="col-md-10">
               <div class="card">
                 <div class="card-header">
-                  <h5
-                    class="
-                      card-title
-                      font-weight-black
-                      text-secondary
-                      subtitle-1
-                    "
-                  >
-                    Trucks
-                  </h5>
+                  <v-text-field
+                    v-model="search"
+                    prepend-inner-icon="mdi-magnify"
+                    class="search my-2"
+                    label="Search trucks.."
+                    @input="getTrucksList"
+                    dense
+                    rounded
+                    filled
+                    single-line
+                  ></v-text-field>
                 </div>
                 <div class="card-body">
                   <div class="table-scroll">
@@ -126,6 +127,7 @@ export default {
       page: 1,
       NoPages: null,
       dataCount: 0,
+      search: "",
     };
   },
   beforeMount: function() {
@@ -134,11 +136,17 @@ export default {
   methods: {
     getTrucksList() {
       getAPI
-        .get("/api/admin/list_vehicle/?page=" + this.page, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
+        .get(
+          "/api/admin/truck_search/?page=" +
+            this.page +
+            "&search=" +
+            this.search,
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
         .then((response) => {
           this.APIData = response.data;
           this.truckdetails = this.APIData.data;

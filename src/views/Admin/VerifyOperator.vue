@@ -4,7 +4,7 @@
       <Admin />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <AdminNav title="Operators Verifcation" />
+        <AdminNav title="Operators" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
@@ -14,16 +14,17 @@
             <div class="col-md-10">
               <div class="card">
                 <div class="card-header">
-                  <h5
-                    class="
-                      card-title
-                      font-weight-black
-                      text-secondary
-                      subtitle-1
-                    "
-                  >
-                    Operators
-                  </h5>
+                  <v-text-field
+                    v-model="search"
+                    prepend-inner-icon="mdi-magnify"
+                    class="search my-2"
+                    label="Search operators.."
+                    @input="getOperatorsList"
+                    dense
+                    rounded
+                    filled
+                    single-line
+                  ></v-text-field>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -44,23 +45,34 @@
                         <tr
                           v-for="details in optrdetails"
                           :key="details.id"
-                          @click.prevent="getDetails(details.id)"
+                          @click.prevent="getDetails(details.operator.id)"
                         >
-                          <td class="text-center">{{ details.name }}</td>
-                          <td class="text-center">{{ details.phone }}</td>
+                          <td class="text-center">
+                            {{ details.operator.name }}
+                          </td>
+                          <td class="text-center">
+                            {{ details.operator.phone }}
+                          </td>
                           <td class="text-center">
                             <v-icon
                               color="green darken-1"
                               small
-                              v-if="details.is_verified == true"
+                              v-if="details.operator.is_verified == true"
                               >mdi-checkbox-marked-circle-outline</v-icon
                             >
                             <v-icon
                               color="red darken-1"
                               small
-                              v-if="details.is_verified == false"
+                              v-if="details.operator.is_verified == false"
                               >mdi-close-circle-outline</v-icon
                             >
+                          </td>
+                        </tr>
+                        <tr v-if="this.dataCount == 0">
+                          <td>
+                            <p class="caption font-weight-medium">
+                              No records found !!
+                            </p>
                           </td>
                         </tr>
                       </tbody>
@@ -71,7 +83,8 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="NoPages"
+                        @input="getOperatorsList"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -103,24 +116,39 @@ export default {
     return {
       optrdetails: [],
       page: 1,
+      search: "",
+      dataCount: 0,
+      NoPages: null,
     };
   },
-  beforeCreate: function () {
-    getAPI
-      .get("/api/admin/list_operator/", {
-        headers: {
-          Authorization: `Token ${this.$session.get("user_token")}`,
-        },
-      })
-      .then((response) => {
-        this.APIData = response.data;
-        this.optrdetails = this.APIData.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  beforeMount: function() {
+    this.getOperatorsList();
   },
   methods: {
+    getOperatorsList() {
+      getAPI
+        .get(
+          "/api/admin/operator_search/?page=" +
+            this.page +
+            "&search=" +
+            this.search,
+          {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.APIData = response.data;
+          this.NoPages = this.APIData.page_count;
+          this.optrdetails = this.APIData.data;
+          this.dataCount = this.optrdetails.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     getDetails(id) {
       localStorage.setItem("optrid", id);
       this.$router.push({ name: "ViewOperator" });
