@@ -4,7 +4,7 @@
       <Admin />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <AdminNav title="Trucks Verifcation" />
+        <AdminNav title="Trucks" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
