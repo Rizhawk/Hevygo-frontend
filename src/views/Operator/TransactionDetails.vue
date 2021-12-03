@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <div class="wrapper">
-      <Admin />
+      <Dsidebar />
       <div class="main-panel" id="main-panel">
         <!-- Navbar -->
-        <AdminNav :title="date" />
+        <Onavbar :title="date" />
         <mob-nav />
         <!-- End Navbar -->
         <div class="panel-header panel-header-sm"></div>
@@ -14,9 +14,7 @@
             <div class="col-md-6">
               <div class="card">
                 <div class="card-header">
-                  <v-flex row justify-start
-                  class="my-5"
-                  >
+                  <v-flex row justify-start class="my-5">
                     <v-btn
                       v-if="isSettled == true"
                       color=" green darken-1"
@@ -38,30 +36,6 @@
                   </v-flex>
                 </div>
                 <div class="card-body my-4">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Operator</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          disabled=""
-                          :value="optr"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Customer</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          disabled=""
-                          :value="cust"
-                        />
-                      </div>
-                    </div>
-                  </div>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
@@ -185,12 +159,12 @@
                               </div>
                               <div class="row">
                                 <div class="col-md-6">
-                                  <label>Contact Operator</label>
+                                  <label>Driver</label>
                                   <input
                                     type="text"
                                     class="form-control"
                                     disabled=""
-                                    :value="optrphn"
+                                    :value="driver"
                                   />
                                 </div>
                                 <div class="col-md-6">
@@ -217,28 +191,29 @@
             </div>
           </div>
         </div>
+        <Dfooter />
       </div>
     </div>
   </v-app>
 </template>
 <script>
 import { getAPI } from "../../axios-api";
-import Admin from "./AdminsSidebar.vue";
-import AdminNav from "../Admin/AdminNavbar.vue";
-import MobNav from "../Admin/MobNav.vue";
+import Dsidebar from "../../components/Operator/dashsidebar.vue";
+import Dfooter from "../../components/dashfooter.vue";
+import Onavbar from "../../components/Operator/OptrNav.vue";
+import MobNav from "../../components/Operator/MobNav.vue";
 export default {
-  name: "TrxDetails",
+  name: "TranDetailOptr",
   components: {
-    Admin,
-    AdminNav,
+    Dsidebar,
+    Dfooter,
+    Onavbar,
     MobNav,
   },
   data: () => {
     return {
       isSettled: null,
       //
-      optr: "",
-      cust: "",
       date: "",
       cost: "",
       //
@@ -249,7 +224,7 @@ export default {
       //
       regNo: "",
       hloc: "",
-      optrphn: "",
+      driver: "",
       drphn: "",
     };
   },
@@ -276,7 +251,7 @@ export default {
         //
         this.regNo = this.APIData.data.truck.truck.registration;
         this.hloc = this.APIData.data.truck.truck.address;
-        this.optrphn = this.APIData.data.truck.truck.owner.phone;
+        this.driver = this.APIData.data.truck.driver.driver_name;
         this.drphn = this.APIData.data.truck.driver.phone;
       })
       .catch((err) => {
@@ -285,7 +260,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.push({ name: "AdminDash" });
+      this.$router.push({ name: "Dashboard" });
     },
   },
 };

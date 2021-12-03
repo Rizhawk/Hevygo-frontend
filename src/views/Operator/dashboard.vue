@@ -152,9 +152,10 @@
                           class="rowHover"
                           v-for="trans in transdetails"
                           :key="trans.destination.id"
+                          @click.prevent="getMoreDetails(trans.destination.id)"
                         >
                           <td class="text-center">
-                            {{ trans.destination.date }}
+                            {{ trans.time }}
                           </td>
                           <td class="text-center">
                             {{ trans.destination.customer.name }}
@@ -421,7 +422,7 @@ export default {
       page_count: null,
     };
   },
-  mounted: function () {
+  mounted: function() {
     this._getTranslist();
   },
   methods: {
@@ -440,6 +441,10 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    getMoreDetails(id) {
+      localStorage.setItem("Trid", id);
+      this.$router.push({ name: "TranDetailOptr" });
     },
   },
 };

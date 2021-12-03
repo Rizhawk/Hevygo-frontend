@@ -18,7 +18,7 @@
                     v-model="search"
                     prepend-inner-icon="mdi-magnify"
                     class="search my-2"
-                    label="Search trucks.."
+                    label="Search truck.."
                     @input="getTrucksList"
                     dense
                     rounded

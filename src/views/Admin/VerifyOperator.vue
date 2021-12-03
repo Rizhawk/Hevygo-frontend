@@ -18,7 +18,7 @@
                     v-model="search"
                     prepend-inner-icon="mdi-magnify"
                     class="search my-2"
-                    label="Search operators.."
+                    label="Search operator.."
                     @input="getOperatorsList"
                     dense
                     rounded

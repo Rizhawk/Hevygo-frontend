@@ -52,6 +52,7 @@ import IncidentsByOptr from "../views/Admin/IncidentsByOptr.vue";
 import MoreDetails from "../views/Admin/MoreDetails.vue";
 import ViewIncident from "../views/Customer/ViewIncident.vue";
 import TrxDetails from "../views/Admin/TransactionDetails.vue";
+import TranDetailOptr from "../views/Operator/TransactionDetails.vue";
 Vue.use(VueRouter);
 const routes = [
   {
@@ -173,6 +174,11 @@ const routes = [
     path: "/managedrivers",
     name: "DriverTable",
     component: DriverTable,
+  },
+  {
+    path: "/trandetailsoptr",
+    name: "TranDetailOptr",
+    component: TranDetailOptr,
   },
   {
     path: "/managestatus",
