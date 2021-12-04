@@ -42,17 +42,6 @@
               <v-list-item-title>Trucks</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
-          <v-list-item link href="/Map">
-            <v-list-item-icon>
-              <v-icon color="white">mdi-map-marker</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Map</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
           <v-list-item link href="/managedrivers">
             <v-list-item-icon>
               <v-icon color="white">mdi-account</v-icon>
@@ -68,6 +57,15 @@
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>Trucks Status</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item link href="/listincidents">
+            <v-list-item-icon>
+              <v-icon color="white">mdi-clipboard-alert</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Truck Incidents</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
 
@@ -103,7 +101,7 @@ export default {
       vicon: "",
     };
   },
-  created: function () {
+  created: function() {
     getAPI
       .get("/api/operators/view_operator_info/", {
         headers: {
@@ -142,5 +140,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

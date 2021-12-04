@@ -15,7 +15,7 @@
               <div class="card">
                 <div class="card-header">
                   <div class="row">
-                    <div class="col-md-6 text-start">
+                    <div class="col-md-8">
                       <v-text-field
                         v-model="search"
                         prepend-inner-icon="mdi-magnify"
@@ -28,12 +28,12 @@
                         single-line
                       ></v-text-field>
                     </div>
-                    <div class="col-md-2 text-start"></div>
-                    <div class="col-md-4 text-end">
+                    <div class="col-md-4 text-center">
                       <v-btn
                         color="primary"
                         href="/driveradd"
                         x-small
+                        class="my-2"
                         depressed
                         dark
                         outlined

@@ -42,17 +42,6 @@
               <v-list-item-title>Current Bookings</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
-          <v-list-item link href="#">
-            <v-list-item-icon>
-              <v-icon color="white">mdi-map-marker</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Track Shipments</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
           <v-list-item link href="/custpro">
             <v-list-item-icon>
               <v-icon color="white">mdi-account-edit</v-icon>
@@ -61,7 +50,6 @@
               <v-list-item-title>Edit Profile</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
           <v-list-item link href="/login">
             <v-list-item-icon>
               <v-icon color="white">mdi-logout</v-icon>
