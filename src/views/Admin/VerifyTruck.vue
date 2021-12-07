@@ -126,7 +126,7 @@ export default {
       truckdetails: [],
       page: 1,
       NoPages: null,
-      dataCount: 0,
+      dataCount: null,
       search: "",
     };
   },

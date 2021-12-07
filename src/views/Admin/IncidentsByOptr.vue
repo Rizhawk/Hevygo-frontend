@@ -124,7 +124,7 @@ export default {
       title: "",
       page: 1,
       NoPages: null,
-      dataCount: 0,
+      dataCount: null,
     };
   },
   beforeMount: function() {

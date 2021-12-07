@@ -161,7 +161,7 @@ export default {
       trucks: [],
       search: "",
       page: 1,
-      dataCount: 0,
+      dataCount: null,
       NoPages: null,
     };
   },

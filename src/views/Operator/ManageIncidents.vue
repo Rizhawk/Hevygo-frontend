@@ -139,7 +139,7 @@ export default {
       incidents: [],
       tab: "tab-1",
       search: "",
-      dataCount: 0,
+      dataCount: null,
       NoPages: null,
       page: 1,
     };

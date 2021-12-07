@@ -117,7 +117,7 @@ export default {
       optrdetails: [],
       page: 1,
       search: "",
-      dataCount: 0,
+      dataCount: null,
       NoPages: null,
     };
   },

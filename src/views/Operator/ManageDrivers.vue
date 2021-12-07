@@ -123,7 +123,7 @@ export default {
     return {
       driverdetails: [],
       page: 1,
-      dataCount: 0,
+      dataCount: null,
       search: "",
       NoPages: null,
     };

@@ -46,12 +46,12 @@ export default {
         this.APIData = response.data;
         if (this.APIData.Http_response == 200) {
           this.start_location = this.APIData.data.start_location;
-
           this.vehicle_type = this.APIData.data.vehicle_type;
           this.weight = this.APIData.data.weight;
           this.end_location = this.APIData.data.end_location;
-
           this.st = this.APIData.data.status;
+          console.log(this.start_location);
+          console.log(this.end_location);
           this.payment();
         } else {
           alert("Something Went Wrong! Please try Again");
@@ -294,14 +294,12 @@ export default {
             let dest = this.eaddr;
             let fee = this.$store.getters.totalCost;
             let accept_reject = null;
-            let location = null;
             let msg = JSON.stringify({
               customer: customer,
               src: src,
               dest: dest,
               fee: fee,
               accept_reject: accept_reject,
-              location: location,
             });
             this.connection.send(msg);
             this.connection.onmessage = function(event) {
