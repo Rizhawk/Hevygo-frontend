@@ -50,8 +50,6 @@ export default {
           this.weight = this.APIData.data.weight;
           this.end_location = this.APIData.data.end_location;
           this.st = this.APIData.data.status;
-          console.log(this.start_location);
-          console.log(this.end_location);
           this.payment();
         } else {
           alert("Something Went Wrong! Please try Again");
@@ -214,7 +212,7 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.response == 200) {
-            for (let key in response.priority1) {
+            for (let key in this.APIData.priority1) {
               this.trucks.push(this.APIData.priority1[key].truck.id);
             }
             for (let key in this.APIData.priority2) {
@@ -284,7 +282,9 @@ export default {
       console.log(`connected to ${id}`);
       return new Promise((resolve) => {
         this.connection = new WebSocket("ws://65.1.30.73:8001/ws/" + id + "/");
-        this.connection.onopen = function() {};
+        console.log(this.connection);
+        this.connection.onopen = function() {
+        };
         setTimeout(() => {
           if (localStorage.getItem("response") == 1) {
             this.connection.close();
@@ -301,6 +301,7 @@ export default {
               fee: fee,
               accept_reject: accept_reject,
             });
+            console.log(msg);
             this.connection.send(msg);
             this.connection.onmessage = function(event) {
               let resr = JSON.parse(event.data);
