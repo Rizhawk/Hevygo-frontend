@@ -61,10 +61,12 @@
                             v-model="driver"
                             :error-messages="errors"
                             :items="drivers"
+                            item-text="phone"
                             clearable
                             outlined
                             dense
-                          ></v-select>
+                          >
+                          </v-select>
                         </validation-provider>
                         <label>Status</label>
                         <validation-provider
@@ -169,7 +171,7 @@ export default {
       curCords: "",
     };
   },
-  beforeMount: function () {
+  beforeMount: function() {
     //Api call for fetch the reg number of all trucks
     getAPI
       .get("/api/operators/list_truck/", {
@@ -189,7 +191,7 @@ export default {
       });
     //
   },
-  mounted: function () {
+  mounted: function() {
     //Api call for fetch the names of all drivers
     getAPI
       .get("/api/operators/list_driver/", {
@@ -199,8 +201,14 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
+      
         for (let key in this.APIData.data) {
-          this.drivers.push(this.APIData.data[key]["driver_name"]);
+          let obj = {
+            id: this.APIData.data[key]["id"],
+            name: this.APIData.data[key]["driver_name"],
+            phone: this.APIData.data[key]["phone"],
+          };
+          this.drivers.push(obj);
         }
         this.driverdata = this.APIData.data;
       })
@@ -252,13 +260,10 @@ export default {
         }
       }
       for (let key in this.driverdata) {
-        if (this.driver == this.driverdata[key]["driver_name"]) {
+        if (this.driver == this.driverdata[key]["phone"]) {
           this.did = this.driverdata[key]["id"];
         }
       }
-      console.log(this.curCords);
-      console.log(this.tid);
-      console.log(this.did);
       let statusData = new FormData();
       statusData.append("truck_id", this.tid);
       statusData.append("status", "Offline");
@@ -273,6 +278,7 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
+          console.log(this.APIData);
           if (this.APIData.Http_response == 200) {
             this.message = this.APIData.message;
             this.snackbar = true;
@@ -286,7 +292,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      //
     },
   },
 };
