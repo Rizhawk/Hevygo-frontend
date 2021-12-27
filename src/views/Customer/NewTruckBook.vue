@@ -26,7 +26,10 @@
                 </div>
                 <div class="card-body">
                   <validation-observer ref="observer" v-slot="{ invalid }">
-                    <form @submit.prevent="getCords">
+                    <form
+                      style="padding:8px"
+                      @submit.prevent="getCords(invalid)"
+                    >
                       <div class="form-group">
                         <label>Start Location</label>
                         <v-text-field
@@ -154,7 +157,6 @@
                             type="submit"
                             x-small
                             color="rgb(34, 48, 61)"
-                            :disabled="invalid"
                             depressed
                             outlined
                             >Confirm</v-btn
@@ -226,7 +228,7 @@ export default {
       date: null || localStorage.getItem("dt"),
       weight: "" || localStorage.getItem("wt"),
       goodstype: "" || localStorage.getItem("gt"),
-      vtype: ""||localStorage.getItem("vt"),
+      vtype: "" || localStorage.getItem("vt"),
       //
       types: [
         "6 Tyre Truck - 2 Axles",
@@ -328,43 +330,48 @@ export default {
       this.date = "";
       this.goodstype = "";
     },
-    getCords() {
-      const H = window.H;
-      var platform = new H.service.Platform({
-        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
-      });
-      var service = platform.getSearchService();
-      service.geocode(
-        {
-          q: this.startlocation,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.origin.push(item.position["lat"]);
-            this.origin.push(item.position["lng"]);
-          });
-          let Norigin = this.origin.slice(0, 2);
-          this.startCords = Norigin.toString();
-        }
-      );
-      service.geocode(
-        {
-          q: this.endlocation,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.dest.push(item.position["lat"]);
-            this.dest.push(item.position["lng"]);
-          });
-          let Ndest = this.dest.slice(0, 2);
-          this.endCords = Ndest.toString();
-          this.bookTruck();
-        }
-      );
+    getCords(invalid) {
+      this.$refs.observer.validate();
+      if (invalid == false) {
+        const H = window.H;
+        var platform = new H.service.Platform({
+          apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+        });
+        var service = platform.getSearchService();
+        service.geocode(
+          {
+            q: this.startlocation,
+          },
+          (result) => {
+            // Add a marker for each location found
+            result.items.forEach((item) => {
+              // map.addObject(new H.map.Marker(item.position));
+              this.origin.push(item.position["lat"]);
+              this.origin.push(item.position["lng"]);
+            });
+            let Norigin = this.origin.slice(0, 2);
+            this.startCords = Norigin.toString();
+          }
+        );
+        service.geocode(
+          {
+            q: this.endlocation,
+          },
+          (result) => {
+            // Add a marker for each location found
+            result.items.forEach((item) => {
+              // map.addObject(new H.map.Marker(item.position));
+              this.dest.push(item.position["lat"]);
+              this.dest.push(item.position["lng"]);
+            });
+            let Ndest = this.dest.slice(0, 2);
+            this.endCords = Ndest.toString();
+            this.bookTruck();
+          }
+        );
+      } else {
+        alert("Form contains invalid data.");
+      }
     },
     bookTruck() {
       if ((this.dropdown1 || this.dropdown2) == true) {
@@ -400,7 +407,7 @@ export default {
               this.clear();
               this.$router.push({ name: "RouteMap" });
             } else {
-              alert(this.APIData.message); 
+              alert(this.APIData.message);
             }
           })
           .catch((err) => {

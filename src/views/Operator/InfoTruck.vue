@@ -19,7 +19,7 @@
       top
       text-color="white"
       v-model="snackbar2"
-      timeout="5000"
+      timeout="10000"
     >
       {{ this.message2 }}
     </v-snackbar>
@@ -442,7 +442,7 @@ export default {
               this.showButton = false;
               this.getCords();
             } else {
-              this.message2 = this.APIData.message;
+              this.message2 = "Your account verification is in progress, so you are not authorized to create this account now."
               this.snackbar2 = true;
               console.log(this.APIData);
             }

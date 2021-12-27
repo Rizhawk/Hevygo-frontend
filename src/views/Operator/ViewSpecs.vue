@@ -448,7 +448,7 @@ export default {
       specmsg: "",
     };
   },
-  beforeCreate: function () {
+  beforeCreate: function() {
     getAPI
       .get(
         "/api/operators/view_truck_details/?id=" + localStorage.getItem("tid"),
@@ -460,7 +460,6 @@ export default {
       )
       .then((response) => {
         this.APIData = response.data;
-        console.log(this.APIData);
         if (this.APIData.response == 200) {
           this.reg = this.APIData.data["truck"]["registration"];
           this.treg = this.reg;
@@ -516,11 +515,6 @@ export default {
       let data = await resp.json();
       this.results = data.items;
     },
-    getLoc(place) {
-      //Input the Selected Value and Hide the Dropdown flex for Endlocation
-      this.home = place;
-      this.dropdown = false;
-    },
     getCoords() {
       const H = window.H;
       var platform = new H.service.Platform({
@@ -543,17 +537,29 @@ export default {
         }
       );
     },
+    getLoc(place) {
+      //Input the Selected Value and Hide the Dropdown flex for Endlocation
+      this.home = place;
+      this.dropdown = false;
+      this.getCoords();
+    },
     formatDate(date) {
-      return date.split("-").reverse().join("-");
+      return date
+        .split("-")
+        .reverse()
+        .join("-");
     },
     infoedit() {
       let updateInfo = new FormData();
       updateInfo.append("truck_id", localStorage.getItem("tid"));
       updateInfo.append("registration", this.reg);
       if (this.home != this.temploc) {
-        this.getCoords();
-        updateInfo.append("coord", this.homeCoords);
-        updateInfo.append("address", this.home);
+        if (this.dropdown != false) {
+          alert("Select a location");
+        } else {
+          updateInfo.append("coord", this.homeCoords);
+          updateInfo.append("address", this.home);
+        }
       }
       if (this.fit != "") {
         updateInfo.append("fitness_scan", this.fit);
@@ -582,7 +588,6 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
-          console.log(this.APIData);
           if (this.APIData.response == 200) {
             this.detailsEdit();
           } else {

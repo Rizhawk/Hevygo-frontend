@@ -79,12 +79,12 @@
                           </td>
                           <td>
                             <p
-                              v-if="truck.status == 'Accident'"
+                              v-if="truck.status == 'Incident'"
                               class="red--text"
                             >
                               {{ truck.status }}
                             </p>
-                            <p v-if="truck.status != 'Accident'">
+                            <p v-if="truck.status != 'Incident'">
                               {{ truck.status }}
                             </p>
                           </td>

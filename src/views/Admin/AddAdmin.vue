@@ -49,7 +49,7 @@
                 </div>
                 <div class="card-body">
                   <validation-observer ref="observer1" v-slot="{ invalid }">
-                    <form @submit.prevent="regAdmin">
+                    <form style="padding:8px" @submit.prevent="regAdmin">
                       <div class="form-group">
                         <label>Name</label>
                         <validation-provider

@@ -134,7 +134,7 @@
                             >Back</v-btn
                           >
                           <v-btn
-                            v-if="status == 'Accident'"
+                            v-if="status == 'Incident'"
                             x-small
                             @click.prevent="incident"
                             color="red"

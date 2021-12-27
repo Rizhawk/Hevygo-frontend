@@ -61,7 +61,7 @@
       </v-list-item>
       <v-divider color="white" class="my-16"></v-divider>
       <v-list dense nav>
-        <v-list-item link :href="profile">
+        <v-list-item class="link" link :href="profile">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-account</v-icon>
           </v-list-item-icon>
@@ -69,7 +69,7 @@
             <v-list-item-title>My Profile</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link href="/updatephone">
+        <v-list-item class="link" link href="/updatephone">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-cellphone</v-icon>
           </v-list-item-icon>
@@ -77,7 +77,7 @@
             <v-list-item-title>Change Phonenumber</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link href="/updatepass">
+        <v-list-item class="link" link href="/updatepass">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-key</v-icon>
           </v-list-item-icon>
@@ -85,7 +85,7 @@
             <v-list-item-title>Change Password</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link href="/updatename">
+        <v-list-item class="link" link href="/updatename">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-account-settings</v-icon>
           </v-list-item-icon>
@@ -93,7 +93,7 @@
             <v-list-item-title>Change Name</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link href="/updateemail">
+        <v-list-item class="link" link href="/updateemail">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-email</v-icon>
           </v-list-item-icon>
@@ -109,7 +109,7 @@
             <v-list-item-title>Change Pan&Gst</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link href="#">
+        <v-list-item class="link" link href="#">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-arrow-left-bold</v-icon>
           </v-list-item-icon>
@@ -135,7 +135,7 @@ export default {
       username: "",
     };
   },
-  beforeCreate: function () {
+  beforeCreate: function() {
     getAPI
       .get("/api/accounts/is_login/", {
         headers: {
@@ -187,3 +187,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.link {
+  text-decoration: none;
+}
+</style>

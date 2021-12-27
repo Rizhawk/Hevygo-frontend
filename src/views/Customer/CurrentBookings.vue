@@ -96,6 +96,13 @@
                             </p>
                           </td>
                         </tr>
+                        <tr v-if="this.dataCount == 0">
+                          <td>
+                            <p class="caption font-weight-medium">
+                              No records found !!
+                            </p>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                     <div class="text-center">
@@ -104,7 +111,7 @@
                         circle
                         light
                         color="grey darken-3"
-                        :length="2"
+                        :length="NoPages"
                         total-visible="3"
                         prev-icon="mdi-menu-left"
                         next-icon="mdi-menu-right"
@@ -136,9 +143,11 @@ export default {
     return {
       destdetails: [],
       page: 1,
+      NoPages: null,
+      dataCount: null,
     };
   },
-  beforeMount: function () {
+  beforeMount: function() {
     //Api call to fetch all destination details of current customer
     getAPI
       .get("api/customers/cust-dest-list/", {
@@ -148,7 +157,10 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
+        console.log(this.APIData);
         this.destdetails = this.APIData.data;
+        this.NoPages = this.APIData.page_count;
+        this.dataCount = this.APIData.count;
       })
       .catch((err) => {
         console.log(err);

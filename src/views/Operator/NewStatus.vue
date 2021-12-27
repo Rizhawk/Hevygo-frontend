@@ -1,6 +1,13 @@
 <template>
   <v-app>
-    <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
+    <v-snackbar
+      rounded="xl"
+      text
+      top
+      color="red lighten-1"
+      dark
+      v-model="snackbar"
+      timeout="3000"
       ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
     >
     <div class="wrapper">
@@ -79,7 +86,7 @@
                           <v-text-field
                             v-model="status"
                             :error-messages="errors"
-                            clearable
+                            disabled
                             outlined
                             dense
                           ></v-text-field>
@@ -95,7 +102,7 @@
                           <v-text-field
                             v-model="loc"
                             :error-messages="errors"
-                            clearable
+                            disabled
                             outlined
                             dense
                           ></v-text-field>
@@ -201,7 +208,7 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-      
+
         for (let key in this.APIData.data) {
           let obj = {
             id: this.APIData.data[key]["id"],
