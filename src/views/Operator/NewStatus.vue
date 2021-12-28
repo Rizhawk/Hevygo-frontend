@@ -35,8 +35,11 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <validation-observer ref="observer1" v-slot="{ invalid }">
-                    <form @submit.prevent="getCoords">
+                  <validation-observer ref="observer" v-slot="{ invalid }">
+                    <form
+                      style="padding:10px"
+                      @submit.prevent="getCoords(invalid)"
+                    >
                       <div class="form-group">
                         <label>Truck</label>
                         <validation-provider
@@ -111,8 +114,8 @@
                           ><v-btn
                             type="submit"
                             x-small
+                            class="my-5"
                             color="rgb(34, 48, 61)"
-                            :disabled="invalid"
                             depressed
                             outlined
                             >Add</v-btn
@@ -146,7 +149,7 @@ import {
 setInteractionMode("eager");
 extend("required", {
   ...required,
-  message: "This field can not be empty",
+  message: "required",
 });
 export default {
   name: "NewStatus",
@@ -208,7 +211,6 @@ export default {
       })
       .then((response) => {
         this.APIData = response.data;
-
         for (let key in this.APIData.data) {
           let obj = {
             id: this.APIData.data[key]["id"],
@@ -236,28 +238,33 @@ export default {
         }
       }
     },
-    getCoords() {
-      const H = window.H;
-      var platform = new H.service.Platform({
-        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
-      });
-      var service = platform.getSearchService();
-      service.geocode(
-        {
-          q: this.loc,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.cloc.push(item.position["lat"]);
-            this.cloc.push(item.position["lng"]);
-          });
-          let crloc = this.cloc.slice(0, 2);
-          this.curCords = crloc.toString();
-          this.truckdetails();
-        }
-      );
+    getCoords(invalid) {
+      this.$refs.observer.validate();
+      if (invalid == false) {
+        const H = window.H;
+        var platform = new H.service.Platform({
+          apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+        });
+        var service = platform.getSearchService();
+        service.geocode(
+          {
+            q: this.loc,
+          },
+          (result) => {
+            // Add a marker for each location found
+            result.items.forEach((item) => {
+              // map.addObject(new H.map.Marker(item.position));
+              this.cloc.push(item.position["lat"]);
+              this.cloc.push(item.position["lng"]);
+            });
+            let crloc = this.cloc.slice(0, 2);
+            this.curCords = crloc.toString();
+            this.truckdetails();
+          }
+        );
+      } else {
+        alert("Invalis form.");
+      }
     },
     truckdetails() {
       //Api call to create a truck status
@@ -290,6 +297,7 @@ export default {
             this.message = this.APIData.message;
             this.snackbar = true;
             this.clear();
+            alert("New status added.");
             this.$router.push({ name: "StatusTable" });
           } else {
             this.message = this.APIData.message;

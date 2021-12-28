@@ -64,7 +64,8 @@
                 name="password"
                 :error-messages="errors"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="passwordRules"
+                maxlength="6"
+                counter="6"
                 :type="show1 ? 'text' : 'password'"
                 @click:append="show1 = !show1"
                 outlined
@@ -82,6 +83,7 @@
                 label="Confirm Password *"
                 name="confirmPassword"
                 :error-messages="errors"
+                maxlength="6"
                 :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[
                   !!password2 || 'type confirm password',
@@ -185,7 +187,7 @@ extend("digits", {
 
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty",
+  message: "required",
 });
 
 extend("max", {
@@ -228,10 +230,6 @@ export default {
 
       password: "",
       password2: "",
-      passwordRules: [
-        (value) => !!value || "Please type password.",
-        (value) => (value && value.length >= 6) || "minimum 6 characters",
-      ],
     };
   },
   methods: {

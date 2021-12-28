@@ -6,8 +6,8 @@
         <v-snackbar rounded="xl" text top dark v-model="snackbar" timeout="3000"
           ><span class="white--text mx-15">{{ this.message }}</span></v-snackbar
         >
-        <validation-observer ref="observer3" v-slot="{ invalid }">
-          <form id="form5" @submit.prevent="panadd">
+        <validation-observer ref="observer" v-slot="{ invalid }">
+          <form id="form5" @submit.prevent="panadd(invalid)">
             <v-flex row wrap>
               <p class="mx-3 my-2 white--text font-weight-black subtitle-1">
                 Add Details
@@ -17,9 +17,7 @@
             <validation-provider
               v-slot="{ errors }"
               name="Pan number"
-              :rules="{
-                required: true,
-              }"
+              rules="required"
             >
               <v-text-field
                 v-model="pan"
@@ -31,12 +29,16 @@
                 dense
               ></v-text-field>
             </validation-provider>
-            <validation-provider name="PAN card" required>
+            <validation-provider
+              v-slot="{ errors }"
+              name="PAN card"
+              rules="required"
+            >
               <v-file-input
                 v-model="panfile"
                 accept="image/png,image/jpeg"
-                label="Upload PAN Card"
-                required
+                :error-messages="errors"
+                label="Upload PAN Card *"
                 dark
                 outlined
                 dense
@@ -46,9 +48,7 @@
               v-slot="{ errors }"
               name="GST Number"
               maxlength="15"
-              :rules="{
-                required: true,
-              }"
+              rules="required"
             >
               <v-text-field
                 v-model="gst_no"
@@ -59,12 +59,16 @@
                 dense
               ></v-text-field>
             </validation-provider>
-            <validation-provider name="GST Paper" required>
+            <validation-provider
+              v-slot="{ errors }"
+              name="GST Paper"
+              rules="required"
+            >
               <v-file-input
                 v-model="gstfile"
                 accept="image/png,image/jpeg"
-                label="Upload GST"
-                required
+                :error-messages="errors"
+                label="Upload GST *"
                 dark
                 outlined
                 dense
@@ -73,13 +77,7 @@
             <v-layout row wrap>
               <v-flex lg3></v-flex>
               <v-flex class="my-2">
-                <v-btn
-                  small
-                  depressed
-                  block
-                  :disabled="invalid"
-                  type="submit"
-                  color="primary"
+                <v-btn small depressed block type="submit" color="primary"
                   >Save</v-btn
                 >
               </v-flex>
@@ -109,7 +107,7 @@ extend("digits", {
 });
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty",
+  message: "required",
 });
 extend("max", {
   ...max,
@@ -140,36 +138,42 @@ export default {
   },
   methods: {
     clear() {
-      (this.pan = ""), (this.gst_no = ""), this.$refs.observer3.reset();
+      (this.pan = ""), (this.gst_no = ""), this.$refs.observer.reset();
     },
-    panadd() {
-      let optrInfo = new FormData();
-      optrInfo.append("pan", this.pan);
-      optrInfo.append("pan_scan", this.panfile);
-      optrInfo.append("gst_no", this.gst_no);
-      optrInfo.append("gst_scan ", this.gstfile);
-      optrInfo.append("status", 1);
-      optrInfo.append("remarks", "Please wait to be verified");
-      getAPI
-        .post("api/operators/add_operator_info/", optrInfo, {
-          headers: {
-            Authorization: `Token ${this.$session.get("user_token")}`,
-          },
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.APIData.response == 200) {
-            this.message = this.APIData.message;
-            this.snackbar = !this.snackbar;
-            this.$router.push({ name: "Login" });
-          } else {
-            this.message = this.APIData.message;
-            this.snackbar = !this.snackbar;
-          }
-        })
-        .catch((err) => {
-          alert(err);
-        });
+    panadd(invalid) {
+      this.$refs.observer.validate();
+      if (invalid == false) {
+        let optrInfo = new FormData();
+        optrInfo.append("pan", this.pan);
+        optrInfo.append("pan_scan", this.panfile);
+        optrInfo.append("gst_no", this.gst_no);
+        optrInfo.append("gst_scan ", this.gstfile);
+        optrInfo.append("status", 1);
+        optrInfo.append("remarks", "Please wait to be verified");
+        getAPI
+          .post("api/operators/add_operator_info/", optrInfo, {
+            headers: {
+              Authorization: `Token ${this.$session.get("user_token")}`,
+            },
+          })
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.response == 200) {
+              this.message = this.APIData.message;
+              this.snackbar = !this.snackbar;
+              alert("Registration successful!");
+              this.$router.push({ name: "Login" });
+            } else {
+              this.message = this.APIData.message;
+              this.snackbar = !this.snackbar;
+            }
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      } else {
+        alert("Invalid form.");
+      }
     },
   },
 };

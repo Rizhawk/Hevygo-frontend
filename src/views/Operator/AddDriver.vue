@@ -47,10 +47,13 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <validation-observer ref="observer1" v-slot="{ invalid }">
-                    <form @submit.prevent="driveradd">
+                  <validation-observer ref="observer" v-slot="{ invalid }">
+                    <form
+                      style="padding:10px"
+                      @submit.prevent="driveradd(invalid)"
+                    >
                       <div class="form-group">
-                        <label>Driver's Name</label>
+                        <label>Driver's Name *</label>
                         <validation-provider
                           v-slot="{ errors }"
                           name="Driver Name"
@@ -65,10 +68,10 @@
                             dense
                           ></v-text-field>
                         </validation-provider>
-                        <label>Driver's Phone Number</label>
+                        <label>Driver's Phone Number *</label>
                         <validation-provider
                           v-slot="{ errors }"
-                          name="Driver Phone number"
+                          name="Phone number"
                           :rules="{
                             required: true,
                           }"
@@ -87,7 +90,7 @@
                           v-if="otpfield"
                           v-model="otp"
                           autofocus
-                          label="Enter your OTP"
+                          label="Enter your OTP *"
                           @input="verified()"
                           maxlength="6"
                           outlined
@@ -97,8 +100,8 @@
                           ><v-btn
                             type="submit"
                             x-small
+                            class="my-5"
                             color="rgb(34, 48, 61)"
-                            :disabled="invalid"
                             depressed
                             outlined
                             >Register</v-btn
@@ -152,7 +155,7 @@ setInteractionMode("eager");
 
 extend("required", {
   ...required,
-  message: "This field can not be empty",
+  message: "required",
 });
 export default {
   name: "AddDriver",
@@ -185,36 +188,42 @@ export default {
         (this.otp = ""),
         (this.icon = "");
     },
-    driveradd() {
-      getAPI
-        .post(
-          "/api/operators/add_driver/",
-          {
-            driver_name: this.driver_name,
-            phone: this.phone,
-            otp: this.otp,
-          },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
+    driveradd(invalid) {
+      this.$refs.observer.validate();
+      if (invalid == false) {
+        getAPI
+          .post(
+            "/api/operators/add_driver/",
+            {
+              driver_name: this.driver_name,
+              phone: this.phone,
+              otp: this.otp,
             },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.APIData.response == 200) {
-            this.message = this.APIData.message;
-            this.snackbar = true;
-            this.clear4();
-            this.$router.push({ name: "DriverTable" });
-          } else {
-            this.message2 = this.APIData.message;
-            this.snackbar2 = true;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            {
+              headers: {
+                Authorization: `Token ${this.$session.get("user_token")}`,
+              },
+            }
+          )
+          .then((response) => {
+            this.APIData = response.data;
+            if (this.APIData.response == 200) {
+              this.message = this.APIData.message;
+              this.snackbar = true;
+              this.clear4();
+              alert("New driver added.");
+              this.$router.push({ name: "DriverTable" });
+            } else {
+              this.message2 = this.APIData.message;
+              this.snackbar2 = true;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        alert("Invalid form");
+      }
     },
     checkPhone() {
       if (this.phone.length == 10) {

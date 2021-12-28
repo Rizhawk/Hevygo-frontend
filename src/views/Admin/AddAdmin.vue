@@ -48,10 +48,13 @@
                   </h5>
                 </div>
                 <div class="card-body">
-                  <validation-observer ref="observer1" v-slot="{ invalid }">
-                    <form style="padding:8px" @submit.prevent="regAdmin">
+                  <validation-observer ref="observer" v-slot="{ invalid }">
+                    <form
+                      style="padding:10px"
+                      @submit.prevent="regAdmin(invalid)"
+                    >
                       <div class="form-group">
-                        <label>Name</label>
+                        <label>Name *</label>
                         <validation-provider
                           v-slot="{ errors }"
                           name="Name"
@@ -64,33 +67,48 @@
                             dense
                           ></v-text-field>
                         </validation-provider>
-                        <label>Password</label>
-                        <v-text-field
-                          v-model="password"
-                          name="password"
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :rules="passwordRules"
-                          :type="show1 ? 'text' : 'password'"
-                          @click:append="show1 = !show1"
-                          outlined
-                          dense
-                        ></v-text-field>
-                        <label>Confirm Password</label>
-                        <v-text-field
-                          v-model="password2"
-                          name="confirmPassword"
-                          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                          :rules="[
-                            !!password2 || 'type confirm password',
-                            password === password2 ||
-                              'The password confirmation does not match.',
-                          ]"
-                          :type="show2 ? 'text' : 'password'"
-                          @click:append="show2 = !show2"
-                          outlined
-                          dense
-                        ></v-text-field>
-                        <label>Phonenumber</label>
+                        <label>Password *</label>
+                        <validation-provider
+                          name="Password"
+                          v-slot="{ errors }"
+                          rules="required"
+                        >
+                          <v-text-field
+                            v-model="password"
+                            name="password"
+                            :error-messages="errors"
+                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            maxlength="6"
+                            counter="6"
+                            :type="show1 ? 'text' : 'password'"
+                            @click:append="show1 = !show1"
+                            outlined
+                            dense
+                          ></v-text-field>
+                        </validation-provider>
+                        <label>Confirm Password *</label>
+                        <validation-provider
+                          name="Confirmation"
+                          v-slot="{ errors }"
+                          rules="required"
+                        >
+                          <v-text-field
+                            v-model="password2"
+                            name="confirmPassword"
+                            :error-messages="errors"
+                            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :rules="[
+                              password === password2 ||
+                                'The password confirmation does not match.',
+                            ]"
+                            maxlength="6"
+                            :type="show2 ? 'text' : 'password'"
+                            @click:append="show2 = !show2"
+                            outlined
+                            dense
+                          ></v-text-field>
+                        </validation-provider>
+                        <label>Phonenumber *</label>
                         <validation-provider
                           v-slot="{ errors }"
                           name="Phone Number"
@@ -112,7 +130,7 @@
                         <v-text-field
                           v-if="otpfield"
                           v-model="otp"
-                          label="Enter OTP"
+                          label="Enter OTP *"
                           @input="verified()"
                           maxlength="6"
                           outlined
@@ -138,7 +156,6 @@
                             type="submit"
                             x-small
                             color="rgb(34, 48, 61)"
-                            :disabled="invalid"
                             depressed
                             outlined
                             >Register</v-btn
@@ -178,7 +195,7 @@ extend("digits", {
 
 extend("required", {
   ...required,
-  message: "{_field_} can not be empty",
+  message: "required",
 });
 extend("email", {
   ...email,
@@ -210,49 +227,54 @@ export default {
       message: "",
       snackbar2: "",
       message2: "",
-      passwordRules: [
-        (value) => !!value || "Please type password.",
-        (value) => (value && value.length >= 6) || "minimum 6 characters",
-      ],
     };
   },
   methods: {
-    regAdmin() {
-      getAPI
-        .post(
-          "/api/accounts/register_admin/",
-          {
-            phone: this.phone,
-            otp: this.otp,
-            name: this.admin,
-            password: this.password,
-            password2: this.password2,
-            user_type: 4,
-            email: this.email,
-          },
-          {
-            headers: {
-              Authorization: `Token ${this.$session.get("user_token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          this.APIData = response.data;
-          console.log(this.APIData);
-          if (this.APIData.Http_response == 200) {
-            this.message = this.APIData.message;
-            this.snackbar = true;
-            this.clear();
-          } else {
-            this.message2 = this.APIData.message;
-            this.snackbar2 = true;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    regAdmin(invalid) {
+      this.$refs.observer.validate();
+      if (this.password === this.password2) {
+        if (invalid == false) {
+          getAPI
+            .post(
+              "/api/accounts/register_admin/",
+              {
+                phone: this.phone,
+                otp: this.otp,
+                name: this.admin,
+                password: this.password,
+                password2: this.password2,
+                user_type: 4,
+                email: this.email,
+              },
+              {
+                headers: {
+                  Authorization: `Token ${this.$session.get("user_token")}`,
+                },
+              }
+            )
+            .then((response) => {
+              this.APIData = response.data;
+              if (this.APIData.Http_response == 200) {
+                this.message = "New admin added.";
+                this.snackbar = true;
+                this.clear();
+              } else {
+                this.message2 = this.APIData.message;
+                this.snackbar2 = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          alert("Invalid form.");
+        }
+      } else {
+        alert("Password confirmation failed.");
+      }
     },
     clear() {
+      this.$refs.observer.reset();
       this.admin = "";
       this.phone = "";
       this.password = "";

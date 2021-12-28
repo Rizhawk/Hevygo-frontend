@@ -49,7 +49,7 @@
                 </div>
                 <div class="card-body">
                   <validation-observer ref="observer1">
-                    <form @submit.prevent="tsignup">
+                    <form style="padding:15px" @submit.prevent="tsignup">
                       <div class="form-group">
                         <div class="row">
                           <div :class="hideotp">
@@ -171,7 +171,6 @@
                         <div class="row">
                           <div class="col-md-6">
                             <label>Rc Book</label>
-
                             <v-file-input
                               v-model="rcbook"
                               accept="image/png,image/jpeg"
@@ -444,7 +443,6 @@ export default {
             } else {
               this.message2 = "Your account verification is in progress, so you are not authorized to create this account now."
               this.snackbar2 = true;
-              console.log(this.APIData);
             }
           })
           .catch((err) => {
