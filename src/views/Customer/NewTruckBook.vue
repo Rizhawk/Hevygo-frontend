@@ -370,7 +370,7 @@ export default {
           }
         );
       } else {
-        alert("Form contains invalid data.");
+        alert("Invalid form.");
       }
     },
     bookTruck() {

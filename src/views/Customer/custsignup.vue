@@ -28,7 +28,7 @@
       <v-flex xs10 sm8 md6 lg4>
         <!--Customer Sign Up form begining -->
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="csignup" @submit.prevent="csignup">
+          <form id="csignup" @submit.prevent="csignup(invalid)">
             <v-layout class="my-2" row wrap>
               <v-flex class="mx-3"
                 ><p class="white--text subtitle-1 font-weight-black">
@@ -44,41 +44,54 @@
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                label="Customer Name"
+                label="Name *"
                 dark
                 outlined
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-text-field
-              v-model="password"
-              label="Password"
-              name="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordRules"
-              :type="show1 ? 'text' : 'password'"
-              @click:append="show1 = !show1"
-              dark
-              outlined
-              dense
-            ></v-text-field>
-            <v-text-field
-              v-model="password2"
-              label="Confirm Password"
-              name="confirmPassword"
-              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[
-                !!password2 || 'type confirm password',
-                password === password2 ||
-                  'The password confirmation does not match.',
-              ]"
-              :type="show2 ? 'text' : 'password'"
-              @click:append="show2 = !show2"
-              dark
-              outlined
-              dense
-            ></v-text-field>
-
+            <validation-provider
+              name="Password"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <v-text-field
+                v-model="password"
+                label="Password *"
+                name="password"
+                :error-messages="errors"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="passwordRules"
+                :type="show1 ? 'text' : 'password'"
+                @click:append="show1 = !show1"
+                dark
+                outlined
+                dense
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              name="Confirmation"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <v-text-field
+                v-model="password2"
+                label="Confirm Password *"
+                name="confirmPassword"
+                :error-messages="errors"
+                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[
+                  !!password2 || 'type confirm password',
+                  password === password2 ||
+                    'The password confirmation does not match.',
+                ]"
+                :type="show2 ? 'text' : 'password'"
+                @click:append="show2 = !show2"
+                dark
+                outlined
+                dense
+              ></v-text-field>
+            </validation-provider>
             <validation-provider
               v-slot="{ errors }"
               name="Phone Number"
@@ -90,7 +103,7 @@
               <v-text-field
                 v-model="phone"
                 :error-messages="errors"
-                label="Phone Number"
+                label="Phone Number *"
                 maxlength="10"
                 :append-icon="icon"
                 @input="checkPhone"
@@ -102,7 +115,7 @@
             <v-text-field
               v-if="otpfield"
               v-model="otp"
-              label="OTP"
+              label="Enter OTP *"
               @input="verified()"
               maxlength="6"
               outlined
@@ -131,7 +144,6 @@
                   block
                   small
                   depressed
-                  :disabled="invalid"
                 >
                   Sign Up
                 </v-btn>
@@ -238,34 +250,46 @@ export default {
     },
     //Function to call Api after click on the signup button
 
-    csignup() {
+    csignup(invalid) {
       this.$refs.observer.validate();
-      getAPI
-        .post("/api/accounts/register/", {
-          phone: this.phone,
-          otp: this.otp,
-          name: this.name,
-          password: this.password,
-          password2: this.password2,
-          user_type: 2,
-          email: this.email,
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          console.log(this.APIData);
-          if (this.APIData.Http_response == 200) {
-            this.$session.start();
-            this.$session.set("user_token", this.APIData.data["token"]);
-            this.clear();
-            this.bookTruck();
-          } else {
-            this.message = "Registration Failed";
-            this.snackbar2 = true;
-          }
-        })
-        .catch((err) => {
-          alert(err);
-        });
+      if (this.password === this.password2) {
+        if (invalid == false) {
+          getAPI
+            .post("/api/accounts/register/", {
+              phone: this.phone,
+              otp: this.otp,
+              name: this.name,
+              password: this.password,
+              password2: this.password2,
+              user_type: 2,
+              email: this.email,
+            })
+            .then((response) => {
+              this.APIData = response.data;
+              if (this.APIData.Http_response == 200) {
+                this.$session.start();
+                this.$session.set("user_token", this.APIData.data["token"]);
+                this.$session.set(
+                  "user_name",
+                  this.APIData.data.user_info.name
+                );
+                this.$session.set("user_id", this.APIData.data.user_info.id);
+                this.clear();
+                this.bookTruck();
+              } else {
+                this.message = "Registration Failed";
+                this.snackbar2 = true;
+              }
+            })
+            .catch((err) => {
+              alert(err);
+            });
+        } else {
+          alert("Invalid form.");
+        }
+      } else {
+        alert("Password confirmation failed.");
+      }
     },
     bookTruck() {
       getAPI

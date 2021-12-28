@@ -7,6 +7,7 @@
         v-model="snackbar"
         multi-line
         color="teal darken-4"
+        dark
         timeout="10000"
       >
         {{ this.message }}
@@ -19,6 +20,7 @@
       <v-snackbar
         color="red darken-4"
         top
+        dark
         text-color="white"
         v-model="snackbar2"
         timeout="5000"
@@ -29,12 +31,12 @@
         <!--Customer Sign Up form begining -->
 
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="cnewsignup" @submit.prevent="csignup">
+          <form id="cnewsignup" @submit.prevent="csignup(invalid)">
             <v-layout class="my-2" row wrap>
               <v-flex class="mx-3"
                 ><p class="font-weight-black white--text">
                   Create your customer account
-                </p></v-flex
+                </p> </v-flex
               ><v-flex></v-flex>
             </v-layout>
             <validation-provider
@@ -45,41 +47,54 @@
               <v-text-field
                 v-model="name"
                 :error-messages="errors"
-                label="Customer Name"
+                label="Customer Name *"
                 outlined
                 dark
                 dense
               ></v-text-field>
             </validation-provider>
-            <v-text-field
-              v-model="password"
-              label="Password"
-              name="password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordRules"
-              :type="show1 ? 'text' : 'password'"
-              @click:append="show1 = !show1"
-              outlined
-              dark
-              dense
-            ></v-text-field>
-            <v-text-field
-              v-model="password2"
-              label="Confirm Password"
-              name="confirmPassword"
-              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[
-                !!password2 || 'type confirm password',
-                password === password2 ||
-                  'The password confirmation does not match.',
-              ]"
-              :type="show2 ? 'text' : 'password'"
-              @click:append="show2 = !show2"
-              outlined
-              dark
-              dense
-            ></v-text-field>
-
+            <validation-provider
+              name="Password"
+              v-slot="{ errors }"
+              rules="required"
+            >
+              <v-text-field
+                v-model="password"
+                label="Password *"
+                name="password"
+                :error-messages="errors"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="passwordRules"
+                :type="show1 ? 'text' : 'password'"
+                @click:append="show1 = !show1"
+                outlined
+                dark
+                dense
+              ></v-text-field>
+            </validation-provider>
+            <validation-provider
+              name="Confirmation"
+              v-slot="{ errors }"
+              rules="required"
+            >
+              <v-text-field
+                v-model="password2"
+                label="Confirm Password *"
+                name="confirmPassword"
+                :error-messages="errors"
+                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[
+                  !!password2 || 'type confirm password',
+                  password === password2 ||
+                    'The password confirmation does not match.',
+                ]"
+                :type="show2 ? 'text' : 'password'"
+                @click:append="show2 = !show2"
+                outlined
+                dark
+                dense
+              ></v-text-field
+            ></validation-provider>
             <validation-provider
               v-slot="{ errors }"
               name="Phone Number"
@@ -91,7 +106,7 @@
               <v-text-field
                 v-model="phone"
                 :error-messages="errors"
-                label="Phone Number"
+                label="Phone Number *"
                 maxlength="10"
                 :append-icon="icon"
                 @input="checkPhone"
@@ -103,7 +118,7 @@
             <v-text-field
               v-if="otpfield"
               v-model="otp"
-              label="OTP"
+              label="Enter OTP *"
               @input="verified"
               maxlength="6"
               outlined
@@ -125,15 +140,7 @@
             <v-layout class="my-2" row wrap>
               <v-flex lg2></v-flex>
               <v-flex class="mx-10">
-                <v-btn
-                  color="primary"
-                  type="submit"
-                  dark
-                  block
-                  small
-                  depressed
-                  :disabled="invalid"
-                >
+                <v-btn color="primary" type="submit" dark block small depressed>
                   Sign Up
                 </v-btn>
               </v-flex>
@@ -237,31 +244,40 @@ export default {
       this.$refs.observer.reset();
     },
     //Function to call Api after click on the signup button
-    csignup() {
+    csignup(invalid) {
       this.$refs.observer.validate();
-      getAPI
-        .post("/api/accounts/register/", {
-          phone: this.phone,
-          otp: this.otp,
-          name: this.name,
-          password: this.password,
-          password2: this.password2,
-          user_type: 2,
-          email: this.email,
-        })
-        .then((response) => {
-          this.APIData = response.data;
-          if (this.APIData.Http_response == 200) {
-            this.clear();
-            this.$router.push({ name: "Login" });
-          } else {
-            this.message = "Registration Failed";
-            this.snackbar2 = true;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (this.password === this.password2) {
+        if (invalid == false) {
+          getAPI
+            .post("/api/accounts/register/", {
+              phone: this.phone,
+              otp: this.otp,
+              name: this.name,
+              password: this.password,
+              password2: this.password2,
+              user_type: 2,
+              email: this.email,
+            })
+            .then((response) => {
+              this.APIData = response.data;
+              if (this.APIData.Http_response == 200) {
+                this.clear();
+                alert("Registration successful!");
+                this.$router.push({ name: "Login" });
+              } else {
+                this.message2 = this.APIData.message;
+                this.snackbar2 = true;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          alert("Invalid form.");
+        }
+      } else {
+        alert("Password confirmation failed.");
+      }
     },
     checkPhone() {
       if (this.phone.length == 10) {

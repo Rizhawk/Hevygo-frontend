@@ -6,10 +6,12 @@
       <v-flex xs10 sm8 md6 lg4>
         <!--Truck booking form begining-->
         <validation-observer ref="observer" v-slot="{ invalid }">
-          <form id="book" @submit.prevent="getCords">
+          <form id="book" @submit.prevent="getCords(invalid)">
             <v-layout class="my-2" row wrap
               ><v-flex class="mx-3"
-                ><h2 class="white--text">Book a Truck</h2></v-flex
+                ><h2 style="font-size:20px" class="white--text">
+                  Book a Truck
+                </h2></v-flex
               ><v-flex></v-flex
             ></v-layout>
             <validation-provider
@@ -22,7 +24,7 @@
                 type="search"
                 :error-messages="errors"
                 @input="doSearch1"
-                label="Start Location"
+                label="Start Location *"
                 prepend-inner-icon="mdi-map-marker"
                 dark
                 clearable
@@ -70,7 +72,7 @@
                 type="search"
                 :error-messages="errors"
                 @input="doSearch2"
-                label="End Location"
+                label="End Location *"
                 prepend-inner-icon="mdi-map-marker"
                 clearable
                 dark
@@ -116,7 +118,7 @@
               <v-text-field
                 v-model="weight"
                 :error-messages="errors"
-                label="Weight in ton"
+                label="Weight in ton *"
                 dark
                 clearable
                 outlined
@@ -130,7 +132,7 @@
             >
               <v-autocomplete
                 v-model="vtype"
-                label="Vehicle Type"
+                label="Vehicle Type *"
                 :items="types"
                 name="type"
                 :error-messages="errors"
@@ -150,7 +152,7 @@
               <v-text-field
                 v-model="goodstype"
                 :error-messages="errors"
-                label="Goods Type"
+                label="Goods Type *"
                 dark
                 clearable
                 outlined
@@ -164,7 +166,6 @@
                   color="primary"
                   block
                   type="submit"
-                  :disabled="invalid"
                   router
                   small
                   depressed
@@ -267,7 +268,6 @@ export default {
       //Auto suggestion call for Endloaction Field
       this.dropdown2 = true;
       if (this.endlocation === "") return;
-      console.log("doSearch2");
       let resp2 = await fetch(url + encodeURIComponent(this.endlocation));
       let data2 = await resp2.json();
       this.results2 = data2.items;
@@ -337,43 +337,48 @@ export default {
       this.goodstype = "";
       this.$refs.observer.reset();
     },
-    getCords() {
-      const H = window.H;
-      var platform = new H.service.Platform({
-        apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
-      });
-      var service = platform.getSearchService();
-      service.geocode(
-        {
-          q: this.startlocation,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.origin.push(item.position["lat"]);
-            this.origin.push(item.position["lng"]);
-          });
-          let Norigin = this.origin.slice(0, 2);
-          this.startCords = Norigin.toString();
-        }
-      );
-      service.geocode(
-        {
-          q: this.endlocation,
-        },
-        (result) => {
-          // Add a marker for each location found
-          result.items.forEach((item) => {
-            // map.addObject(new H.map.Marker(item.position));
-            this.dest.push(item.position["lat"]);
-            this.dest.push(item.position["lng"]);
-          });
-          let Ndest = this.dest.slice(0, 2);
-          this.endCords = Ndest.toString();
-          this.saveData();
-        }
-      );
+    getCords(invalid) {
+      this.$refs.observer.validate();
+      if (invalid == false) {
+        const H = window.H;
+        var platform = new H.service.Platform({
+          apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
+        });
+        var service = platform.getSearchService();
+        service.geocode(
+          {
+            q: this.startlocation,
+          },
+          (result) => {
+            // Add a marker for each location found
+            result.items.forEach((item) => {
+              // map.addObject(new H.map.Marker(item.position));
+              this.origin.push(item.position["lat"]);
+              this.origin.push(item.position["lng"]);
+            });
+            let Norigin = this.origin.slice(0, 2);
+            this.startCords = Norigin.toString();
+          }
+        );
+        service.geocode(
+          {
+            q: this.endlocation,
+          },
+          (result) => {
+            // Add a marker for each location found
+            result.items.forEach((item) => {
+              // map.addObject(new H.map.Marker(item.position));
+              this.dest.push(item.position["lat"]);
+              this.dest.push(item.position["lng"]);
+            });
+            let Ndest = this.dest.slice(0, 2);
+            this.endCords = Ndest.toString();
+            this.saveData();
+          }
+        );
+      } else {
+        alert("Invalid form.");
+      }
     },
     saveData() {
       //Saving the datas on localstorage and redirect to sign up page
@@ -381,7 +386,6 @@ export default {
         alert("Select a Location");
       } //Checking if the user inputed the value from dropdown data.
       else {
-        
         localStorage.setItem("sl", this.startCords);
         localStorage.setItem("sladdr", this.startlocation);
         localStorage.setItem("el", this.endCords);
