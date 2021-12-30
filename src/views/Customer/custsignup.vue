@@ -61,8 +61,6 @@
                 name="password"
                 :error-messages="errors"
                 :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                maxlength="6"
-                counter="6"
                 :type="show1 ? 'text' : 'password'"
                 @click:append="show1 = !show1"
                 dark
@@ -80,7 +78,6 @@
                 label="Confirm Password *"
                 name="confirmPassword"
                 :error-messages="errors"
-                maxlength="6"
                 :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[
                   !!password2 || 'type confirm password',

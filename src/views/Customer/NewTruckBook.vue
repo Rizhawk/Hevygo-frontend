@@ -154,14 +154,23 @@
                         </validation-provider>
                         <v-flex row justify-center
                           ><v-btn
+                            v-if="showButton"
                             type="submit"
                             x-small
                             color="rgb(34, 48, 61)"
                             depressed
                             outlined
                             >Confirm</v-btn
-                          ></v-flex
-                        >
+                          >
+
+                          <v-progress-circular
+                            v-if="showProgress"
+                            :size="35"
+                            :width="4"
+                            color="red"
+                            indeterminate
+                          ></v-progress-circular>
+                        </v-flex>
                       </div>
                     </form>
                   </validation-observer>
@@ -242,6 +251,8 @@ export default {
       //
       dropdown1: false,
       dropdown2: false,
+      showButton: true,
+      showProgress: false,
       results1: [],
       results2: [],
       //
@@ -333,6 +344,8 @@ export default {
     getCords(invalid) {
       this.$refs.observer.validate();
       if (invalid == false) {
+        this.showButton = false;
+        this.showProgress = true;
         const H = window.H;
         var platform = new H.service.Platform({
           apikey: "ESXHz5D5Ael8RKcRBmnboK969OKc0S9Rbm9aAlRA-8E",
@@ -405,6 +418,8 @@ export default {
               this.$session.set("sl", this.APIData.data.start_location);
               this.$session.set("el", this.APIData.data.end_location);
               this.clear();
+              this.showProgress = false;
+              this.showButton = true;
               this.$router.push({ name: "RouteMap" });
             } else {
               alert(this.APIData.message);

@@ -77,7 +77,7 @@
                 </template>
                 <v-list>
                   <v-list-item href="/optrpro">
-                    <v-list-item-title  class="font-weight-medium caption"
+                    <v-list-item-title class="font-weight-medium caption"
                       ><v-icon x-small class="mr-1" color="black"
                         >mdi-account-edit</v-icon
                       >
@@ -115,7 +115,7 @@ export default {
       navBar: true,
     };
   },
-  created: function () {
+  created: function() {
     this.isMobile();
     getAPI
       .get("/api/operators/view_operator_info/", {
@@ -126,6 +126,7 @@ export default {
       .then((response) => {
         this.APIData = response.data;
         if (this.APIData.response == 204) {
+          alert("Your account verfication failed. Details missing. Add now.");
           this.$router.push({ name: "Padd" });
         } else {
           if (this.APIData.data["status"] == 1) {
@@ -144,6 +145,8 @@ export default {
         }
       })
       .catch((err) => {
+        alert("Your registration is incomplete. Complete it to get verified.");
+        this.$router.push({ name: "Padd" });
         console.log(err);
       });
   },
