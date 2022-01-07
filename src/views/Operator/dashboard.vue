@@ -114,7 +114,7 @@
             </div>
           </div> -->
           <div class="row my-5">
-            <div class="col-md-9">
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-category">Transactions Management</h5>
@@ -203,7 +203,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
               <div class="card card-tasks">
                 <div class="card-header">
                   <h5 class="card-category">Notifications</h5>
@@ -390,7 +390,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <Dfooter />

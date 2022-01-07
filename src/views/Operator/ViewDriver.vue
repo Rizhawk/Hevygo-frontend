@@ -104,9 +104,9 @@
         </div>
       </div>
     </div>
-    <v-dialog persistent v-model="dialog" max-width="420">
+    <v-dialog persistent v-model="dialog" max-width="300">
       <v-card>
-        <v-card-title class="body-2 font-weight-black black--text"
+        <v-card-title class="caption font-weight-bold black--text"
           >Are you sure want to delete this driver?</v-card-title
         >
 
@@ -179,9 +179,8 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.response == 200) {
-            this.message = this.APIData.message;
-            this.snackbar = true;
-            window.location.reload();
+            alert("Details updated successfully.");
+            this.$router.push({ name: "DriverTable" });
           } else {
             this.message2 = this.APIData.message;
             this.snackbar2 = true;

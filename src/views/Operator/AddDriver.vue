@@ -86,16 +86,25 @@
                             dense
                           ></v-text-field>
                         </validation-provider>
-                        <v-text-field
-                          v-if="otpfield"
-                          v-model="otp"
-                          autofocus
-                          label="Enter your OTP *"
-                          @input="verified()"
-                          maxlength="6"
-                          outlined
-                          dense
-                        ></v-text-field>
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="OTP"
+                          :rules="{
+                            required: true,
+                          }"
+                        >
+                          <v-text-field
+                            v-if="otpfield"
+                            v-model="otp"
+                            :error-messages="errors"
+                            autofocus
+                            label="Enter your OTP *"
+                            @input="verified()"
+                            maxlength="6"
+                            outlined
+                            dense
+                          ></v-text-field
+                        ></validation-provider>
                         <v-flex row justify-center
                           ><v-btn
                             type="submit"

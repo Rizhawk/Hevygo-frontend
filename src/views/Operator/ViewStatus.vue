@@ -242,7 +242,7 @@ export default {
         .then((response) => {
           this.APIData = response.data;
           if (this.APIData.Http_response == 200) {
-            window.location.reload();
+            alert("Status updated successfully");
           } else {
             alert(this.APIData.message);
           }

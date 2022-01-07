@@ -133,6 +133,10 @@ export default {
             this.vicon = "mdi-clock";
             this.vcolor = "white";
             this.vmsg = this.APIData.data["remarks"];
+            alert(
+              "Account verification is in progress. Please wait to be verified."
+            );
+            this.signOut();
           } else if (this.APIData.data["status"] == 2) {
             this.vicon = "mdi-check-circle";
             this.vcolor = "blue lighten-1";
