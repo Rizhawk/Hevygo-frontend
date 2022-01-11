@@ -16,7 +16,7 @@
             <span class="navbar-toggler-bar bar3"></span>
           </button>
         </div>
-        <a class="navbar-brand" href="#pablo">{{ title }}</a>
+        <a class="navbar-brand">{{ title }}</a>
       </div>
       <button
         class="navbar-toggler"
@@ -136,7 +136,7 @@ export default {
             alert(
               "Account verification is in progress. Please wait to be verified."
             );
-            this.signOut();
+            this.$router.push({ name: "OptrPro" });
           } else if (this.APIData.data["status"] == 2) {
             this.vicon = "mdi-check-circle";
             this.vcolor = "blue lighten-1";

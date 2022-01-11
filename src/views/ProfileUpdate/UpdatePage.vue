@@ -19,20 +19,23 @@
             <span class="navbar-toggler-bar bar3"></span>
           </button>
         </div>
-        <a class="navbar-brand hidden-lg-and-up" href="#pablo"
-          >Update profile</a
-        >
       </div>
       <div class="collapse navbar-collapse justify-content-end" id="navigation">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#pablo">
-              <p>
-                <span class="font-weight-medium caption hidden-md-and-down"
-                  >Update profile
-                </span>
-              </p>
-            </a>
+          <li class="nav-item" v-if="isRemark">
+            <v-tooltip color="white" bottom max-width="600px" open-on-click>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  v-bind="attrs"
+                  v-on="on"
+                  class="my-3"
+                  small
+                  color="white"
+                  >mdi-bell</v-icon
+                ></template
+              >
+              <span class="black--text caption"> {{ remarks }}</span>
+            </v-tooltip>
           </li>
         </ul>
       </div>
@@ -101,7 +104,7 @@
             <v-list-item-title>Change Email</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="isOptr" link href="/updatepan">
+        <v-list-item class="link" v-if="isOptr" link href="/updatepan">
           <v-list-item-icon>
             <v-icon color="white" small>mdi-cash</v-icon>
           </v-list-item-icon>
@@ -132,7 +135,9 @@ export default {
       show: true,
       color: "",
       isOptr: false,
+      isRemark: false,
       username: "",
+      remarks: "",
     };
   },
   beforeCreate: function() {
@@ -148,6 +153,7 @@ export default {
         if (this.APIData.data["user_type"] == 1) {
           this.color = "red";
           this.profile = "/optrpro";
+          this.isRemark = true;
           this.getOptrpro();
         } else if (this.APIData.data["user_type"] == 2) {
           this.color = "blue";
@@ -169,6 +175,7 @@ export default {
         })
         .then((response) => {
           this.APIData = response.data;
+          this.remarks = this.APIData.data.remarks;
           if (this.APIData.data.status == 1 || this.APIData.data.status == 3) {
             this.isOptr = true;
           }
