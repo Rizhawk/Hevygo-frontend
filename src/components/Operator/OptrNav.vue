@@ -56,6 +56,36 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <v-badge class="my-3 mx-8" color="green darken-1" :content="count">
+              <v-menu
+                transition="slide-y-transition"
+                offset-x
+                close-on-content-click
+                bottom
+              >
+                <template v-slot:activator="{ on, attrs }"
+                  ><v-icon v-bind="attrs" v-on="on" color="white" small
+                    >mdi-bell</v-icon
+                  ></template
+                >
+                <v-sheet width="300">
+                  <v-card
+                    elevation="5"
+                    v-for="notif in notifies"
+                    :key="notif.id"
+                  >
+                    <v-card-text class="caption"
+                      ><v-icon color=" green darken-4" small class="mx-5"
+                        >mdi-new-box</v-icon
+                      >
+                      {{ notif.message }}</v-card-text
+                    >
+                  </v-card>
+                </v-sheet>
+              </v-menu></v-badge
+            >
+          </li>
           <li class="nav-item dropdown">
             <div class="dropdown">
               <v-menu
@@ -66,7 +96,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
-                    class="my-3"
+                    class="my-3 mx-8"
                     color="white"
                     small
                     v-bind="attrs"
@@ -113,6 +143,8 @@ export default {
       vicon: "",
       vmsg: "",
       navBar: true,
+      notifies: [],
+      count: null,
     };
   },
   created: function() {
@@ -151,6 +183,22 @@ export default {
       .catch((err) => {
         alert("Your registration is incomplete. Complete it to get verified.");
         this.$router.push({ name: "Padd" });
+        console.log(err);
+      });
+  },
+  beforeMount: function() {
+    getAPI
+      .get("api/accounts/is_login/", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.notifies = this.APIData.data.notifications;
+        this.count = this.notifies.length;
+      })
+      .catch((err) => {
         console.log(err);
       });
   },
