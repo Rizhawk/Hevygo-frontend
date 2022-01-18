@@ -232,7 +232,7 @@ export default {
     },
     markasRead() {
       getAPI
-        .post("/api/accounts/notification_seen/", {
+        .get("/api/accounts/notification_seen/", {
           headers: {
             Authorization: `Token ${this.$session.get("user_token")}`,
           },
