@@ -34,13 +34,56 @@
       <div class="collapse navbar-collapse justify-content-end" id="navigation">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#pablo">
+            <a class="nav-link mx-5" href="#pablo">
               <p>
                 <span class="font-weight-medium caption"
                   >{{ this.$session.get("user_name") }}
                 </span>
               </p>
             </a>
+          </li>
+          <li class="nav-item">
+            <v-badge class="my-3 mx-5" :color="badgeColor" :content="count">
+              <v-menu
+                transition="slide-y-transition"
+                offset-x
+                close-on-content-click
+                bottom
+              >
+                <template v-slot:activator="{ on, attrs }"
+                  ><v-icon
+                    @click.prevent="markasRead"
+                    v-bind="attrs"
+                    v-on="on"
+                    color="white"
+                    small
+                    >mdi-bell</v-icon
+                  ></template
+                >
+                <v-sheet width="300">
+                  <v-card
+                    elevation="5"
+                    v-for="notif in notifies"
+                    :key="notif.id"
+                  >
+                    <v-card-text class="caption"
+                      ><v-icon color=" green darken-4" small class="mx-5"
+                        >mdi-new-box</v-icon
+                      >
+                      {{ notif.message }}</v-card-text
+                    >
+                  </v-card>
+                  <v-card elevation="5" v-if="count == 0">
+                    <v-card-text class="caption"
+                      ><v-icon color="black" small class="mx-5"
+                        >mdi-alert-circle-outline</v-icon
+                      >
+                      No new notifications found.</v-card-text
+                    >
+                  </v-card>
+                </v-sheet>
+              </v-menu></v-badge
+            >
           </li>
           <li class="nav-item dropdown">
             <div class="dropdown">
@@ -52,7 +95,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
-                    class="my-3"
+                    class="my-3 mx-8"
                     color="white"
                     small
                     v-bind="attrs"
@@ -87,6 +130,7 @@
   </nav>
 </template>
 <script>
+import { getAPI } from "../../axios-api";
 export default {
   name: "Cnavbar",
   props: {
@@ -95,10 +139,34 @@ export default {
   data: () => {
     return {
       navBar: true,
+      notifies: [],
+      count: null,
+      badgeColor: "black",
     };
   },
-  created: function () {
+  created: function() {
     this.isMobile();
+  },
+  beforeMount: function() {
+    getAPI
+      .get("api/accounts/is_login/", {
+        headers: {
+          Authorization: `Token ${this.$session.get("user_token")}`,
+        },
+      })
+      .then((response) => {
+        this.APIData = response.data;
+        this.notifies = this.APIData.data.notifications;
+        this.count = this.notifies.length;
+        if (this.count > 0) {
+          this.badgeColor = "green darken-1";
+        } else {
+          this.count = "0";
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     isMobile() {

@@ -57,7 +57,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <v-badge class="my-3 mx-8" color="green darken-1" :content="count">
+            <v-badge class="my-3 mx-8" :color="badgeColor" :content="count">
               <v-menu
                 transition="slide-y-transition"
                 offset-x
@@ -65,7 +65,12 @@
                 bottom
               >
                 <template v-slot:activator="{ on, attrs }"
-                  ><v-icon v-bind="attrs" v-on="on" color="white" small
+                  ><v-icon
+                    @click="markasRead"
+                    v-bind="attrs"
+                    v-on="on"
+                    color="white"
+                    small
                     >mdi-bell</v-icon
                   ></template
                 >
@@ -80,6 +85,14 @@
                         >mdi-new-box</v-icon
                       >
                       {{ notif.message }}</v-card-text
+                    >
+                  </v-card>
+                  <v-card elevation="5" v-if="count == 0">
+                    <v-card-text class="caption"
+                      ><v-icon color="black" small class="mx-5"
+                        >mdi-alert-circle-outline</v-icon
+                      >
+                      No new notifications found.</v-card-text
                     >
                   </v-card>
                 </v-sheet>
@@ -145,6 +158,7 @@ export default {
       navBar: true,
       notifies: [],
       count: null,
+      badgeColor: "black",
     };
   },
   created: function() {
@@ -197,6 +211,12 @@ export default {
         this.APIData = response.data;
         this.notifies = this.APIData.data.notifications;
         this.count = this.notifies.length;
+        console.log(this.APIData);
+        if (this.count > 0) {
+          this.badgeColor = "green darken-1";
+        } else {
+          this.count = "0";
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -209,6 +229,21 @@ export default {
       } else {
         this.navBar = true;
       }
+    },
+    markasRead() {
+      getAPI
+        .post("/api/accounts/notification_seen/", {
+          headers: {
+            Authorization: `Token ${this.$session.get("user_token")}`,
+          },
+        })
+        .then((response) => {
+          this.APIData = response.data;
+          console.log(this.APIData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     signOut() {
       this.$session.destroy();
