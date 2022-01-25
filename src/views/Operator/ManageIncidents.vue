@@ -12,17 +12,25 @@
           <div class="row">
             <div class="col-md-12">
               <v-toolbar dense flat prominent>
-                <v-text-field
-                  v-model="search"
-                  prepend-inner-icon="mdi-magnify"
-                  class="mx-4 my-10 search"
-                  label="Search your truck.."
-                  @input="getIncidentsList"
-                  dense
-                  rounded
-                  filled
-                  single-line
-                ></v-text-field>
+                <div class="col-md-10">
+                  <v-text-field
+                    v-model="search"
+                    prepend-inner-icon="mdi-magnify"
+                    class="mx-4 my-10 search"
+                    label="Search your truck.."
+                    @input="getIncidentsList"
+                    dense
+                    rounded
+                    filled
+                    single-line
+                  ></v-text-field>
+                </div>
+                <div class="col-md-2">
+                  <v-spacer></v-spacer>
+                  <v-btn block color="red" class="my-12" x-small outlined dark
+                    >Cross Dock</v-btn
+                  >
+                </div>
                 <template v-slot:extension>
                   <v-tabs v-model="tab" centered icons-and-text>
                     <v-tabs-slider></v-tabs-slider>
