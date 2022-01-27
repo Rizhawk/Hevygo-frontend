@@ -27,7 +27,13 @@
                 </div>
                 <div class="col-md-2">
                   <v-spacer></v-spacer>
-                  <v-btn block color="red" class="my-12" x-small outlined dark
+                  <v-btn
+                    block
+                    color="green darken-4"
+                    outlined
+                    class="my-12"
+                    x-small
+                    dark
                     >Cross Dock</v-btn
                   >
                 </div>
