@@ -66,7 +66,6 @@
   </v-app>
 </template>
 <script>
-import { loadOptions } from "@babel/core";
 import { getAPI } from "../../axios-api";
 import Cnavbar from "../../components/Customer/navbar.vue";
 import Cmobnav from "../../components/Customer/navmob.vue";
@@ -159,7 +158,7 @@ export default {
     getLiveLocation() {
       this.stop = true;
       try {
-        this.ws = new WebSocket("ws://3.108.118.96:8001/ws/" + this.tid);
+        this.ws = new WebSocket("wss://shuttleapi.rizhawk.com/ws/" + this.tid);
         console.log(this.ws);
         (this.ws.onopen = function () {
           console.log("Websocket Connection Successfull!");

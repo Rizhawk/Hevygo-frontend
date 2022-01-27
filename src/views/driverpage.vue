@@ -52,7 +52,7 @@ export default {
   created: function() {
     try {
       this.ws = new WebSocket(
-        "ws://65.1.30.73:8001/ws/" + this.$session.get("user_id")
+        "wss://shuttleapi.rizhawk.com/ws/" + this.$session.get("user_id")
       );
       console.log(this.ws);
       (this.ws.onopen = function() {

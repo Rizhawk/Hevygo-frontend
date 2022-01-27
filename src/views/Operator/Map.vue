@@ -125,7 +125,7 @@ export default {
       this.stop = true;
       try {
         this.ws = new WebSocket(
-          "ws://3.108.118.96:8001/ws/" + localStorage.getItem("tid")
+          "wss://shuttleapi.rizhawk.com/ws/" + localStorage.getItem("tid")
         );
         console.log(this.ws);
         (this.ws.onopen = function () {
