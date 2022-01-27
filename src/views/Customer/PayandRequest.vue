@@ -281,7 +281,7 @@ export default {
     sendMessage(i, trucksLength, id) {
       console.log(`connected to ${id}`);
       return new Promise((resolve) => {
-        this.connection = new WebSocket("ws://65.1.30.73:8001/ws/" + id + "/");
+        this.connection = new WebSocket("wss://shuttleapi.rizhawk.com/ws/" + id + "/");
         console.log(this.connection);
         this.connection.onopen = function() {
         };

@@ -159,7 +159,7 @@ export default {
     getLiveLocation() {
       this.stop = true;
       try {
-        this.ws = new WebSocket("ws://3.108.118.96:8001/ws/" + this.tid);
+        this.ws = new WebSocket("wss://shuttleapi.rizhawk.com/ws/" + this.tid);
         console.log(this.ws);
         (this.ws.onopen = function () {
           console.log("Websocket Connection Successfull!");
